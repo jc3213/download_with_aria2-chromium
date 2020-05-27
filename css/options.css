@@ -1,0 +1,94 @@
+#container {
+    position: absolute;
+    top: 50px;
+    left: calc((100% - 600px) / 2);
+    width: 600px;
+}
+
+#separator {
+    padding: 30px 0px 30px 0px;
+}
+
+#separator div {
+    border: 1px outset black;
+}
+
+.container {
+    padding: 10px;
+}
+
+.menu_title {
+    font-size: 20px;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.menu_value input{
+    color: black;
+    width: 300px;
+    padding: 5px;
+}
+
+.menu_value textarea {
+    color: black;
+    height: 200px;
+    width: 300px;
+    padding: 5px;
+    resize: none;
+    overflow: auto;
+}
+
+.menu_desc {
+    font-size: 14px;
+    width: fit-content;
+}
+
+#aria2_rpc_check {
+    background-color: #EEE;
+    position: absolute;
+    top: 37px;
+    left: 330px;
+    width: fit-content;    
+    padding: 5px;
+    cursor: pointer;
+    border: 1px outset black;
+}
+
+#aria2_rpc_check:hover {
+    background-color: #66D;
+    color: #FFF;
+}
+
+#aria2_rpc_result {
+    position: absolute;
+    top: 37px;
+    left: 375px; 
+    padding: 5px;
+}
+
+#capture_main_value {
+    position: absolute;
+    top: 268px;
+    left: 88px;
+    transform: scale(1.7);
+}
+
+#capture_sub {
+    display: none;
+}
+
+#capture_size_value input {
+    width: 220px;
+}
+
+#capture_size_unit {
+    position: absolute;
+    top: 370px;
+    left: 270px;
+    transform: scale(1.5);
+}
+
+#capture_size_unit option:checked {
+    color: #F00;
+    font-weight: bold;
+}
