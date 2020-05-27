@@ -29,16 +29,16 @@ function downloadWithAria2(url, params) {
 }
 
 function showNotification(message) {
-    'use strict';
+    var id = 'aria2_' + Date.now();
     var warning = {
         type: 'basic',
         title: 'Download with Aria2',
         iconUrl: 'icons/icon64.png',
         message: message
     };
-    chrome.notifications.create('send2aria2rpc', warning, () => {
+    chrome.notifications.create(id, warning, () => {
         window.setTimeout(() => {
-            chrome.notifications.clear('send2aria2rpc');
+            chrome.notifications.clear(id);
         }, 3000);
     });
 }
@@ -46,7 +46,7 @@ function showNotification(message) {
 function getCookies(referer, callback) {
     var cache = [];
     chrome.cookies.getAll({'url': referer}, (cookies) => {
-        for (i = 0; i < cookies.length; i++) {
+        for (i = 0; i < cookies.length; i ++) {
             var cookie = cookies[i];
             cache.push(cookie.name + '=' + cookie.value + ';');
         }
@@ -101,7 +101,6 @@ function captureCheck(item, referer) {
 }
 
 function captureAdd(item, referer) {
-    'use strict';
     var capture = captureCheck(item, referer);
     if (capture) {
         getCookies(referer, (params) => {
@@ -119,7 +118,6 @@ chrome.contextMenus.create({
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    'use strict';
     if (info.menuItemId === 'downwitharia2') {;
         getCookies(info.pageUrl, (params) => {
             downloadWithAria2(info.linkUrl, params);
@@ -128,7 +126,6 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.downloads.onCreated.addListener((item) => {
-    'use strict';
     var capture = localStorage.getItem('capture');
     if (capture === 'true' || capture === true) {
         chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {

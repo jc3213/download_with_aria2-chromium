@@ -49,7 +49,7 @@ jQuery(document).ready(($) => {
         localStorage.setItem('sizeentry', event.target.value);
         calcFileSize();
     });
-    $('#capture_size_unit').val(localStorage.getItem('sizeunit') || '2').on('change', (event) => {
+    $('#capture_size_unit > select').val(localStorage.getItem('sizeunit') || '2').on('change', (event) => {
         localStorage.setItem('sizeunit', event.target.value);
         calcFileSize();
     })
@@ -108,6 +108,6 @@ jQuery(document).ready(($) => {
         if (entry === '') {
             return '';
         }
-        return entry.replace(/[\r\n]/g, "|").replace(/\./g, "\\.").replace(/\*/g, "[^ ]*").replace(/\|+$/, '');
+        return entry.split(/\n/).filter(item => item !== '').join('|').replace(/\./g, '\\.').replace(/\*/g, '[^ ]*');
     }
 });

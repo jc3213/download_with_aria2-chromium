@@ -56,7 +56,7 @@ function aria2CMD(method, id) {
 function addurisubmit() {
     var toadduri = (e_taskaddbox.val() === '' ? e_taskaddbatch.val().split('\n') : e_taskaddbox.val().split('\n'));
     if (toadduri[0] !== '') {
-        for (var i = 0, l = toadduri.length; i < l; i++) {
+        for (var i = 0, l = toadduri.length; i < l; i ++) {
             var uri = toadduri[i];
             aria2CMD('addUri', [uri]);
         }
@@ -185,7 +185,7 @@ function printContentBody(result) {
             }
             else {
                 var html = '';
-                for (var i = 0, l = response.length; i < l; i++) {
+                for (var i = 0, l = response.length; i < l; i ++) {
                     var result = response[i].result;
                     html += printContentTask(result);
                 }
@@ -198,7 +198,7 @@ function printContentBody(result) {
 function printContentTask(result) {
     var html = '';
     var tplpart = {};
-    for (var i = 0, l = result.length; i < l; i++) {
+    for (var i = 0, l = result.length; i < l; i ++) {
         var files = result[i].files;
         var gid = result[i].gid;
         var torrent = result[i].bittorrent;
