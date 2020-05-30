@@ -65,7 +65,7 @@ function matchPattern(pattern, url) {
 
 function captureCheck(item, referer) {
     'use strict';
-    if (item.url.startsWith('blob')) {
+    if (item.finalUrl.startsWith('blob')) {
         return false;
     }
 
@@ -85,7 +85,7 @@ function captureCheck(item, referer) {
 
     var fileext = localStorage.getItem('extpattern');
     if (fileext && fileext !== '') {
-        if (matchPattern(fileext, item.url)) {
+        if (matchPattern(fileext, item.finalUrl)) {
             return true;
         }
     }
@@ -105,7 +105,7 @@ function captureAdd(item, referer) {
     if (capture) {
         getCookies(referer, (params) => {
             chrome.downloads.erase({'id': item.id}, () => {
-                downloadWithAria2(item.url, params);
+                downloadWithAria2(item.finalUrl, params);
             });
         });
     }
