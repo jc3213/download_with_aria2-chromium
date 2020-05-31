@@ -85,7 +85,6 @@ function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// add new task manually
 function addurisubmit() {
     var toadduri = (e_taskaddbox.val() === '' ? e_taskaddbatch.val().split('\n') : e_taskaddbox.val().split('\n'));
     if (toadduri[0] !== '') {
@@ -171,30 +170,24 @@ $('#addtask').on('submit', (event) => {
 function printContent() {
     jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
         var result = response.result;
-        if (result.downloadSpeed === 0) {
-            var globalSpeed = '';
-        }
-        else {
-            globalSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-        }
-        $('#globalstat').html(globalSpeed);
-        printContentBody(result);
+        var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+        $('#globalstat').html(downloadSpeed);
+        printContentBody((result.numWaiting | 0), (result.numStopped | 0));
     });
 }
 
-function printContentBody(result) {
+function printContentBody(globalWaiting, globalStopped) {
     var rquestParams = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
     jsonRPCRequest([
-        createJson('aria2.tellActive', '' , [rquestParams]),
-        createJson('aria2.tellWaiting', '' , [0, (result.numWaiting | 0), rquestParams]),
-        createJson('aria2.tellStopped', '' , [0, (result.numStopped | 0), rquestParams]),
+        createJson('aria2.tellActive', '', [rquestParams]),
+        createJson('aria2.tellWaiting', '', [0, globalWaiting, rquestParams]),
+        createJson('aria2.tellStopped', '', [0, globalStopped, rquestParams]),
     ], (response) => {
         var activeQueue = response[0].result
         var waitingQueue = response[1].result;
         var stoppedQueue = response[2].result;
         if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && e_tasklist.find('.tasktitle').length === 0) {
             e_tasklist.html('Empty task list');
-                //clearInterval(keepContentAlive);
         }
         else {
             var html = '';
@@ -215,35 +208,28 @@ function printContentTask(result) {
         var torrent = result[i].bittorrent;
         var conns = result[i].connections;
         var status = result[i].status;
-        if (torrent && torrent.info && torrent.info.name) {
-            var displayName = torrent.info.name;
-        }
-        else {
-            displayName = files[0].path.split('/').pop();
-        }
         var downloadSpeed = bytesToFileSize(result[i].downloadSpeed);
         var totalLength = bytesToFileSize(result[i].totalLength);
         var completedLength = bytesToFileSize(result[i].completedLength);
-        var estimatedTime = (result[i].totalLength - result[i].completedLength) / result[i].downloadSpeed;
-        estimatedTime = secondsToHHMMSS(estimatedTime);
-        if (isNaN(result[i].completedLength) || result[i].completedLength === 0) {
-            var completeRatio = '0%';
+        var estimatedTime = secondsToHHMMSS((result[i].totalLength - result[i].completedLength) / result[i].downloadSpeed);
+        var completeRatio = ((result[i].completedLength / result[i].totalLength * 10000 | 0) / 100).toString() + '%';
+        if (torrent && torrent.info && torrent.info.name) {
+            var taskName = torrent.info.name;
         }
         else {
-            completeRatio = ((result[i].completedLength/result[i].totalLength * 10000 | 0) / 100).toString() + '%';
+            taskName = files[0].path.split('/').pop();
         }
         if (torrent) {
             var uploadSpeed = bytesToFileSize(result[i].uploadSpeed);
-            var infoBar = '<div class="' + status + '_info2">' + conns + ' conns/' + result[i].numSeeders + ' seeds, ' + downloadSpeed + '/s (up: ' + uploadSpeed + '/s), ETA: ' + estimatedTime + '</div>';
+            var infoBar = '<div class="' + status + '_info2">' + conns + ' conns (' + result[i].numSeeders + ' seeds), ' + downloadSpeed + '/s (up: ' + uploadSpeed + '/s), ETA: ' + estimatedTime + '</div>';
         }
         else {
             infoBar = '<div class="' + status + '_info2">' + conns + ' conns, ' + downloadSpeed + '/s, ETA: ' + estimatedTime + '</div>';
         }
         var taskInfo = '<div id="taskInfo_' + gid + '">\
-            <div class="tasktitle">' + displayName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
-            <div class="' + status + '_info1">' + capitaliseFirstLetter(status) + ' , ' + completedLength + '/' + totalLength + ' | ' + completeRatio + '</div>\
-            ' + infoBar + '\
-        </div>\
+            <div class="tasktitle">' + taskName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
+            <div class="' + status + '_info1">' + capitaliseFirstLetter(status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>\
+            ' + infoBar + '</div>\
         <div id="taskBar_' + gid + '" class="' + status + ' progbar" style="width: ' + completeRatio + '"></div>'
         html += taskInfo;
     }

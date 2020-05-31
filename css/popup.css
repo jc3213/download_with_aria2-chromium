@@ -1,4 +1,3 @@
-/*popup*/
 #purgebtn, #addbtn {
     margin: auto auto auto 5px;
     border: 1px solid #CCC;
@@ -92,7 +91,6 @@ div[id^="taskInfo_"] {
     background-color: white;
     padding: 1px;
 }
-
 
 .complete_info2{
     display: none;
