@@ -1,3 +1,42 @@
+function createJson(method, id, params) {
+    var token = localStorage.getItem('aria2secret') || '';
+    var json = {
+        jsonrpc: 2.0,
+        method: method,
+        id: ''
+    }
+    if (params) {
+        json.params = params;
+    }
+    else {
+        json.params = [];
+    }
+    if (id) {
+        json.params.unshift(id);
+    }
+    json.params.unshift('token:' + token);
+    return json;
+}
+
+function jsonRPCRequest(json, onloadCallback, onerrorCallback) {
+    var xhr = new XMLHttpRequest();
+    var rpc = localStorage.getItem('aria2rpc') || 'http://localhost:6800/jsonrpc';
+    xhr.open('POST', rpc, true);
+    xhr.onload = (event) => {
+        var response = JSON.parse(xhr.response);
+        if (typeof onloadCallback === 'function') {
+            onloadCallback(response);
+        }
+    }
+    xhr.onerror = (event) => {
+        var response = JSON.parse(xhr.response);
+        if (typeof onerrorCallback === 'function') {
+            onerrorCallback(response);
+        }
+    }
+    xhr.send(JSON.stringify(json));
+}
+
 function bytesToFileSize(bytes) {
     var KBytes = 1024;
     var MBytes = 1048576;
@@ -46,19 +85,13 @@ function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function aria2CMD(method, id) {
-    $.jsonRPC.request(method, {
-        params: [rpct, id]
-    })
-}
-
 // add new task manually
 function addurisubmit() {
     var toadduri = (e_taskaddbox.val() === '' ? e_taskaddbatch.val().split('\n') : e_taskaddbox.val().split('\n'));
     if (toadduri[0] !== '') {
         for (var i = 0, l = toadduri.length; i < l; i ++) {
             var uri = toadduri[i];
-            aria2CMD('addUri', [uri]);
+            jsonRPCRequest(createJson('aria2.addUri', '', [[uri]]));
         }
     }
     e_addtaskctn.hide();
@@ -86,17 +119,6 @@ function addtasktoggle() {
     e_addmore.val('>>');
 }
 
-//event binding
-var rpc = localStorage.getItem('aria2rpc') || 'http://localhost:6800/jsonrpc';
-var token = localStorage.getItem('aria2secret') || '';
-var rpct = 'token:' + token;
-$.jsonRPC.setup({
-    endPoint: rpc,
-    namespace: 'aria2'
-});
-
-var headInfotpl = $('#headInfo').html();
-var taskInfotpl = $('#taskInfo').html();
 var e_addtaskctn = $('#addtaskcontainer');
 var e_addbtn = $('#addbtn');
 var e_addmore = $('#addmore');
@@ -106,34 +128,34 @@ var e_tasklist = $('#tasklist').on('click', 'button.removebtn', (event) => {
     var status = $(event.target).attr('class').split(' ').shift();
     var id = $(event.target).attr('id').split('_').pop();
     if (['active', 'waiting', 'paused'].includes(status)) {
-        var method = 'forceRemove';
+        var method = 'aria2.forceRemove';
     }
     else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'removeDownloadResult';
+        method = 'aria2.removeDownloadResult';
     }
     else {
         console.log(status);
     }
-    aria2CMD(method, id);
+    jsonRPCRequest(createJson(method, id));
 }).on('click', 'div.progbar', (event) => {
     var status = $(event.target).attr('class').split(' ').shift();
     var id = $(event.target).attr('id').split('_').pop();
     if (['active', 'waiting'].includes(status)) {
-        var method = 'pause';
+        var method = 'aria2.pause';
     }
     else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'removeDownloadResult';
+        method = 'aria2.removeDownloadResult';
     }
     else if (status === 'paused') {
-        method = 'unpause';
+        method = 'aria2.unpause';
     }
     else {
         console.log(status);
     }
-    aria2CMD(method, id);
+    jsonRPCRequest(createJson(method, id));
 });
 $('#purgebtn').on('click', (event) => {
-    aria2CMD('purgeDownloadResult', '');
+    jsonRPCRequest(createJson('aria2.purgeDownloadResult'));
 });
 $('#addbtn').on('click', (event) => {
     addtasktoggle();
@@ -147,53 +169,46 @@ $('#addtask').on('submit', (event) => {
 });
 
 function printContent() {
-    $.jsonRPC.request('getGlobalStat', {
-        params: [rpct],
-        success: (response) => {
-            var result = response.result;
-            var tplpart = {};
-            if (result.downloadSpeed === 0) {
-                tplpart.globspeed = '';
-            }
-            else {
-                tplpart.globspeed = bytesToFileSize(result.downloadSpeed) + '/s';
-            }
-            $('#globalstat').html(tplpart.globspeed);
-            printContentBody(result);
+    jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
+        var result = response.result;
+        if (result.downloadSpeed === 0) {
+            var globalSpeed = '';
         }
-    })
+        else {
+            globalSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+        }
+        $('#globalstat').html(globalSpeed);
+        printContentBody(result);
+    });
 }
 
 function printContentBody(result) {
     var rquestParams = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
-    $.jsonRPC.batchRequest([
-        {method: 'tellActive', params: [rpct, rquestParams]},
-        {method: 'tellWaiting', params: [rpct, 0, (result.numWaiting | 0), rquestParams]},
-        {method: 'tellStopped', params: [rpct, 0, (result.numStopped | 0), rquestParams]}
-    ], {
-        success: (response) => {
-            var activeQueue = response[0].result
-            var waitingQueue = response[1].result;
-            var stoppedQueue = response[2].result;
-            if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && e_tasklist.find('.tasktitle').length === 0) {
-                e_tasklist.html('Empty task list');
+    jsonRPCRequest([
+        createJson('aria2.tellActive', '' , [rquestParams]),
+        createJson('aria2.tellWaiting', '' , [0, (result.numWaiting | 0), rquestParams]),
+        createJson('aria2.tellStopped', '' , [0, (result.numStopped | 0), rquestParams]),
+    ], (response) => {
+        var activeQueue = response[0].result
+        var waitingQueue = response[1].result;
+        var stoppedQueue = response[2].result;
+        if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && e_tasklist.find('.tasktitle').length === 0) {
+            e_tasklist.html('Empty task list');
                 //clearInterval(keepContentAlive);
+        }
+        else {
+            var html = '';
+            for (var i = 0, l = response.length; i < l; i ++) {
+                var result = response[i].result;
+                html += printContentTask(result);
             }
-            else {
-                var html = '';
-                for (var i = 0, l = response.length; i < l; i ++) {
-                    var result = response[i].result;
-                    html += printContentTask(result);
-                }
-                e_tasklist.html(html);
-            }
+            e_tasklist.html(html);
         }
     });
 }
 
 function printContentTask(result) {
     var html = '';
-    var tplpart = {};
     for (var i = 0, l = result.length; i < l; i ++) {
         var files = result[i].files;
         var gid = result[i].gid;
@@ -201,36 +216,35 @@ function printContentTask(result) {
         var conns = result[i].connections;
         var status = result[i].status;
         if (torrent && torrent.info && torrent.info.name) {
-            tplpart.displayName = torrent.info.name;
+            var displayName = torrent.info.name;
         }
         else {
-            tplpart.displayName = files[0].path.split('/').pop();
+            displayName = files[0].path.split('/').pop();
         }
-        tplpart.dlspeedPrec = bytesToFileSize(result[i].downloadSpeed);
-        tplpart.tlengthPrec = bytesToFileSize(result[i].totalLength);
-        tplpart.clengthPrec = bytesToFileSize(result[i].completedLength);
-        var etasec = (result[i].totalLength - result[i].completedLength) / result[i].downloadSpeed;
-        tplpart.eta = secondsToHHMMSS(etasec);
-        tplpart.statusUpper = capitaliseFirstLetter(status);
+        var downloadSpeed = bytesToFileSize(result[i].downloadSpeed);
+        var totalLength = bytesToFileSize(result[i].totalLength);
+        var completedLength = bytesToFileSize(result[i].completedLength);
+        var estimatedTime = (result[i].totalLength - result[i].completedLength) / result[i].downloadSpeed;
+        estimatedTime = secondsToHHMMSS(estimatedTime);
         if (isNaN(result[i].completedLength) || result[i].completedLength === 0) {
-            tplpart.completeRatio = '0%';
+            var completeRatio = '0%';
         }
         else {
-            tplpart.completeRatio = ((result[i].completedLength/result[i].totalLength * 10000 | 0) / 100).toString() + '%';
+            completeRatio = ((result[i].completedLength/result[i].totalLength * 10000 | 0) / 100).toString() + '%';
         }
         if (torrent) {
-            tplpart.upspeedPrec = bytesToFileSize(result[i].uploadSpeed);
-            var infoBar = '<div class="' + status + '_info2">' + conns + ' conns/' + result[i].numSeeders + ' seeds, ' + tplpart.dlspeedPrec + '/s (up: ' + tplpart.upspeedPrec + '/s), ETA: ' + tplpart.eta + '</div>';
+            var uploadSpeed = bytesToFileSize(result[i].uploadSpeed);
+            var infoBar = '<div class="' + status + '_info2">' + conns + ' conns/' + result[i].numSeeders + ' seeds, ' + downloadSpeed + '/s (up: ' + uploadSpeed + '/s), ETA: ' + estimatedTime + '</div>';
         }
         else {
-            infoBar = '<div class="' + status + '_info2">' + conns + ' conns, ' + tplpart.dlspeedPrec + '/s, ETA: ' + tplpart.eta + '</div>';
+            infoBar = '<div class="' + status + '_info2">' + conns + ' conns, ' + downloadSpeed + '/s, ETA: ' + estimatedTime + '</div>';
         }
         var taskInfo = '<div id="taskInfo_' + gid + '">\
-            <div class="tasktitle">' + tplpart.displayName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
-            <div class="' + status + '_info1">' + tplpart.statusUpper + ' , ' + tplpart.clengthPrec + '/' + tplpart.tlengthPrec + ' | ' + tplpart.completeRatio + '</div>\
+            <div class="tasktitle">' + displayName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
+            <div class="' + status + '_info1">' + capitaliseFirstLetter(status) + ' , ' + completedLength + '/' + totalLength + ' | ' + completeRatio + '</div>\
             ' + infoBar + '\
         </div>\
-        <div id="taskBar_' + gid + '" class="' + status + ' progbar" style="width: ' + tplpart.completeRatio + '"></div>'
+        <div id="taskBar_' + gid + '" class="' + status + ' progbar" style="width: ' + completeRatio + '"></div>'
         html += taskInfo;
     }
     return html;
