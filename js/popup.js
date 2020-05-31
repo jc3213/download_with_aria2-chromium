@@ -146,9 +146,6 @@ $('#addtask').on('submit', (event) => {
     addurisubmit();
 });
 
-Mustache.parse(headInfotpl);
-Mustache.parse(taskInfotpl);
-
 function printContent() {
     $.jsonRPC.request('getGlobalStat', {
         params: [rpct],
@@ -161,8 +158,7 @@ function printContent() {
             else {
                 tplpart.globspeed = bytesToFileSize(result.downloadSpeed) + '/s';
             }
-            var headInfohtml = Mustache.render(headInfotpl, result, tplpart);
-            $('#globalstat').html(headInfohtml);
+            $('#globalstat').html(tplpart.globspeed);
             printContentBody(result);
         }
     })
@@ -202,34 +198,40 @@ function printContentTask(result) {
         var files = result[i].files;
         var gid = result[i].gid;
         var torrent = result[i].bittorrent;
+        var conns = result[i].connections;
+        var status = result[i].status;
         if (torrent && torrent.info && torrent.info.name) {
             tplpart.displayName = torrent.info.name;
         }
         else {
             tplpart.displayName = files[0].path.split('/').pop();
         }
-        if (torrent) {
-            tplpart.upspeedPrec = ' (up:' + bytesToFileSize(result[i].uploadSpeed) + '/s)';
-            tplpart.numSeedersf = '/' + result[i].numSeeders + ' seeds';
-        }
-        else {
-            tplpart.upspeedPrec = '';
-            tplpart.numSeedersf = '';
-        }
         tplpart.dlspeedPrec = bytesToFileSize(result[i].downloadSpeed);
         tplpart.tlengthPrec = bytesToFileSize(result[i].totalLength);
         tplpart.clengthPrec = bytesToFileSize(result[i].completedLength);
-        tplpart.completeRatio = ((result[i].completedLength / result[i].totalLength * 10000 | 0) / 100).toString();
         var etasec = (result[i].totalLength - result[i].completedLength) / result[i].downloadSpeed;
         tplpart.eta = secondsToHHMMSS(etasec);
-        tplpart.statusUpper = capitaliseFirstLetter(result[i].status);
+        tplpart.statusUpper = capitaliseFirstLetter(status);
         if (isNaN(result[i].completedLength) || result[i].completedLength === 0) {
-            tplpart.p = '0%';
+            tplpart.completeRatio = '0%';
         }
         else {
-            tplpart.p = ((result[i].completedLength/result[i].totalLength * 10000 | 0) / 100).toString() + '%';
+            tplpart.completeRatio = ((result[i].completedLength/result[i].totalLength * 10000 | 0) / 100).toString() + '%';
         }
-        html += Mustache.render(taskInfotpl, result[i], tplpart);
+        if (torrent) {
+            tplpart.upspeedPrec = bytesToFileSize(result[i].uploadSpeed);
+            var infoBar = '<div class="' + status + '_info2">' + conns + ' conns/' + result[i].numSeeders + ' seeds, ' + tplpart.dlspeedPrec + '/s (up: ' + tplpart.upspeedPrec + '/s), ETA: ' + tplpart.eta + '</div>';
+        }
+        else {
+            infoBar = '<div class="' + status + '_info2">' + conns + ' conns, ' + tplpart.dlspeedPrec + '/s, ETA: ' + tplpart.eta + '</div>';
+        }
+        var taskInfo = '<div id="taskInfo_' + gid + '">\
+            <div class="tasktitle">' + tplpart.displayName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
+            <div class="' + status + '_info1">' + tplpart.statusUpper + ' , ' + tplpart.clengthPrec + '/' + tplpart.tlengthPrec + ' | ' + tplpart.completeRatio + '</div>\
+            ' + infoBar + '\
+        </div>\
+        <div id="taskBar_' + gid + '" class="' + status + ' progbar" style="width: ' + tplpart.completeRatio + '"></div>'
+        html += taskInfo;
     }
     return html;
 }
