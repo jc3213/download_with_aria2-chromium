@@ -3,37 +3,31 @@ function createJson(method, id, params) {
     var json = {
         jsonrpc: 2.0,
         method: method,
-        id: ''
+        id: '',
+        params: [
+            'token:' + token
+        ]
     };
-    if (params) {
-        json.params = params;
-    }
-    else {
-        json.params = [];
-    }
     if (id) {
-        json.params.unshift(id);
+        json.params.push(id);
     }
-    json.params.unshift('token:' + token);
+    if (params) {
+        json.params = json.params.concat(params);
+    }
     return json;
 }
 
-function jsonRPCRequest(json, onloadCallback, onerrorCallback) {
+function jsonRPCRequest(json, onload, onerror) {
     var xhr = new XMLHttpRequest();
     var rpc = localStorage.getItem('aria2rpc') || 'http://localhost:6800/jsonrpc';
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
-        if (typeof onloadCallback === 'function') {
-            onloadCallback(response);
+        if (typeof onload === 'function') {
+            onload(response);
         }
     };
-    xhr.onerror = (event) => {
-        var response = JSON.parse(xhr.response);
-        if (typeof onerrorCallback === 'function') {
-            onerrorCallback(response);
-        }
-    };
+    xhr.onerror = onerror;
     xhr.send(JSON.stringify(json));
 }
 
@@ -85,44 +79,12 @@ function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function addurisubmit() {
-    var toadduri = (e_taskaddbox.val() === '' ? e_taskaddbatch.val().split('\n') : e_taskaddbox.val().split('\n'));
-    if (toadduri[0] !== '') {
-        for (var i = 0, l = toadduri.length; i < l; i ++) {
-            var uri = toadduri[i];
-            jsonRPCRequest(createJson('aria2.addUri', '', [[uri]]));
-        }
-    }
-    e_addtaskctn.hide();
-    e_addbtn.val('Add');
-}
-
-function addmoretoggle() {
-    if (e_addmore.val() === '>>') {
-        e_taskaddbox.hide();
-        e_taskaddbatch.show();
-        e_addmore.val('<<');
-    }
-    else {
-        e_taskaddbox.show();
-        e_taskaddbatch.hide();
-        e_addmore.val('>>');
-    }
-}
-
-function addtasktoggle() {
-    e_addtaskctn.toggle();
-    e_addbtn.val((e_addbtn.val() === 'Add' ? 'Cancel' : 'Add' ));
-    e_taskaddbox.show();
-    e_taskaddbatch.hide();
-    e_addmore.val('>>');
-}
-
 var e_addtaskctn = $('#addtaskcontainer');
 var e_addbtn = $('#addbtn');
 var e_addmore = $('#addmore');
 var e_taskaddbox = $('#taskaddbox');
 var e_taskaddbatch = $('#taskaddbatch');
+
 var e_tasklist = $('#tasklist').on('click', 'button.removebtn', (event) => {
     var status = $(event.target).attr('class').split(' ').shift();
     var id = $(event.target).attr('id').split('_').pop();
@@ -153,54 +115,46 @@ var e_tasklist = $('#tasklist').on('click', 'button.removebtn', (event) => {
     }
     jsonRPCRequest(createJson(method, id));
 });
+
 $('#purgebtn').on('click', (event) => {
     jsonRPCRequest(createJson('aria2.purgeDownloadResult'));
 });
+
 $('#addbtn').on('click', (event) => {
-    addtasktoggle();
+    e_addtaskctn.toggle();
+    e_addbtn.val((e_addbtn.val() === 'Add' ? 'Cancel' : 'Add' ));
+    e_taskaddbox.show();
+    e_taskaddbatch.hide();
+    e_addmore.val('>>');
 });
+
 $('#addmore').on('click', (event) => {
-    addmoretoggle();
-})
+    if (e_addmore.val() === '>>') {
+        e_taskaddbox.hide();
+        e_taskaddbatch.show();
+        e_addmore.val('<<');
+    }
+    else {
+        e_taskaddbox.show();
+        e_taskaddbatch.hide();
+        e_addmore.val('>>');
+    }
+});
+
 $('#addtask').on('submit', (event) => {
     event.preventDefault();
-    addurisubmit();
+    var toadduri = (e_taskaddbox.val() === '' ? e_taskaddbatch.val().split('\n') : e_taskaddbox.val().split('\n'));
+    if (toadduri[0] !== '') {
+        for (var i = 0, l = toadduri.length; i < l; i ++) {
+            var uri = toadduri[i];
+            jsonRPCRequest(createJson('aria2.addUri', '', [[uri]]));
+        }
+    }
+    e_addtaskctn.hide();
+    e_addbtn.val('Add');
 });
 
-function printContent() {
-    jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
-        var result = response.result;
-        var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-        $('#globalstat').html(downloadSpeed);
-        printContentBody((result.numWaiting | 0), (result.numStopped | 0));
-    });
-}
-
-function printContentBody(globalWaiting, globalStopped) {
-    var params = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
-    jsonRPCRequest([
-        createJson('aria2.tellActive', '', [params]),
-        createJson('aria2.tellWaiting', '', [0, globalWaiting, params]),
-        createJson('aria2.tellStopped', '', [0, globalStopped, params]),
-    ], (response) => {
-        var activeQueue = response[0].result
-        var waitingQueue = response[1].result;
-        var stoppedQueue = response[2].result;
-        if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && e_tasklist.find('.tasktitle').length === 0) {
-            e_tasklist.html('Empty task list');
-        }
-        else {
-            var html = '';
-            for (var i = 0, l = response.length; i < l; i ++) {
-                var result = response[i].result;
-                html += printContentTask(result);
-            }
-            e_tasklist.html(html);
-        }
-    });
-}
-
-function printContentTask(result) {
+function printTaskInfo(result) {
     var html = '';
     for (var i = 0, l = result.length; i < l; i ++) {
         var files = result[i].files;
@@ -234,6 +188,46 @@ function printContentTask(result) {
         html += taskInfo;
     }
     return html;
+}
+
+function printTasklist(globalWaiting, globalStopped) {
+    var params = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
+    jsonRPCRequest([
+        createJson('aria2.tellActive', '', [params]),
+        createJson('aria2.tellWaiting', '', [0, globalWaiting, params]),
+        createJson('aria2.tellStopped', '', [0, globalStopped, params]),
+    ], (response) => {
+        var activeQueue = response[0].result
+        var waitingQueue = response[1].result;
+        var stoppedQueue = response[2].result;
+        if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && e_tasklist.find('.tasktitle').length === 0) {
+            e_tasklist.html('Empty task list');
+        }
+        else {
+            var html = '';
+            for (var i = 0, l = response.length; i < l; i ++) {
+                var result = response[i].result;
+                html += printTaskInfo(result);
+            }
+            e_tasklist.html(html);
+        }
+    });
+}
+
+function printContent() {
+    jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
+        if (response.result) {
+            var result = response.result;
+            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+            $('#globalstat').html(downloadSpeed);
+            printTasklist((result.numWaiting | 0), (result.numStopped | 0));
+        }
+        else if (response.error) {
+            $('#globalstat').html('Auth Error');
+        }
+    }, (event) => {
+        $('#globalstat').html('Net Error');
+    });
 }
 
 printContent();
