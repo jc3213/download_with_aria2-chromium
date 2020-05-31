@@ -24,7 +24,7 @@ function downloadWithAria2(url, params) {
     };
     xhr.onerror = (event) => {
         showNotification('Can not connect to Aria2 RPC server! Please check your settings!!');
-    }
+    };
     xhr.send(JSON.stringify(json));
 }
 
@@ -68,35 +68,30 @@ function captureCheck(item, referer) {
     if (item.finalUrl.startsWith('blob')) {
         return false;
     }
-
     var black = localStorage.getItem('blackpattern');
     if (black && black !== '') {
         if (matchPattern(black, referer)) {
             return false;
         }
     }
-
     var white = localStorage.getItem('whitepattern');
     if (white && white !== '') {
         if (matchPattern(white, referer)) {
             return true;
         }
     }
-
     var fileext = localStorage.getItem('extpattern');
     if (fileext && fileext !== '') {
         if (matchPattern(fileext, item.finalUrl)) {
             return true;
         }
     }
-
     var size = localStorage.getItem('sizenumber');
     if (size && size > 0) {
         if (item.fileSize >= size) {
             return true;
         }
     }
-
     return false;
 }
 

@@ -28,18 +28,6 @@
 - No i18n support
   - The original code uses `i18n.js` which is binded to `fancysettings.js`, but all of these have been removed
 
-# Firefox Quantum
+# Final words
 
-- Add the code below to `manifest.json`
-```javascript
-    "applications": {
-        "gecko": {
-            "id": "firefox@downwitharia2",
-            "strict_min_version": "58.0"
-        }
-    },
-    "developer": {
-       "name": "jc3213",
-       "url": "https://github.com/jc3213/download_with_aria2"
-    }
-``` 
+- `Maybe` I will rewrite the popup window someday. I want to get rid of `popuplib.min.js`, make the code in `popup.js` better

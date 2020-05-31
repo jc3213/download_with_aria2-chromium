@@ -4,7 +4,7 @@ function createJson(method, id, params) {
         jsonrpc: 2.0,
         method: method,
         id: ''
-    }
+    };
     if (params) {
         json.params = params;
     }
@@ -27,13 +27,13 @@ function jsonRPCRequest(json, onloadCallback, onerrorCallback) {
         if (typeof onloadCallback === 'function') {
             onloadCallback(response);
         }
-    }
+    };
     xhr.onerror = (event) => {
         var response = JSON.parse(xhr.response);
         if (typeof onerrorCallback === 'function') {
             onerrorCallback(response);
         }
-    }
+    };
     xhr.send(JSON.stringify(json));
 }
 
@@ -177,11 +177,11 @@ function printContent() {
 }
 
 function printContentBody(globalWaiting, globalStopped) {
-    var rquestParams = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
+    var params = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
     jsonRPCRequest([
-        createJson('aria2.tellActive', '', [rquestParams]),
-        createJson('aria2.tellWaiting', '', [0, globalWaiting, rquestParams]),
-        createJson('aria2.tellStopped', '', [0, globalStopped, rquestParams]),
+        createJson('aria2.tellActive', '', [params]),
+        createJson('aria2.tellWaiting', '', [0, globalWaiting, params]),
+        createJson('aria2.tellStopped', '', [0, globalStopped, params]),
     ], (response) => {
         var activeQueue = response[0].result
         var waitingQueue = response[1].result;
