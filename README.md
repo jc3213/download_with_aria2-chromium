@@ -7,11 +7,11 @@
 # Advantages
 
 - Brand new option window
-  - No dependency on `fancysettings.js` and related library
+  - No dependency on `fancysettings.js`, `store.js` and other related library
   - You can check if your `JSON RPC URI` or `Secret Token` is correct or not on option window
   - Capture filters won't appear if the main `Capture` option is not checked
   - Capture filter `File Size` now have two settings, `number` and `unit`
-  - Any of the capture filers can be turn off if you just keep them empty
+  - Any of the capture filers can be turned off if you just keep them empty
 - Optimized popup window
   - No dependency on `popuplib.min.js`
   - Notification authentication and network error
@@ -22,10 +22,9 @@
   - New library `jQuery-3.5.1.js`
   - New icons
   - Removed unnecessary `chrome` api and `manifest` key usage
-  - Removed unnecessary constructors
+  - Better code readability and performance
   - Better notification based on response from `Aria2 JSON RPC`
   - Priority of capture is `Blacklist` > `Whitelist` > `File Extension` > `File Size`
-  - Better code readability and performance
 - Mozilla Quantum supports
   - Changed `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated` for compatibility
   - Changed manifest key `options_page` to `options_ui`
