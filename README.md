@@ -14,19 +14,19 @@
   - Any of the capture filers can be turned off if you just keep them empty
 - Optimized popup window
   - No dependency on `popuplib.min.js`
-  - Notification authentication and network error
+  - Show notification if authentication fails or no response from `Aria2 JSON RPC`
 - Bug fixes
   - Fixed capture, if `File Size` checkbox is disabled, other filters won't work
-  - Fixed cookies, cookies should be joint with `' '` not `''`
+  - Fixed cookies, cookies should be merged with `' '` not `''`
 - Other optimization
   - New library `jQuery-3.5.1.js`
   - New icons
   - Removed unnecessary `chrome` api and `manifest` key usage
   - Better code readability and performance
-  - Better notification based on response from `Aria2 JSON RPC`
-  - Priority of capture is `Blacklist` > `Whitelist` > `File Extension` > `File Size`
-- Mozilla Quantum supports
-  - Changed `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated` for compatibility
+  - Better notifications
+  - Priority of capture `Blacklist` > `Whitelist` > `File Extension` > `File Size`
+- Mozilla Quantum compatibility
+  - Changed `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated`
   - Changed manifest key `options_page` to `options_ui`
 
 
@@ -37,7 +37,7 @@
   - `Google` has a 5$ fee, and `Microsoft` has a $18 fee
 - No i18n support
   - `i18n.js` has been removed altogether with `fancysettings.js`
-
+  - No plan to implement i18n support
 
 # Firefox Quantum
 
