@@ -16,30 +16,32 @@ function downloadWithAria2(url, params) {
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
         if (response.result) {
-            showNotification('The download has been added to Aria2 download queue via RPC server');
+            showNotification('Start Downloading', url);
         }
         else if (response.error) {
-            showNotification('The target Aria2 RPC server requires secret token for authentication');
+            showNotification('Authentication Failure');
         }
     };
     xhr.onerror = (event) => {
-        showNotification('Can not connect to Aria2 RPC server! Please check your settings!!');
+        showNotification('No Response from RPC Server');
     };
     xhr.send(JSON.stringify(json));
 }
 
-function showNotification(message) {
+function showNotification(result, url) {
     var id = 'aria2_' + Date.now();
-    var warning = {
+    var notification = {
         type: 'basic',
-        title: 'Download with Aria2',
-        iconUrl: 'icons/icon64.png',
-        message: message
+        title: result,
+        iconUrl: 'icons/icon64.png'
     };
-    chrome.notifications.create(id, warning, () => {
+    if (url) {
+        notification.message = url;
+    }
+    chrome.notifications.create(id, notification, () => {
         window.setTimeout(() => {
             chrome.notifications.clear(id);
-        }, 3000);
+        }, 5000);
     });
 }
 
@@ -113,7 +115,7 @@ chrome.contextMenus.create({
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === 'downwitharia2') {;
+    if (info.menuItemId === 'downwitharia2') {
         getCookies(info.pageUrl, (params) => {
             downloadWithAria2(info.linkUrl, params);
         });

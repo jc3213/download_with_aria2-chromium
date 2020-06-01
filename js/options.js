@@ -63,11 +63,11 @@ $('#aria2_rpc_check').on('click', (event) => {
             checkRPCResult(response.result.version);
         }
         else if (response.error) {
-            checkRPCResult('Auth Error');
+            checkRPCResult('Auth Failure');
         }
     };
     xhr.onerror = (event) => {
-        checkRPCResult('Net Error');
+        checkRPCResult('No Response');
     };
     xhr.send(JSON.stringify(json));
 });

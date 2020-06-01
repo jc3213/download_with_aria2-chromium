@@ -79,13 +79,45 @@ function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-var e_addtaskctn = $('#addtaskcontainer');
-var e_addbtn = $('#addbtn');
-var e_addmore = $('#addmore');
-var e_taskaddbox = $('#taskaddbox');
-var e_taskaddbatch = $('#taskaddbatch');
+$('#purgebtn').on('click', (event) => {
+    jsonRPCRequest(createJson('aria2.purgeDownloadResult'));
+});
 
-var e_tasklist = $('#tasklist').on('click', 'button.removebtn', (event) => {
+$('#addbtn').on('click', (event) => {
+    $('#addtaskcontainer').toggle();
+    $('#addbtn').val(($('#addbtn').val() === 'Add' ? 'Cancel' : 'Add' ));
+    $('#taskaddbox').show();
+    $('#taskaddbatch').hide();
+    $('#addmore').val('>>');
+});
+
+$('#addmore').on('click', (event) => {
+    if ($('#addmore').val() === '>>') {
+        $('#taskaddbox').hide();
+        $('#taskaddbatch').show();
+        $('#addmore').val('<<');
+    }
+    else {
+        $('#taskaddbox').show();
+        $('#taskaddbatch').hide();
+        $('#addmore').val('>>');
+    }
+});
+
+$('#addtask').on('submit', (event) => {
+    event.preventDefault();
+    var toadduri = ($('#taskaddbox').val() === '' ? $('#taskaddbatch').val().split('\n') : $('#taskaddbox').val().split('\n'));
+    if (toadduri[0] !== '') {
+        for (var i = 0, l = toadduri.length; i < l; i ++) {
+            var uri = toadduri[i];
+            jsonRPCRequest(createJson('aria2.addUri', '', [[uri]]));
+        }
+    }
+    $('#addtaskcontainer').hide();
+    $('#addbtn').val('Add');
+});
+
+$('#tasklist').on('click', 'button.removebtn', (event) => {
     var status = $(event.target).attr('class').split(' ').shift();
     var id = $(event.target).attr('id').split('_').pop();
     if (['active', 'waiting', 'paused'].includes(status)) {
@@ -114,44 +146,6 @@ var e_tasklist = $('#tasklist').on('click', 'button.removebtn', (event) => {
         console.log(status);
     }
     jsonRPCRequest(createJson(method, id));
-});
-
-$('#purgebtn').on('click', (event) => {
-    jsonRPCRequest(createJson('aria2.purgeDownloadResult'));
-});
-
-$('#addbtn').on('click', (event) => {
-    e_addtaskctn.toggle();
-    e_addbtn.val((e_addbtn.val() === 'Add' ? 'Cancel' : 'Add' ));
-    e_taskaddbox.show();
-    e_taskaddbatch.hide();
-    e_addmore.val('>>');
-});
-
-$('#addmore').on('click', (event) => {
-    if (e_addmore.val() === '>>') {
-        e_taskaddbox.hide();
-        e_taskaddbatch.show();
-        e_addmore.val('<<');
-    }
-    else {
-        e_taskaddbox.show();
-        e_taskaddbatch.hide();
-        e_addmore.val('>>');
-    }
-});
-
-$('#addtask').on('submit', (event) => {
-    event.preventDefault();
-    var toadduri = (e_taskaddbox.val() === '' ? e_taskaddbatch.val().split('\n') : e_taskaddbox.val().split('\n'));
-    if (toadduri[0] !== '') {
-        for (var i = 0, l = toadduri.length; i < l; i ++) {
-            var uri = toadduri[i];
-            jsonRPCRequest(createJson('aria2.addUri', '', [[uri]]));
-        }
-    }
-    e_addtaskctn.hide();
-    e_addbtn.val('Add');
 });
 
 function printTaskInfo(result) {
@@ -200,8 +194,8 @@ function printTasklist(globalWaiting, globalStopped) {
         var activeQueue = response[0].result
         var waitingQueue = response[1].result;
         var stoppedQueue = response[2].result;
-        if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && e_tasklist.find('.tasktitle').length === 0) {
-            e_tasklist.html('Empty task list');
+        if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && $('#tasklist').find('.tasktitle').length === 0) {
+            $('#tasklist').html('Empty task list');
         }
         else {
             var html = '';
@@ -209,7 +203,7 @@ function printTasklist(globalWaiting, globalStopped) {
                 var result = response[i].result;
                 html += printTaskInfo(result);
             }
-            e_tasklist.html(html);
+            $('#tasklist').html(html);
         }
     });
 }
@@ -223,10 +217,10 @@ function printContent() {
             printTasklist((result.numWaiting | 0), (result.numStopped | 0));
         }
         else if (response.error) {
-            $('#globalstat').html('Auth Error');
+            $('#globalstat').html('Auth Failure');
         }
     }, (event) => {
-        $('#globalstat').html('Net Error');
+        $('#globalstat').html('No Response');
     });
 }
 
