@@ -1,36 +1,48 @@
 # What is this
 
 - This extension is forked from [chrome-aria2-integration](https://github.com/robbielj/chrome-aria2-integration)
+- Most of the codes have been rewritten completely
+
 
 # Advantages
 
-- New option window
-  - You can check if your `JSON RPC URI` or `Secret Token` is correct or not in option window
-  - Capture filters won't appear if `Capture` option is not checked
+- Brand new option window
+  - No dependency on `fancysettings.js` and related library
+  - You can check if your `JSON RPC URI` or `Secret Token` is correct or not on option window
+  - Capture filters won't appear if the main `Capture` option is not checked
   - Capture filter `File Size` now have two settings, `number` and `unit`
-  - If you want to turn off any of the capture filer, just keep it empty
+  - Any of the capture filers can be turn off if you just keep them empty
+- Optimized popup window
+  - No dependency on `popuplib.min.js`
+  - Notification authentication and network error
 - Bug fixes
-  - Fixed capture, in the original code if `File Size` checkbox is disabled, other filters won't work
-  - Fixed cookies, cookies should be concact with `' '` not `''`
-- Code optimization
-  - Moved from `DOM Object` to `jQuery`
-  - Removed unnecessary `chrome` api usage
+  - Fixed capture, if `File Size` checkbox is disabled, other filters won't work
+  - Fixed cookies, cookies should be joint with `' '` not `''`
+- Other optimization
+  - New library `jQuery-3.5.1.js`
+  - New icons
+  - Removed unnecessary `chrome` api and `manifest` key usage
   - Removed unnecessary constructors
-  - Better notification on `Aria2 JSON RPC` response
-  - Priority of capture is `Blacklist` 1st, `Whitelist` 2nd, `File Extension` 3rd, `File Size` 4th
-  - Better code readability and easier to maintain
-  - Better performance
+  - Better notification based on response from `Aria2 JSON RPC`
+  - Priority of capture is `Blacklist` > `Whitelist` > `File Extension` > `File Size`
+  - Better code readability and performance
+- Mozilla Quantum supports
+  - Changed `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated` for compatibility
+  - Changed manifest key `options_page` to `options_ui`
+
 
 # Disadvantages
 
-- No `Google Web Store`
-  - This is because my country has blocked all `Google` services, and a `$5` fee is needed.
+- Neither `Google Web Store`, nor `Microsoft Store` supports
+  - My country has blocked all `Google` services
+  - `Google` has a 5$ fee, and `Microsoft` has a $18 fee
 - No i18n support
-  - The original code uses `i18n.js` which is binded to `fancysettings.js`, but all of these have been removed
+  - `i18n.js` has been removed altogether with `fancysettings.js`
+
 
 # Firefox Quantum
 
-- Add the code below to `manifest.json`
+- Add the manifest keys below to `manifest.json`
 ```javascript
     "applications": {
         "gecko": {
