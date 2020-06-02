@@ -28,15 +28,15 @@ function downloadWithAria2(url, params) {
     xhr.send(JSON.stringify(json));
 }
 
-function showNotification(result, url) {
+function showNotification(title, message) {
     var id = 'aria2_' + Date.now();
     var notification = {
         type: 'basic',
-        title: result,
+        title: title,
         iconUrl: 'icons/icon64.png'
     };
-    if (url) {
-        notification.message = url;
+    if (message) {
+        notification.message = message;
     }
     chrome.notifications.create(id, notification, () => {
         window.setTimeout(() => {
