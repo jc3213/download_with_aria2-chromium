@@ -167,12 +167,12 @@ function printTaskInfo(result) {
     else {
         infoBar = '<div class="' + result.status + '_info2">' + result.connections + ' conns, ' + downloadSpeed + '/s, ETA: ' + estimatedTime + '</div>';
     }
-    return '<div id="taskInfo_' + result.gid + '">\
-                <div class="tasktitle">' + taskName + '<button id="removebtn_' + result.gid + '" class="' + result.status + ' removebtn">remove</button></div>\
-                <div class="' + result.status + '_info1">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
-                 + infoBar +
-            '</div>\
-            <div id="taskBar_' + result.gid + '" class="' + result.status + ' progbar" style="width: ' + completeRatio + '"></div>'
+    return '<div id="taskInfo_' + result.gid + '">'
+    +          '<div class="tasktitle">' + taskName + '<button id="removebtn_' + result.gid + '" class="' + result.status + ' removebtn">remove</button></div>'
+    +          '<div class="' + result.status + '_info1">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
+    +          infoBar
+    +      '</div>'
+    +      '<div id="taskBar_' + result.gid + '" class="' + result.status + ' progbar" style="width: ' + completeRatio + '"></div>'
 }
 
 function printTasklist(globalWaiting, globalStopped) {

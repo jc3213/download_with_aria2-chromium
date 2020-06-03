@@ -8,11 +8,11 @@ function checkRPCResult(message) {
 function captureHandler() {
     var checked = localStorage.getItem('capture') || '';
     if (checked === 'true') {
-        $('#capture_sub').show(100);
+        $('#capture_filter').show(100);
         return true;
     }
     else {
-        $('#capture_sub').hide(100);
+        $('#capture_filter').hide(100);
         return false;
     }
 }
