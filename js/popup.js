@@ -149,41 +149,30 @@ $('#tasklist').on('click', 'button.removebtn', (event) => {
 });
 
 function printTaskInfo(result) {
-    var html = '';
-    for (var i = 0, l = result.length; i < l; i ++) {
-        var files = result[i].files;
-        var gid = result[i].gid;
-        var torrent = result[i].bittorrent;
-        var conns = result[i].connections;
-        var status = result[i].status;
-        var downloadSpeed = bytesToFileSize(result[i].downloadSpeed);
-        var totalLength = bytesToFileSize(result[i].totalLength);
-        var completedLength = bytesToFileSize(result[i].completedLength);
-        var estimatedTime = secondsToHHMMSS((result[i].totalLength - result[i].completedLength) / result[i].downloadSpeed);
-        var completeRatio = ((result[i].completedLength / result[i].totalLength * 10000 | 0) / 100).toString() + '%';
-        if (torrent && torrent.info && torrent.info.name) {
-            var taskName = torrent.info.name;
-        }
-        else {
-            taskName = files[0].path.split('/').pop();
-        }
-        if (torrent) {
-            var uploadSpeed = bytesToFileSize(result[i].uploadSpeed);
-            var infoBar = '<div class="' + status + '_info2">' + conns + ' conns (' + result[i].numSeeders + ' seeds), ' + downloadSpeed + '/s (up: ' + uploadSpeed + '/s), ETA: ' + estimatedTime + '</div>';
-        }
-        else {
-            infoBar = '<div class="' + status + '_info2">' + conns + ' conns, ' + downloadSpeed + '/s, ETA: ' + estimatedTime + '</div>';
-        }
-        var taskInfo = '\
-            <div id="taskInfo_' + gid + '">\
-                <div class="tasktitle">' + taskName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
-                <div class="' + status + '_info1">' + capitaliseFirstLetter(status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
-                + infoBar +
-            '</div>\
-            <div id="taskBar_' + gid + '" class="' + status + ' progbar" style="width: ' + completeRatio + '"></div>'
-        html += taskInfo;
+    var downloadSpeed = bytesToFileSize(result.downloadSpeed);
+    var totalLength = bytesToFileSize(result.totalLength);
+    var completedLength = bytesToFileSize(result.completedLength);
+    var estimatedTime = secondsToHHMMSS((result.totalLength - result.completedLength) / result.downloadSpeed);
+    var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
+    if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name) {
+        var taskName = result.bittorrent.info.name;
     }
-    return html;
+    else {
+        taskName = result.files[0].path.split('/').pop();
+    }
+    if (result.bittorrent) {
+        var uploadSpeed = bytesToFileSize(result.uploadSpeed);
+        var infoBar = '<div class="' + result.status + '_info2">' + result.connections + ' conns (' + result.numSeeders + ' seeds), ' + downloadSpeed + '/s (up: ' + uploadSpeed + '/s), ETA: ' + estimatedTime + '</div>';
+    }
+    else {
+        infoBar = '<div class="' + result.status + '_info2">' + result.connections + ' conns, ' + downloadSpeed + '/s, ETA: ' + estimatedTime + '</div>';
+    }
+    return '<div id="taskInfo_' + result.gid + '">\
+                <div class="tasktitle">' + taskName + '<button id="removebtn_' + result.gid + '" class="' + result.status + ' removebtn">remove</button></div>\
+                <div class="' + result.status + '_info1">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
+                 + infoBar +
+            '</div>\
+            <div id="taskBar_' + result.gid + '" class="' + result.status + ' progbar" style="width: ' + completeRatio + '"></div>'
 }
 
 function printTasklist(globalWaiting, globalStopped) {
@@ -196,17 +185,17 @@ function printTasklist(globalWaiting, globalStopped) {
         var activeQueue = response[0].result
         var waitingQueue = response[1].result;
         var stoppedQueue = response[2].result;
-        if (activeQueue.length + waitingQueue.length + stoppedQueue.length === 0 && $('#tasklist').find('.tasktitle').length === 0) {
-            $('#tasklist').html('Empty task list');
+        var html = '';
+        for (var i = 0, l = activeQueue.length; i < l; i ++) {
+            html += printTaskInfo(activeQueue[i]);
         }
-        else {
-            var html = '';
-            for (var i = 0, l = response.length; i < l; i ++) {
-                var result = response[i].result;
-                html += printTaskInfo(result);
-            }
-            $('#tasklist').html(html);
+        for (i = 0, l = waitingQueue.length; i < l; i ++) {
+            html += printTaskInfo(waitingQueue[i]);
         }
+        for (i = 0, l = stoppedQueue.length; i < l; i ++) {
+            html += printTaskInfo(stoppedQueue[i]);
+        }
+        $('#tasklist').html(html || 'No Task');
     });
 }
 
