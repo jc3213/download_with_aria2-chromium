@@ -174,11 +174,13 @@ function printTaskInfo(result) {
         else {
             infoBar = '<div class="' + status + '_info2">' + conns + ' conns, ' + downloadSpeed + '/s, ETA: ' + estimatedTime + '</div>';
         }
-        var taskInfo = '<div id="taskInfo_' + gid + '">\
-            <div class="tasktitle">' + taskName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
-            <div class="' + status + '_info1">' + capitaliseFirstLetter(status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>\
-            ' + infoBar + '</div>\
-        <div id="taskBar_' + gid + '" class="' + status + ' progbar" style="width: ' + completeRatio + '"></div>'
+        var taskInfo = '\
+            <div id="taskInfo_' + gid + '">\
+                <div class="tasktitle">' + taskName + '<button id="removebtn_' + gid + '" class="' + status + ' removebtn">remove</button></div>\
+                <div class="' + status + '_info1">' + capitaliseFirstLetter(status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
+                + infoBar +
+            '</div>\
+            <div id="taskBar_' + gid + '" class="' + status + ' progbar" style="width: ' + completeRatio + '"></div>'
         html += taskInfo;
     }
     return html;
