@@ -58,23 +58,23 @@ div[id^="taskInfo_"] {
 }
 
 .active, .waiting {
-    background-color: #ACF;
+    background-color: #33C;
 }
 
 .paused {
-    background-color: #FFE573;
+    background-color: #3CC;
 }
 
 .error {
-    background-color: #EA6A6A;
+    background-color: #C33;
 }
 
 .complete {
-    background-color: #8AE62E;
+    background-color: #3C3;
 }
 
 .removed {
-    background-color: #ECECEC;
+    background-color: #C3C;
 }
 
 .tasktitle{
