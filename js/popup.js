@@ -65,7 +65,7 @@ function secondsToHHMMSS(number) {
         return '-';
     }
     if (number === Infinity) {
-        return '&infin;';
+        return '∞';
     }
     var integer = (number | 0);
     var hours = twoDecimalNumber(integer / 3600 | 0);
@@ -151,15 +151,17 @@ function printTaskInfo(result) {
     }
     if (result.bittorrent) {
         var uploadSpeed = bytesToFileSize(result.uploadSpeed);
-        var infoBar = '<div class="' + result.status + '_info2">' + result.connections + ' conns (' + result.numSeeders + ' seeds), ' + downloadSpeed + '/s (up: ' + uploadSpeed + '/s), ETA: ' + estimatedTime + '</div>';
+        var seedInfo = ' (' + result.numSeeders + ' seeds)';
+        var uploadInfo = ' (up: ' + uploadSpeed + '/s)';
     }
     else {
-        infoBar = '<div class="' + result.status + '_info2">' + result.connections + ' conns, ' + downloadSpeed + '/s, ETA: ' + estimatedTime + '</div>';
+        seedsInfo = '';
+        uploadInfo = '';
     }
     return '<div id="taskInfo_' + result.gid + '">'
     +          '<div class="tasktitle">' + taskName + '<button id="removebtn_' + result.gid + '" class="' + result.status + ' removebtn">remove</button></div>'
     +          '<div class="' + result.status + '_info1">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
-    +          infoBar
+    +          '<div class="' + result.status + '_info2">' + result.connections + ' conns' + seedInfo + ', ' + downloadSpeed + '/s' + uploadInfo + ', ETA: ' + estimatedTime + '</div>'
     +      '</div>'
     +      '<div id="taskBar_' + result.gid + '" class="' + result.status + ' progbar" style="width: ' + completeRatio + '"></div>'
 }

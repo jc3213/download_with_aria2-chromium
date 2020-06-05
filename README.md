@@ -14,6 +14,8 @@
   - Any of the capture filers can be turned off if you just keep them empty
 - Optimized popup window
   - No dependency on `popuplib.min.js`
+  - Show `Active`, `Waiting`, `Stopped` task counts
+  - Show `Download`, `Upload` speed
   - Show notification if authentication fails or no response from `Aria2 JSON RPC`
 - Bug fixes
   - Fixed capture, if `File Size` checkbox is disabled, other filters won't work

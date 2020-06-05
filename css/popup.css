@@ -1,6 +1,6 @@
 body {
     width: 400px;
-    overflow-x: hidden;
+    user-select: none;
 }
 
 #mainMenu {
@@ -35,7 +35,7 @@ body {
 
 div[id^="taskInfo_"] {
     font-size: 13px;
-    max-width: 360px;
+    max-width: 380px;
 }
 
 .button {
@@ -45,7 +45,6 @@ div[id^="taskInfo_"] {
     background-color: #FFF;
     cursor: pointer;
     padding: 3px;
-    user-select: none;
 }
 
 .button:active {
