@@ -8,8 +8,12 @@
     font-weight: bold;
 }
 
-#globalstat {
+#globalstat, #nettraffic {
     display: inline-block;
+}
+
+#globalstat span, #nettraffic span {
+    color: #FFF;
 }
 
 #taskaddbox {
@@ -65,11 +69,11 @@ div[id^="taskInfo_"] {
     background-color: #3CC;
 }
 
-.error {
+.error, .download {
     background-color: #C33;
 }
 
-.complete {
+.complete, .upload {
     background-color: #3C3;
 }
 

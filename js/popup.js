@@ -202,16 +202,25 @@ function printTasklist(globalWaiting, globalStopped) {
 function printContent() {
     jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
         if (response.result) {
-            var result = response.result;
-            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-            $('#globalstat').html(downloadSpeed);
-            printTasklist((result.numWaiting | 0), (result.numStopped | 0));
+            var global = response.result;
+            var downloadSpeed = bytesToFileSize(global.downloadSpeed) + '/s';
+            var uploadSpeed = bytesToFileSize(global.uploadSpeed) + '/s';
+            var active = (global.numActive | 0);
+            var waiting = (global.numWaiting | 0);
+            var stopped = (global.numStopped | 0);
+            $('#globalstat').html('<span class="active">Active</span> ' + active + ' - <span class="paused">Waiting</span> ' + waiting + ' - <span class="removed">Stopped</span> ' + stopped);
+            $('#nettraffic').html('<span class="download">Download</span> ' + downloadSpeed + ' | <span class="upload">Upload</span> ' + uploadSpeed);
+            printTasklist(waiting, stopped);
         }
         else if (response.error) {
-            $('#globalstat').html('Auth Failure');
+            $('#globalstat').html('<span class="error">Auth Failure</span>');
+            $('#tasklist').html(' ');
+            $('#nettraffic').html('<span class="download">Download</span> 0 B/s | <span class="upload">Upload</span> 0 B/s');
         }
     }, (event) => {
-        $('#globalstat').html('No Response');
+        $('#globalstat').html('<span class="error">No Response</span>');
+        $('#tasklist').html(' ');
+        $('#nettraffic').html('<span class="download">Download</span> 0 B/s | <span class="upload">Upload</span> 0 B/s')
     });
 }
 
