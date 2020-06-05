@@ -52,16 +52,16 @@ body {
     color: #FFF;
 }
 
+.status {
+    color: #FFF;
+    width: max-content;
+    padding: 3px;
+}
+
 .taskBox {
     width: 75%;
     font-size: 14px;
     padding: 3px;
-}
-
-.status {
-    color: #FFF;
-    width: max-content;
-    padding: 1px;
 }
 
 .taskInfo {
