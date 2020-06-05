@@ -83,6 +83,7 @@ $('#addTask_btn, #cancel_btn').on('click', (event) => {
     $('#addTask_btn, #cancel_btn, #addTaskWindow').toggle();
     $('#addMore_btn, #taskInput').show();
     $('#addLess_btn, #taskBatch').hide();
+    $('#taskInput, #taskBatch').val('');
 });
 
 $('#purdge_btn').on('click', (event) => {
@@ -119,8 +120,8 @@ $('#taskList').on('click', 'span.button', (event) => {
         console.log(status);
     }
     jsonRPCRequest(createJson(method, id));
-}).on('click', 'div.progbar', (event) => {
-    var status = $(event.target).attr('status');
+}).on('click', 'div.progress > span', (event) => {
+    var status = $(event.target).attr('class');
     var id = $(event.target).attr('id');
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
@@ -160,10 +161,10 @@ function printTaskInfo(result) {
     }
     return '<div class="taskInfo">'
     +          '<div class="taskName">' + taskName + ' <span id="' + result.gid + '" class="button" status="' + result.status + '">remove</span></div>'
-    +          '<div class="' + result.status + '_basic">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
-    +          '<div class="' + result.status + '_extra">' + result.connections + ' conns' + seedsInfo + ', ' + downloadSpeed + '/s' + uploadInfo + ', ETA: ' + estimatedTime + '</div>'
+    +          '<div class="' + result.status + '_basic">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ETA: ' + estimatedTime + '</div>'
+    +          '<div class="' + result.status + '_extra">' + result.connections + ' conns' + seedsInfo + ', ' + downloadSpeed + '/s' + uploadInfo + '</div>'
+    +          '<div class="progress"><span id="' + result.gid + '" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
     +      '</div>'
-    +      '<div id="' + result.gid + '" class="' + result.status + ' progbar" status="' + result.status + '" style="width: ' + completeRatio + '"></div>'
 }
 
 function printTaskList(globalWaiting, globalStopped) {

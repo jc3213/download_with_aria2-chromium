@@ -66,16 +66,22 @@ body {
 .taskInfo {
     font-size: 14px;
     max-width: 380px;
+    margin: 0px 0px 10px 0px;
 }
 
-.progbar {
+.progress {
     height: 20px;
-    margin: 3px 0px 10px 0px;
-    transition: width 1s;
     max-width: 380px;
+    text-align: center;
 }
 
-.active {
+.progress span {
+    display: block;
+    height: inherit;
+    color: #FFF;
+}
+
+.active, .button:hover {
     background-color: #33C;
 }
 
@@ -83,7 +89,7 @@ body {
     background-color: #CC3;
 }
 
-.error {
+.error, .progress span:active {
     background-color: #C33;
 }
 
@@ -95,7 +101,7 @@ body {
     background-color: #C3C;
 }
 
-.download, .button:hover, #taskList .button:hover {
+.download, .progress {
     background-color: #3CC;
 }
 
