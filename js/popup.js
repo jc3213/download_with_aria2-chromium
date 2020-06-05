@@ -195,7 +195,7 @@ function printTasklist(globalWaiting, globalStopped) {
         for (i = 0, l = stoppedQueue.length; i < l; i ++) {
             html += printTaskInfo(stoppedQueue[i]);
         }
-        $('#tasklist').html(html || 'No Task');
+        $('#tasklist').html(html);
     });
 }
 
@@ -210,16 +210,15 @@ function printContent() {
             var stopped = (global.numStopped | 0);
             $('#globalstat').html('<span class="active">Active</span> ' + active + ' - <span class="paused">Waiting</span> ' + waiting + ' - <span class="removed">Stopped</span> ' + stopped);
             $('#nettraffic').html('<span class="download">Download</span> ' + downloadSpeed + ' | <span class="upload">Upload</span> ' + uploadSpeed);
+            $('#menubutton').show();
             printTasklist(waiting, stopped);
         }
         else if (response.error) {
             $('#globalstat').html('<span class="error">Auth Failure</span>');
-            $('#tasklist').html(' ');
             $('#nettraffic').html('<span class="download">Download</span> 0 B/s | <span class="upload">Upload</span> 0 B/s');
         }
     }, (event) => {
         $('#globalstat').html('<span class="error">No Response</span>');
-        $('#tasklist').html(' ');
         $('#nettraffic').html('<span class="download">Download</span> 0 B/s | <span class="upload">Upload</span> 0 B/s')
     });
 }

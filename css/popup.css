@@ -8,25 +8,43 @@
     font-weight: bold;
 }
 
-#globalstat, #nettraffic {
-    display: inline-block;
-}
-
 #globalstat span, #nettraffic span {
     color: #FFF;
+    padding: 1px;
+}
+
+#menubutton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+#tasklist {
+    height: 400px;
+    overflow-y: scroll;
+}
+
+#addtaskcontainer {
+    position: absolute;
+    background-color: #FFF;
+    top: 30px;
+    width: 380px;
+    border: 1px solid #CCC;
+    padding: 10px;
 }
 
 #taskaddbox {
-    width: 70%;
+    width: 80%;
     margin-bottom: 15px;
     display: inline-block;
 }
 
 #taskaddbatch {
     display: none;
-    width: 70%;
+    width: 80%;
     margin-bottom: 15px;
     float: left;
+    resize: none;
 }
 
 #addmore{
@@ -50,7 +68,7 @@
 
 div[id^="taskInfo_"] {
     font-size: 13px;
-    max-width: 330px;
+    max-width: 360px;
 }
 
 .progbar {
@@ -58,7 +76,7 @@ div[id^="taskInfo_"] {
     margin-top: 2px;
     margin-bottom: 10px;
     transition: width 1s;
-    max-width: 350px;
+    max-width: 380px;
 }
 
 .active, .waiting {
@@ -66,10 +84,10 @@ div[id^="taskInfo_"] {
 }
 
 .paused {
-    background-color: #3CC;
+    background-color: #CC3;
 }
 
-.error, .download {
+.error {
     background-color: #C33;
 }
 
@@ -79,6 +97,10 @@ div[id^="taskInfo_"] {
 
 .removed {
     background-color: #C3C;
+}
+
+.download {
+    background-color: #3CC;
 }
 
 .tasktitle{
@@ -101,6 +123,6 @@ div[id^="taskInfo_"] {
 }
 
 body {
-    min-width: 357px;
+    width: 400px;
     overflow-x: hidden;
 }

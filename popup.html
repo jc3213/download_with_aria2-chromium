@@ -7,9 +7,18 @@
     </head>
     <body>
         <div id="globalstat"></div>
-        <input type="button" id="purgebtn" value="Purge!" /><input type="button" id="addbtn" value="Add" />
-        <br /><hr>
-        <div id="addtaskcontainer" style="display:none"><form id="addtask"><input type="text" id="taskaddbox" /><textarea id="taskaddbatch" rows="5"></textarea><input type="button" id="addmore" value=">>" /><input type="submit" id="addsubmit" value="+ Task" /><div style="clear: both;"></div></form></div>
+        <div id="menubutton" style="display:none">
+            <input type="button" id="purgebtn" value="Purge!" /><input type="button" id="addbtn" value="Add" />
+        </div>
+        <div id="addtaskcontainer" style="display:none">
+            <form id="addtask">
+                <input type="text" id="taskaddbox" />
+                <textarea id="taskaddbatch" rows="5"></textarea>
+                <input type="button" id="addmore" value=">>" /><input type="submit" id="addsubmit" value="+ Task" />
+                <div style="clear: both;"></div>
+            </form>
+        </div>
+        <hr>
         <div id="tasklist"></div>
         <hr>
         <div id="nettraffic"></div>
