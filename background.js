@@ -1,4 +1,4 @@
-function downloadWithAria2(url, params) {
+function downWithAria2(url, params) {
     var xhr = new XMLHttpRequest();
     var rpc = localStorage.getItem('aria2rpc') || 'http://localhost:6800/jsonrpc';
     var token = localStorage.getItem('aria2secret') || '';
@@ -102,7 +102,7 @@ function captureAdd(item, referer) {
     if (capture) {
         getCookies(referer, (params) => {
             chrome.downloads.erase({'id': item.id}, () => {
-                downloadWithAria2(item.finalUrl, params);
+                downWithAria2(item.finalUrl, params);
             });
         });
     }
@@ -117,7 +117,7 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2') {
         getCookies(info.pageUrl, (params) => {
-            downloadWithAria2(info.linkUrl, params);
+            downWithAria2(info.linkUrl, params);
         });
     }
 });
