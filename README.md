@@ -16,7 +16,8 @@
   - No dependency on `popuplib.min.js`
   - Show `Active`, `Waiting`, `Stopped` task counts
   - Show `Download`, `Upload` speed
-  - Show notification if authentication fails or no response from `Aria2 JSON RPC`
+  - Better `Progress` bar
+  - Show notification if authentication fails or no response from `JSON RPC`
 - Bug fixes
   - Fixed capture, if `File Size` checkbox is disabled, other filters won't work
   - Fixed cookies, cookies should be merged with `' '` not `''`
