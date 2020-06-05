@@ -8,46 +8,46 @@
     <body>
         <div id="container">
             <div id="aria2_option">
-                <div id="aria2_rpc" class="container">
-                    <div id="aria2_rpc_title" class="menu_title">JSON RPC URI</div>
-                    <div id="aria2_rpc_value" class="menu_value"><input placeholder="http://localhost:6800/jsonrpc"></div>
-                    <div id="aria2_rpc_desc" class="menu_desc">default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
-                    <div id="aria2_rpc_check">Check</div>
-                    <div id="aria2_rpc_result"></div>
+                <div class="container">
+                    <div class="title">JSON RPC URI</div>
+                    <div class="value"><input id="aria2_rpc" placeholder="http://localhost:6800/jsonrpc"></div>
+                    <div class="status">default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
+                    <div id="aria2_check">Check</div>
+                    <div id="aria2_result"></div>
                 </div>
-                <div id="aria2_secret" class="container">
-                    <div id="aria2_secret_title" class="menu_title">Secret Token</div>
-                    <div id="aria2_secret_value" class="menu_value"><input placeholder="$$secret$$"></div>
-                    <div id="aria2_secret_desc" class="menu_desc">keep empty if no secret token is specified</div>
+                <div class="container">
+                    <div class="title">Secret Token</div>
+                    <div class="value"><input id="aria2_secret" placeholder="$$secret$$"></div>
+                    <div class="status">keep empty if no secret token is specified</div>
                 </div>
-                <div id="separator"><div></div></div>
             </div>
-            <div id="capture_main" class="container">
-                <div id="capture_main_title" class="menu_title">Capture</div>
-                <div id="capture_main_value"><input type="checkbox"></div>
-                <div id="capture_main_desc" class="menu_desc">capture browser downloads based on built-in filters</div>
+            <hr>
+            <div class="container">
+                <div class="title">Capture</div>
+                <div class="value"><input id="capture_main" type="checkbox"></div>
+                <div class="status">capture browser downloads based on built-in filters</div>
             </div>
             <div id="capture_filter" class="container">
-                <div id="capture_size" class="container">
-                    <div id="capture_size_title" class="menu_title">File Size</div>
-                    <div id="capture_size_value" class="menu_value"><input type="number" placeholder="200"></div>
-                    <div id="capture_size_desc" class="menu_desc">capture downloads those are larger than **<u><i>200MB</i></u></div>
-                    <div id="capture_size_unit"><select><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select></div>
+                <div class="container">
+                    <div class="title">File Size</div>
+                    <div class="value"><input id="size_entry" type="number" placeholder="200"></div>
+                    <div class="status">capture downloads those are larger than **<u><i>200MB</i></u></div>
+                    <div class="value"><select id="size_unit"><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select></div>
                 </div>
-                <div id="capture_ext" class="container">
-                    <div id="capture_ext_title" class="menu_title">File Extension</div>
-                    <div id="capture_ext_value" class="menu_value"><textarea placeholder="zip&#10;exe&#10;jpg"></textarea></div>
-                    <div id="capture_ext_desc" class="menu_desc">capture downloads with listed file extensions, <u>one entry per line</u></div>
+                <div class="container">
+                    <div class="title">File Extension</div>
+                    <div class="value"><textarea id="file_ext" placeholder="zip&#10;exe&#10;jpg"></textarea></div>
+                    <div class="status">capture downloads with listed file extensions, <u>one entry per line</u></div>
                 </div>
-                <div id="capture_white" class="container">
-                    <div id="capture_white_title" class="menu_title">Whitelist Host</div>
-                    <div id="capture_white_value" class="menu_value"><textarea placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
-                    <div id="capture_white_desc" class="menu_desc">capture downloads on these web hosts, <u>one entry per line</u></div>                 
+                <div class="container">
+                    <div class="title">Whitelist Host</div>
+                    <div class="value"><textarea id="whitelist" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
+                    <div class="status">capture downloads on these web hosts, <u>one entry per line</u></div>                 
                 </div>
-                <div id="capture_black" class="container">
-                    <div id="capture_black_title" class="menu_title">Blacklist Host</div>
-                    <div id="capture_black_value" class="menu_value"><textarea placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
-                    <div id="capture_black_desc" class="menu_desc">do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u></div>
+                <div class="container">
+                    <div class="title">Blacklist Host</div>
+                    <div class="value"><textarea id="blacklist" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
+                    <div class="status">do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u></div>
                 </div>
             </div>
         </div>

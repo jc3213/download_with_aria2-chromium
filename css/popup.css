@@ -80,11 +80,11 @@ div[id^="taskInfo_"] {
     max-width: 380px;
 }
 
-.active, .waiting {
+.active {
     background-color: #33C;
 }
 
-.paused {
+.paused, .waiting {
     background-color: #CC3;
 }
 

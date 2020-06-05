@@ -1,5 +1,5 @@
 function checkRPCResult(message) {
-    var result = $('#aria2_rpc_result').html(message);
+    var result = $('#aria2_result').html(message);
     setTimeout(() => {
         result.empty();
     }, 3000)
@@ -18,8 +18,8 @@ function captureHandler() {
 }
 
 function calcFileSize() {
-    var number = $('#capture_size_value > input').val() || 0;
-    var unit = $('#capture_size_unit > select').val();
+    var number = $('#size_entry').val() || 0;
+    var unit = $('#size_unit').val();
     if (number === 0) {
         var size = 0;
     }
@@ -29,25 +29,28 @@ function calcFileSize() {
     localStorage.setItem('sizenumber', size);
 }
 
-function makePattern(entry) {
+function makePattern(entry, symbol) {
     if (entry === '') {
         return '';
+    }
+    if (symbol) {
+        entry = symbol + event.target.value.replace(/\n/g, '\n' + symbol);
     }
     return entry.split(/\n/).filter(item => item !== '').join('|').replace(/\./g, '\\.').replace(/\*/g, '[^ ]*');
 }
 
-$('#aria2_rpc_value > input').val(localStorage.getItem('aria2rpc') || '').on('change', (event) => {
+$('#aria2_rpc').val(localStorage.getItem('aria2rpc') || '').on('change', (event) => {
     localStorage.setItem('aria2rpc', event.target.value);
 });
 
-$('#aria2_secret_value > input').val(localStorage.getItem('aria2secret') || '').on('change', (event) => {
+$('#aria2_secret').val(localStorage.getItem('aria2secret') || '').on('change', (event) => {
     localStorage.setItem('aria2secret', event.target.value);
 });
 
-$('#aria2_rpc_check').on('click', (event) => {
+$('#aria2_check').on('click', (event) => {
     var xhr = new XMLHttpRequest();
-    var rpc = $('#aria2_rpc_value > input').val() || 'http://localhost:6800/jsonrpc';
-    var token = $('#aria2_secret_value > input').val();
+    var rpc = $('#aria2_rpc').val() || 'http://localhost:6800/jsonrpc';
+    var token = $('#aria2_secret').val();
     var json = {
         jsonrpc: 2.0,
         method: 'aria2.getVersion',
@@ -72,32 +75,32 @@ $('#aria2_rpc_check').on('click', (event) => {
     xhr.send(JSON.stringify(json));
 });
 
-$('#capture_main_value > input').on('click', (event) => {
+$('#capture_main').on('click', (event) => {
     localStorage.setItem('capture', event.target.checked);
     captureHandler();
 }).attr('checked', captureHandler);
 
-$('#capture_size_value > input').val(localStorage.getItem('sizeentry') || '').on('change', (event) => {
+$('#size_entry').val(localStorage.getItem('sizeentry') || '').on('change', (event) => {
     localStorage.setItem('sizeentry', event.target.value);
     calcFileSize();
 });
 
-$('#capture_size_unit > select').val(localStorage.getItem('sizeunit') || '2').on('change', (event) => {
+$('#size_unit').val(localStorage.getItem('sizeunit') || '2').on('change', (event) => {
     localStorage.setItem('sizeunit', event.target.value);
     calcFileSize();
 });
 
-$('#capture_ext_value > textarea').val(localStorage.getItem('extlist') || '').on('change', (event) => {
+$('#file_ext').val(localStorage.getItem('extlist') || '').on('change', (event) => {
     localStorage.setItem('extlist', event.target.value);
-    localStorage.setItem('extpattern', makePattern(event.target.value));
+    localStorage.setItem('extpattern', makePattern(event.target.value, '.'));
 });
 
-$('#capture_white_value > textarea').val(localStorage.getItem('whitelist') || '').on('change', (event) => {
+$('#whitelist').val(localStorage.getItem('whitelist') || '').on('change', (event) => {
     localStorage.setItem('whitelist', event.target.value);
     localStorage.setItem('whitepattern', makePattern(event.target.value));
 });
 
-$('#capture_black_value > textarea').val(localStorage.getItem('blacklist') || '').on('change', (event) => {
+$('#blacklist').val(localStorage.getItem('blacklist') || '').on('change', (event) => {
     localStorage.setItem('blacklist', event.target.value);
     localStorage.setItem('blackpattern', makePattern(event.target.value));
 });

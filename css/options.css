@@ -5,31 +5,23 @@
     width: 600px;
 }
 
-#separator {
-    padding: 30px 0px 30px 0px;
-}
-
-#separator div {
-    border: 1px outset black;
-}
-
 .container {
     padding: 10px;
 }
 
-.menu_title {
+.title {
     font-size: 20px;
     font-weight: bold;
     width: fit-content;
 }
 
-.menu_value input{
+.value input{
     color: black;
     width: 300px;
     padding: 5px;
 }
 
-.menu_value textarea {
+.value textarea {
     color: black;
     height: 200px;
     width: 300px;
@@ -38,12 +30,12 @@
     overflow: auto;
 }
 
-.menu_desc {
+.status {
     font-size: 14px;
     width: fit-content;
 }
 
-#aria2_rpc_check {
+#aria2_check {
     background-color: #EEE;
     position: absolute;
     top: 37px;
@@ -54,41 +46,41 @@
     border: 1px outset black;
 }
 
-#aria2_rpc_check:hover {
+#aria2_check:hover {
     background-color: #66D;
     color: #FFF;
 }
 
-#aria2_rpc_result {
+#aria2_result {
     position: absolute;
     top: 37px;
     left: 375px; 
     padding: 5px;
 }
 
-#capture_main_value {
+#capture_main {
     position: absolute;
-    top: 268px;
-    left: 88px;
+    top: 220px;
+    left: -55px;
     transform: scale(1.7);
 }
 
-#capture_sub {
+#capture_filter {
     display: none;
 }
 
-#capture_size_value input {
+#size_entry {
     width: 220px;
 }
 
-#capture_size_unit {
+#size_unit {
     position: absolute;
-    top: 370px;
+    top: 322px;
     left: 270px;
     transform: scale(1.5);
 }
 
-#capture_size_unit option:checked {
+#size_unit option:checked {
     color: #F00;
     font-weight: bold;
 }
