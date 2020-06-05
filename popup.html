@@ -20,16 +20,16 @@
             <span id="purdge_btn" class="button">Purge</span>
         </div>
         <div id="addTaskWindow" style="display: none;">
-            <input id="taskInput" type="text">
-            <textarea id="taskBatch" rows="5" style="display: none;"></textarea>
+            <input id="taskInput" class="taskBox" type="text">
+            <textarea id="taskBatch" class="taskBox" rows="5" style="display: none;"></textarea>
             <div id="addTaskMenu">
                 <span id="addMore_btn" class="button">⇒</span>
-                <span id="addLess_btn" class="button">⇐</span>
-                <span id="sumit_btn" class="button">Sumit</span>
+                <span id="addLess_btn" class="button" style="display: none;">⇐</span>
+                <span id="submit_btn" class="button">Submit</span>
             </div>
         </div>
         <hr>
-        <div id="tasklist"></div>
+        <div id="taskList"></div>
         <hr>
         <div id="netTraffic">
             <span class="download status">Download</span> <span id="downloadSpeed">0 B/s</span>

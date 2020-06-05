@@ -93,7 +93,7 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
     $('#addMore_btn, #addLess_btn, #taskInput, #taskBatch').toggle();
 });
 
-$('#sumit_btn').on('click', (event) => {
+$('#submit_btn').on('click', (event) => {
     var toadduri = ($('#taskInput').val() === '' ? $('#taskBatch').val().split('\n') : $('#taskInput').val().split('\n'));
     if (toadduri[0] !== '') {
         for (var i = 0, l = toadduri.length; i < l; i ++) {
@@ -106,7 +106,7 @@ $('#sumit_btn').on('click', (event) => {
     $('#taskInput, #taskBatch').val('');
 });
 
-$('#tasklist').on('click', 'button.removebtn', (event) => {
+$('#taskList').on('click', 'button.removebtn', (event) => {
     var status = $(event.target).attr('class').split(' ').shift();
     var id = $(event.target).attr('id').split('_').pop();
     if (['active', 'waiting', 'paused'].includes(status)) {
@@ -164,7 +164,7 @@ function printTaskInfo(result) {
     +      '<div id="taskBar_' + result.gid + '" class="' + result.status + ' progbar" style="width: ' + completeRatio + '"></div>'
 }
 
-function printTasklist(globalWaiting, globalStopped) {
+function printTaskList(globalWaiting, globalStopped) {
     var params = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
     jsonRPCRequest([
         createJson('aria2.tellActive', '', [params]),
@@ -184,7 +184,7 @@ function printTasklist(globalWaiting, globalStopped) {
         for (i = 0, l = stoppedQueue.length; i < l; i ++) {
             html += printTaskInfo(stoppedQueue[i]);
         }
-        $('#tasklist').html(html);
+        $('#taskList').html(html);
     });
 }
 
@@ -204,7 +204,7 @@ function printContent() {
             $('#uploadSpeed').html(uploadSpeed);
             $('#globalStatus, #addTaskMenu').show();
             $('#globalError').hide();
-            printTasklist(waiting, stopped);
+            printTaskList(waiting, stopped);
         }
         else if (response.error) {
             $('#globalStatus, #addTaskMenu').hide();

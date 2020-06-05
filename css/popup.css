@@ -1,3 +1,8 @@
+body {
+    width: 400px;
+    overflow-x: hidden;
+}
+
 #mainMenu {
     position: absolute;
     top: 7px;
@@ -15,20 +20,15 @@
 
 #addTaskMenu {
     position: absolute;
-    top: 10px;
+    top: 13px;
     right: 10px;
 }
 
-#taskInput {
-    width: 80%;
-}
-
 #taskBatch {
-    width: 80%;
     resize: none;
 }
 
-#tasklist {
+#taskList {
     height: 400px;
     overflow-y: scroll;
 }
@@ -40,12 +40,11 @@ div[id^="taskInfo_"] {
 
 .button {
     border: 1px solid #CCC;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     background-color: #FFF;
     cursor: pointer;
-    padding: 1px;
-    min-width: 10px;
+    padding: 3px;
     user-select: none;
 }
 
@@ -54,10 +53,16 @@ div[id^="taskInfo_"] {
     background-color: #CCC;
 }
 
+.taskBox {
+    width: 75%;
+    font-size: 13px;
+    padding: 3px;
+}
+
 .status {
     color: #FFF;
     width: max-content;
-    padding: 1px;
+    padding: 3px;
 }
 
 .progbar {
@@ -109,9 +114,4 @@ div[id^="taskInfo_"] {
 
 .complete_info2{
     display: none;
-}
-
-body {
-    width: 400px;
-    overflow-x: hidden;
 }
