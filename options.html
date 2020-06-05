@@ -7,19 +7,17 @@
     </head>
     <body>
         <div id="container">
-            <div id="aria2_option">
-                <div class="container">
-                    <div class="title">JSON RPC URI</div>
-                    <div class="value"><input id="aria2_rpc" placeholder="http://localhost:6800/jsonrpc"></div>
-                    <div class="status">default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
-                    <div id="aria2_check">Check</div>
-                    <div id="aria2_result"></div>
-                </div>
-                <div class="container">
-                    <div class="title">Secret Token</div>
-                    <div class="value"><input id="aria2_secret" placeholder="$$secret$$"></div>
-                    <div class="status">keep empty if no secret token is specified</div>
-                </div>
+            <div class="container">
+                <div class="title">JSON RPC URI</div>
+                <div class="value"><input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc"></div>
+                <div class="status">default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
+                <div id="aria2_check">Check</div>
+                <div id="aria2_result"></div>
+            </div>
+            <div class="container">
+                <div class="title">Secret Token</div>
+                <div class="value"><input id="aria2_secret" type="text" placeholder="$$secret$$"></div>
+                <div class="status">keep empty if no secret token is specified</div>
             </div>
             <hr>
             <div class="container">

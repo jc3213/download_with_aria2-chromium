@@ -79,42 +79,31 @@ function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-$('#purgebtn').on('click', (event) => {
+$('#addTask_btn, #cancel_btn').on('click', (event) => {
+    $('#addTask_btn, #cancel_btn, #addTaskWindow').toggle();
+    $('#addMore_btn, #taskInput').show();
+    $('#addLess_btn, #taskBatch').hide();
+});
+
+$('#purdge_btn').on('click', (event) => {
     jsonRPCRequest(createJson('aria2.purgeDownloadResult'));
 });
 
-$('#addbtn').on('click', (event) => {
-    $('#addtaskcontainer').toggle();
-    $('#addbtn').val(($('#addbtn').val() === 'Add' ? 'Cancel' : 'Add' ));
-    $('#taskaddbox').show();
-    $('#taskaddbatch').hide();
-    $('#addmore').val('>>');
+$('#addMore_btn, #addLess_btn').on('click', (event) => {
+    $('#addMore_btn, #addLess_btn, #taskInput, #taskBatch').toggle();
 });
 
-$('#addmore').on('click', (event) => {
-    if ($('#addmore').val() === '>>') {
-        $('#taskaddbox').hide();
-        $('#taskaddbatch').show();
-        $('#addmore').val('<<');
-    }
-    else {
-        $('#taskaddbox').show();
-        $('#taskaddbatch').hide();
-        $('#addmore').val('>>');
-    }
-});
-
-$('#addtask').on('submit', (event) => {
-    event.preventDefault();
-    var toadduri = ($('#taskaddbox').val() === '' ? $('#taskaddbatch').val().split('\n') : $('#taskaddbox').val().split('\n'));
+$('#sumit_btn').on('click', (event) => {
+    var toadduri = ($('#taskInput').val() === '' ? $('#taskBatch').val().split('\n') : $('#taskInput').val().split('\n'));
     if (toadduri[0] !== '') {
         for (var i = 0, l = toadduri.length; i < l; i ++) {
             var uri = toadduri[i];
             jsonRPCRequest(createJson('aria2.addUri', '', [[uri]]));
         }
     }
-    $('#addtaskcontainer').hide();
-    $('#addbtn').val('Add');
+    $('#addTask_btn').show();
+    $('#cancel_btn, #addTaskWindow').hide();
+    $('#taskInput, #taskBatch').val('');
 });
 
 $('#tasklist').on('click', 'button.removebtn', (event) => {
