@@ -6,8 +6,15 @@
         <script src="lib/jquery-3.5.1.min.js"></script>
     </head>
     <body>
-        <div id="globalstat"></div>
-        <div id="menubutton" style="display:none">
+        <div id="globalStatus">
+            <span class="active status">Active</span> <span id="numActive">0</span>
+            -
+            <span class="paused status">Waiting</span> <span id="numWaiting">0</span>
+            -
+            <span class="removed status">Stopped</span> <span id="numStopped">0</span>
+        </div>
+        <div id="globalError" class="error status"></div>
+        <div id="addTaskMenu">
             <input type="button" id="purgebtn" value="Purge!" /><input type="button" id="addbtn" value="Add" />
         </div>
         <div id="addtaskcontainer" style="display:none">
@@ -21,7 +28,11 @@
         <hr>
         <div id="tasklist"></div>
         <hr>
-        <div id="nettraffic"></div>
+        <div id="nettraffic">
+            <span class="download status">Download</span> <span id="downloadSpeed">0 B/s</span>
+            -
+            <span class="upload status">Upload</span> <span id="uploadSpeed">0 B/s</span>
+        </div>
     </body>
     <script src="js/popup.js"></script>
 </html>

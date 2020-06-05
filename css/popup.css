@@ -8,12 +8,7 @@
     font-weight: bold;
 }
 
-#globalstat span, #nettraffic span {
-    color: #FFF;
-    padding: 1px;
-}
-
-#menubutton {
+#addTaskMenu {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -69,6 +64,12 @@
 div[id^="taskInfo_"] {
     font-size: 13px;
     max-width: 360px;
+}
+
+.status {
+    color: #FFF;
+    width: max-content;
+    padding: 1px;
 }
 
 .progbar {

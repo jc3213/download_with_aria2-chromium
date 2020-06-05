@@ -208,18 +208,22 @@ function printContent() {
             var active = (global.numActive | 0);
             var waiting = (global.numWaiting | 0);
             var stopped = (global.numStopped | 0);
-            $('#globalstat').html('<span class="active">Active</span> ' + active + ' - <span class="paused">Waiting</span> ' + waiting + ' - <span class="removed">Stopped</span> ' + stopped);
-            $('#nettraffic').html('<span class="download">Download</span> ' + downloadSpeed + ' | <span class="upload">Upload</span> ' + uploadSpeed);
-            $('#menubutton').show();
+            $('#numActive').html(active);
+            $('#numWaiting').html(waiting);
+            $('#numStopped').html(stopped);
+            $('#downloadSpeed').html(downloadSpeed);
+            $('#uploadSpeed').html(uploadSpeed);
+            $('#globalStatus, #addTaskMenu').show();
+            $('#globalError').hide();
             printTasklist(waiting, stopped);
         }
         else if (response.error) {
-            $('#globalstat').html('<span class="error">Auth Failure</span>');
-            $('#nettraffic').html('<span class="download">Download</span> 0 B/s | <span class="upload">Upload</span> 0 B/s');
+            $('#globalStatus, #addTaskMenu').hide();
+            $('#globalError').html('Auth Failure').show();
         }
     }, (event) => {
-        $('#globalstat').html('<span class="error">No Response</span>');
-        $('#nettraffic').html('<span class="download">Download</span> 0 B/s | <span class="upload">Upload</span> 0 B/s')
+        $('#globalStatus, #addTaskMenu').hide();
+        $('#globalError').html('No Response').show();
     });
 }
 
