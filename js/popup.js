@@ -159,7 +159,7 @@ function printTaskInfo(result) {
         uploadInfo = '';
     }
     return '<div class="taskInfo">'
-    +          '<div class="taskName">' + taskName + ' <span id="' + result.gid + '" class="' + result.status + ' button" status="' + result.status + '">remove</span></div>'
+    +          '<div class="taskName">' + taskName + ' <span id="' + result.gid + '" class="button" status="' + result.status + '">remove</span></div>'
     +          '<div class="' + result.status + '_basic">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
     +          '<div class="' + result.status + '_extra">' + result.connections + ' conns' + seedsInfo + ', ' + downloadSpeed + '/s' + uploadInfo + ', ETA: ' + estimatedTime + '</div>'
     +      '</div>'
@@ -193,27 +193,27 @@ function printTaskList(globalWaiting, globalStopped) {
 function printContent() {
     jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
         if (response.result) {
-            var global = response.result;
-            var downloadSpeed = bytesToFileSize(global.downloadSpeed) + '/s';
-            var uploadSpeed = bytesToFileSize(global.uploadSpeed) + '/s';
-            var active = (global.numActive | 0);
-            var waiting = (global.numWaiting | 0);
-            var stopped = (global.numStopped | 0);
+            var result = response.result;
+            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
+            var active = (result.numActive | 0);
+            var waiting = (result.numWaiting | 0);
+            var stopped = (result.numStopped | 0);
             $('#numActive').html(active);
             $('#numWaiting').html(waiting);
             $('#numStopped').html(stopped);
             $('#downloadSpeed').html(downloadSpeed);
             $('#uploadSpeed').html(uploadSpeed);
-            $('#globalStatus, #addTaskMenu').show();
+            $('#globalStatus, #mainMenu').show();
             $('#globalError').hide();
             printTaskList(waiting, stopped);
         }
         else if (response.error) {
-            $('#globalStatus, #addTaskMenu').hide();
+            $('#globalStatus, #mainMenu').hide();
             $('#globalError').html('Auth Failure').show();
         }
     }, (event) => {
-        $('#globalStatus, #addTaskMenu').hide();
+        $('#globalStatus, #mainMenu').hide();
         $('#globalError').html('No Response').show();
     });
 }
