@@ -106,9 +106,9 @@ $('#submit_btn').on('click', (event) => {
     $('#taskInput, #taskBatch').val('');
 });
 
-$('#taskList').on('click', 'button.removebtn', (event) => {
-    var status = $(event.target).attr('class').split(' ').shift();
-    var id = $(event.target).attr('id').split('_').pop();
+$('#taskList').on('click', 'span.button', (event) => {
+    var status = $(event.target).attr('status');
+    var id = $(event.target).attr('id');
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
     }
@@ -120,8 +120,8 @@ $('#taskList').on('click', 'button.removebtn', (event) => {
     }
     jsonRPCRequest(createJson(method, id));
 }).on('click', 'div.progbar', (event) => {
-    var status = $(event.target).attr('class').split(' ').shift();
-    var id = $(event.target).attr('id').split('_').pop();
+    var status = $(event.target).attr('status');
+    var id = $(event.target).attr('id');
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
@@ -151,19 +151,19 @@ function printTaskInfo(result) {
     }
     if (result.bittorrent) {
         var uploadSpeed = bytesToFileSize(result.uploadSpeed);
-        var seedInfo = ' (' + result.numSeeders + ' seeds)';
+        var seedsInfo = ' (' + result.numSeeders + ' seeds)';
         var uploadInfo = ' (up: ' + uploadSpeed + '/s)';
     }
     else {
         seedsInfo = '';
         uploadInfo = '';
     }
-    return '<div id="taskInfo_' + result.gid + '">'
-    +          '<div class="tasktitle">' + taskName + '<button id="removebtn_' + result.gid + '" class="' + result.status + ' removebtn">remove</button></div>'
-    +          '<div class="' + result.status + '_info1">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
-    +          '<div class="' + result.status + '_info2">' + result.connections + ' conns' + seedInfo + ', ' + downloadSpeed + '/s' + uploadInfo + ', ETA: ' + estimatedTime + '</div>'
+    return '<div class="taskInfo">'
+    +          '<div class="taskName">' + taskName + ' <span id="' + result.gid + '" class="' + result.status + ' button" status="' + result.status + '">remove</span></div>'
+    +          '<div class="' + result.status + '_basic">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ' + completeRatio + '</div>'
+    +          '<div class="' + result.status + '_extra">' + result.connections + ' conns' + seedsInfo + ', ' + downloadSpeed + '/s' + uploadInfo + ', ETA: ' + estimatedTime + '</div>'
     +      '</div>'
-    +      '<div id="taskBar_' + result.gid + '" class="' + result.status + ' progbar" style="width: ' + completeRatio + '"></div>'
+    +      '<div id="' + result.gid + '" class="' + result.status + ' progbar" status="' + result.status + '" style="width: ' + completeRatio + '"></div>'
 }
 
 function printTaskList(globalWaiting, globalStopped) {

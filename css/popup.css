@@ -1,18 +1,19 @@
 body {
     width: 400px;
+    font-size: 14px;
     user-select: none;
 }
 
 #mainMenu {
     position: absolute;
     top: 7px;
-    right: 5px;
+    right: 7px;
 }
 
 #addTaskWindow {
     position: absolute;
     background-color: #FFF;
-    top: 30px;
+    top: 32px;
     width: 380px;
     border: 1px solid #CCC;
     padding: 10px;
@@ -33,41 +34,44 @@ body {
     overflow-y: scroll;
 }
 
-div[id^="taskInfo_"] {
-    font-size: 13px;
-    max-width: 380px;
+#taskList .button {
+    font-size: 9px;
+    background-color: #FFF;
 }
 
 .button {
     border: 1px solid #CCC;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     background-color: #FFF;
     cursor: pointer;
     padding: 3px;
 }
 
-.button:active {
+.button:hover {
     color: #FFF;
-    background-color: #CCC;
 }
 
 .taskBox {
     width: 75%;
-    font-size: 13px;
+    font-size: 14px;
     padding: 3px;
 }
 
 .status {
     color: #FFF;
     width: max-content;
-    padding: 3px;
+    padding: 1px;
+}
+
+.taskInfo {
+    font-size: 14px;
+    max-width: 380px;
 }
 
 .progbar {
     height: 20px;
-    margin-top: 2px;
-    margin-bottom: 10px;
+    margin: 3px 0px 10px 0px;
     transition: width 1s;
     max-width: 380px;
 }
@@ -88,29 +92,20 @@ div[id^="taskInfo_"] {
     background-color: #3C3;
 }
 
-.removed {
+.removed, .stopped {
     background-color: #C3C;
 }
 
-.download {
+.download, .button:hover, #taskList .button:hover {
     background-color: #3CC;
 }
 
-.tasktitle{
-    font-size: 15px !important;
+.taskName {
+    font-size: 16px !important;
     font-weight: bold;
     word-break: break-all !important;
 }
 
-.removebtn {
-    margin: auto auto auto 5px;
-    font-size: 0.6em;
-    border: 1px solid #CCC;
-    border-radius: 3px;
-    background-color: white;
-    padding: 1px;
-}
-
-.complete_info2{
+.complete_extra {
     display: none;
 }
