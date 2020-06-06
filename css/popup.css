@@ -85,9 +85,15 @@ body {
 }
 
 .progress:active, .progress:active span {
-    background-color: #C33;
-    border: 1px inset #CCC;
-    height: 18px;
+    filter: contrast(50%);
+}
+
+.active_bar, .paused_bar {
+    background-color: #3CC;
+}
+
+.removed_bar, .error_bar {
+    background-color: #CCC;
 }
 
 .active, .download {
@@ -108,10 +114,6 @@ body {
 
 .removed {
     background-color: #C3C;
-}
-
-.progress {
-    background-color: #CCC;
 }
 
 .taskName {
