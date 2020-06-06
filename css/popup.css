@@ -1,6 +1,6 @@
 body {
-    width: 400px;
     font-size: 14px;
+    width: 400px;
     user-select: none;
 }
 
@@ -11,11 +11,11 @@ body {
 }
 
 #addTaskWindow {
-    position: absolute;
     background-color: #FFF;
+    border: 1px solid #CCC;
+    position: absolute;
     top: 32px;
     width: 380px;
-    border: 1px solid #CCC;
     padding: 10px;
 }
 
@@ -39,14 +39,15 @@ body {
 }
 
 .button {
-    border: 1px outset #CCC;
-    font-weight: bold;
     background-color: #FFF;
+    border: 1px outset #CCC;
     cursor: pointer;
+    font-weight: bold;
     padding: 3px;
 }
 
 .button:hover {
+    background-color: #CCC;
     color: #FFF;
 }
 
@@ -56,13 +57,13 @@ body {
 
 .status {
     color: #FFF;
-    width: max-content;
+    width: fit-content;
     padding: 3px;
 }
 
 .taskBox {
-    width: 75%;
     font-size: 14px;
+    width: 75%;
     padding: 3px;
 }
 
@@ -72,6 +73,7 @@ body {
 }
 
 .progress {
+    color: #FFF;
     height: 20px;
     max-width: 380px;
     text-align: center;
@@ -79,19 +81,24 @@ body {
 
 .progress span {
     display: block;
-    height: inherit;
-    color: #FFF;
+    height: 20px;
 }
 
-.active, .button:hover {
+.progress:active, .progress:active span {
+    background-color: #C33;
+    border: 1px inset #CCC;
+    height: 18px;
+}
+
+.active, .download {
     background-color: #33C;
 }
 
-.paused, .waiting {
+.paused {
     background-color: #CC3;
 }
 
-.error, .progress:active span {
+.error {
     background-color: #C33;
 }
 
@@ -99,16 +106,20 @@ body {
     background-color: #3C3;
 }
 
-.removed, .stopped {
+.removed {
     background-color: #C3C;
 }
 
-.download, .progress {
-    background-color: #3CC;
+.progress {
+    background-color: #CCC;
 }
 
 .taskName {
     font-weight: bold;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }
 
 .complete_extra {

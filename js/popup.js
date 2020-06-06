@@ -75,10 +75,6 @@ function secondsToHHMMSS(number) {
     return time.replace(/(00[hms])*/, '');
 }
 
-function capitaliseFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 $('#addTask_btn, #cancel_btn').on('click', (event) => {
     $('#addTask_btn, #cancel_btn, #addTaskWindow').toggle();
     $('#addMore_btn, #taskInput').show();
@@ -122,7 +118,7 @@ $('#taskList').on('click', 'span.button', (event) => {
     jsonRPCRequest(createJson(method, gid));
 }).on('click', 'div.progress', (event) => {
     var gid = $(event.target).children('span').attr('gid') || $(event.target).attr('gid');
-    var status = $(event.target).children('span').attr('class') || $(event.target).attr('class');
+    var status = $(event.target).children('span').attr('status') || $(event.target).attr('status');
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
@@ -161,9 +157,9 @@ function printTaskInfo(result) {
     }
     return '<div class="taskInfo">'
     +          '<div class="taskName">' + taskName + ' <span class="button" status="' + result.status + '" gid="' + result.gid + '">Remove</span></div>'
-    +          '<div class="' + result.status + '_basic">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ETA: ' + estimatedTime + '</div>'
+    +          '<div class="' + result.status + '_basic"><span class="capitalize">' + result.status + '</span>, ' + completedLength + '/' + totalLength + ', ETA: ' + estimatedTime + '</div>'
     +          '<div class="' + result.status + '_extra">' + result.connections + ' conns' + seedsInfo + ', ' + downloadSpeed + '/s' + uploadInfo + '</div>'
-    +          '<div class="progress"><span class="' + result.status + '" gid="' + result.gid + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
+    +          '<div class="progress"><span class="' + result.status + '" status="' + result.status + '" gid="' + result.gid + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
     +      '</div>'
 }
 
