@@ -1,4 +1,4 @@
-function createJson(method, id, params) {
+function createJson(method, gid, params) {
     var token = localStorage.getItem('aria2secret') || '';
     var json = {
         jsonrpc: 2.0,
@@ -8,8 +8,8 @@ function createJson(method, id, params) {
             'token:' + token
         ]
     };
-    if (id) {
-        json.params.push(id);
+    if (gid) {
+        json.params.push(gid);
     }
     if (params) {
         json.params = json.params.concat(params);
@@ -108,8 +108,8 @@ $('#submit_btn').on('click', (event) => {
 });
 
 $('#taskList').on('click', 'span.button', (event) => {
+    var gid = $(event.target).attr('gid');
     var status = $(event.target).attr('status');
-    var id = $(event.target).attr('id');
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
     }
@@ -119,10 +119,10 @@ $('#taskList').on('click', 'span.button', (event) => {
     else {
         console.log(status);
     }
-    jsonRPCRequest(createJson(method, id));
-}).on('click', 'div.progress > span', (event) => {
-    var status = $(event.target).attr('class');
-    var id = $(event.target).attr('id');
+    jsonRPCRequest(createJson(method, gid));
+}).on('click', 'div.progress', (event) => {
+    var gid = $(event.target).children('span').attr('gid') || $(event.target).attr('gid');
+    var status = $(event.target).children('span').attr('class') || $(event.target).attr('class');
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
@@ -135,7 +135,7 @@ $('#taskList').on('click', 'span.button', (event) => {
     else {
         console.log(status);
     }
-    jsonRPCRequest(createJson(method, id));
+    jsonRPCRequest(createJson(method, gid));
 });
 
 function printTaskInfo(result) {
@@ -160,10 +160,10 @@ function printTaskInfo(result) {
         uploadInfo = '';
     }
     return '<div class="taskInfo">'
-    +          '<div class="taskName">' + taskName + ' <span id="' + result.gid + '" class="button" status="' + result.status + '">remove</span></div>'
+    +          '<div class="taskName">' + taskName + ' <span class="button" status="' + result.status + '" gid="' + result.gid + '">Remove</span></div>'
     +          '<div class="' + result.status + '_basic">' + capitaliseFirstLetter(result.status) + ', ' + completedLength + '/' + totalLength + ', ETA: ' + estimatedTime + '</div>'
     +          '<div class="' + result.status + '_extra">' + result.connections + ' conns' + seedsInfo + ', ' + downloadSpeed + '/s' + uploadInfo + '</div>'
-    +          '<div class="progress"><span id="' + result.gid + '" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
+    +          '<div class="progress"><span class="' + result.status + '" gid="' + result.gid + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
     +      '</div>'
 }
 

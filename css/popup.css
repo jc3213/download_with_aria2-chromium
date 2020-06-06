@@ -39,8 +39,7 @@ body {
 }
 
 .button {
-    border: 1px solid #CCC;
-    font-size: 14px;
+    border: 1px outset #CCC;
     font-weight: bold;
     background-color: #FFF;
     cursor: pointer;
@@ -49,6 +48,10 @@ body {
 
 .button:hover {
     color: #FFF;
+}
+
+.button:active {
+    border: 1px inset #333;
 }
 
 .status {
@@ -64,7 +67,6 @@ body {
 }
 
 .taskInfo {
-    font-size: 14px;
     max-width: 380px;
     margin: 0px 0px 10px 0px;
 }
@@ -89,7 +91,7 @@ body {
     background-color: #CC3;
 }
 
-.error, .progress span:active {
+.error, .progress:active span {
     background-color: #C33;
 }
 
@@ -106,9 +108,7 @@ body {
 }
 
 .taskName {
-    font-size: 16px !important;
     font-weight: bold;
-    word-break: break-all !important;
 }
 
 .complete_extra {
