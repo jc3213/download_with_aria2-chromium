@@ -33,10 +33,11 @@ function makePattern(entry, symbol) {
     if (entry === '') {
         return '';
     }
+    entry = entry.split('\n').filter(item => item !== '');
     if (symbol) {
-        entry = symbol + event.target.value.replace(/\n/g, '\n' + symbol);
+        entry = entry.map(item => symbol + item);
     }
-    return entry.split(/\n/).filter(item => item !== '').join('|').replace(/\./g, '\\.').replace(/\*/g, '[^ ]*');
+    return entry.join('|').replace(/\./g, '\\.').replace(/\*/g, '[^ ]*');
 }
 
 $('#aria2_rpc').val(localStorage.getItem('aria2rpc') || '').on('change', (event) => {
