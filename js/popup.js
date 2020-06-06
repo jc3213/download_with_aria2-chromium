@@ -103,6 +103,10 @@ $('#submit_btn').on('click', (event) => {
     $('#taskInput, #taskBatch').val('');
 });
 
+$('#options_btn').on('click', (event) => {
+    open('options.html', '_blank');
+});
+
 $('#taskList').on('click', 'span.button', (event) => {
     var gid = $(event.target).attr('gid');
     var status = $(event.target).attr('status');

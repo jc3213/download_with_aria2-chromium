@@ -10,6 +10,12 @@ body {
     right: 7px;
 }
 
+#options_btn {
+    position: absolute;
+    bottom: 4px;
+    right: 7px;
+}
+
 #addTaskWindow {
     background-color: #FFF;
     border: 1px solid #CCC;
