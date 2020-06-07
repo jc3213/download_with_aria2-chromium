@@ -53,21 +53,16 @@ body {
 }
 
 .button:hover {
-    background-color: #CCC;
-    color: #FFF;
+    filter: contrast(75%);
 }
 
 .button:active {
-    border: 1px inset #333;
+    filter: invert(75%);
 }
 
 .checked {
     border: 1px inset #333;
-    border-top: 3px inset #3CC;
-}
-
-.checked:active {
-    filter: contrast(50%);
+    border-top: 3px inset #F00;
 }
 
 .status {
@@ -100,18 +95,18 @@ body {
 }
 
 .progress:active, .progress:active span {
-    filter: contrast(50%);
+    filter: contrast(75%);
 }
 
-.active_bar, .paused_bar {
+.active_bar, .paused_bar, .download {
     background-color: #3CC;
 }
 
-.removed_bar, .error_bar {
+.removed_bar, .error_bar, .stopped {
     background-color: #CCC;
 }
 
-.active, .download {
+.active {
     background-color: #33C;
 }
 
@@ -119,15 +114,15 @@ body {
     background-color: #CC3;
 }
 
-.error {
+.error, .removed {
     background-color: #C33;
 }
 
-.complete, .upload {
+.complete {
     background-color: #3C3;
 }
 
-.removed {
+.upload {
     background-color: #C3C;
 }
 
