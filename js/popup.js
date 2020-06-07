@@ -101,7 +101,7 @@ $('#submit_btn').on('click', (event) => {
 
 $('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {
     var active = '#' + event.target.id;
-    var activeQueue = '#' + event.target.id.replace('_btn', 'Queue');
+    var activeQueue = active.replace('_btn', 'Queue');
     var inactive = ['#active_btn', '#waiting_btn', '#stopped_btn'].filter(item => item !== active).join(', ');
     var inactiveQueue = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'].filter(item => item !== activeQueue).join(', ');
     if ($(active).hasClass('checked')) {
@@ -181,7 +181,7 @@ function printTaskInfo(result) {
     +      '</div>'
 }
 
-function printTaskList(globalWaiting, globalStopped) {
+function printTaskQueue(globalWaiting, globalStopped) {
     var params = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
     jsonRPCRequest([
         createJson('aria2.tellActive', '', [params]),
@@ -201,7 +201,7 @@ function printTaskList(globalWaiting, globalStopped) {
     });
 }
 
-function printContent() {
+function printMainFrame() {
     jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
         if (response.result) {
             var result = response.result;
@@ -217,7 +217,7 @@ function printContent() {
             $('#uploadSpeed').html(uploadSpeed);
             $('#globalHeader, #globalMenu').show();
             $('#globalError').hide();
-            printTaskList(waiting, stopped);
+            printTaskQueue(waiting, stopped);
         }
         else if (response.error) {
             $('#globalHeader, #globalMenu').hide();
@@ -229,5 +229,5 @@ function printContent() {
     });
 }
 
-printContent();
-var keepContentAlive = setInterval(printContent, 1000);
+printMainFrame();
+var keepContentAlive = setInterval(printMainFrame, 1000);
