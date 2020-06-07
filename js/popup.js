@@ -215,16 +215,16 @@ function printContent() {
             $('#numStopped').html(stopped);
             $('#downloadSpeed').html(downloadSpeed);
             $('#uploadSpeed').html(uploadSpeed);
-            $('#globalStatus, #mainMenu').show();
+            $('#globalHeader, #globalMenu').show();
             $('#globalError').hide();
             printTaskList(waiting, stopped);
         }
         else if (response.error) {
-            $('#globalStatus, #mainMenu').hide();
+            $('#globalHeader, #globalMenu').hide();
             $('#globalError').html('Auth Failure').show();
         }
     }, (event) => {
-        $('#globalStatus, #mainMenu').hide();
+        $('#globalHeader, #globalMenu').hide();
         $('#globalError').html('No Response').show();
     });
 }

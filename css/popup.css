@@ -4,7 +4,7 @@ body {
     user-select: none;
 }
 
-#mainMenu {
+#globalMenu {
     position: absolute;
     top: 7px;
     right: 7px;
