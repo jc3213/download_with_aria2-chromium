@@ -53,9 +53,8 @@ function getCookies(referer, callback) {
             cache.push(cookie.name + '=' + cookie.value + ';');
         }
         var params = {
-            referer: referer,
-            header: 'Cookie: ' + cache.join(' ')
-        }
+            header: [ 'Referer: ' + referer, 'Cookie: ' + cache.join(' ') ]
+        };
         callback(params);
     })
 }
