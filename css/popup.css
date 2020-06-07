@@ -78,14 +78,13 @@ body {
 }
 
 .taskInfo {
-    max-width: 380px;
-    margin: 0px 0px 10px 0px;
+    width: 380px;
 }
 
 .progress {
     color: #FFF;
     height: 20px;
-    max-width: 380px;
+    width: 380px;
     text-align: center;
 }
 
