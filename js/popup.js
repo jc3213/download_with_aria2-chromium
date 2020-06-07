@@ -12,7 +12,7 @@ function createJson(method, gid, params) {
         json.params.push(gid);
     }
     if (params) {
-        json.params = json.params.concat(params);
+        json.params = [...json.params, ...params];
     }
     return json;
 }
@@ -91,23 +91,37 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
 });
 
 $('#submit_btn').on('click', (event) => {
-    var toadduri = ($('#taskInput').val() === '' ? $('#taskBatch').val().split('\n') : $('#taskInput').val().split('\n'));
-    if (toadduri[0] !== '') {
-        for (var i = 0, l = toadduri.length; i < l; i ++) {
-            var uri = toadduri[i];
-            jsonRPCRequest(createJson('aria2.addUri', '', [[uri]]));
-        }
-    }
+    var urls = ($('#taskBatch').val() || $('#taskInput').val()).split('\n');
+    var jsons = urls.filter(item => item !== '').map(item => createJson('aria2.addUri', '', [[item]]));
+    jsonRPCRequest(jsons);
     $('#addTask_btn').show();
     $('#cancel_btn, #addTaskWindow').hide();
     $('#taskInput, #taskBatch').val('');
+});
+
+$('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {
+    var active = '#' + event.target.id;
+    var activeQueue = '#' + event.target.id.replace('_btn', 'Queue');
+    var inactive = ['#active_btn', '#waiting_btn', '#stopped_btn'].filter(item => item !== active).join(', ');
+    var inactiveQueue = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'].filter(item => item !== activeQueue).join(', ');
+    if ($(active).hasClass('checked')) {
+        $(active).removeClass('checked');
+        $('#allTaskQueue').show();
+        $(activeQueue).hide();
+    }
+    else {
+        $(active).addClass('checked');
+        $(inactive).removeClass('checked');
+        $(activeQueue).show();
+        $(inactiveQueue).hide();
+    }
 });
 
 $('#options_btn').on('click', (event) => {
     open('options.html', '_blank');
 });
 
-$('#taskList').on('click', 'span.button', (event) => {
+$('div.taskQueue').on('click', 'span.button', (event) => {
     var gid = $(event.target).attr('gid');
     var status = $(event.target).attr('status');
     if (['active', 'waiting', 'paused'].includes(status)) {
@@ -177,17 +191,13 @@ function printTaskList(globalWaiting, globalStopped) {
         var activeQueue = response[0].result
         var waitingQueue = response[1].result;
         var stoppedQueue = response[2].result;
-        var html = '';
-        for (var i = 0, l = activeQueue.length; i < l; i ++) {
-            html += printTaskInfo(activeQueue[i]);
-        }
-        for (i = 0, l = waitingQueue.length; i < l; i ++) {
-            html += printTaskInfo(waitingQueue[i]);
-        }
-        for (i = 0, l = stoppedQueue.length; i < l; i ++) {
-            html += printTaskInfo(stoppedQueue[i]);
-        }
-        $('#taskList').html(html);
+        var active = activeQueue.map(item => printTaskInfo(item));
+        var waiting = waitingQueue.map(item => printTaskInfo(item));
+        var stopped = stoppedQueue.map(item => printTaskInfo(item));
+        $('#allTaskQueue').html([...active, ...waiting, ...stopped].join('<hr>'));
+        $('#activeQueue').html(active.join('<hr>'));
+        $('#waitingQueue').html(waiting.join('<hr>'));
+        $('#stoppedQueue').html(stopped.join('<hr>'));
     });
 }
 

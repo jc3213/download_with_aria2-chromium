@@ -1,7 +1,7 @@
 {
     "name": "Download with Aria2",
     "description": "An extension for Chromium and Firefox Quantum that allows you to download with Aria2",
-    "version": "2.420",
+    "version": "2.450",
     "manifest_version": 2,
     "minimum_chrome_version": "35",
     "permissions": [ "contextMenus", "tabs", "downloads", "notifications", "cookies", "<all_urls>" ],

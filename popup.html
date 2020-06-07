@@ -7,11 +7,11 @@
     </head>
     <body>
         <div id="globalStatus">
-            <span class="active status">Active</span> <span id="numActive">0</span>
+            <span id="active_btn" class="active status button">Active</span> <span id="numActive">0</span>
             -
-            <span class="paused status">Waiting</span> <span id="numWaiting">0</span>
+            <span id="waiting_btn" class="paused status button">Waiting</span> <span id="numWaiting">0</span>
             -
-            <span class="removed status">Stopped</span> <span id="numStopped">0</span>
+            <span id="stopped_btn" class="removed status button">Stopped</span> <span id="numStopped">0</span>
         </div>
         <div id="globalError" class="error status"></div>
         <div id="mainMenu">
@@ -29,7 +29,10 @@
             </div>
         </div>
         <hr>
-        <div id="taskList"></div>
+        <div id="allTaskQueue" class="taskQueue"></div>
+        <div id="activeQueue" class="taskQueue" style="display: none;"></div>
+        <div id="waitingQueue" class="taskQueue" style="display: none;"></div>
+        <div id="stoppedQueue" class="taskQueue" style="display: none;"></div>
         <hr>
         <div id="netTraffic">
             <span class="download status">Download</span> <span id="downloadSpeed">0 B/s</span>

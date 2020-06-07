@@ -13,8 +13,9 @@
   - Priority of capture `Blacklist` > `Whitelist` > `File Extension` > `File Size`
 - Brand new popup window
   - Show `Active`, `Waiting`, `Stopped` task counts
-  - Show `Download`, `Upload` speed
-  - Better `Progress` bar
+  - Filter task queues based on their status
+  - Show global `Download`, `Upload` speed
+  - Better `Progress` bar, click to pause and unpause the task
   - `Options` button to open `options.html` instantly
   - Show notification on authentication failure or network error
 - Bug fixes

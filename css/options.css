@@ -65,10 +65,6 @@ body {
     transform: scale(1.7);
 }
 
-#capture_filter {
-    display: none;
-}
-
 #size_entry {
     width: 220px;
 }
