@@ -61,8 +61,8 @@ body {
 }
 
 .checked {
-    border: 1px inset #333;
-    border-top: 3px inset #F00;
+    border-style: inset;
+    border-top: 2px solid #F00;
 }
 
 .status {
