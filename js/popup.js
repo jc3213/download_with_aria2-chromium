@@ -1,36 +1,3 @@
-function createJson(method, gid, params) {
-    var token = localStorage.getItem('aria2secret') || '';
-    var json = {
-        jsonrpc: 2.0,
-        method: method,
-        id: '',
-        params: [
-            'token:' + token
-        ]
-    };
-    if (gid) {
-        json.params.push(gid);
-    }
-    if (params) {
-        json.params = [...json.params, ...params];
-    }
-    return json;
-}
-
-function jsonRPCRequest(json, onload, onerror) {
-    var xhr = new XMLHttpRequest();
-    var rpc = localStorage.getItem('aria2rpc') || 'http://localhost:6800/jsonrpc';
-    xhr.open('POST', rpc, true);
-    xhr.onload = (event) => {
-        var response = JSON.parse(xhr.response);
-        if (typeof onload === 'function') {
-            onload(response);
-        }
-    };
-    xhr.onerror = onerror;
-    xhr.send(JSON.stringify(json));
-}
-
 function bytesToFileSize(bytes) {
     var KBytes = 1024;
     var MBytes = 1048576;
@@ -83,7 +50,7 @@ $('#addTask_btn, #cancel_btn').on('click', (event) => {
 });
 
 $('#purdge_btn').on('click', (event) => {
-    jsonRPCRequest(createJson('aria2.purgeDownloadResult'));
+    jsonRPCRequest(createJSON('aria2.purgeDownloadResult'));
 });
 
 $('#addMore_btn, #addLess_btn').on('click', (event) => {
@@ -92,7 +59,7 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
 
 $('#submit_btn').on('click', (event) => {
     var urls = ($('#taskBatch').val() || $('#taskInput').val()).split('\n');
-    var jsons = urls.filter(item => item !== '').map(item => createJson('aria2.addUri', '', [[item]]));
+    var jsons = urls.filter(item => item !== '').map(item => createJSON('aria2.addUri', '', [[item]]));
     jsonRPCRequest(jsons);
     $('#addTask_btn').show();
     $('#cancel_btn, #addTaskWindow').hide();
@@ -133,7 +100,7 @@ $('div.taskQueue').on('click', 'span.button', (event) => {
     else {
         console.log(status);
     }
-    jsonRPCRequest(createJson(method, gid));
+    jsonRPCRequest(createJSON(method, gid));
 }).on('click', 'div.progress', (event) => {
     var gid = $(event.target).children('span').attr('gid') || $(event.target).attr('gid');
     var status = $(event.target).children('span').attr('status') || $(event.target).attr('status');
@@ -149,7 +116,7 @@ $('div.taskQueue').on('click', 'span.button', (event) => {
     else {
         console.log(status);
     }
-    jsonRPCRequest(createJson(method, gid));
+    jsonRPCRequest(createJSON(method, gid));
 });
 
 function printTaskInfo(result) {
@@ -184,9 +151,9 @@ function printTaskInfo(result) {
 function printTaskQueue(globalWaiting, globalStopped) {
     var params = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
     jsonRPCRequest([
-        createJson('aria2.tellActive', '', [params]),
-        createJson('aria2.tellWaiting', '', [0, globalWaiting, params]),
-        createJson('aria2.tellStopped', '', [0, globalStopped, params]),
+        createJSON('aria2.tellActive', '', [params]),
+        createJSON('aria2.tellWaiting', '', [0, globalWaiting, params]),
+        createJSON('aria2.tellStopped', '', [0, globalStopped, params]),
     ], (response) => {
         var activeQueue = response[0].result
         var waitingQueue = response[1].result;
@@ -202,7 +169,7 @@ function printTaskQueue(globalWaiting, globalStopped) {
 }
 
 function printMainFrame() {
-    jsonRPCRequest(createJson('aria2.getGlobalStat'), (response) => {
+    jsonRPCRequest(createJSON('aria2.getGlobalStat'), (response) => {
         if (response.result) {
             var result = response.result;
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';

@@ -1,31 +1,18 @@
 function downWithAria2(url, params) {
-    var xhr = new XMLHttpRequest();
-    var rpc = localStorage.getItem('aria2rpc') || 'http://localhost:6800/jsonrpc';
-    var token = localStorage.getItem('aria2secret') || '';
-    var json = {
-        jsonrpc: 2.0,
-        method: 'aria2.addUri',
-        id: '',
-        params: [
-            'token:' + token,
-            [url],
-            params
-        ]
-    };
-    xhr.open('POST', rpc, true);
-    xhr.onload = (event) => {
-        var response = JSON.parse(xhr.response);
-        if (response.result) {
-            showNotification('Start Downloading', url);
+    jsonRPCRequest(
+        createJSON('aria2.addUri', '', [[url], params]),
+        (response) => {
+            if (response.result) {
+                showNotification('Start Downloading', url);
+            }
+            else if (response.error) {
+                showNotification('Authentication Failure');
+            }
+        },
+        (event) => {
+            showNotification('No Response from RPC Server');
         }
-        else if (response.error) {
-            showNotification('Authentication Failure');
-        }
-    };
-    xhr.onerror = (event) => {
-        showNotification('No Response from RPC Server');
-    };
-    xhr.send(JSON.stringify(json));
+    );
 }
 
 function showNotification(title, message) {
@@ -48,14 +35,12 @@ function showNotification(title, message) {
 function getCookies(referer, callback) {
     var cache = [];
     chrome.cookies.getAll({'url': referer}, (cookies) => {
-        for (i = 0; i < cookies.length; i ++) {
-            var cookie = cookies[i];
-            cache.push(cookie.name + '=' + cookie.value + ';');
-        }
-        var params = {
-            header: [ 'Referer: ' + referer, 'Cookie: ' + cache.join(' ') ]
-        };
-        callback(params);
+        callback({
+            header: [
+                'Referer: ' + referer,
+                'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
+            ]
+        });
     })
 }
 
@@ -65,10 +50,6 @@ function matchPattern(pattern, url) {
 }
 
 function captureCheck(item, referer) {
-    'use strict';
-    if (item.finalUrl.startsWith('blob')) {
-        return false;
-    }
     var black = localStorage.getItem('blackpattern');
     if (black && black !== '') {
         if (matchPattern(black, referer)) {

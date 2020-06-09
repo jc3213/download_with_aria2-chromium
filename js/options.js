@@ -49,31 +49,20 @@ $('#aria2_secret').val(localStorage.getItem('aria2secret') || '').on('change', (
 });
 
 $('#aria2_check').on('click', (event) => {
-    var xhr = new XMLHttpRequest();
-    var rpc = $('#aria2_rpc').val() || 'http://localhost:6800/jsonrpc';
-    var token = $('#aria2_secret').val();
-    var json = {
-        jsonrpc: 2.0,
-        method: 'aria2.getVersion',
-        id: '',
-        params: [
-            'token:' + token
-        ]
-    };
-    xhr.open('POST', rpc, true);
-    xhr.onload = (event) => {
-        var response = JSON.parse(xhr.response);
-        if (response.result) {
-            checkRPCResult(response.result.version);
+    jsonRPCRequest(
+        createJSON('aria2.getVersion'),
+        (response) => {
+            if (response.result) {
+                checkRPCResult(response.result.version);
+            }
+            else if (response.error) {
+                checkRPCResult('Auth Failure');
+            }
+        },
+        (event) => {
+            checkRPCResult('No Response');
         }
-        else if (response.error) {
-            checkRPCResult('Auth Failure');
-        }
-    };
-    xhr.onerror = (event) => {
-        checkRPCResult('No Response');
-    };
-    xhr.send(JSON.stringify(json));
+    );
 });
 
 $('#capture_main').on('click', (event) => {
