@@ -61,6 +61,17 @@ $('#aria2_check').on('click', (event) => {
     );
 });
 
+$('#aria2_show').on('click', (event) => {
+    if ($('#aria2_show').hasClass('checked')) {
+        $('#aria2_show').removeClass('checked');
+        $('#aria2_secret').attr('type', 'password');
+    }
+    else {
+        $('#aria2_show').addClass('checked');
+        $('#aria2_secret').attr('type', 'text');
+    }
+});
+
 $('#capture_main').on('click', (event) => {
     localStorage.setItem('capture', event.target.checked);
     captureHandler();

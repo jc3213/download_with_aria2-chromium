@@ -39,7 +39,6 @@ body {
 }
 
 .checked {
-    border-style: inset;
     border-top: 2px solid #F00;
 }
 

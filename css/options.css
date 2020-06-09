@@ -18,13 +18,19 @@ input, textarea {
     width: 300px;
 }
 
-.aria2 {
+.jsonrpc {
     padding: 3px;
     position: absolute;
     top: 37px;
 }
 
-#aria2_check {
+.token {
+    padding: 3px;
+    position: absolute;
+    top: 130px;
+}
+
+#aria2_check, #aria2_show {
     left: 330px;
 }
 

@@ -11,13 +11,14 @@
         <div class="container">
             <div class="title">JSON RPC URI</div>
             <input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc">
-            <span id="aria2_check" class="button aria2">Check</span>
-            <span id="aria2_result" class="aria2"></span>
+            <span id="aria2_check" class="button jsonrpc">Check</span>
+            <span id="aria2_result" class="jsonrpc"></span>
             <br>default **<u><i>http://localhost:6800/jsonrpc</i></u>
         </div>
         <div class="container">
             <div class="title">Secret Token</div>
-            <input id="aria2_secret" type="text" placeholder="$$secret$$">
+            <input id="aria2_secret" type="password" placeholder="$$secret$$">
+            <span id="aria2_show" class="button token">Show</span>
             <br>keep empty if no secret token is specified
         </div>
         <hr>
