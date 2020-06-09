@@ -56,9 +56,9 @@ function captureCheck(item, referer) {
             return false;
         }
     }
-    var monitor = localStorage.getItem('mon_pattern');
-    if (monitor && monitor !== '') {
-        if (matchPattern(monitor, referer)) {
+    var monitored = localStorage.getItem('mon_pattern');
+    if (monitored && monitored !== '') {
+        if (matchPattern(monitored, referer)) {
             return true;
         }
     }
