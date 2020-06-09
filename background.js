@@ -74,7 +74,6 @@ function captureCheck(item, referer) {
             return true;
         }
     }
-console.log(ignored, monitor, fileext, size);
     return false;
 }
 
