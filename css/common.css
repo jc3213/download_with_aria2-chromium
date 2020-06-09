@@ -21,8 +21,12 @@ body {
 
 input, textarea {
     font-size: 14px;
-    padding: 3px;
+    padding: 3.5px;
     resize: none;
+}
+
+textarea {
+    height: 200px;
 }
 
 option:checked {

@@ -15,23 +15,17 @@ body {
 }
 
 input, textarea {
-    padding: 5px;
     width: 300px;
 }
 
-textarea {
-    height: 200px;
-}
-
 .aria2 {
-    padding: 5px;
+    padding: 3px;
     position: absolute;
     top: 37px;
 }
 
 #aria2_check {
     left: 330px;
-    height: 18px;
 }
 
 #aria2_result {
@@ -40,7 +34,7 @@ textarea {
 
 #capture_main {
     position: absolute;
-    top: 220px;
+    top: 215px;
     left: -55px;
     height: 22px;
 }
@@ -51,7 +45,7 @@ textarea {
 
 #size_unit {
     position: absolute;
-    top: 321px;
+    top: 315px;
     left: 280px;
-    height: 30px;
+    height: 27px;
 }
