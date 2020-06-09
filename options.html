@@ -10,43 +10,43 @@
     <body>
         <div class="container">
             <div class="title">JSON RPC URI</div>
-            <div><input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc"></div>
-            <div>default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
+            <input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc">
             <span id="aria2_check" class="button aria2">Check</span>
             <span id="aria2_result" class="aria2"></span>
+            <br>default **<u><i>http://localhost:6800/jsonrpc</i></u>
         </div>
         <div class="container">
             <div class="title">Secret Token</div>
-            <div><input id="aria2_secret" type="text" placeholder="$$secret$$"></div>
-            <div>keep empty if no secret token is specified</div>
+            <input id="aria2_secret" type="text" placeholder="$$secret$$">
+            <br>keep empty if no secret token is specified
         </div>
         <hr>
         <div class="container">
             <div class="title">Capture</div>
-            <div><input id="capture_main" type="checkbox"></div>
-            <div>capture browser downloads based on built-in filters</div>
+            <input id="capture_main" type="checkbox">
+            capture browser downloads based on built-in filters
         </div>
         <div id="capture_filters" class="container" style="display: none;">
             <div class="container">
                 <div class="title">File Size</div>
-                <div><input id="size_entry" type="number" min="0"></div>
-                <div>capture downloads those are larger than **<u><i>200MB</i></u></div>
-                <div><select id="size_unit"><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select></div>
+                <input id="size_entry" type="number" min="0">
+                <select id="size_unit"><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select>
+                <br>capture downloads those are larger than **<u><i>200MB</i></u>
             </div>
             <div class="container">
                 <div class="title">File Extension</div>
-                <div><textarea id="ext_list" placeholder="zip&#10;exe&#10;jpg"></textarea></div>
-                <div>capture downloads with listed file extensions, <u>one entry per line</u></div>
+                <textarea id="ext_list" placeholder="zip&#10;exe&#10;jpg"></textarea>
+                <br>capture downloads with listed file extensions, <u>one entry per line</u>
             </div>
             <div class="container">
                 <div class="title">Monitored Host</div>
-                <div><textarea id="mon_list" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
-                <div>capture downloads on these web hosts, <u>one entry per line</u></div>                 
+                <textarea id="mon_list" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea>
+                <br>capture downloads on these web hosts, <u>one entry per line</u>
             </div>
             <div class="container">
                 <div class="title">Ignored Host</div>
-                <div><textarea id="nor_list" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
-                <div>do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u></div>
+                <textarea id="nor_list" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea>
+                <br>do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u>
             </div>
         </div>
     </body>
