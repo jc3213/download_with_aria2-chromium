@@ -1,7 +1,5 @@
 body {
-    font-size: 14px;
     width: 400px;
-    user-select: none;
 }
 
 #globalMenu {
@@ -31,10 +29,6 @@ body {
     right: 10px;
 }
 
-#taskBatch {
-    resize: none;
-}
-
 .taskQueue {
     height: 400px;
     overflow-y: scroll;
@@ -42,22 +36,6 @@ body {
 
 .taskQueue .button {
     font-size: 9px;
-}
-
-.button {
-    background-color: #FFF;
-    border: 1px outset #CCC;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 3px;
-}
-
-.button:hover {
-    filter: contrast(75%);
-}
-
-.button:active {
-    filter: invert(75%);
 }
 
 .checked {
@@ -72,9 +50,7 @@ body {
 }
 
 .taskBox {
-    font-size: 14px;
     width: 75%;
-    padding: 3px;
 }
 
 .taskInfo {

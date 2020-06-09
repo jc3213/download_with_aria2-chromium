@@ -12,71 +12,47 @@ body {
 .title {
     font-size: 20px;
     font-weight: bold;
-    width: fit-content;
 }
 
 .value input{
-    color: black;
-    width: 300px;
     padding: 5px;
+    width: 300px;
 }
 
 .value textarea {
-    color: black;
     height: 200px;
     width: 300px;
-    padding: 5px;
-    resize: none;
-    overflow: auto;
 }
 
-.status {
-    font-size: 14px;
-    width: fit-content;
+.aria2 {
+    padding: 5px;
+    position: absolute;
+    top: 37px;
+    height: 21px;
 }
 
 #aria2_check {
-    background-color: #EEE;
-    position: absolute;
-    top: 37px;
     left: 330px;
-    width: fit-content;    
-    padding: 5px;
-    cursor: pointer;
-    border: 1px outset black;
-}
-
-#aria2_check:hover {
-    background-color: #66D;
-    color: #FFF;
 }
 
 #aria2_result {
-    position: absolute;
-    top: 37px;
-    left: 375px; 
-    padding: 5px;
+    left: 375px;
 }
 
 #capture_main {
     position: absolute;
-    top: 222px;
+    top: 220px;
     left: -55px;
-    transform: scale(1.7);
+    height: 22px;
 }
 
 #size_entry {
-    width: 220px;
+    width: 230px;
 }
 
 #size_unit {
     position: absolute;
-    top: 322px;
+    top: 321px;
     left: 270px;
-    transform: scale(1.5);
-}
-
-#size_unit option:checked {
-    color: #F00;
-    font-weight: bold;
+    height: 30px;
 }

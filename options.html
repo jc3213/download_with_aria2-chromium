@@ -3,16 +3,17 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/options.css">
+        <link rel="stylesheet" href="css/common.css">
         <script src="lib/jquery-3.5.1.min.js"></script>
-        <script src="lib/jsonrpc.js"></script>
+        <script src="js/jsonrpc.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="title">JSON RPC URI</div>
             <div class="value"><input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc"></div>
             <div class="status">default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
-            <div id="aria2_check">Check</div>
-            <div id="aria2_result"></div>
+            <span id="aria2_check" class="button aria2">Check</span>
+            <span id="aria2_result" class="aria2"></span>
         </div>
         <div class="container">
             <div class="title">Secret Token</div>
