@@ -10,7 +10,7 @@
   - You can check whether `JSON RPC URI` or `Secret Token` is correct or not on `options.html`
   - Capture filters won't appear if the main `Capture` option is not checked
   - Capture filter `File Size` have two settings, `number` and `unit`
-  - Priority of capture `Blacklist` > `Whitelist` > `File Extension` > `File Size`
+  - Priority of capture `Ignored Host` > `Monitored Host` > `File Extension` > `File Size`
 - Brand new popup window
   - Show `Active`, `Waiting`, `Stopped` task counts
   - Filter task queues based on their status
