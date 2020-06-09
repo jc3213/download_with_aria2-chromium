@@ -2,51 +2,51 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="css/options.css">
         <link rel="stylesheet" href="css/common.css">
+        <link rel="stylesheet" href="css/options.css">
         <script src="lib/jquery-3.5.1.min.js"></script>
         <script src="js/jsonrpc.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="title">JSON RPC URI</div>
-            <div class="value"><input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc"></div>
-            <div class="status">default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
+            <div><input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc"></div>
+            <div>default **<u><i>http://localhost:6800/jsonrpc</i></u></div>
             <span id="aria2_check" class="button aria2">Check</span>
             <span id="aria2_result" class="aria2"></span>
         </div>
         <div class="container">
             <div class="title">Secret Token</div>
-            <div class="value"><input id="aria2_secret" type="text" placeholder="$$secret$$"></div>
-            <div class="status">keep empty if no secret token is specified</div>
+            <div><input id="aria2_secret" type="text" placeholder="$$secret$$"></div>
+            <div>keep empty if no secret token is specified</div>
         </div>
         <hr>
         <div class="container">
             <div class="title">Capture</div>
-            <div class="value"><input id="capture_main" type="checkbox"></div>
-            <div class="status">capture browser downloads based on built-in filters</div>
+            <div><input id="capture_main" type="checkbox"></div>
+            <div>capture browser downloads based on built-in filters</div>
         </div>
         <div id="capture_filter" class="container" style="display: none;">
             <div class="container">
                 <div class="title">File Size</div>
-                <div class="value"><input id="size_entry" type="number" placeholder="200"></div>
-                <div class="status">capture downloads those are larger than **<u><i>200MB</i></u></div>
-                <div class="value"><select id="size_unit"><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select></div>
+                <div><input id="size_entry" type="number" min="0" placeholder="200"></div>
+                <div>capture downloads those are larger than **<u><i>200MB</i></u></div>
+                <div><select id="size_unit"><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select></div>
             </div>
             <div class="container">
                 <div class="title">File Extension</div>
-                <div class="value"><textarea id="file_ext" placeholder="zip&#10;exe&#10;jpg"></textarea></div>
-                <div class="status">capture downloads with listed file extensions, <u>one entry per line</u></div>
+                <div><textarea id="file_ext" placeholder="zip&#10;exe&#10;jpg"></textarea></div>
+                <div>capture downloads with listed file extensions, <u>one entry per line</u></div>
             </div>
             <div class="container">
                 <div class="title">Whitelist Host</div>
-                <div class="value"><textarea id="whitelist" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
-                <div class="status">capture downloads on these web hosts, <u>one entry per line</u></div>                 
+                <div><textarea id="whitelist" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
+                <div>capture downloads on these web hosts, <u>one entry per line</u></div>                 
             </div>
             <div class="container">
                 <div class="title">Blacklist Host</div>
-                <div class="value"><textarea id="blacklist" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
-                <div class="status">do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u></div>
+                <div><textarea id="blacklist" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea></div>
+                <div>do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u></div>
             </div>
         </div>
     </body>

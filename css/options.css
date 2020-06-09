@@ -14,29 +14,28 @@ body {
     font-weight: bold;
 }
 
-.value input{
+input, textarea {
     padding: 5px;
     width: 300px;
 }
 
-.value textarea {
+textarea {
     height: 200px;
-    width: 300px;
 }
 
 .aria2 {
     padding: 5px;
     position: absolute;
     top: 37px;
-    height: 21px;
 }
 
 #aria2_check {
     left: 330px;
+    height: 18px;
 }
 
 #aria2_result {
-    left: 375px;
+    left: 380px;
 }
 
 #capture_main {
@@ -47,12 +46,12 @@ body {
 }
 
 #size_entry {
-    width: 230px;
+    width: 240px;
 }
 
 #size_unit {
     position: absolute;
     top: 321px;
-    left: 270px;
+    left: 280px;
     height: 30px;
 }
