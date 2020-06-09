@@ -50,30 +50,31 @@ function matchPattern(pattern, url) {
 }
 
 function captureCheck(item, referer) {
-    var black = localStorage.getItem('blackpattern');
-    if (black && black !== '') {
-        if (matchPattern(black, referer)) {
+    var ignored = localStorage.getItem('nor_pattern');
+    if (ignored && ignored !== '') {
+        if (matchPattern(ignored, referer)) {
             return false;
         }
     }
-    var white = localStorage.getItem('whitepattern');
-    if (white && white !== '') {
-        if (matchPattern(white, referer)) {
+    var monitor = localStorage.getItem('mon_pattern');
+    if (monitor && monitor !== '') {
+        if (matchPattern(monitor, referer)) {
             return true;
         }
     }
-    var fileext = localStorage.getItem('extpattern');
+    var fileext = localStorage.getItem('ext_pattern');
     if (fileext && fileext !== '') {
         if (matchPattern(fileext, item.finalUrl)) {
             return true;
         }
     }
-    var size = localStorage.getItem('sizenumber');
+    var size = localStorage.getItem('size_number');
     if (size && size > 0) {
         if (item.fileSize >= size) {
             return true;
         }
     }
+console.log(ignored, monitor, fileext, size);
     return false;
 }
 
@@ -103,8 +104,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.downloads.onCreated.addListener((item) => {
-    var capture = localStorage.getItem('capture');
-    if (capture === 'true' || capture === true) {
+    var capture = localStorage.getItem('capture') === 'true' ? true: false;
+    if (capture) {
         chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
             captureAdd(item, tabs[0].url);
         });
