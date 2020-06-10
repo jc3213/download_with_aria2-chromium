@@ -25,10 +25,7 @@ function jsonRPCRequest(json, onload, onerror) {
         var response = JSON.parse(xhr.response);
         var error = response.error;
         if (error) {
-            if (typeof onerror === 'function') {
-                onerror(error.message);
-            }
-            return;
+            return onerror(error.message);
         }
         if (typeof onload !== 'function') {
             return;
