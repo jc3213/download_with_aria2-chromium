@@ -58,9 +58,9 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
 });
 
 $('#submit_btn').on('click', (event) => {
-    var urls = ($('#taskBatch').val() || $('#taskInput').val()).split('\n');
-    var jsons = urls.filter(item => item !== '').map(item => createJSON('aria2.addUri', '', [[item]]));
-    jsonRPCRequest(jsons);
+    var url = ($('#taskBatch').val() || $('#taskInput').val()).split('\n');
+    var json = url.filter(item => item !== '').map(item => createJSON('aria2.addUri', '', [[item]]));
+    jsonRPCRequest(json);
     $('#addTask_btn').show();
     $('#cancel_btn, #addTaskWindow').hide();
     $('#taskInput, #taskBatch').val('');
