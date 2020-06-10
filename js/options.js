@@ -67,10 +67,10 @@ $('#aria2_show').on('click', (event) => {
     }
 });
 
-$('#capture_main').on('click', (event) => {
+$('#capture_main').attr('checked', captureHandler).on('click', (event) => {
     localStorage.setItem('capture', event.target.checked);
     captureHandler();
-}).attr('checked', captureHandler);
+});
 
 $('#size_entry').val(localStorage.getItem('size_entry') || 0).on('change', calcFileSize);
 
