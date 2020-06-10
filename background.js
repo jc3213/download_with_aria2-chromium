@@ -98,7 +98,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.downloads.onCreated.addListener((item) => {
-    var capture = localStorage.getItem('capture') === 'true' ? true: false;
+    var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
         chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
             captureAdd(item, tabs[0].url);

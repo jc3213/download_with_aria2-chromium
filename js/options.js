@@ -6,7 +6,7 @@ function checkRPCResult(message) {
 }
 
 function captureHandler() {
-    var checked = localStorage.getItem('capture') === 'true' ? true: false;
+    var checked = JSON.parse(localStorage.getItem('capture')) || false;
     if (checked) {
         $('#capture_filters').show(100);
         return true;

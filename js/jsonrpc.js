@@ -17,29 +17,28 @@ function createJSON(method, gid, params) {
     return json;
 }
 
-function jsonRPCRequest(json, onload, onerror) {
-    var xhr = new XMLHttpRequest();
+function jsonRPCRequest(json, success, failure) {
+    success = success || new Function();
+    failure = failure || new Function();
     var rpc = localStorage.getItem('aria2_rpc') || 'http://localhost:6800/jsonrpc';
+    var xhr = new XMLHttpRequest();
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
         var error = response.error;
         if (error) {
-            return onerror(error.message);
-        }
-        if (typeof onload !== 'function') {
-            return;
+            return failure(error.message);
         }
         var result = response.result || response.map(item => item.result);
         if (result.length) {
-            onload(...result);
+            success(...result);
         }
         else {
-            onload(result);
+            success(result);
         }
     };
     xhr.onerror = () => {
-        onerror('No Response');
+        failure('No Response');
     };
     xhr.send(JSON.stringify(json));
 }
