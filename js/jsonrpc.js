@@ -25,7 +25,13 @@ function jsonRPCRequest(json, onload, onerror) {
         var response = JSON.parse(xhr.response);
         var error = response.error;
         if (error) {
-            return onerror(error.message);
+            if (typeof onerror === 'function') {
+                onerror(error.message);
+            }
+            return;
+        }
+        if (typeof onload !== 'function') {
+            return;
         }
         var result = response.result || response.map(item => item.result);
         if (result.length) {
