@@ -1,16 +1,11 @@
 function downWithAria2(url, params) {
     jsonRPCRequest(
         createJSON('aria2.addUri', '', [[url], params]),
-        (response) => {
-            if (response.result) {
-                showNotification('Start Downloading', url);
-            }
-            else if (response.error) {
-                showNotification('Authentication Failure');
-            }
+        (result) => {
+            showNotification('Downloading', url);
         },
-        (event) => {
-            showNotification('No Response from RPC Server');
+        (error) => {
+            showNotification(error);
         }
     );
 }

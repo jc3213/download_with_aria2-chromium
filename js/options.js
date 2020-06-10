@@ -47,16 +47,11 @@ $('#aria2_secret').val(localStorage.getItem('aria2_secret') || '').on('change', 
 $('#aria2_check').on('click', (event) => {
     jsonRPCRequest(
         createJSON('aria2.getVersion'),
-        (response) => {
-            if (response.result) {
-                checkRPCResult(response.result.version);
-            }
-            else if (response.error) {
-                checkRPCResult('Auth Failure');
-            }
+        (result) => {
+            checkRPCResult(result.version);
         },
-        (event) => {
-            checkRPCResult('No Response');
+        (error) => {
+            checkRPCResult(error);
         }
     );
 });

@@ -23,10 +23,20 @@ function jsonRPCRequest(json, onload, onerror) {
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
-        if (typeof onload === 'function') {
-            onload(response);
+        var error = response.error;
+        if (error) {
+            return onerror(error.message);
+        }
+        var result = response.result || response.map(item => item.result);
+        if (result.length) {
+            onload(...result);
+        }
+        else {
+            onload(result);
         }
     };
-    xhr.onerror = onerror;
+    xhr.onerror = () => {
+        onerror('No Response');
+    };
     xhr.send(JSON.stringify(json));
 }

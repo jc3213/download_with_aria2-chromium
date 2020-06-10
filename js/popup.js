@@ -154,10 +154,7 @@ function printTaskQueue(globalWaiting, globalStopped) {
         createJSON('aria2.tellActive', '', [params]),
         createJSON('aria2.tellWaiting', '', [0, globalWaiting, params]),
         createJSON('aria2.tellStopped', '', [0, globalStopped, params]),
-    ], (response) => {
-        var activeQueue = response[0].result
-        var waitingQueue = response[1].result;
-        var stoppedQueue = response[2].result;
+    ], (activeQueue, waitingQueue, stoppedQueue) => {
         var active = activeQueue.map(item => printTaskInfo(item));
         var waiting = waitingQueue.map(item => printTaskInfo(item));
         var stopped = stoppedQueue.map(item => printTaskInfo(item));
@@ -169,30 +166,23 @@ function printTaskQueue(globalWaiting, globalStopped) {
 }
 
 function printMainFrame() {
-    jsonRPCRequest(createJSON('aria2.getGlobalStat'), (response) => {
-        if (response.result) {
-            var result = response.result;
-            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var active = (result.numActive | 0);
-            var waiting = (result.numWaiting | 0);
-            var stopped = (result.numStopped | 0);
-            $('#numActive').html(active);
-            $('#numWaiting').html(waiting);
-            $('#numStopped').html(stopped);
-            $('#downloadSpeed').html(downloadSpeed);
-            $('#uploadSpeed').html(uploadSpeed);
-            $('#globalHeader, #globalMenu').show();
-            $('#globalError').hide();
-            printTaskQueue(waiting, stopped);
-        }
-        else if (response.error) {
-            $('#globalHeader, #globalMenu').hide();
-            $('#globalError').html('Auth Failure').show();
-        }
-    }, (event) => {
+    jsonRPCRequest(createJSON('aria2.getGlobalStat'), (result) => {
+        var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+        var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
+        var active = (result.numActive | 0);
+        var waiting = (result.numWaiting | 0);
+        var stopped = (result.numStopped | 0);
+        $('#numActive').html(active);
+        $('#numWaiting').html(waiting);
+        $('#numStopped').html(stopped);
+        $('#downloadSpeed').html(downloadSpeed);
+        $('#uploadSpeed').html(uploadSpeed);
+        $('#globalHeader, #globalMenu').show();
+        $('#globalError').hide();
+        printTaskQueue(waiting, stopped);
+    }, (error) => {
         $('#globalHeader, #globalMenu').hide();
-        $('#globalError').html('No Response').show();
+        $('#globalError').html(error).show();
     });
 }
 
