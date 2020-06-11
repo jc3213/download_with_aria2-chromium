@@ -1,4 +1,10 @@
 {
+    "extension_name": {
+        "message": "Download with Aria2"
+    },
+    "extension_description": {
+        "message": "An extension for Chromium and Firefox Quantum that allows you to download with Aria2"
+    },
     "option_jsonrpc": {
         "message": "JSON RPC URI"
     },
