@@ -18,8 +18,8 @@ function createJSON(method, gid, params) {
 }
 
 function jsonRPCRequest(json, success, failure) {
-    success = success || new Function();
-    failure = failure || new Function();
+    success = success || function() {};
+    failure = failure || function() {};
     var rpc = localStorage.getItem('aria2_rpc') || 'http://localhost:6800/jsonrpc';
     var xhr = new XMLHttpRequest();
     xhr.open('POST', rpc, true);
