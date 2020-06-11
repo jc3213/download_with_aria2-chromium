@@ -84,7 +84,7 @@ function captureAdd(item, referer) {
 }
 
 chrome.contextMenus.create({
-    title: 'Download with Aria2',
+    title: chrome.i18n.getMessage('extension_name'),
     id: 'downwitharia2',
     contexts: ['link']
 });

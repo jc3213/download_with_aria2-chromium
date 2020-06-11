@@ -1,0 +1,95 @@
+{
+    "extension_name": {
+        "message": "通过 Aria2 下载"
+    },
+    "extension_description": {
+        "message": "通过本扩展可使 Chromium 与 Firefox Quantum 浏览器通过 Aria2 下载文件"
+    },
+    "option_jsonrpc": {
+        "message": "JSONRPC 链接"
+    },
+    "option_jsonrpc_desc": {
+        "message": "默认"
+    },
+    "option_check": {
+        "message": "检查"
+    },
+    "option_token": {
+        "message": "密钥"
+    },
+    "option_token_desc": {
+        "message": "若需要密钥请联系网络管理员"
+    },
+    "option_show": {
+        "message": "显示"
+    },
+    "option_capture": {
+        "message": "抓取"
+    },
+    "option_capture_desc": {
+        "message": "抓取符合内置过滤器条件的下载"
+    },
+    "option_filesize": {
+        "message": "文件大小"
+    },
+    "option_filesize_desc": {
+        "message": "抓取文件大小超过**<u><i>200MB</i></u>的下载"
+    },
+    "option_fileext": {
+        "message": "文件后缀"
+    },
+    "option_fileext_desc": {
+        "message": "抓取符合列表中的文件后缀的下载, <u>每行一条</u>"
+    },
+    "option_monitored": {
+        "message": "监听域名"
+    },
+    "option_monitored_desc": {
+        "message": "抓取来自列表中的域名的下载, <u>每行一条</u>"
+    },
+    "option_ignored": {
+        "message": "Ignored Host"
+    },
+    "option_ignored_desc": {
+        "message": "<b>不</b>抓取来自列表中的域名的下载, <u>每行一条</u>"
+    },
+    "popup_active_button": {
+        "message": "下载中"
+    },
+    "popup_waiting_button": {
+        "message": "等待中"
+    },
+    "popup_stopped_button": {
+        "message": "已停止"
+    },
+    "popup_add_button": {
+        "message": "添加"
+    },
+    "popup_cancel_button": {
+        "message": "取消"
+    },
+    "popup_purge_button": {
+        "message": "清除"
+    },
+    "popup_submit_button": {
+        "message": "确认"
+    },
+    "popup_options_button": {
+        "message": "选项"
+    },
+    "popup_download": {
+        "message": "下载"
+    },
+    "popup_upload": {
+        "message": "上传"
+    },
+    "jsonrpc_download": {
+        "message": "即将下载"
+    },
+    "jsonrpc_auth_error" : {
+        "message": "未授权的请求"
+    },
+    "jsonrpc_no_response": {
+        "message": "无响应"
+    }
+}

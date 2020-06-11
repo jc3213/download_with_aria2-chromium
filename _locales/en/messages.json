@@ -6,16 +6,22 @@
         "message": "An extension for Chromium and Firefox Quantum that allows you to download with Aria2"
     },
     "option_jsonrpc": {
-        "message": "JSON RPC URI"
+        "message": "JSONRPC URI"
     },
     "option_jsonrpc_desc": {
         "message": "default"
+    },
+    "option_check": {
+        "message": "Check"
     },
     "option_token": {
         "message": "Secret Token"
     },
     "option_token_desc": {
-        "message": "keep empty if no secret token is specified"
+        "message": "ask the administrator if secret token is required"
+    },
+    "option_show": {
+        "message": "Show"
     },
     "option_capture": {
         "message": "Capture"
@@ -27,13 +33,13 @@
         "message": "File Size"
     },
     "option_filesize_desc": {
-        "message": "capture downloads those are larger than"
+        "message": "capture downloads those are larger than **<u><i>200MB</i></u>"
     },
     "option_fileext": {
         "message": "File Extension"
     },
     "option_fileext_desc": {
-        "message": "capture downloads with listed file extensions, <u>one entry per line</u>"
+        "message": "capture downloads base on file extensions, <u>one entry per line</u>"
     },
     "option_monitored": {
         "message": "Monitored Host"
@@ -76,9 +82,6 @@
     },
     "popup_upload": {
         "message": "Upload"
-    },
-    "popup_remove_button": {
-        "message": "Remove"
     },
     "jsonrpc_download": {
         "message": "Downloading"
