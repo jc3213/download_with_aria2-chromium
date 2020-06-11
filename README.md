@@ -24,11 +24,12 @@
 - Other optimization
   - New library `jQuery-3.5.1.js`
   - New icons
-  - Removed `fancysettings.js`, `store.js`, `i18n.js`, `popuplib.min.js`
+  - Removed `fancysettings.js`, `store.js`, `popuplib.min.js`
   - Removed unnecessary `inject.js`
   - Removed unnecessary `chrome` api and `manifest` key usage
   - Better code readability and performance
   - Better notifications
+  - Better i18n
 - Mozilla Quantum compatibility
   - Changed `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated`
   - Changed manifest key `options_page` to `options_ui`
@@ -39,9 +40,6 @@
 - Neither `Google Web Store`, nor `Microsoft Store` supports
   - My country has blocked all `Google` services
   - `Google` has a 5$ fee, and `Microsoft` has a $18 fee
-- No i18n support
-  - `i18n.js` has been removed altogether with `fancysettings.js`
-  - No plan to implement i18n support
 
 # Firefox Quantum
 
