@@ -27,7 +27,7 @@ function jsonRPCRequest(json, success, failure) {
         var response = JSON.parse(xhr.response);
         var error = response.error;
         if (error) {
-            return failure(error.message);
+            return failure(chrome.i18n.getMessage('jsonrpc_auth_error'));
         }
         var result = response.result || response.map(item => item.result);
         if (result.length) {
@@ -38,7 +38,7 @@ function jsonRPCRequest(json, success, failure) {
         }
     };
     xhr.onerror = () => {
-        failure('No Response');
+        failure(chrome.i18n.getMessage('jsonrpc_no_response'));
     };
     xhr.send(JSON.stringify(json));
 }

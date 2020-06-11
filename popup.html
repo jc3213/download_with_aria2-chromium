@@ -9,19 +9,19 @@
     </head>
     <body>
         <div id="globalHeader">
-            <span id="active_btn" class="active status button">Active</span> <span id="numActive">0</span>
+            <span id="active_btn" class="active status button" i18n>popup_active_button</span> <span id="numActive">0</span>
             -
-            <span id="waiting_btn" class="paused status button">Waiting</span> <span id="numWaiting">0</span>
+            <span id="waiting_btn" class="paused status button" i18n>popup_waiting_button</span> <span id="numWaiting">0</span>
             -
-            <span id="stopped_btn" class="stopped status button">Stopped</span> <span id="numStopped">0</span>
+            <span id="stopped_btn" class="stopped status button" i18n>popup_stopped_button</span> <span id="numStopped">0</span>
         </div>
         <div id="globalError" style="display: none;">
             <span class="error status"></span>
         </div>
         <div id="globalMenu">
-            <span id="addTask_btn" class="button">Add</span>
-            <span id="cancel_btn" class="button" style="display: none;">Cancel</span>
-            <span id="purdge_btn" class="button">Purge</span>
+            <span id="addTask_btn" class="button" i18n>popup_add_button</span>
+            <span id="cancel_btn" class="button" style="display: none;" i18n>popup_cancel_button</span>
+            <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
         </div>
         <div id="addTaskWindow" style="display: none;">
             <input id="taskInput" type="text">
@@ -29,7 +29,7 @@
             <div id="addTaskMenu">
                 <span id="addMore_btn" class="button">⇒</span>
                 <span id="addLess_btn" class="button" style="display: none;">⇐</span>
-                <span id="submit_btn" class="button">Submit</span>
+                <span id="submit_btn" class="button" i18n>popup_submit_button</span>
             </div>
         </div>
         <hr>
@@ -39,11 +39,12 @@
         <div id="stoppedQueue" class="taskQueue" style="display: none;"></div>
         <hr>
         <div id="globalFooter">
-            <span class="download status">Download</span> <span id="downloadSpeed">0 B/s</span>
+            <span class="download status" i18n>popup_download</span> <span id="downloadSpeed">0 B/s</span>
             -
-            <span class="upload status">Upload</span> <span id="uploadSpeed">0 B/s</span>
-            <span id="options_btn" class="button">Options</span>
+            <span class="upload status" i18n>popup_upload</span> <span id="uploadSpeed">0 B/s</span>
+            <span id="options_btn" class="button" i18n>popup_options_button</span>
         </div>
     </body>
+    <script src="js/i18n.js"></script>
     <script src="js/popup.js"></script>
 </html>

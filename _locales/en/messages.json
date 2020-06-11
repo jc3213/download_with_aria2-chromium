@@ -40,5 +40,47 @@
     },
     "option_ignored_desc": {
         "message": "do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u>"
+    },
+    "popup_active_button": {
+        "message": "Active"
+    },
+    "popup_waiting_button": {
+        "message": "Waiting"
+    },
+    "popup_stopped_button": {
+        "message": "Stopped"
+    },
+    "popup_add_button": {
+        "message": "Add"
+    },
+    "popup_cancel_button": {
+        "message": "Cancel"
+    },
+    "popup_purge_button": {
+        "message": "Purge"
+    },
+    "popup_submit_button": {
+        "message": "Submit"
+    },
+    "popup_options_button": {
+        "message": "Options"
+    },
+    "popup_download": {
+        "message": "Download"
+    },
+    "popup_upload": {
+        "message": "Upload"
+    },
+    "popup_remove_button": {
+        "message": "Remove"
+    },
+    "jsonrpc_download": {
+        "message": "Downloading"
+    },
+    "jsonrpc_auth_error" : {
+        "message": "Unauthorized"
+    },
+    "jsonrpc_no_response": {
+        "message": "No Response"
     }
 }

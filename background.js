@@ -2,7 +2,7 @@ function downWithAria2(url, params) {
     jsonRPCRequest(
         createJSON('aria2.addUri', '', [[url], params]),
         (result) => {
-            showNotification('Downloading', url);
+            showNotification(chrome.i18n.getMessage('jsonrpc_download'), url);
         },
         (error) => {
             showNotification(error);
