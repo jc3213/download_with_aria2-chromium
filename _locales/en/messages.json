@@ -1,0 +1,44 @@
+{
+    "option_jsonrpc": {
+        "message": "JSON RPC URI"
+    },
+    "option_jsonrpc_desc": {
+        "message": "default"
+    },
+    "option_token": {
+        "message": "Secret Token"
+    },
+    "option_token_desc": {
+        "message": "keep empty if no secret token is specified"
+    },
+    "option_capture": {
+        "message": "Capture"
+    },
+    "option_capture_desc": {
+        "message": "capture browser downloads based on built-in filters"
+    },
+    "option_filesize": {
+        "message": "File Size"
+    },
+    "option_filesize_desc": {
+        "message": "capture downloads those are larger than"
+    },
+    "option_fileext": {
+        "message": "File Extension"
+    },
+    "option_fileext_desc": {
+        "message": "capture downloads with listed file extensions, <u>one entry per line</u>"
+    },
+    "option_monitored": {
+        "message": "Monitored Host"
+    },
+    "option_monitored_desc": {
+        "message": "capture downloads on these web hosts, <u>one entry per line</u>"
+    },
+    "option_ignored": {
+        "message": "Ignored Host"
+    },
+    "option_ignored_desc": {
+        "message": "do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u>"
+    }
+}
