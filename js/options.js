@@ -8,13 +8,12 @@ function checkRPCResult(message) {
 function captureOption() {
     var checked = JSON.parse(localStorage.getItem('capture')) || false;
     if (checked) {
-        $('#capture').html('☒');
         $('#filters').show(100);
     }
     else {
-        $('#capture').html('☐');
         $('#filters').hide(100);
     }
+    return checked;
 }
 
 function calcFileSize(event) {
@@ -67,10 +66,10 @@ $('#aria2Show').on('click', (event) => {
     }
 });
 
-$('#capture').on('click', (event) => {
-    localStorage.setItem('capture', !(JSON.parse(localStorage.getItem('capture')) || false));
+$('#capture').attr('checked', captureOption).on('click', (event) => {
+    localStorage.setItem('capture', event.target.checked);
     captureOption();
-}).ready(captureOption);
+});
 
 $('#sizeEntry').val(localStorage.getItem('sizeEntry') || 0).on('change', calcFileSize);
 
