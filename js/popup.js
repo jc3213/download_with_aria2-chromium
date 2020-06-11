@@ -182,7 +182,7 @@ function printMainFrame() {
         printTaskQueue(waiting, stopped);
     }, (error) => {
         $('#globalHeader, #globalMenu').hide();
-        $('#' + error + ', #globalError').show();
+        $('#globalError, #' + error).show();
     });
 }
 
