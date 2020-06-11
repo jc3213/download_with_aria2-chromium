@@ -50,7 +50,7 @@ $('#aria2Check').on('click', (event) => {
             checkRPCResult(result.version);
         },
         (error) => {
-            checkRPCResult(error);
+            checkRPCResult(chrome.i18n.getMessage(error));
         }
     );
 });
