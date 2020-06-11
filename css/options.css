@@ -30,26 +30,26 @@ input, textarea {
     top: 130px;
 }
 
-#aria2_check, #aria2_show {
+#aria2Check, #aria2Show {
     left: 330px;
 }
 
-#aria2_result {
+#aria2Result {
     left: 380px;
 }
 
-#capture_main {
+#capture {
     position: absolute;
     top: 215px;
     left: -55px;
     height: 22px;
 }
 
-#size_entry {
+#sizeEntry {
     width: 240px;
 }
 
-#size_unit {
+#sizeUnit {
     position: absolute;
     top: 315px;
     left: 280px;

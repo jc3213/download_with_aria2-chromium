@@ -45,30 +45,31 @@ function matchPattern(pattern, url) {
 }
 
 function captureCheck(item, referer) {
-    var ignored = localStorage.getItem('nor_pattern');
+    var ignored = localStorage.getItem('ignored');
     if (ignored && ignored !== '') {
         if (matchPattern(ignored, referer)) {
             return false;
         }
     }
-    var monitored = localStorage.getItem('mon_pattern');
+    var monitored = localStorage.getItem('monitored');
     if (monitored && monitored !== '') {
         if (matchPattern(monitored, referer)) {
             return true;
         }
     }
-    var fileext = localStorage.getItem('ext_pattern');
+    var fileext = localStorage.getItem('fileext');
     if (fileext && fileext !== '') {
         if (matchPattern(fileext, item.finalUrl)) {
             return true;
         }
     }
-    var size = localStorage.getItem('size_number');
-    if (size && size > 0) {
-        if (item.fileSize >= size) {
+    var filesize = localStorage.getItem('fileSize');
+    if (filesize && filesize > 0) {
+        if (item.fileSize >= filesize) {
             return true;
         }
     }
+console.log(ignored, monitored, fileext, filesize);
     return false;
 }
 

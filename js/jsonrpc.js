@@ -1,5 +1,5 @@
 function createJSON(method, gid, params) {
-    var token = localStorage.getItem('aria2_secret') || '';
+    var token = localStorage.getItem('token') || '';
     var json = {
         jsonrpc: 2.0,
         method: method,
@@ -20,7 +20,7 @@ function createJSON(method, gid, params) {
 function jsonRPCRequest(json, success, failure) {
     success = success || function() {};
     failure = failure || function() {};
-    var rpc = localStorage.getItem('aria2_rpc') || 'http://localhost:6800/jsonrpc';
+    var rpc = localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc';
     var xhr = new XMLHttpRequest();
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {

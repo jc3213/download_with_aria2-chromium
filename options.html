@@ -10,43 +10,43 @@
     <body>
         <div class="container">
             <div class="title" i18n>option_jsonrpc</div>
-            <input id="aria2_rpc" type="text" placeholder="http://localhost:6800/jsonrpc">
-            <span id="aria2_check" class="button jsonrpc">Check</span>
-            <span id="aria2_result" class="jsonrpc"></span>
+            <input id="jsonrpc" type="text" placeholder="http://localhost:6800/jsonrpc">
+            <span id="aria2Check" class="button jsonrpc">Check</span>
+            <span id="aria2Result" class="jsonrpc"></span>
             <br><span i18n>option_jsonrpc_desc</span> **<u><i>http://localhost:6800/jsonrpc</i></u>
         </div>
         <div class="container">
             <div class="title" i18n>option_token</div>
-            <input id="aria2_secret" type="password" placeholder="$$secret$$">
-            <span id="aria2_show" class="button token">Show</span>
+            <input id="token" type="password" placeholder="$$secret$$">
+            <span id="aria2Show" class="button token">Show</span>
             <br><span i18n>option_token_desc</span>
         </div>
         <hr>
         <div class="container">
             <div class="title" i18n>option_capture</div>
-            <input id="capture_main" type="checkbox">
             <span i18n>option_capture_desc</span>
+            <input id="capture" type="checkbox">
         </div>
-        <div id="capture_filters" class="container" style="display: none;">
+        <div id="filters" class="container" style="display: none;">
             <div class="container">
                 <div class="title" i18n>option_filesize</div>
-                <input id="size_entry" type="number" min="0">
-                <select id="size_unit"><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select>
+                <input id="sizeEntry" type="number" min="0">
+                <select id="sizeUnit"><option value="1">KB</option><option value="2">MB</option><option value="3">GB</option><option value="3">TB</option></select>
                 <br><span i18n>option_filesize_desc</span> **<u><i>200MB</i></u>
             </div>
             <div class="container">
                 <div class="title" i18n>option_fileext</div>
-                <textarea id="ext_list" placeholder="zip&#10;exe&#10;jpg"></textarea>
+                <textarea id="fileextList" placeholder="zip&#10;exe&#10;jpg"></textarea>
                 <br><span i18n>option_fileext_desc</span>
             </div>
             <div class="container">
                 <div class="title" i18n>option_monitored</div>
-                <textarea id="mon_list" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea>
+                <textarea id="monitoredList" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea>
                 <br><span i18n>option_monitored_desc</span>
             </div>
             <div class="container">
                 <div class="title" i18n>option_ignored</div>
-                <textarea id="nor_list" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea>
+                <textarea id="ignoredList" placeholder="example.com&#10;*.example.com&#10;ajax.example.*"></textarea>
                 <br><span i18n>option_ignored_desc</span>
             </div>
         </div>
