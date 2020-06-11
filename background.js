@@ -57,7 +57,7 @@ function captureCheck(item, referer) {
             return true;
         }
     }
-    var fileext = localStorage.getItem('fileext');
+    var fileext = localStorage.getItem('fileExt');
     if (fileext && fileext !== '') {
         if (matchPattern(fileext, item.finalUrl)) {
             return true;
@@ -69,7 +69,6 @@ function captureCheck(item, referer) {
             return true;
         }
     }
-console.log(ignored, monitored, fileext, filesize);
     return false;
 }
 

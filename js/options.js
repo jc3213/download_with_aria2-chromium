@@ -32,7 +32,7 @@ function calcFileSize(event) {
 
 function makePattern(event) {
     var entry = event.target.value.split('\n').filter(item => item !== '');
-    if (event.target.id === 'fileextList') {
+    if (event.target.id === 'fileExtList') {
         entry = entry.map(item => '.' + item);
     }
     var pattern = entry.join('|').replace(/\./g, '\\.').replace(/\*/g, '[^ ]*');
@@ -76,7 +76,7 @@ $('#sizeEntry').val(localStorage.getItem('sizeEntry') || 0).on('change', calcFil
 
 $('#sizeUnit').val(localStorage.getItem('sizeUnit') || 2).on('change', calcFileSize);
 
-$('#fileextList').val(localStorage.getItem('fileextList') || '').on('change', makePattern);
+$('#fileExtList').val(localStorage.getItem('fileExtList') || '').on('change', makePattern);
 
 $('#monitoredList').val(localStorage.getItem('monitoredList') || '').on('change', makePattern);
 
