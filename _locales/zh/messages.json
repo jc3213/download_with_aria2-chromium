@@ -86,10 +86,10 @@
     "jsonrpc_download": {
         "message": "即将下载"
     },
-    "jsonrpc_auth_error" : {
+    "jsonrpc_error_auth" : {
         "message": "未授权的请求"
     },
-    "jsonrpc_no_response": {
+    "jsonrpc_error_net": {
         "message": "无响应"
     }
 }

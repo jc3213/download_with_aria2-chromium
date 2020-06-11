@@ -27,7 +27,7 @@ function jsonRPCRequest(json, success, failure) {
         var response = JSON.parse(xhr.response);
         var error = response.error;
         if (error) {
-            return failure('jsonrpc_auth_error');
+            return failure('jsonrpc_error_auth');
         }
         var result = response.result || response.map(item => item.result);
         if (result.length) {
@@ -38,7 +38,7 @@ function jsonRPCRequest(json, success, failure) {
         }
     };
     xhr.onerror = () => {
-        failure('jsonrpc_no_response');
+        failure('jsonrpc_error_net');
     };
     xhr.send(JSON.stringify(json));
 }

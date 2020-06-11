@@ -86,10 +86,10 @@
     "jsonrpc_download": {
         "message": "Downloading"
     },
-    "jsonrpc_auth_error" : {
+    "jsonrpc_error_auth" : {
         "message": "Unauthorized"
     },
-    "jsonrpc_no_response": {
+    "jsonrpc_error_net": {
         "message": "No Response"
     }
 }
