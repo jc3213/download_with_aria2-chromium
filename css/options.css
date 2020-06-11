@@ -40,9 +40,9 @@ input, textarea {
 
 #capture {
     position: absolute;
-    top: 215px;
-    left: -55px;
-    height: 22px;
+    top: 210px;
+    left: 55px;
+    font-size: 24px;
 }
 
 #sizeEntry {
