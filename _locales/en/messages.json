@@ -91,5 +91,17 @@
     },
     "jsonrpc_error_net": {
         "message": "No Response"
+    },
+    "task_download_size": {
+        "message": "Size"
+    },
+    "task_estimated_time": {
+        "message": "Estimated"
+    },
+    "task_connections": {
+        "message": "Connections"
+    },
+    "task_bit_seeders": {
+        "message": "Seeders"
     }
 }

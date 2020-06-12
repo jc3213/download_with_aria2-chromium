@@ -91,5 +91,17 @@
     },
     "jsonrpc_error_net": {
         "message": "无响应"
+    },
+    "task_download_size": {
+        "message": "大小"
+    },
+    "task_estimated_time": {
+        "message": "剩余时间"
+    },
+    "task_connections": {
+        "message": "连接数"
+    },
+    "task_bit_seeders": {
+        "message": "种子"
     }
 }
