@@ -1,7 +1,7 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.650",
+    "version": "2.670",
     "manifest_version": 2,
     "minimum_chrome_version": "35",
     "permissions": [ "contextMenus", "tabs", "downloads", "notifications", "cookies", "<all_urls>" ],
