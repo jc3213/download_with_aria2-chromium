@@ -59,7 +59,6 @@ input, textarea {
 .progress {
     color: #FFF;
     height: 20px;
-    width: 380px;
     text-align: center;
 }
 
@@ -104,10 +103,6 @@ input, textarea {
     font-weight: bold;
 }
 
-.capitalize {
-    text-transform: capitalize;
-}
-
-.complete_extra {
+.complete_info {
     display: none;
 }

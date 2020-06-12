@@ -133,8 +133,8 @@ function printTaskInfo(result) {
     }
     if (result.bittorrent) {
         var uploadSpeed = bytesToFileSize(result.uploadSpeed);
-        var seedsInfo = ' (' + result.numSeeders + ' seeds)';
-        var uploadInfo = ' (up: ' + uploadSpeed + '/s)';
+        var seedsInfo = ' (' + result.numSeeders + ' Seeds)';
+        var uploadInfo = ', ⇧: ' + uploadSpeed + '/s';
     }
     else {
         seedsInfo = '';
@@ -142,8 +142,8 @@ function printTaskInfo(result) {
     }
     return '<div class="taskInfo">'
     +          '<div class="taskName">' + taskName + ' <span class="button" status="' + result.status + '" gid="' + result.gid + '">❌</span></div>'
-    +          '<div class="' + result.status + '_basic"><span class="capitalize">' + result.status + '</span>, ' + completedLength + '/' + totalLength + ', ETA: ' + estimatedTime + '</div>'
-    +          '<div class="' + result.status + '_extra">' + result.connections + ' conns' + seedsInfo + ', ' + downloadSpeed + '/s' + uploadInfo + '</div>'
+    +          '<div>Size: ' + completedLength + '/' + totalLength + ', Estimated: ' + estimatedTime + '</div>'
+    +          '<div class="' + result.status + '_info">Connections: ' + result.connections + seedsInfo + ', ⇩: ' + downloadSpeed + '/s' + uploadInfo + '</div>'
     +          '<div class="progress ' + result.status + '_bar"><span class="' + result.status + '" status="' + result.status + '" gid="' + result.gid + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
     +      '</div>'
 }
