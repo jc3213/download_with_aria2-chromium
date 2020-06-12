@@ -18,18 +18,6 @@ input, textarea {
     width: 300px;
 }
 
-.jsonrpc {
-    padding: 3px;
-    position: absolute;
-    top: 37px;
-}
-
-.token {
-    padding: 3px;
-    position: absolute;
-    top: 130px;
-}
-
 #aria2Check, #aria2Show {
     left: 330px;
 }
@@ -48,8 +36,5 @@ input, textarea {
 }
 
 #sizeUnit {
-    position: absolute;
-    top: 315px;
-    left: 280px;
-    height: 27px;
+    height: 28px;
 }
