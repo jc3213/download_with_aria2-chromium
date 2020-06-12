@@ -36,6 +36,7 @@ body {
 
 .taskQueue .button {
     font-size: 9px;
+    padding: 1px;
 }
 
 .checked {
