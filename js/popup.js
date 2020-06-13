@@ -89,8 +89,8 @@ $('#options_btn').on('click', (event) => {
 });
 
 $('div.taskQueue').on('click', 'span.button', (event) => {
-    var gid = $(event.target).attr('gid');
-    var status = $(event.target).attr('status');
+    var data = $(event.originalEvent.path[2]).attr('data').split(' ');
+    var status = data[0], gid = data[1];
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
     }
@@ -102,8 +102,8 @@ $('div.taskQueue').on('click', 'span.button', (event) => {
     }
     jsonRPCRequest(createJSON(method, gid));
 }).on('click', 'div.progress', (event) => {
-    var gid = $(event.target).children('span').attr('gid') || $(event.target).attr('gid');
-    var status = $(event.target).children('span').attr('status') || $(event.target).attr('status');
+    var data = ($(event.originalEvent.path[2]).attr('data') || $(event.originalEvent.path[1]).attr('data')).split(' ');
+    var status = data[0], gid = data[1];
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
@@ -140,11 +140,11 @@ function printTaskInfo(result) {
         seedsInfo = '';
         uploadInfo = '';
     }
-    return '<div class="taskInfo">'
-    +          '<div><span class="taskName">' + taskName + '</span> <span class="button" status="' + result.status + '" gid="' + result.gid + '">❌</span></div>'
+    return '<div class="taskInfo" data="' + result.status + ' ' + result.gid + '">'
+    +          '<div><span class="taskName">' + taskName + '</span> <span class="button">❌</span></div>'
     +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
     +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + seedsInfo + ', ⇩: ' + downloadSpeed + '/s' + uploadInfo + '</div>'
-    +          '<div class="progress ' + result.status + '_bar"><span class="' + result.status + '" status="' + result.status + '" gid="' + result.gid + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
+    +          '<div class="progress ' + result.status + '_bar"><span class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
     +      '</div>'
 }
 
