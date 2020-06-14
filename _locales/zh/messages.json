@@ -3,7 +3,7 @@
         "message": "通过 Aria2 下载"
     },
     "extension_description": {
-        "message": "本扩展使得 Chromium 与 Firefox Quantum 浏览器能够通过 Aria2 进行下载"
+        "message": "本扩展使得 Chromium 浏览器能够通过 Aria2 进行下载"
     },
     "option_jsonrpc": {
         "message": "JSONRPC 链接"

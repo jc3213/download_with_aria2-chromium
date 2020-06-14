@@ -44,22 +44,22 @@ function matchPattern(pattern, url) {
     return regexp.test(url);
 }
 
-function captureCheck(item, referer) {
+function captureCheck(item) {
     var ignored = localStorage.getItem('ignored');
     if (ignored && ignored !== '') {
-        if (matchPattern(ignored, referer)) {
+        if (matchPattern(ignored, item.referrer)) {
             return false;
         }
     }
     var monitored = localStorage.getItem('monitored');
     if (monitored && monitored !== '') {
-        if (matchPattern(monitored, referer)) {
+        if (matchPattern(monitored, tem.referrer)) {
             return true;
         }
     }
     var fileext = localStorage.getItem('fileExt');
     if (fileext && fileext !== '') {
-        if (matchPattern(fileext, item.finalUrl)) {
+        if (matchPattern(fileext, item.filename)) {
             return true;
         }
     }
@@ -72,10 +72,10 @@ function captureCheck(item, referer) {
     return false;
 }
 
-function captureAdd(item, referer) {
-    var capture = captureCheck(item, referer);
+function captureAdd(item) {
+    var capture = captureCheck(item);
     if (capture) {
-        getCookies(referer, (params) => {
+        getCookies(item.referrer, (params) => {
             chrome.downloads.erase({'id': item.id}, () => {
                 downWithAria2(item.finalUrl, params);
             });
@@ -86,22 +86,18 @@ function captureAdd(item, referer) {
 chrome.contextMenus.create({
     title: chrome.i18n.getMessage('extension_name'),
     id: 'downwitharia2',
-    contexts: ['link']
-});
-
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === 'downwitharia2') {
+    contexts: ['link'],
+    onclick: (info, tab) => {
         getCookies(info.pageUrl, (params) => {
             downWithAria2(info.linkUrl, params);
         });
     }
 });
 
-chrome.downloads.onCreated.addListener((item) => {
+chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
+console.log(item);
     if (capture) {
-        chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
-            captureAdd(item, tabs[0].url);
-        });
+        captureAdd(item);
     }
 });

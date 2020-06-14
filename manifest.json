@@ -1,14 +1,14 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.810",
+    "version": "2.900",
     "manifest_version": 2,
     "minimum_chrome_version": "35",
-    "permissions": [ "contextMenus", "tabs", "downloads", "notifications", "cookies", "<all_urls>" ],
+    "permissions": [ "contextMenus", "downloads", "notifications", "cookies", "<all_urls>" ],
     "default_locale" : "en",
     "background": {
         "scripts": [ "background.js", "js/jsonrpc.js" ],
-        "persistent": false
+        "persistent": true
     },
     "browser_action": {
         "default_icon": {

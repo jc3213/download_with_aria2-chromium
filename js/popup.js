@@ -113,11 +113,11 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
 }).on('click', '#show_btn', (event) => {
     clearInterval(keepFilesAlive);
     var taskInfo = $('div.taskInfo').has($(event.target));
-    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), task = taskInfo.attr('task');
+    var gid = taskInfo.attr('gid'), name = taskInfo.attr('name');
     $('#showTaskFiles').show();
-    printTaskFiles(gid, task);
+    printTaskFiles(gid, name);
     keepFilesAlive = setInterval(() => {
-        printTaskFiles(gid, task);
+        printTaskFiles(gid, name);
     }, 1000);
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
@@ -137,7 +137,7 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     jsonRPCRequest(createJSON(method, gid));
 });
 
-function printTaskFiles(gid, task) {
+function printTaskFiles(gid, name) {
     jsonRPCRequest(
         createJSON('aria2.tellStatus', gid),
         (result) => {
@@ -147,7 +147,7 @@ function printTaskFiles(gid, task) {
             +   bytesToFileSize(item.length) + '</td><td>'
             +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
-            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + task + '</div><hr>'
+            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + name + '</div><hr>'
             +   '<div id="showFiles"><table>'
             +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
             +       taskFiles.join('')
@@ -177,7 +177,7 @@ function printTaskInfo(result) {
         seedsInfo = '';
         uploadInfo = '';
     }
-    return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" task="' + taskName + '">'
+    return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
     +          '<div><span class="taskName">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
     +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
     +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + seedsInfo + ', ⇩: ' + downloadSpeed + '/s' + uploadInfo + '</div>'

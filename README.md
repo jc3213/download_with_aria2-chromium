@@ -18,6 +18,7 @@
   - Better `Progress` bar, click to pause and unpause the task
   - `Options` button to open `options.html` instantly
   - Show notification on authentication failure or network error
+  - Ability to list the files of target download task
 - Bug fixes
   - Fixed capture, if `File Size` checkbox is disabled, other filters won't work
   - Fixed cookies, cookies should be merged with `' '` not `''`
@@ -56,3 +57,9 @@
        "url": "https://github.com/jc3213/download_with_aria2"
     }
 ```
+- Don't use `Capture` function, and remove all related codes, because its broken in firefox
+- If you insist that you'd like the `Capture` function, follow these steps
+    - Change `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated`
+    - Bewared that `downloads.downloadItem` on Firefox doesn't provide `finalUrl` property
+    - You need to use `chrome.tabs` api to get referer of the download
+    - `webRequest` maybe a possible work around, but I won't suggest you do it
