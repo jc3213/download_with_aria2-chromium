@@ -86,8 +86,11 @@ function captureAdd(item) {
 chrome.contextMenus.create({
     title: chrome.i18n.getMessage('extension_name'),
     id: 'downwitharia2',
-    contexts: ['link'],
-    onclick: (info, tab) => {
+    contexts: ['link']
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === 'downwitharia2') {
         getCookies(info.pageUrl, (params) => {
             downWithAria2(info.linkUrl, params);
         });
