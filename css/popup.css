@@ -80,6 +80,7 @@ input, textarea {
 }
 
 table {
+    border-collapse: collapse;
     width: 380px;
 }
 
