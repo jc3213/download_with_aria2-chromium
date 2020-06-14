@@ -23,13 +23,8 @@ function bytesToFileSize(bytes) {
     }
 }
 
-function multiDecimalNumber(number, decimal) {
-    number = number.toString();
-    decimal = decimal || 2;
-    for (var i = number.length; i < decimal; i ++) {
-        number = '0' + number;
-    }
-    return number;
+function twoDecimalNumber(number) {
+    return ('00' + number).substr(number.toString().length);
 }
 
 function secondsToHHMMSS(number) {
@@ -39,10 +34,11 @@ function secondsToHHMMSS(number) {
     if (number === Infinity) {
         return '∞';
     }
-    var hours = (number / 3600 | 0);
-    var minutes = ((number - hours * 3600) / 60 | 0);
-    var seconds = (number - hours * 3600 - minutes * 60 | 0);
-    var time = multiDecimalNumber(hours) + 'h' + multiDecimalNumber(minutes) + 'm' + multiDecimalNumber(seconds) + 's';
+    var integer = (number | 0);
+    var hours = twoDecimalNumber(integer / 3600 | 0);
+    var minutes = twoDecimalNumber((integer - (hours * 3600)) / 60 | 0);
+    var seconds = twoDecimalNumber(integer - (hours * 3600) - (minutes * 60));
+    var time = hours + 'h' + minutes + 'm' + seconds + 's';
     return time.replace(/(00[hms])*/, '');
 }
 
@@ -92,19 +88,14 @@ $('#options_btn').on('click', (event) => {
     open('options.html', '_blank');
 });
 
-$('#taskFiles').on('click', '#showTask', (event) => {
-    clearInterval(keepFilesAlive.alive);
-    $('#taskFiles').hide();
-    $('body').css('width', '400px');
+$('#showTaskFiles').on('click', '#showTask', (event) => {
+    clearInterval(keepFilesAlive);
+    $('#showTaskFiles').hide();
 });
 
 $('div.taskQueue').on('click', '#remove_btn', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
-    var gid = taskInfo.attr('gid');
-    var status = taskInfo.attr('status');
-    if (keepFilesAlive.gid === gid) {
-        clearInterval(keepFilesAlive);
-    }
+    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
     }
@@ -116,21 +107,17 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     }
     jsonRPCRequest(createJSON(method, gid));
 }).on('click', '#show_btn', (event) => {
-    clearInterval(keepFilesAlive.alive);
+    clearInterval(keepFilesAlive);
     var taskInfo = $('div.taskInfo').has($(event.target));
-    var gid = taskInfo.attr('gid');
-    var task = taskInfo.attr('task');
-    $('#taskFiles').show();
-    $('body').css('width', '780px');
+    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), task = taskInfo.attr('task');
+    $('#showTaskFiles').show();
     printTaskFiles(gid, task);
-    
-    keepFilesAlive = {gid: gid, alive: setInterval(() => {
+    keepFilesAlive = setInterval(() => {
         printTaskFiles(gid, task);
-    }, 1000)};
+    }, 1000);
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
-    var gid = taskInfo.attr('gid');
-    var status = taskInfo.attr('status');
+    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
@@ -151,12 +138,12 @@ function printTaskFiles(gid, task) {
         createJSON('aria2.tellStatus', gid),
         (result) => {
             var taskFiles = result.files.map((item, index) => item = '<tr><td>'
-            +   multiDecimalNumber(index + 1, 3) + '</td><td style="text-align: left;">'
+            +   twoDecimalNumber(index + 1) + '</td><td style="text-align: left;">'
             +   item.path.split('/').pop() + '</td><td>'
             +   bytesToFileSize(item.length) + '</td><td>'
             +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
-            $('#taskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + task + '</div>'
+            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + task + '</div><hr>'
             +   '<div id="showFiles"><table>'
             +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
             +       taskFiles.join('')
@@ -233,4 +220,4 @@ function printMainFrame() {
 
 printMainFrame();
 var keepContentAlive = setInterval(printMainFrame, 1000);
-var keepFilesAlive = {};
+var keepFilesAlive;

@@ -8,44 +8,42 @@
         <script src="js/jsonrpc.js"></script>
     </head>
     <body>
-        <div id="taskFiles" class="hidden"></div>
-        <div id="taskManager" class="container">
-            <div id="globalHeader">
-                <span id="active_btn" class="active status button" i18n>popup_active_button</span> <span id="numActive">0</span>
-                -
-                <span id="waiting_btn" class="paused status button" i18n>popup_waiting_button</span> <span id="numWaiting">0</span>
-                -
-                <span id="stopped_btn" class="stopped status button" i18n>popup_stopped_button</span> <span id="numStopped">0</span>
+        <div id="globalHeader">
+            <span id="active_btn" class="active status button" i18n>popup_active_button</span> <span id="numActive">0</span>
+            -
+            <span id="waiting_btn" class="paused status button" i18n>popup_waiting_button</span> <span id="numWaiting">0</span>
+            -
+            <span id="stopped_btn" class="stopped status button" i18n>popup_stopped_button</span> <span id="numStopped">0</span>
+        </div>
+        <span id="globalError" class="error status hidden"></span>
+        <div id="globalMenu">
+            <span id="addTask_btn" class="button" i18n>popup_add_button</span>
+            <span id="cancel_btn" class="button hidden" i18n>popup_cancel_button</span>
+            <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
+        </div>
+        <div id="addTaskWindow" class="hidden">
+            <input id="taskInput" type="text">
+            <textarea id="taskBatch" class="hidden"></textarea>
+            <div id="addTaskMenu">
+                <span id="addMore_btn" class="button">⇒</span>
+                <span id="addLess_btn" class="button hidden">⇐</span>
+                <span id="submit_btn" class="button" i18n>popup_submit_button</span>
             </div>
-            <span id="globalError" class="error status hidden"></span>
-            <div id="globalMenu">
-                <span id="addTask_btn" class="button" i18n>popup_add_button</span>
-                <span id="cancel_btn" class="button hidden" i18n>popup_cancel_button</span>
-                <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
-            </div>
-            <div id="addTaskWindow" class="hidden">
-                <input id="taskInput" type="text">
-                <textarea id="taskBatch" class="hidden"></textarea>
-                <div id="addTaskMenu">
-                    <span id="addMore_btn" class="button">⇒</span>
-                    <span id="addLess_btn" class="button hidden">⇐</span>
-                    <span id="submit_btn" class="button" i18n>popup_submit_button</span>
-                </div>
-            </div>
-            <hr>
-            <div id="allTaskQueue" class="taskQueue"></div>
-            <div id="activeQueue" class="taskQueue hidden"></div>
-            <div id="waitingQueue" class="taskQueue hidden"></div>
-            <div id="stoppedQueue" class="taskQueue hidden"></div>
-            <hr>
-            <div id="globalFooter">
-                <span class="download status" i18n>popup_download</span> <span id="downloadSpeed">0 B/s</span>
-                -
-                <span class="upload status" i18n>popup_upload</span> <span id="uploadSpeed">0 B/s</span>
-            </div>
-            <div id="optionsMenu">
-                <span id="options_btn" class="button" i18n>popup_options_button</span>
-            </div>
+        </div>
+        <hr>
+        <div id="allTaskQueue" class="taskQueue"></div>
+        <div id="activeQueue" class="taskQueue hidden"></div>
+        <div id="waitingQueue" class="taskQueue hidden"></div>
+        <div id="stoppedQueue" class="taskQueue hidden"></div>
+        <div id="showTaskFiles" class="hidden"></div>
+        <hr>
+        <div id="globalFooter">
+            <span class="download status" i18n>popup_download</span> <span id="downloadSpeed">0 B/s</span>
+            -
+            <span class="upload status" i18n>popup_upload</span> <span id="uploadSpeed">0 B/s</span>
+        </div>
+        <div id="optionsMenu">
+            <span id="options_btn" class="button" i18n>popup_options_button</span>
         </div>
     </body>
     <script src="js/i18n.js"></script>
