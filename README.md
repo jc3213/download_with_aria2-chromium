@@ -3,7 +3,6 @@
 - This extension is forked from [chrome-aria2-integration](https://github.com/robbielj/chrome-aria2-integration)
 - Nearly all codes have been completely rewritten
 
-
 # Advantages
 
 - Brand new option window
@@ -18,20 +17,18 @@
   - Better `Progress` bar, click to pause and unpause the task
   - `Options` button to open `options.html` instantly
   - Show notification on authentication failure or network error
-  - Ability to list the files of target download task
+  - Ability to list the files of the target download task
 - Bug fixes
-  - Fixed capture, if `File Size` checkbox is disabled, other filters won't work
-  - Fixed cookies, cookies should be merged with `' '` not `''`
+  - Fixed capture, if `File Size` checkbox is unchecked, other filters won't work
+  - Fixed cookies, `array.prototype.join()` is better than `string1` + `string2`
 - Other optimization
   - New library `jQuery-3.5.1.js`
   - New icons
-  - Removed `fancysettings.js`, `store.js`, `popuplib.min.js`
-  - Removed unnecessary `inject.js`
-  - Removed unnecessary `chrome` api and `manifest` key usage
-  - Better code readability and performance
+  - Removed libraries `fancysettings.js`, `store.js`, `popuplib.min.js`, `i18n.js`
+  - Removed unnecessary `*.js`, `chrome` api and `manifest` key usage
+  - Better code readability, coding logic and performance
   - Better notifications
-  - Better i18n
-
+  - Full i18n supports
 
 # Disadvantages
 
@@ -54,7 +51,7 @@
        "url": "https://github.com/jc3213/download_with_aria2"
     }
 ```
-- Don't use `Capture` function, and remove all related codes, because it's broken on firefox
-- `webRequest` maybe a more accurate and less buggy work around
-- `webRequest` it may have conflicts with other extensions and is more complicated
+- Don't use `Capture` function, and remove all related codes, it is broken on firefox
+- `webRequest` may be a more accurate and less buggy work around
+- `webRequest` may have conflicts with other extensions and is more complicated
 - Read [Issue #1](https://github.com/jc3213/download_with_aria2/issues/1) for more details
