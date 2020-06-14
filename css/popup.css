@@ -1,24 +1,41 @@
 body {
     width: 400px;
+    height: 480px;
+}
+
+#taskManager {
+    border-left: 1px solid #CCC;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 400px;
+}
+
+#taskFiles {
+    border-right: 1px solid #CCC;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 375px;
 }
 
 #globalMenu {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 10px;
+    right: 10px;
 }
 
 #optionsMenu {
     position: absolute;
-    bottom: 8px;
-    right: 8px;
+    bottom: 10px;
+    right: 10px;
 }
 
 #addTaskWindow {
     background-color: #FFF;
     border: 1px solid #CCC;
     position: absolute;
-    top: 34px;
+    top: 36px;
     width: 380px;
     padding: 10px;
 }
@@ -30,7 +47,7 @@ body {
 }
 
 .taskQueue {
-    height: 400px;
+    height: 405px;
     overflow-y: scroll;
 }
 
@@ -60,14 +77,9 @@ input, textarea {
     font-weight: bold;
 }
 
-#showTaskFiles {
-    background-color: #FFF;
-    padding-top: 5px;
-    position: absolute;
-    top: 3px;
-    width: 400px;
-    height: 435px;
-    z-index: 3213;
+#showTask {
+    height: 40px;
+    overflow: hidden;
 }
 
 #showTask:active {
@@ -75,13 +87,13 @@ input, textarea {
 }
 
 #showFiles {
-    max-height: 355px;
+    max-height: 445px;
     overflow-y: scroll;
 }
 
 table {
     border-collapse: collapse;
-    width: 380px;
+    width: 355px;
 }
 
 td {

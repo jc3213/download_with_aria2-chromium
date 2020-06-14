@@ -7,6 +7,10 @@ body {
     display: none;
 }
 
+.container {
+    padding: 10px;
+}
+
 .button {
     background-color: #FFF;
     border: 1px outset #CCC;

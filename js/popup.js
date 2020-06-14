@@ -92,15 +92,19 @@ $('#options_btn').on('click', (event) => {
     open('options.html', '_blank');
 });
 
-$('#showTaskFiles').on('click', '#showTask', (event) => {
-    clearInterval(keepFilesAlive);
-    $('#showTaskFiles').hide();
+$('#taskFiles').on('click', '#showTask', (event) => {
+    clearInterval(keepFilesAlive.alive);
+    $('#taskFiles').hide();
+    $('body').css('width', '400px');
 });
 
 $('div.taskQueue').on('click', '#remove_btn', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var gid = taskInfo.attr('gid');
-    var status = taskInfo.attr('status')
+    var status = taskInfo.attr('status');
+    if (keepFilesAlive.gid === gid) {
+        clearInterval(keepFilesAlive);
+    }
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
     }
@@ -112,20 +116,21 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     }
     jsonRPCRequest(createJSON(method, gid));
 }).on('click', '#show_btn', (event) => {
-    clearInterval(keepFilesAlive);
+    clearInterval(keepFilesAlive.alive);
     var taskInfo = $('div.taskInfo').has($(event.target));
     var gid = taskInfo.attr('gid');
-    var status = taskInfo.attr('status')
     var task = taskInfo.attr('task');
-    $('#showTaskFiles').show();
-    printTaskFiles(status, gid, task);
-    keepFilesAlive = setInterval(() => {
-        printTaskFiles(status, gid, task);
-    }, 1000);
+    $('#taskFiles').show();
+    $('body').css('width', '780px');
+    printTaskFiles(gid, task);
+    
+    keepFilesAlive = {gid: gid, alive: setInterval(() => {
+        printTaskFiles(gid, task);
+    }, 1000)};
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var gid = taskInfo.attr('gid');
-    var status = taskInfo.attr('status')
+    var status = taskInfo.attr('status');
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
@@ -141,7 +146,7 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     jsonRPCRequest(createJSON(method, gid));
 });
 
-function printTaskFiles(status, gid, task) {
+function printTaskFiles(gid, task) {
     jsonRPCRequest(
         createJSON('aria2.tellStatus', gid),
         (result) => {
@@ -151,7 +156,7 @@ function printTaskFiles(status, gid, task) {
             +   bytesToFileSize(item.length) + '</td><td>'
             +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
-            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + status + '">' + task + '</div><hr>'
+            $('#taskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + task + '</div>'
             +   '<div id="showFiles"><table>'
             +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
             +       taskFiles.join('')
@@ -228,4 +233,4 @@ function printMainFrame() {
 
 printMainFrame();
 var keepContentAlive = setInterval(printMainFrame, 1000);
-var keepFilesAlive;
+var keepFilesAlive = {};
