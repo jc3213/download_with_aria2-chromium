@@ -53,7 +53,7 @@ function captureCheck(item) {
     }
     var monitored = localStorage.getItem('monitored');
     if (monitored && monitored !== '') {
-        if (matchPattern(monitored, tem.referrer)) {
+        if (matchPattern(monitored, item.referrer)) {
             return true;
         }
     }
@@ -96,7 +96,6 @@ chrome.contextMenus.create({
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
-console.log(item);
     if (capture) {
         captureAdd(item);
     }

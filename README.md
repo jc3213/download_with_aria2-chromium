@@ -31,9 +31,6 @@
   - Better code readability and performance
   - Better notifications
   - Better i18n
-- Mozilla Quantum compatibility
-  - Changed `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated`
-  - Changed manifest key `options_page` to `options_ui`
 
 
 # Disadvantages
