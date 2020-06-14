@@ -5,6 +5,10 @@ body {
     width: 600px;
 }
 
+.container {
+    padding: 5px;
+}
+
 .title {
     font-size: 20px;
     font-weight: bold;

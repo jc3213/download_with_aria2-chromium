@@ -4,21 +4,21 @@ body {
 
 #globalMenu {
     position: absolute;
-    top: 7px;
-    right: 7px;
+    top: 8px;
+    right: 8px;
 }
 
 #optionsMenu {
     position: absolute;
     bottom: 8px;
-    right: 7px;
+    right: 8px;
 }
 
 #addTaskWindow {
     background-color: #FFF;
     border: 1px solid #CCC;
     position: absolute;
-    top: 32px;
+    top: 34px;
     width: 380px;
     padding: 10px;
 }
@@ -50,6 +50,35 @@ body {
 
 input, textarea {
     width: 75%;
+}
+
+#taskFiles {
+    background-color: #FFF;
+    width: 390px;
+    height: 430px;
+    position: absolute;
+    top: 3px;
+    z-index: 3213;
+}
+
+.taskFiles {
+    height: 370px;
+    overflow-y: scroll;
+}
+
+table {
+    width: 370px;
+    border-collapse: collapse;
+}
+
+tr {
+    border: 1px solid #CCC;
+}
+
+td {
+    max-width: 200px;
+    text-align: center;
+    word-break: break-word;
 }
 
 .taskInfo {

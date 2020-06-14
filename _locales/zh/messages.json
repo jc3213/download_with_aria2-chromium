@@ -83,6 +83,9 @@
     "popup_upload": {
         "message": "上传"
     },
+    "popup_close_button": {
+        "message": "关闭"
+    },
     "jsonrpc_download": {
         "message": "即将下载"
     },
@@ -103,5 +106,14 @@
     },
     "task_bit_seeders": {
         "message": "种子"
+    },
+    "task_file_index": {
+        "message": "序号"
+    },
+    "task_file_name": {
+        "message": "文件名"
+    },
+    "task_complete_ratio": {
+        "message": "已完成"
     }
 }

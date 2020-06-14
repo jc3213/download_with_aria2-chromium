@@ -83,6 +83,9 @@
     "popup_upload": {
         "message": "Upload"
     },
+    "popup_close_button": {
+        "message": "Close"
+    },
     "jsonrpc_download": {
         "message": "Downloading"
     },
@@ -103,5 +106,14 @@
     },
     "task_bit_seeders": {
         "message": "Seeders"
+    },
+    "task_file_index": {
+        "message": "Index"
+    },
+    "task_file_name": {
+        "message": "File Name"
+    },
+    "task_complete_ratio": {
+        "message": "Completed"
     }
 }

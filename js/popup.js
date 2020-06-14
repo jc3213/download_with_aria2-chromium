@@ -88,7 +88,12 @@ $('#options_btn').on('click', (event) => {
     open('options.html', '_blank');
 });
 
-$('div.taskQueue').on('click', 'span.button', (event) => {
+$('#hide_btn').on('click', (event) => {
+    clearInterval(keepFilesAlive);
+    $('#hide_btn, #taskFiles').hide();
+});
+
+$('div.taskQueue').on('click', '#remove_btn', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
     if (['active', 'waiting', 'paused'].includes(status)) {
@@ -101,6 +106,15 @@ $('div.taskQueue').on('click', 'span.button', (event) => {
         console.log(status);
     }
     jsonRPCRequest(createJSON(method, gid));
+}).on('click', '#show_btn', (event) => {
+    clearInterval(keepFilesAlive);
+    var taskInfo = $('div.taskInfo').has($(event.target));
+    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), task = taskInfo.attr('task');
+    $('#hide_btn, #taskFiles').show();
+    printTaskFiles(status, gid, task);
+    keepFilesAlive = setInterval(() => {
+        printTaskFiles(gid, task);
+    }, 1000);
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
@@ -118,6 +132,26 @@ $('div.taskQueue').on('click', 'span.button', (event) => {
     }
     jsonRPCRequest(createJSON(method, gid));
 });
+
+function printTaskFiles(status, gid, task) {
+    jsonRPCRequest(
+        createJSON('aria2.tellStatus', gid),
+        (result) => {
+            var taskFiles = result.files.map((item, index) => item = '<tr><td>'
+            +   twoDecimalNumber(index + 1) + '</td><td style="text-align: left;">'
+            +   item.path.split('/').pop() + '</td><td>'
+            +   bytesToFileSize(item.length) + '</td><td>'
+            +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
+            );
+            var html = '<div class="taskName status ' + status + '">' + task + '</div><hr>'
+            +          '<div class="taskFiles"><table>'
+            +                  '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
+            +                   taskFiles.join('')
+            +          '</table></div>';
+            $('#taskFiles').html(html);
+        }
+    );
+}
 
 function printTaskInfo(result) {
     var downloadSpeed = bytesToFileSize(result.downloadSpeed);
@@ -140,8 +174,8 @@ function printTaskInfo(result) {
         seedsInfo = '';
         uploadInfo = '';
     }
-    return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">'
-    +          '<div><span class="taskName">' + taskName + '</span> <span class="button">❌</span></div>'
+    return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" task="' + taskName + '">'
+    +          '<div><span class="taskName">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
     +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
     +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + seedsInfo + ', ⇩: ' + downloadSpeed + '/s' + uploadInfo + '</div>'
     +          '<div class="progress ' + result.status + '_bar"><span class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
@@ -149,11 +183,10 @@ function printTaskInfo(result) {
 }
 
 function printTaskQueue(globalWaiting, globalStopped) {
-    var params = ['status', 'gid', 'completedLength', 'totalLength', 'files', 'connections', 'dir', 'downloadSpeed', 'bittorrent', 'uploadSpeed', 'numSeeders'];
     jsonRPCRequest([
-        createJSON('aria2.tellActive', '', [params]),
-        createJSON('aria2.tellWaiting', '', [0, globalWaiting, params]),
-        createJSON('aria2.tellStopped', '', [0, globalStopped, params]),
+        createJSON('aria2.tellActive', ''),
+        createJSON('aria2.tellWaiting', '', [0, globalWaiting]),
+        createJSON('aria2.tellStopped', '', [0, globalStopped]),
     ], (activeQueue, waitingQueue, stoppedQueue) => {
         var active = activeQueue.map(item => printTaskInfo(item));
         var waiting = waitingQueue.map(item => printTaskInfo(item));
@@ -188,3 +221,4 @@ function printMainFrame() {
 
 printMainFrame();
 var keepContentAlive = setInterval(printMainFrame, 1000);
+var keepFilesAlive;
