@@ -3,10 +3,6 @@ body {
     user-select: none;
 }
 
-.container {
-    padding: 5px;
-}
-
 .hidden {
     display: none;
 }

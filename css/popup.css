@@ -52,22 +52,31 @@ input, textarea {
     width: 75%;
 }
 
+.taskInfo {
+    width: 380px;
+}
+
+.taskName {
+    font-weight: bold;
+}
+
 #taskFiles {
     background-color: #FFF;
-    width: 390px;
+    width: 400px;
     height: 430px;
+    padding: 5px 0px;
     position: absolute;
     top: 3px;
     z-index: 3213;
 }
 
 .taskFiles {
-    height: 370px;
+    height: 380px;
     overflow-y: scroll;
 }
 
 table {
-    width: 370px;
+    width: 380px;
     border-collapse: collapse;
 }
 
@@ -79,10 +88,6 @@ td {
     max-width: 200px;
     text-align: center;
     word-break: break-word;
-}
-
-.taskInfo {
-    width: 380px;
 }
 
 .progress {
@@ -126,10 +131,6 @@ td {
 
 .upload {
     background-color: #C3C;
-}
-
-.taskName {
-    font-weight: bold;
 }
 
 .complete_info {
