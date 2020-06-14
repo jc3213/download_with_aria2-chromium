@@ -23,8 +23,13 @@ function bytesToFileSize(bytes) {
     }
 }
 
-function twoDecimalNumber(number) {
-    return ('00' + number).substr(number.toString().length);
+function multiDecimalNumber(number, decimal) {
+    number = number.toString();
+    decimal = decimal || 2;
+    for (var i = number.length; i < decimal; i ++) {
+        number = '0' + number;
+    }
+    return number;
 }
 
 function secondsToHHMMSS(number) {
@@ -34,11 +39,10 @@ function secondsToHHMMSS(number) {
     if (number === Infinity) {
         return '∞';
     }
-    var integer = (number | 0);
-    var hours = twoDecimalNumber(integer / 3600 | 0);
-    var minutes = twoDecimalNumber((integer - (hours * 3600)) / 60 | 0);
-    var seconds = twoDecimalNumber(integer - (hours * 3600) - (minutes * 60));
-    var time = hours + 'h' + minutes + 'm' + seconds + 's';
+    var hours = (number / 3600 | 0);
+    var minutes = ((number - hours * 3600) / 60 | 0);
+    var seconds = (number - hours * 3600 - minutes * 60 | 0);
+    var time = multiDecimalNumber(hours) + 'h' + multiDecimalNumber(minutes) + 'm' + multiDecimalNumber(seconds) + 's';
     return time.replace(/(00[hms])*/, '');
 }
 
@@ -95,7 +99,8 @@ $('#showTaskFiles').on('click', '#showTask', (event) => {
 
 $('div.taskQueue').on('click', '#remove_btn', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
-    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
+    var gid = taskInfo.attr('gid');
+    var status = taskInfo.attr('status')
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
     }
@@ -109,7 +114,9 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
 }).on('click', '#show_btn', (event) => {
     clearInterval(keepFilesAlive);
     var taskInfo = $('div.taskInfo').has($(event.target));
-    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), task = taskInfo.attr('task');
+    var gid = taskInfo.attr('gid');
+    var status = taskInfo.attr('status')
+    var task = taskInfo.attr('task');
     $('#showTaskFiles').show();
     printTaskFiles(status, gid, task);
     keepFilesAlive = setInterval(() => {
@@ -117,7 +124,8 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     }, 1000);
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
-    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
+    var gid = taskInfo.attr('gid');
+    var status = taskInfo.attr('status')
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
@@ -138,7 +146,7 @@ function printTaskFiles(status, gid, task) {
         createJSON('aria2.tellStatus', gid),
         (result) => {
             var taskFiles = result.files.map((item, index) => item = '<tr><td>'
-            +   twoDecimalNumber(index + 1) + '</td><td style="text-align: left;">'
+            +   multiDecimalNumber(index + 1, 3) + '</td><td style="text-align: left;">'
             +   item.path.split('/').pop() + '</td><td>'
             +   bytesToFileSize(item.length) + '</td><td>'
             +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
