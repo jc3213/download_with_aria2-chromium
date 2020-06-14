@@ -60,19 +60,19 @@ input, textarea {
     font-weight: bold;
 }
 
-#taskFiles {
+#showTaskFiles {
     background-color: #FFF;
-    width: 400px;
-    height: 430px;
-    padding: 5px 0px;
+    padding-top: 5px;
     position: absolute;
     top: 3px;
+    width: 400px;
+    height: 435px;
     z-index: 3213;
+    overflow-y: scroll;
 }
 
-.taskFiles {
-    height: 380px;
-    overflow-y: scroll;
+#showTask:active {
+    filter: contrast(25%);
 }
 
 table {
@@ -80,11 +80,8 @@ table {
     border-collapse: collapse;
 }
 
-tr {
-    border: 1px solid #CCC;
-}
-
 td {
+    border: 1px solid #CCC;
     max-width: 200px;
     text-align: center;
     word-break: break-word;

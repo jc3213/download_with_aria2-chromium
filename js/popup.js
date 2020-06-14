@@ -88,9 +88,9 @@ $('#options_btn').on('click', (event) => {
     open('options.html', '_blank');
 });
 
-$('#hide_btn').on('click', (event) => {
+$('#showTaskFiles').on('click', '#showTask', (event) => {
     clearInterval(keepFilesAlive);
-    $('#hide_btn, #taskFiles').hide();
+    $('#showTaskFiles').hide();
 });
 
 $('div.taskQueue').on('click', '#remove_btn', (event) => {
@@ -110,10 +110,10 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     clearInterval(keepFilesAlive);
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), task = taskInfo.attr('task');
-    $('#hide_btn, #taskFiles').show();
+    $('#showTaskFiles').show();
     printTaskFiles(status, gid, task);
     keepFilesAlive = setInterval(() => {
-        printTaskFiles(gid, task);
+        printTaskFiles(status, gid, task);
     }, 1000);
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
@@ -143,12 +143,11 @@ function printTaskFiles(status, gid, task) {
             +   bytesToFileSize(item.length) + '</td><td>'
             +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
-            var html = '<div class="taskName status ' + status + '">' + task + '</div><hr>'
-            +          '<div class="taskFiles"><table>'
-            +                  '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
-            +                   taskFiles.join('')
-            +          '</table></div>';
-            $('#taskFiles').html(html);
+            $('#showTaskFiles').html('<div id="showTask" class="taskName status ' + status + '">' + task + '</div><hr>'
+            +                        '<table>'
+            +                            '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
+            +                            taskFiles.join('')
+            +                        '</table>');
         }
     );
 }
