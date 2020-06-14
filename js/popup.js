@@ -143,11 +143,11 @@ function printTaskFiles(status, gid, task) {
             +   bytesToFileSize(item.length) + '</td><td>'
             +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
-            $('#showTaskFiles').html('<div id="showTask" class="taskName status ' + status + '">' + task + '</div><hr>'
-            +                        '<table>'
-            +                            '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
-            +                            taskFiles.join('')
-            +                        '</table>');
+            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + status + '">' + task + '</div><hr>'
+            +   '<div id="showFiles"><table>'
+            +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
+            +       taskFiles.join('')
+            +   '</table></div>');
         }
     );
 }

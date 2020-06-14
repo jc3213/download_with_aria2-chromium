@@ -68,23 +68,25 @@ input, textarea {
     width: 400px;
     height: 435px;
     z-index: 3213;
-    overflow-y: scroll;
 }
 
 #showTask:active {
     filter: contrast(25%);
 }
 
+#showFiles {
+    max-height: 355px;
+    overflow-y: scroll;
+}
+
 table {
     width: 380px;
-    border-collapse: collapse;
 }
 
 td {
     border: 1px solid #CCC;
     max-width: 200px;
     text-align: center;
-    word-break: break-word;
 }
 
 .progress {

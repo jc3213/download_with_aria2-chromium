@@ -83,9 +83,6 @@
     "popup_upload": {
         "message": "上传"
     },
-    "popup_close_button": {
-        "message": "关闭"
-    },
     "jsonrpc_download": {
         "message": "即将下载"
     },
