@@ -7,7 +7,7 @@
 # Advantages
 
 - Brand new option window
-  - You can check whether `JSON RPC URI` or `Secret Token` is correct or not on `options.html`
+  - You can check whether `JSONRPC URI` or `Secret Token` is correct or not on `options.html`
   - Capture filters won't appear if the main `Capture` option is not checked
   - Capture filter `File Size` have two settings, `number` and `unit`
   - Priority of capture `Ignored Host` > `Monitored Host` > `File Extension` > `File Size`
@@ -54,9 +54,7 @@
        "url": "https://github.com/jc3213/download_with_aria2"
     }
 ```
-- Don't use `Capture` function, and remove all related codes, because its broken in firefox
-- If you insist that you'd like the `Capture` function, follow these steps
-    - Change `chrome.downloads.onDeterminingFilename` api to `chrome.downloads.onCreated`
-    - Bewared that `downloads.downloadItem` on Firefox doesn't provide `finalUrl` property
-    - You need to use `chrome.tabs` api to get referer of the download
-    - `webRequest` maybe a possible work around, but I won't suggest you do it
+- Don't use `Capture` function, and remove all related codes, because it's broken on firefox
+- `webRequest` maybe a more accurate and less buggy work around
+- `webRequest` it may have conflicts with other extensions and is more complicated
+- Read [Issue #1](https://github.com/jc3213/download_with_aria2/issues/1) for more details
