@@ -42,8 +42,8 @@ $('#aria2Check').on('click', (event) => {
         (result) => {
             showNotification(result.version);
         },
-        (error) => {
-            showNotification(error);
+        (error, rpc) => {
+            showNotification(error, rpc);
         }
     );
 });
