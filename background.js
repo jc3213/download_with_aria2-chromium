@@ -1,13 +1,21 @@
-function downWithAria2(url, params) {
-    jsonRPCRequest(
-        createJSON('aria2.addUri', {'url': url, 'params': [params]}),
-        (result) => {
-            showNotification('Downloading', url);
-        },
-        (error, rpc) => {
-            showNotification(error, rpc || url);
+function downWithAria2(referer, url) {
+    chrome.cookies.getAll({'url': referer}, (cookies) => {
+        var params = {
+            'header': [
+                'Referer: ' + referer,
+                'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
+            ]
         }
-    );
+        jsonRPCRequest(
+            createJSON('aria2.addUri', {'url': url, 'params': [params]}),
+            (result) => {
+                showNotification('Downloading', url);
+            },
+            (error, rpc) => {
+                showNotification(error, rpc || url);
+            }
+        );
+    });
 }
 
 function getCookies(referer, callback) {
@@ -57,10 +65,8 @@ function captureCheck(item, referer) {
 function captureAdd(item, referer) {
     var capture = captureCheck(item, referer);
     if (capture) {
-        getCookies(referer, (params) => {
-            chrome.downloads.erase({'id': item.id}, () => {
-                downWithAria2(item.finalUrl, params);
-            });
+        chrome.downloads.erase({'id': item.id}, () => {
+            downWithAria2(referer, item.finalUrl);
         });
     }
 }
@@ -73,9 +79,7 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2') {
-        getCookies(info.pageUrl, (params) => {
-            downWithAria2(info.linkUrl, params);
-        });
+        downWithAria2(info.pageUrl, info.linkUrl);
     }
 });
 
