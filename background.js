@@ -2,31 +2,15 @@ function downWithAria2(url, params) {
     jsonRPCRequest(
         createJSON('aria2.addUri', '', [[url], params]),
         (result) => {
-            showNotification('jsonrpc_download', url);
+            showNotification('Recieved', url);
         },
         (error) => {
-            showNotification(error, localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc');
+            showNotification(error);
         }
     );
 }
 
-function showNotification(title, message) {
-    var id = 'aria2_' + Date.now();
-    var notification = {
-        type: 'basic',
-        title: chrome.i18n.getMessage(title),
-        iconUrl: 'icons/icon64.png',
-        message: message
-    };
-    chrome.notifications.create(id, notification, () => {
-        window.setTimeout(() => {
-            chrome.notifications.clear(id);
-        }, 5000);
-    });
-}
-
 function getCookies(referer, callback) {
-    var cache = [];
     chrome.cookies.getAll({'url': referer}, (cookies) => {
         callback({
             header: [

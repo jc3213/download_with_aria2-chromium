@@ -27,7 +27,7 @@ function jsonRPCRequest(json, success, failure) {
         var response = JSON.parse(xhr.response);
         var error = response.error;
         if (error) {
-            return failure('jsonrpc_error_auth');
+            return failure(error.message);
         }
         var result = response.result || response.map(item => item.result);
         if (result.length) {
@@ -38,7 +38,22 @@ function jsonRPCRequest(json, success, failure) {
         }
     };
     xhr.onerror = () => {
-        failure('jsonrpc_error_net');
+        failure('No Response');
     };
     xhr.send(JSON.stringify(json));
+}
+
+function showNotification(title, message) {
+    var id = 'aria2_' + Date.now();
+    var notification = {
+        type: 'basic',
+        title: title,
+        iconUrl: 'icons/icon64.png',
+        message: message || localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc'
+    };
+    chrome.notifications.create(id, notification, () => {
+        window.setTimeout(() => {
+            chrome.notifications.clear(id);
+        }, 5000);
+    });
 }

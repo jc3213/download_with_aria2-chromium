@@ -83,15 +83,6 @@
     "popup_upload": {
         "message": "Upload"
     },
-    "jsonrpc_download": {
-        "message": "Downloading"
-    },
-    "jsonrpc_error_auth" : {
-        "message": "Unauthorized"
-    },
-    "jsonrpc_error_net": {
-        "message": "No Response"
-    },
     "task_download_size": {
         "message": "Size"
     },

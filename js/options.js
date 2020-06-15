@@ -1,10 +1,3 @@
-function checkRPCResult(message) {
-    var result = $('#aria2Result').html(message);
-    setTimeout(() => {
-        result.empty();
-    }, 3000)
-}
-
 function captureOption() {
     var checked = JSON.parse(localStorage.getItem('capture')) || false;
     if (checked) {
@@ -47,10 +40,11 @@ $('#aria2Check').on('click', (event) => {
     jsonRPCRequest(
         createJSON('aria2.getVersion'),
         (result) => {
-            checkRPCResult(result.version);
+console.log(result);
+            showNotification(result.version);
         },
         (error) => {
-            checkRPCResult(window[error]);
+            showNotification(error);
         }
     );
 });

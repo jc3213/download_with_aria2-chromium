@@ -83,15 +83,6 @@
     "popup_upload": {
         "message": "上传"
     },
-    "jsonrpc_download": {
-        "message": "即将下载"
-    },
-    "jsonrpc_error_auth" : {
-        "message": "未授权的请求"
-    },
-    "jsonrpc_error_net": {
-        "message": "无响应"
-    },
     "task_download_size": {
         "message": "大小"
     },
