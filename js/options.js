@@ -37,7 +37,7 @@ $('#aria2Check').on('click', (event) => {
     jsonRPCRequest(
         createJSON('aria2.getVersion'),
         (result) => {
-            showNotification(result.version, $('#jsonrpc').val());
+            showNotification(result.version, 'Aria2 version');
         },
         (error, rpc) => {
             showNotification(error, rpc);

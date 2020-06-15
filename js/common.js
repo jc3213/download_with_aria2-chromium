@@ -54,7 +54,7 @@ function jsonRPCRequest(json, success, failure) {
         failure(error);
     };
     xhr.onerror = () => {
-        failure('No Response');
+        failure('No response', rpc);
     };
     xhr.send(JSON.stringify(json));
 }
