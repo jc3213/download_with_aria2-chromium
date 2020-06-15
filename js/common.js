@@ -31,23 +31,27 @@ function jsonRPCRequest(json, success, failure) {
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
         if (json.length) {
-            var result = response.filter(item => item.result);
-            if (result.length !== 0) {
-                return success(...result.map(item => item = item.result));
+            var result = response.map(item => item = item.result);
+            if (result[0]) {
+                return success(...result);
             }
-            var error = response.filter(item => item.error);
-            if (error.length !== 0) {
-                return failure(error[0].error.message);
+            var error = response.map(item => item = item.error);
+            if (error[0]) {
+                error = error[0].message;
             }
         }
         else {
-            if (response.error) {
-                failure(error.message);
+            if (response.result) {
+                return success(response.result);
             }
-            else if (response.result) {
-                success(response.result);
+            if (response.error) {
+                error = error.message;
             }
         }
+        if (error === 'Unauthorized') {
+            return failure(error, rpc);
+        }
+        failure(error);
     };
     xhr.onerror = () => {
         failure('No Response');
@@ -61,7 +65,7 @@ function showNotification(title, message) {
         type: 'basic',
         title: title,
         iconUrl: 'icons/icon64.png',
-        message: message || localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc'
+        message: message
     };
     chrome.notifications.create(id, notification, () => {
         window.setTimeout(() => {

@@ -67,7 +67,10 @@ $('#submit_btn').on('click', (event) => {
     jsonRPCRequest(
         json, 
         (result) => {
-            showNotification('Recieved', url.join('\n'));
+            showNotification('Downloading', url.join('\n'));
+        },
+        (error, target) => {
+            showNotification(error, target || url.join('\n'));
         }
     );
     $('#addTask_btn').show();
@@ -214,8 +217,8 @@ function printTaskQueue(globalWaiting, globalStopped) {
 
 function printMainFrame() {
     jsonRPCRequest(
-            createJSON('aria2.getGlobalStat'),
-            (result) => {
+        createJSON('aria2.getGlobalStat'),
+        (result) => {
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
             var active = (result.numActive | 0);
@@ -229,7 +232,7 @@ function printMainFrame() {
             $('#globalHeader, #globalMenu').show();
             $('#globalError').hide();
             printTaskQueue(waiting, stopped);
-        }, (error) => {
+        }, (error, target) => {
             $('#globalHeader, #globalMenu').hide();
             $('#globalError').show().html(error);
         }

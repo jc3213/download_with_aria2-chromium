@@ -2,10 +2,10 @@ function downWithAria2(url, params) {
     jsonRPCRequest(
         createJSON('aria2.addUri', {url: url, params: params}),
         (result) => {
-            showNotification('Recieved', url);
+            showNotification('Downloading', url);
         },
-        (error) => {
-            showNotification(error);
+        (error, target) => {
+            showNotification(error, target || url);
         }
     );
 }
