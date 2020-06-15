@@ -18,14 +18,6 @@ input, textarea {
     width: 300px;
 }
 
-#aria2Check, #aria2Show {
-    left: 330px;
-}
-
-#aria2Result {
-    left: 380px;
-}
-
 #capture {
     width: 20px;
     transform: scale(1.7);

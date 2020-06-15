@@ -64,14 +64,15 @@ input, textarea {
     background-color: #FFF;
     padding-top: 5px;
     position: absolute;
-    top: 3px;
+    top: 0px;
     width: 400px;
     height: 435px;
 }
 
 #showTask {
-    height: 41px;
-    overflow: auto;
+    height: 44px;
+    word-break: break-word;
+    overflow-y: hidden;
 }
 
 #showTask:active {
@@ -92,6 +93,7 @@ td {
     border: 1px solid #CCC;
     max-width: 200px;
     text-align: center;
+    word-break: break-word;
 }
 
 .progress {
@@ -106,7 +108,7 @@ td {
 }
 
 .progress:active, .progress:active span {
-    filter: contrast(75%);
+    filter: contrast(25%);
 }
 
 .active_bar, .paused_bar, .download {

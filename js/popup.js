@@ -92,11 +92,6 @@ $('#options_btn').on('click', (event) => {
     open('options.html', '_blank');
 });
 
-$('#showTaskFiles').on('click', '#showTask', (event) => {
-    clearInterval(keepFilesAlive);
-    $('#showTaskFiles').hide();
-});
-
 $('div.taskQueue').on('click', '#remove_btn', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
@@ -110,15 +105,6 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
         console.log(status);
     }
     jsonRPCRequest(createJSON(method, gid));
-}).on('click', '#show_btn', (event) => {
-    clearInterval(keepFilesAlive);
-    var taskInfo = $('div.taskInfo').has($(event.target));
-    var gid = taskInfo.attr('gid'), name = taskInfo.attr('name');
-    $('#showTaskFiles').show();
-    printTaskFiles(gid, name);
-    keepFilesAlive = setInterval(() => {
-        printTaskFiles(gid, name);
-    }, 1000);
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
@@ -135,12 +121,35 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
         console.log(status);
     }
     jsonRPCRequest(createJSON(method, gid));
+}).on('click', '#show_btn', (event) => {
+    clearInterval(keepContentAlive);
+    clearInterval(keepFilesAlive);
+    var taskInfo = $('div.taskInfo').has($(event.target));
+    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), name = taskInfo.attr('name');
+    $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + status + '">' + name + '</div><hr><div id="showFiles"></div>').show();
+    printTaskFiles(gid);
+    keepFilesAlive = setInterval(() => {
+        printTaskFiles(gid);
+    }, 1000);
 });
 
-function printTaskFiles(gid, name) {
+$('#showTaskFiles').on('click', '#showTask', (event) => {
+    clearInterval(keepFilesAlive);
+    $('#showTaskFiles').hide();
+    printMainFrame();
+    keepContentAlive = setInterval(printMainFrame, 1000);
+});
+
+function printTaskFiles(gid) {
     jsonRPCRequest(
         createJSON('aria2.tellStatus', gid),
         (result) => {
+            if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name) {
+                var name = result.bittorrent.info.name;
+            }
+            else {
+                name = result.files[0].path.split('/').pop();
+            }
             var taskFiles = result.files.map((item, index) => item = '<tr><td>'
             +   multiDecimalNumber(index + 1, 3) + '</td><td style="text-align: left;">'
             +   item.path.split('/').pop() + '</td><td>'
