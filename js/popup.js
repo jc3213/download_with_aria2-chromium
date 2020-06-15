@@ -84,16 +84,15 @@ $('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {
     var inactive = ['#active_btn', '#waiting_btn', '#stopped_btn'].filter(item => item !== active).join(', ');
     var inactiveQueue = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'].filter(item => item !== activeQueue).join(', ');
     if ($(active).hasClass('checked')) {
-        $(active).removeClass('checked');
         $('#allTaskQueue').show();
         $(activeQueue).hide();
     }
     else {
-        $(active).addClass('checked');
         $(inactive).removeClass('checked');
         $(activeQueue).show();
         $(inactiveQueue).hide();
     }
+    $(active).toggleClass('checked');
 });
 
 $('#options_btn').on('click', (event) => {

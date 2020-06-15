@@ -50,13 +50,12 @@ $('#aria2Check').on('click', (event) => {
 
 $('#aria2Show').on('click', (event) => {
     if ($('#aria2Show').hasClass('checked')) {
-        $('#aria2Show').removeClass('checked');
         $('#token').attr('type', 'password');
     }
     else {
-        $('#aria2Show').addClass('checked');
         $('#token').attr('type', 'text');
     }
+    $('#aria2Show').toggleClass('checked');
 });
 
 $('#capture').attr('checked', captureOption).on('click', (event) => {
