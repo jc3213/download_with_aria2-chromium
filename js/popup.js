@@ -62,15 +62,15 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
 });
 
 $('#submit_btn').on('click', (event) => {
-    var url = ($('#taskBatch').val() || $('#taskInput').val()).split('\n');
-    var json = url.filter(item => item !== '').map(item => createJSON('aria2.addUri', {'url': item}));
+    var url = $('#taskBatch').val() || $('#taskInput').val();
+    var json = url.split('\n').filter(item => item !== '').map(item => createJSON('aria2.addUri', {'url': item}));
     jsonRPCRequest(
         json, 
         (result) => {
-            showNotification('Downloading', url.join('\n'));
+            showNotification('Downloading', url);
         },
         (error, rpc) => {
-            showNotification(error, rpc || url.join('\n'));
+            showNotification(error, rpc || url);
         }
     );
     $('#addTask_btn').show();
