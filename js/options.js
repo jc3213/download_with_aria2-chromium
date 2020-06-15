@@ -24,15 +24,12 @@ function calcFileSize(event) {
 
 function makePattern(event) {
     var entry = event.target.value.split('\n').filter(item => item !== '');
-    if (event.target.id === 'fileExtList') {
-        entry = entry.map(item => '.' + item);
-    }
-    var pattern = entry.join('|').replace(/\./g, '\\.').replace(/\*/g, '[^ ]*');
+    var pattern = JSON.stringify(entry);
     localStorage.setItem(event.target.id, event.target.value);
     localStorage.setItem(event.target.id.replace('List', ''), pattern);
 }
 
-$('#jsonrpc').val(localStorage.getItem('jsonrpc') || '').on('change', event => localStorage.setItem(event.target.id, event.target.value));
+$('#jsonrpc').val(localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc').on('change', event => localStorage.setItem(event.target.id, event.target.value));
 
 $('#token').val(localStorage.getItem('token') || '').on('change', event => localStorage.setItem(event.target.id, event.target.value));
 
@@ -40,7 +37,7 @@ $('#aria2Check').on('click', (event) => {
     jsonRPCRequest(
         createJSON('aria2.getVersion'),
         (result) => {
-            showNotification(result.version);
+            showNotification(result.version, $('#jsonrpc').val());
         },
         (error, rpc) => {
             showNotification(error, rpc);

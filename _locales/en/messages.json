@@ -51,7 +51,7 @@
         "message": "Ignored Host"
     },
     "option_ignored_desc": {
-        "message": "do <b>NOT</b> capture downloads on these web hosts, <u>one entry per line</u>"
+        "message": "<b>ignore</b> capture downloads on these web hosts, <u>one entry per line</u>"
     },
     "popup_active_button": {
         "message": "Active"

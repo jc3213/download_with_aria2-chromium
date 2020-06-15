@@ -51,7 +51,7 @@
         "message": "无视域名"
     },
     "option_ignored_desc": {
-        "message": "<b>不</b>抓取来自列表中的域名的下载, <u>每行一条</u>"
+        "message": "<b>无视</b>来自列表中的域名的下载, <u>每行一条</u>"
     },
     "popup_active_button": {
         "message": "下载中"

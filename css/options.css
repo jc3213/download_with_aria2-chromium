@@ -1,6 +1,5 @@
 body {
     position: absolute;
-    top: 50px;
     left: calc((100% - 600px) / 2);
     width: 600px;
 }

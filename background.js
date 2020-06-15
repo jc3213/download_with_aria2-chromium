@@ -29,41 +29,44 @@ function getCookies(referer, callback) {
     })
 }
 
-function matchPattern(pattern, url) {
-    var regexp = new RegExp(pattern, 'gi');
-    return regexp.test(url);
+function matchPattern(pattern, string) {
+    var match = JSON.parse(pattern).filter(item => string.includes(item));
+    if (match.length !== 0) {
+        return true;
+    }
+    return false;
 }
 
-function captureCheck(item, referer) {
+function captureCheck(host, ext, size) {
     var ignored = localStorage.getItem('ignored');
-    if (ignored && ignored !== '') {
-        if (matchPattern(ignored, referer)) {
+    if (ignored && ignored !== '[]') {
+        if (matchPattern(ignored, host)) {
             return false;
         }
     }
     var monitored = localStorage.getItem('monitored');
-    if (monitored && monitored !== '') {
-        if (matchPattern(monitored, referer)) {
+    if (monitored && monitored !== '[]') {
+        if (matchPattern(monitored, host)) {
             return true;
         }
     }
     var fileext = localStorage.getItem('fileExt');
-    if (fileext && fileext !== '') {
-        if (matchPattern(fileext, item.finalUrl)) {
+    if (fileext && fileext !== '[]') {
+        if (matchPattern(fileext, ext)) {
             return true;
         }
     }
     var filesize = localStorage.getItem('fileSize');
     if (filesize && filesize > 0) {
-        if (item.fileSize >= filesize) {
+        if (size >= filesize) {
             return true;
         }
     }
     return false;
 }
 
-function captureAdd(item, referer) {
-    var capture = captureCheck(item, referer);
+function captureAdd(referer, item) {
+    var capture = captureCheck(referer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
     if (capture) {
         chrome.downloads.erase({'id': item.id}, () => {
             downWithAria2(referer, item.finalUrl);
@@ -83,11 +86,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-chrome.downloads.onCreated.addListener((item) => {
+chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
         chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
-            captureAdd(item, tabs[0].url);
+            captureAdd(tabs[0].url, item);
         });
     }
 });
