@@ -1,11 +1,11 @@
 function downWithAria2(url, params) {
     jsonRPCRequest(
-        createJSON('aria2.addUri', {url: url, params: params}),
+        createJSON('aria2.addUri', {'url': url, 'params': [params]}),
         (result) => {
             showNotification('Downloading', url);
         },
-        (error, target) => {
-            showNotification(error, target || url);
+        (error, rpc) => {
+            showNotification(error, rpc || url);
         }
     );
 }
@@ -13,7 +13,7 @@ function downWithAria2(url, params) {
 function getCookies(referer, callback) {
     chrome.cookies.getAll({'url': referer}, (cookies) => {
         callback({
-            header: [
+            'header': [
                 'Referer: ' + referer,
                 'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
             ]
@@ -66,9 +66,9 @@ function captureAdd(item, referer) {
 }
 
 chrome.contextMenus.create({
-    title: chrome.i18n.getMessage('extension_name'),
-    id: 'downwitharia2',
-    contexts: ['link']
+    'title': chrome.i18n.getMessage('extension_name'),
+    'id': 'downwitharia2',
+    'contexts': ['link']
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {

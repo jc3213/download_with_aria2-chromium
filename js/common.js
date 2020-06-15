@@ -1,10 +1,10 @@
 function createJSON(method, options) {
     var token = localStorage.getItem('token') || '';
     var json = {
-        jsonrpc: 2.0,
-        method: method,
-        id: '',
-        params: [
+        'jsonrpc': 2.0,
+        'method': method,
+        'id': '',
+        'params': [
             'token:' + token
         ]
     };
@@ -62,10 +62,10 @@ function jsonRPCRequest(json, success, failure) {
 function showNotification(title, message) {
     var id = 'aria2_' + Date.now();
     var notification = {
-        type: 'basic',
-        title: title,
-        iconUrl: 'icons/icon64.png',
-        message: message
+        'type': 'basic',
+        'title': title,
+        'iconUrl': 'icons/icon64.png',
+        'message': message
     };
     chrome.notifications.create(id, notification, () => {
         window.setTimeout(() => {

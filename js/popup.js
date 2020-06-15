@@ -63,14 +63,14 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
 
 $('#submit_btn').on('click', (event) => {
     var url = ($('#taskBatch').val() || $('#taskInput').val()).split('\n');
-    var json = url.filter(item => item !== '').map(item => createJSON('aria2.addUri', {url: item}));
+    var json = url.filter(item => item !== '').map(item => createJSON('aria2.addUri', {'url': item}));
     jsonRPCRequest(
         json, 
         (result) => {
             showNotification('Downloading', url.join('\n'));
         },
-        (error, target) => {
-            showNotification(error, target || url.join('\n'));
+        (error, rpc) => {
+            showNotification(error, rpc || url.join('\n'));
         }
     );
     $('#addTask_btn').show();
@@ -112,7 +112,7 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     else {
         console.log(status);
     }
-    jsonRPCRequest(createJSON(method, {gid: gid}));
+    jsonRPCRequest(createJSON(method, {'gid': gid}));
 }).on('click', 'div.progress', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
@@ -128,7 +128,7 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     else {
         console.log(status);
     }
-    jsonRPCRequest(createJSON(method, {gid: gid}));
+    jsonRPCRequest(createJSON(method, {'gid': gid}));
 }).on('click', '#show_btn', (event) => {
     clearInterval(keepFilesAlive);
     var taskInfo = $('div.taskInfo').has($(event.target));
@@ -147,7 +147,7 @@ $('#showTaskFiles').on('click', '#showTask', (event) => {
 
 function printTaskFiles(gid) {
     jsonRPCRequest(
-        createJSON('aria2.tellStatus', {gid: gid}),
+        createJSON('aria2.tellStatus', {'gid': gid}),
         (result) => {
             if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name) {
                 var name = result.bittorrent.info.name;
@@ -202,8 +202,8 @@ function printTaskInfo(result) {
 function printTaskQueue(globalWaiting, globalStopped) {
     jsonRPCRequest([
         createJSON('aria2.tellActive'),
-        createJSON('aria2.tellWaiting', {params: [0, globalWaiting]}),
-        createJSON('aria2.tellStopped', {params: [0, globalStopped]}),
+        createJSON('aria2.tellWaiting', {'params': [0, globalWaiting]}),
+        createJSON('aria2.tellStopped', {'params': [0, globalStopped]}),
     ], (activeQueue, waitingQueue, stoppedQueue) => {
         var active = activeQueue.map(item => printTaskInfo(item));
         var waiting = waitingQueue.map(item => printTaskInfo(item));
@@ -232,7 +232,7 @@ function printMainFrame() {
             $('#globalHeader, #globalMenu').show();
             $('#globalError').hide();
             printTaskQueue(waiting, stopped);
-        }, (error, target) => {
+        }, (error, rpc) => {
             $('#globalHeader, #globalMenu').hide();
             $('#globalError').show().html(error);
         }
