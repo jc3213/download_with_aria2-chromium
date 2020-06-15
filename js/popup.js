@@ -127,7 +127,6 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     }
     jsonRPCRequest(createJSON(method, {gid: gid}));
 }).on('click', '#show_btn', (event) => {
-    clearInterval(keepContentAlive);
     clearInterval(keepFilesAlive);
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), name = taskInfo.attr('name');
@@ -141,8 +140,6 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
 $('#showTaskFiles').on('click', '#showTask', (event) => {
     clearInterval(keepFilesAlive);
     $('#showTaskFiles').hide();
-    printMainFrame();
-    keepContentAlive = setInterval(printMainFrame, 1000);
 });
 
 function printTaskFiles(gid) {
