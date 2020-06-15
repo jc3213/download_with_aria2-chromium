@@ -1,4 +1,4 @@
-function createJSON(method, gid, params) {
+function createJSON(method, options) {
     var token = localStorage.getItem('token') || '';
     var json = {
         jsonrpc: 2.0,
@@ -8,11 +8,16 @@ function createJSON(method, gid, params) {
             'token:' + token
         ]
     };
-    if (gid) {
-        json.params.push(gid);
-    }
-    if (params) {
-        json.params = [...json.params, ...params];
+    if (options) {
+        if (options.gid) {
+            json.params.push(options.gid);
+        }
+        if (options.url) {
+            json.params.push([options.url]);
+        }
+        if (options.params) {
+            json.params = [...json.params, ...options.params];
+        }
     }
     return json;
 }
