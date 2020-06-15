@@ -5,7 +5,7 @@ function downWithAria2(url, params) {
             showNotification('jsonrpc_download', url);
         },
         (error) => {
-            showNotification(error);
+            showNotification(error, localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc');
         }
     );
 }
@@ -15,11 +15,9 @@ function showNotification(title, message) {
     var notification = {
         type: 'basic',
         title: chrome.i18n.getMessage(title),
-        iconUrl: 'icons/icon64.png'
+        iconUrl: 'icons/icon64.png',
+        message: message
     };
-    if (message) {
-        notification.message = message;
-    }
     chrome.notifications.create(id, notification, () => {
         window.setTimeout(() => {
             chrome.notifications.clear(id);
@@ -44,22 +42,22 @@ function matchPattern(pattern, url) {
     return regexp.test(url);
 }
 
-function captureCheck(item) {
+function captureCheck(item, referer) {
     var ignored = localStorage.getItem('ignored');
     if (ignored && ignored !== '') {
-        if (matchPattern(ignored, item.referrer)) {
+        if (matchPattern(ignored, referer)) {
             return false;
         }
     }
     var monitored = localStorage.getItem('monitored');
     if (monitored && monitored !== '') {
-        if (matchPattern(monitored, item.referrer)) {
+        if (matchPattern(monitored, referer)) {
             return true;
         }
     }
     var fileext = localStorage.getItem('fileExt');
     if (fileext && fileext !== '') {
-        if (matchPattern(fileext, item.filename)) {
+        if (matchPattern(fileext, item.finalUrl)) {
             return true;
         }
     }
@@ -72,10 +70,10 @@ function captureCheck(item) {
     return false;
 }
 
-function captureAdd(item) {
-    var capture = captureCheck(item);
+function captureAdd(item, referer) {
+    var capture = captureCheck(item, referer);
     if (capture) {
-        getCookies(item.referrer, (params) => {
+        getCookies(referer, (params) => {
             chrome.downloads.erase({'id': item.id}, () => {
                 downWithAria2(item.finalUrl, params);
             });
@@ -97,9 +95,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+chrome.downloads.onCreated.addListener((item) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
-        captureAdd(item);
+        chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
+            captureAdd(item, tabs[0].url);
+        });
     }
 });
