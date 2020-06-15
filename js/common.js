@@ -30,16 +30,23 @@ function jsonRPCRequest(json, success, failure) {
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
-        var error = response.error;
-        if (error) {
-            return failure(error.message);
-        }
-        var result = response.result || response.map(item => item.result);
-        if (result.length) {
-            success(...result);
+        if (json.length) {
+            var result = response.filter(item => item.result);
+            if (result.length !== 0) {
+                return success(...result.map(item => item = item.result));
+            }
+            var error = response.filter(item => item.error);
+            if (error.length !== 0) {
+                return failure(error[0].error.message);
+            }
         }
         else {
-            success(result);
+            if (response.error) {
+                failure(error.message);
+            }
+            else if (response.result) {
+                success(response.result);
+            }
         }
     };
     xhr.onerror = () => {
