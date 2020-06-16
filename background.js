@@ -18,17 +18,6 @@ function downWithAria2(referer, url) {
     });
 }
 
-function getCookies(referer, callback) {
-    chrome.cookies.getAll({'url': referer}, (cookies) => {
-        callback({
-            'header': [
-                'Referer: ' + referer,
-                'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
-            ]
-        });
-    })
-}
-
 function matchPattern(pattern, string) {
     var match = JSON.parse(pattern).filter(item => string.includes(item));
     if (match.length !== 0) {
