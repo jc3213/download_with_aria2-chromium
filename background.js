@@ -1,3 +1,30 @@
+chrome.contextMenus.create({
+    'title': chrome.i18n.getMessage('extension_name'),
+    'id': 'downwitharia2',
+    'contexts': ['link']
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === 'downwitharia2') {
+        downWithAria2(info.linkUrl, info.pageUrl);
+    }
+});
+
+chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+    var capture = JSON.parse(localStorage.getItem('capture')) || false;
+    if (capture) {
+        if (item.referrer) {
+            captureAdd(item);
+        }
+        else {
+            chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
+                item.referrer = tab[0].url;
+                captureAdd(item);
+            });
+        }
+    }
+});
+
 function matchPattern(pattern, string) {
     var match = JSON.parse(pattern).filter(item => string.includes(item));
     if (match.length !== 0) {
@@ -42,30 +69,3 @@ function captureAdd(item) {
         });
     }
 }
-
-chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    var capture = JSON.parse(localStorage.getItem('capture')) || false;
-    if (capture) {
-        if (item.referrer) {
-            captureAdd(item);
-        }
-        else {
-            chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
-                item.referrer = tab[0].url;
-                captureAdd(item);
-            });
-        }
-    }
-});
-
-chrome.contextMenus.create({
-    'title': chrome.i18n.getMessage('extension_name'),
-    'id': 'downwitharia2',
-    'contexts': ['link']
-});
-
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === 'downwitharia2') {
-        downWithAria2(info.linkUrl, info.pageUrl);
-    }
-});
