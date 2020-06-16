@@ -20,8 +20,8 @@ function captureCheck(host, ext, size) {
         }
     }
     var fileExt = localStorage.getItem('fileExt');
-    if (fileExt && fileExt !== '[]') {
-        if (matchPattern(fileExt, ext)) {
+    if (fileExt && fileExt !== '') {
+        if (fileExt.includes(ext)) {
             return true;
         }
     }
@@ -35,7 +35,7 @@ function captureCheck(host, ext, size) {
 }
 
 function captureAdd(item) {
-    var captured = captureCheck(item.referrer.split('/')[2], item.mime.split('/').pop(), item.fileSize);
+    var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
     if (captured) {
         chrome.downloads.erase({'id': item.id}, () => {
             downWithAria2(item.finalUrl, item.referrer);
@@ -43,7 +43,7 @@ function captureAdd(item) {
     }
 }
 
-chrome.downloads.onCreated.addListener((item) => {
+chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
         if (item.referrer) {
