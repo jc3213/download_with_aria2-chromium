@@ -22,7 +22,7 @@ function calcFileSize(event) {
     localStorage.setItem(event.target.id, event.target.value);
 }
 
-function makePattern(event) {
+function hostPattern(event) {
     var entry = event.target.value.split('\n').filter(item => item !== '');
     var pattern = JSON.stringify(entry);
     localStorage.setItem(event.target.id, event.target.value);
@@ -64,8 +64,8 @@ $('#sizeEntry').val(localStorage.getItem('sizeEntry') || 0).on('change', calcFil
 
 $('#sizeUnit').val(localStorage.getItem('sizeUnit') || 2).on('change', calcFileSize);
 
-$('#fileExtList').val(localStorage.getItem('fileExtList') || '').on('change', makePattern);
+$('#fileExt').val(localStorage.getItem('fileExt') || '').on('change', event => localStorage.setItem(event.target.id, event.target.value));
 
-$('#monitoredList').val(localStorage.getItem('monitoredList') || '').on('change', makePattern);
+$('#monitoredList').val(localStorage.getItem('monitoredList') || '').on('change', hostPattern);
 
-$('#ignoredList').val(localStorage.getItem('ignoredList') || '').on('change', makePattern);
+$('#ignoredList').val(localStorage.getItem('ignoredList') || '').on('change', hostPattern);

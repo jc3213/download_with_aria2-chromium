@@ -51,8 +51,8 @@ function captureCheck(host, ext, size) {
         }
     }
     var fileext = localStorage.getItem('fileExt');
-    if (fileext && fileext !== '[]') {
-        if (matchPattern(fileext, ext)) {
+    if (fileext && fileext !== '') {
+        if (fileext.includes(ext)) {
             return true;
         }
     }
