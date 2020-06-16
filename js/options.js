@@ -69,5 +69,4 @@ function makePattern(event) {
     var pattern = event.target.value.split('\n').filter(item => item !== '');
     localStorage.setItem(event.target.id.replace('List', ''), JSON.stringify(pattern));
     saveOption(event);
-console.log(event.target.id.replace('List', ''), pattern, localStorage.getItem(event.target.id))
 }
