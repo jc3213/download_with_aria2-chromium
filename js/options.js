@@ -7,7 +7,7 @@ function saveOption(event) {
     {'id': 'token', 'value': '', 'change': saveOption},
     {'id': 'sizeEntry', 'value': 0, 'change': calcFileSize},
     {'id': 'sizeUnit', 'value': 2, 'change': calcFileSize},
-    {'id': 'fileExt', 'value': '', 'change': makePattern},
+    {'id': 'fileExtList', 'value': '', 'change': makePattern},
     {'id': 'monitoredList', 'value': '', 'change': makePattern},
     {'id': 'ignoredList', 'value': '', 'change': makePattern}
 ].map(item => $('#' + item.id).val(localStorage.getItem(item.id) || item.value).on('change', item.change));
@@ -69,4 +69,5 @@ function makePattern(event) {
     var pattern = event.target.value.split('\n').filter(item => item !== '');
     localStorage.setItem(event.target.id.replace('List', ''), JSON.stringify(pattern));
     saveOption(event);
+console.log(event.target.id.replace('List', ''), pattern, localStorage.getItem(event.target.id))
 }
