@@ -20,8 +20,8 @@ function captureCheck(host, ext, size) {
         }
     }
     var fileExt = localStorage.getItem('fileExt');
-    if (fileExt && fileExt !== '') {
-        if (fileExt.includes(ext)) {
+    if (fileExt && fileExt !== '[]') {
+        if (matchPattern(fileExt, ext)) {
             return true;
         }
     }

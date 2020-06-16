@@ -7,7 +7,7 @@ function saveOption(event) {
     {'id': 'token', 'value': '', 'change': saveOption},
     {'id': 'sizeEntry', 'value': 0, 'change': calcFileSize},
     {'id': 'sizeUnit', 'value': 2, 'change': calcFileSize},
-    {'id': 'fileExt', 'value': '', 'change': saveOption},
+    {'id': 'fileExt', 'value': '', 'change': makePattern},
     {'id': 'monitoredList', 'value': '', 'change': makePattern},
     {'id': 'ignoredList', 'value': '', 'change': makePattern}
 ].map(item => $('#' + item.id).val(localStorage.getItem(item.id) || item.value).on('change', item.change));
