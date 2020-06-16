@@ -1,7 +1,5 @@
 function matchPattern(pattern, string) {
-console.log(pattern, string);
     var match = JSON.parse(pattern).filter(item => string.includes(item));
-console.log(match);
     if (match.length !== 0) {
         return true;
     }
