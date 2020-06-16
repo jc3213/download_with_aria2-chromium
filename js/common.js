@@ -59,6 +59,35 @@ function jsonRPCRequest(json, success, failure) {
     xhr.send(JSON.stringify(json));
 }
 
+function downWithAria2(url, referer) {
+    if (referer) {
+        chrome.cookies.getAll({'url': referer}, (cookies) => {
+            var params = {
+                'header': [
+                    'Referer: ' + referer,
+                    'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
+                ]
+            }
+            downloadRequest(createJSON('aria2.addUri', {'url': url, 'params': [params]}), url);
+        });
+    }
+    else {
+        downloadRequest(createJSON('aria2.addUri', {'url': url}), url);
+    }
+}
+
+function downloadRequest(json, url) {
+    jsonRPCRequest(
+        json,
+        (result) => {
+            showNotification('Downloading', url);
+        },
+        (error, rpc) => {
+            showNotification(error, rpc || url);
+        }
+    );
+}
+
 function showNotification(title, message) {
     var id = 'aria2_' + Date.now();
     var notification = {

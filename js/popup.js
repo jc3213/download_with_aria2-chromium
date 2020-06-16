@@ -64,15 +64,7 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
 $('#submit_btn').on('click', (event) => {
     var url = $('#taskBatch').val() || $('#taskInput').val();
     var json = url.split('\n').filter(item => item !== '').map(item => createJSON('aria2.addUri', {'url': item}));
-    jsonRPCRequest(
-        json, 
-        (result) => {
-            showNotification('Downloading', url);
-        },
-        (error, rpc) => {
-            showNotification(error, rpc || url);
-        }
-    );
+    downloadRequest(json, url);
     $('#addTask_btn').show();
     $('#cancel_btn, #addTaskWindow').hide();
     $('#taskInput, #taskBatch').val('');

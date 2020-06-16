@@ -1,32 +1,3 @@
-function downWithAria2(url, referer) {
-    if (referer) {
-        chrome.cookies.getAll({'url': referer}, (cookies) => {
-            var params = {
-                'header': [
-                    'Referer: ' + referer,
-                    'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
-                ]
-            }
-            downloadRequest(createJSON('aria2.addUri', {'url': url, 'params': [params]}), url);
-        });
-    }
-    else {
-        downloadRequest(createJSON('aria2.addUri', {'url': url}), url);
-    }
-}
-
-function downloadRequest(json, url) {
-    jsonRPCRequest(
-        json,
-        (result) => {
-            showNotification('Downloading', url);
-        },
-        (error, rpc) => {
-            showNotification(error, rpc || url);
-        }
-    );
-}
-
 function matchPattern(pattern, string) {
     var match = JSON.parse(pattern).filter(item => string.includes(item));
     if (match.length !== 0) {
@@ -64,7 +35,7 @@ function captureCheck(host, ext, size) {
 }
 
 function captureAdd(item) {
-    var captured = captureCheck(item.host, item.fileExt, item.fileSize);
+    var captured = captureCheck(item.referrer.split('/')[2];, item.filename.split('.').pop(), item.fileSize);
     if (captured) {
         chrome.downloads.erase({'id': item.id}, () => {
             downWithAria2(item.finalUrl, item.referrer);
@@ -87,15 +58,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
-        item.fileExt = item.filename.split('.').pop();
         if (item.referrer) {
-            item.host = item.referrer.split('/')[2];
             captureAdd(item);
         }
         else {
             chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
                 item.referrer = tab[0].url;
-                item.host = tab[0].url.split('/')[2];
                 captureAdd(item);
             });
         }
