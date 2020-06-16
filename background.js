@@ -35,7 +35,7 @@ function captureCheck(host, ext, size) {
 }
 
 function captureAdd(item) {
-    var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
+    var captured = captureCheck(item.referrer.split('/')[2], item.mime.split('/').pop(), item.fileSize);
     if (captured) {
         chrome.downloads.erase({'id': item.id}, () => {
             downWithAria2(item.finalUrl, item.referrer);
@@ -55,7 +55,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     }
 });
 
-chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+chrome.downloads.onCreated.addListener((item) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
         if (item.referrer) {
