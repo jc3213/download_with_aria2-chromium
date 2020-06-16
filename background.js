@@ -1,21 +1,30 @@
-function downWithAria2(referer, url) {
-    chrome.cookies.getAll({'url': referer}, (cookies) => {
-        var params = {
-            'header': [
-                'Referer: ' + referer,
-                'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
-            ]
-        }
-        jsonRPCRequest(
-            createJSON('aria2.addUri', {'url': url, 'params': [params]}),
-            (result) => {
-                showNotification('Downloading', url);
-            },
-            (error, rpc) => {
-                showNotification(error, rpc || url);
+function downWithAria2(url, referer) {
+    if (referer) {
+        chrome.cookies.getAll({'url': referer}, (cookies) => {
+            var params = {
+                'header': [
+                    'Referer: ' + referer,
+                    'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
+                ]
             }
-        );
-    });
+            downloadRequest(createJSON('aria2.addUri', {'url': url, 'params': [params]}), url);
+        });
+    }
+    else {
+        downloadRequest(createJSON('aria2.addUri', {'url': url}), url);
+    }
+}
+
+function downloadRequest(json, url) {
+    jsonRPCRequest(
+        json,
+        (result) => {
+            showNotification('Downloading', url);
+        },
+        (error, rpc) => {
+            showNotification(error, rpc || url);
+        }
+    );
 }
 
 function matchPattern(pattern, string) {
@@ -39,26 +48,26 @@ function captureCheck(host, ext, size) {
             return true;
         }
     }
-    var fileext = localStorage.getItem('fileExt');
-    if (fileext && fileext !== '') {
-        if (fileext.includes(ext)) {
+    var fileExt = localStorage.getItem('fileExt');
+    if (fileExt && fileExt !== '') {
+        if (fileExt.includes(ext)) {
             return true;
         }
     }
-    var filesize = localStorage.getItem('fileSize');
-    if (filesize && filesize > 0) {
-        if (size >= filesize) {
+    var fileSize = localStorage.getItem('fileSize');
+    if (fileSize && fileSize > 0) {
+        if (size >= fileSize) {
             return true;
         }
     }
     return false;
 }
 
-function captureAdd(referer, item) {
-    var capture = captureCheck(referer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
-    if (capture) {
+function captureAdd(item) {
+    var captured = captureCheck(item.host, item.fileExt, item.fileSize);
+    if (captured) {
         chrome.downloads.erase({'id': item.id}, () => {
-            downWithAria2(referer, item.finalUrl);
+            downWithAria2(item.finalUrl, item.referrer);
         });
     }
 }
@@ -71,15 +80,24 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2') {
-        downWithAria2(info.pageUrl, info.linkUrl);
+        downWithAria2(info.linkUrl, info.pageUrl);
     }
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
-        chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
-            captureAdd(tabs[0].url, item);
-        });
+        item.fileExt = item.filename.split('.').pop();
+        if (item.referrer) {
+            item.host = item.referrer.split('/')[2];
+            captureAdd(item);
+        }
+        else {
+            chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
+                item.referrer = tab[0].url;
+                item.host = tab[0].url.split('/')[2];
+                captureAdd(item);
+            });
+        }
     }
 });
