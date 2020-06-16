@@ -43,18 +43,6 @@ function captureAdd(item) {
     }
 }
 
-chrome.contextMenus.create({
-    'title': chrome.i18n.getMessage('extension_name'),
-    'id': 'downwitharia2',
-    'contexts': ['link']
-});
-
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === 'downwitharia2') {
-        downWithAria2(info.linkUrl, info.pageUrl);
-    }
-});
-
 chrome.downloads.onCreated.addListener((item) => {
     var capture = JSON.parse(localStorage.getItem('capture')) || false;
     if (capture) {
@@ -67,5 +55,17 @@ chrome.downloads.onCreated.addListener((item) => {
                 captureAdd(item);
             });
         }
+    }
+});
+
+chrome.contextMenus.create({
+    'title': chrome.i18n.getMessage('extension_name'),
+    'id': 'downwitharia2',
+    'contexts': ['link']
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === 'downwitharia2') {
+        downWithAria2(info.linkUrl, info.pageUrl);
     }
 });

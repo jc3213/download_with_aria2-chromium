@@ -2,25 +2,6 @@ function saveOption(event) {
     localStorage.setItem(event.target.id, event.target.value);
 }
 
-function calcFileSize(event) {
-    var number = $('#sizeEntry').val() || 0;
-    var unit = $('#sizeUnit').val();
-    if (number === 0) {
-        var size = 0;
-    }
-    else {
-        size = number * Math.pow(1024, unit);
-    }
-    localStorage.setItem('fileSize', size);
-    saveOption(event);
-}
-
-function makePattern(event) {
-    var pattern = event.target.value.split('\n').filter(item => item !== '');
-    localStorage.setItem(event.target.id.replace('List', ''), JSON.stringify(pattern));
-    saveOption(event);
-}
-
 [
     {'id': 'jsonrpc', 'value': 'http://localhost:6800/jsonrpc', 'change': saveOption},
     {'id': 'token', 'value': '', 'change': saveOption},
@@ -69,4 +50,23 @@ function captureFilter(checked) {
     else {
         $('#filters').hide(100);
     }
+}
+
+function calcFileSize(event) {
+    var number = $('#sizeEntry').val() || 0;
+    var unit = $('#sizeUnit').val();
+    if (number === 0) {
+        var size = 0;
+    }
+    else {
+        size = number * Math.pow(1024, unit);
+    }
+    localStorage.setItem('fileSize', size);
+    saveOption(event);
+}
+
+function makePattern(event) {
+    var pattern = event.target.value.split('\n').filter(item => item !== '');
+    localStorage.setItem(event.target.id.replace('List', ''), JSON.stringify(pattern));
+    saveOption(event);
 }
