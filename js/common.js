@@ -89,18 +89,18 @@ function downWithAria2(url, referer) {
     else {
         downloadRequest(createJSON('aria2.addUri', {'url': url}), url);
     }
-}
 
-function downloadRequest(json, url) {
-    jsonRPCRequest(
-        json,
-        (result) => {
-            showNotification('Downloading', url);
-        },
-        (error, rpc) => {
-            showNotification(error, rpc || url || 'No URI to download');
-        }
-    );
+    function downloadRequest(json, url) {
+        jsonRPCRequest(
+            json,
+            (result) => {
+                showNotification('Downloading', url);
+            },
+            (error, rpc) => {
+                showNotification(error, rpc || url || 'No URI to download');
+            }
+        );
+    }
 }
 
 function bytesToFileSize(bytes) {

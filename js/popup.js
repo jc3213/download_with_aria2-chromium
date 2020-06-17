@@ -15,8 +15,7 @@ $('#addMore_btn, #addLess_btn').on('click', (event) => {
 
 $('#submit_btn').on('click', (event) => {
     var url = $('#taskBatch').val() || $('#taskInput').val();
-    var json = url.split('\n').filter(item => item !== '').map(item => createJSON('aria2.addUri', {'url': item}));
-    downloadRequest(json, url);
+    var json = url.split('\n').filter(item => item !== '').map(item => downWithAria2(item));
     $('#addTask_btn').show();
     $('#cancel_btn, #addTaskWindow').hide();
     $('#taskInput, #taskBatch').val('');
