@@ -25,12 +25,13 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     }
 });
 
-function matchPattern(pattern, string) {
-    var match = JSON.parse(pattern).filter(item => string.includes(item));
-    if (match.length !== 0) {
-        return true;
+function captureAdd(item) {
+    var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
+    if (captured) {
+        chrome.downloads.erase({'id': item.id}, () => {
+            downWithAria2(item.finalUrl, item.referrer);
+        });
     }
-    return false;
 }
 
 function captureCheck(host, ext, size) {
@@ -61,11 +62,10 @@ function captureCheck(host, ext, size) {
     return false;
 }
 
-function captureAdd(item) {
-    var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
-    if (captured) {
-        chrome.downloads.erase({'id': item.id}, () => {
-            downWithAria2(item.finalUrl, item.referrer);
-        });
+function matchPattern(pattern, string) {
+    var match = JSON.parse(pattern).filter(item => string.includes(item));
+    if (match.length !== 0) {
+        return true;
     }
+    return false;
 }

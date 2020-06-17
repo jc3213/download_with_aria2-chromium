@@ -59,6 +59,21 @@ function jsonRPCRequest(json, success, failure) {
     xhr.send(JSON.stringify(json));
 }
 
+function showNotification(title, message) {
+    var id = 'aria2_' + Date.now();
+    var notification = {
+        'type': 'basic',
+        'title': title,
+        'iconUrl': 'icons/icon64.png',
+        'message': message
+    };
+    chrome.notifications.create(id, notification, () => {
+        setTimeout(() => {
+            chrome.notifications.clear(id);
+        }, 5000);
+    });
+}
+
 function downWithAria2(url, referer) {
     if (referer) {
         chrome.cookies.getAll({'url': referer}, (cookies) => {
@@ -88,17 +103,50 @@ function downloadRequest(json, url) {
     );
 }
 
-function showNotification(title, message) {
-    var id = 'aria2_' + Date.now();
-    var notification = {
-        'type': 'basic',
-        'title': title,
-        'iconUrl': 'icons/icon64.png',
-        'message': message
-    };
-    chrome.notifications.create(id, notification, () => {
-        window.setTimeout(() => {
-            chrome.notifications.clear(id);
-        }, 5000);
-    });
+function bytesToFileSize(bytes) {
+    var KBytes = 1024;
+    var MBytes = 1048576;
+    var GBytes = 1073741824;
+    var TBytes = 1099511627776;
+    if (bytes >= 0 && bytes < KBytes) {
+        return bytes + ' B';
+    }
+    else if (bytes >= KBytes && bytes < MBytes) {
+        return (bytes / KBytes * 100 + 1 | 0) / 100 + ' KB';
+    }
+    else if (bytes >= MBytes && bytes < GBytes) {
+        return (bytes / MBytes * 100 + 1 | 0) / 100 + ' MB';
+    }
+    else if (bytes >= GBytes && bytes < TBytes) {
+        return (bytes / GBytes * 100 + 1 | 0) / 100 + ' GB';
+    }
+    else if (bytes >= TBytes) {
+        return (bytes / TBytes * 100 + 1 | 0) / 100 + ' TB';
+    }
+    else {
+        return bytes + ' B';
+    }
+}
+
+function multiDecimalNumber(number, decimal) {
+    number = number.toString();
+    decimal = decimal || 2;
+    for (var i = number.length; i < decimal; i ++) {
+        number = '0' + number;
+    }
+    return number;
+}
+
+function secondsToHHMMSS(number) {
+    if (isNaN(number)) {
+        return '-';
+    }
+    if (number === Infinity) {
+        return '∞';
+    }
+    var hours = (number / 3600 | 0);
+    var minutes = ((number - hours * 3600) / 60 | 0);
+    var seconds = (number - hours * 3600 - minutes * 60 | 0);
+    var time = multiDecimalNumber(hours) + 'h' + multiDecimalNumber(minutes) + 'm' + multiDecimalNumber(seconds) + 's';
+    return time.replace(/(00[hms])*/, '');
 }

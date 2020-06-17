@@ -36,7 +36,7 @@
         "message": "capture downloads those are larger than **<u><i>200MB</i></u>"
     },
     "option_fileext": {
-        "message": "File Extension"
+        "message": "File Extensions"
     },
     "option_fileext_desc": {
         "message": "capture downloads base on file extensions, <u>one entry per line</u>"
