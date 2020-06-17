@@ -1,7 +1,7 @@
 # What is this
 
 - This extension is forked from [chrome-aria2-integration](https://github.com/robbielj/chrome-aria2-integration)
-- Nearly all codes have been completely rewritten
+- All codes have been completely rewritten
 
 # Advantages
 
@@ -39,20 +39,4 @@
 
 # Firefox Quantum
 
-- Add the manifest keys below to `manifest.json`
-```javascript
-    "applications": {
-        "gecko": {
-            "id": "firefox@downwitharia2",
-            "strict_min_version": "58.0"
-        }
-    },
-    "developer": {
-       "name": "jc3213",
-       "url": "https://github.com/jc3213/download_with_aria2"
-    }
-```
-- Don't use `Capture` function, and remove all related codes, it is broken on firefox
-- `webRequest` may be a more accurate and less buggy work around
-- `webRequest` may have conflicts with other extensions and is more complicated
-- Read [Issue #1](https://github.com/jc3213/download_with_aria2/issues/1) for more details
+- Visit [Download with Aria2 for Firefox](https://github.com/jc3213/download_with_aria2-firefox/)
