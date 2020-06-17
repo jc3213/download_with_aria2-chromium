@@ -6,7 +6,7 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2') {
-        downWithAria2(info.linkUrl, info.pageUrl);
+        downWithAria2(info.linkUrl, tab.url);
     }
 });
 

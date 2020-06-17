@@ -98,7 +98,7 @@ function downloadRequest(json, url) {
             showNotification('Downloading', url);
         },
         (error, rpc) => {
-            showNotification(error, rpc || url);
+            showNotification(error, rpc || url || 'No URI to download');
         }
     );
 }
