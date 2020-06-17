@@ -129,6 +129,7 @@ function bytesToFileSize(bytes) {
 }
 
 function multiDecimalNumber(number, decimal) {
+    decimal = decimal || 2;
     if (number.toString().length >= decimal ) {
         return number.toString();
     }
@@ -146,6 +147,6 @@ function secondsToHHMMSS(number) {
     var hours = (number / 3600 | 0);
     var minutes = ((number - hours * 3600) / 60 | 0);
     var seconds = (number - hours * 3600 - minutes * 60 | 0);
-    var time = multiDecimalNumber(hours, 2) + 'h' + multiDecimalNumber(minutes, 2) + 'm' + multiDecimalNumber(seconds, 2) + 's';
+    var time = multiDecimalNumber(hours) + 'h' + multiDecimalNumber(minutes) + 'm' + multiDecimalNumber(seconds) + 's';
     return time.replace(/(00[hms])*/, '');
 }
