@@ -45,7 +45,7 @@ function jsonRPCRequest(json, success, failure) {
                 return success(response.result);
             }
             if (response.error) {
-                error = error.message;
+                error = response.error.message;
             }
         }
         if (error === 'Unauthorized') {
