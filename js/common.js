@@ -31,32 +31,44 @@ function jsonRPCRequest(json, success, failure) {
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
         if (json.length) {
-            var result = response.map(item => item = item.result);
-            if (result[0]) {
-                return success(...result);
-            }
-            var error = response.map(item => item = item.error);
-            if (error[0]) {
-                error = error[0].message;
-            }
+            var error = multiRequest(response);
         }
         else {
-            if (response.result) {
-                return success(response.result);
+            error = singleRequest(response);
+        }
+        if (error) {
+            if (error === 'Unauthorized') {
+                failure(error, rpc);
             }
-            if (response.error) {
-                error = response.error.message;
+            else {
+                failure(error);
             }
         }
-        if (error === 'Unauthorized') {
-            return failure(error, rpc);
-        }
-        failure(error);
     };
     xhr.onerror = () => {
         failure('No response', rpc);
     };
     xhr.send(JSON.stringify(json));
+    
+    function multiRequest(response) {
+        var result = response.map(item => item = item.result);
+        if (result[0]) {
+            return success(...result);
+        }
+        var error = response.map(item => item = item.error);
+        if (error[0]) {
+            return error[0].message;
+        }
+    }
+
+    function singleRequest(response) {
+        if (response.result) {
+            return success(response.result);
+        }
+        if (response.error) {
+            return response.error.message;
+        }
+    }
 }
 
 function showNotification(title, message) {
@@ -83,14 +95,14 @@ function downWithAria2(url, referer) {
                     'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
                 ]
             }
-            downloadRequest(createJSON('aria2.addUri', {'url': url, 'params': [params]}), url);
+            sendRequest(createJSON('aria2.addUri', {'url': url, 'params': [params]}), url);
         });
     }
     else {
-        downloadRequest(createJSON('aria2.addUri', {'url': url}), url);
+        sendRequest(createJSON('aria2.addUri', {'url': url}), url);
     }
 
-    function downloadRequest(json, url) {
+    function sendRequest(json, url) {
         jsonRPCRequest(
             json,
             (result) => {

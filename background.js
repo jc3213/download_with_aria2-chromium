@@ -23,49 +23,49 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
             });
         }
     }
+
+    function captureAdd(item) {
+        var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
+        if (captured) {
+            chrome.downloads.erase({'id': item.id}, () => {
+                downWithAria2(item.finalUrl, item.referrer);
+            });
+        }
+    }
+
+    function captureCheck(host, ext, size) {
+        var ignored = localStorage.getItem('ignored');
+        if (ignored && ignored !== '[]') {
+            if (matchPattern(ignored, host)) {
+                return false;
+            }
+        }
+        var monitored = localStorage.getItem('monitored');
+        if (monitored && monitored !== '[]') {
+            if (matchPattern(monitored, host)) {
+                return true;
+            }
+        }
+        var fileExt = localStorage.getItem('fileExt');
+        if (fileExt && fileExt !== '') {
+            if (fileExt.includes(ext)) {
+                return true;
+            }
+        }
+        var fileSize = localStorage.getItem('fileSize');
+        if (fileSize && fileSize > 0) {
+            if (size >= fileSize) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function matchPattern(pattern, string) {
+        var match = JSON.parse(pattern).filter(item => string.includes(item));
+        if (match.length !== 0) {
+            return true;
+        }
+        return false;
+    }
 });
-
-function captureAdd(item) {
-    var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
-    if (captured) {
-        chrome.downloads.erase({'id': item.id}, () => {
-            downWithAria2(item.finalUrl, item.referrer);
-        });
-    }
-}
-
-function captureCheck(host, ext, size) {
-    var ignored = localStorage.getItem('ignored');
-    if (ignored && ignored !== '[]') {
-        if (matchPattern(ignored, host)) {
-            return false;
-        }
-    }
-    var monitored = localStorage.getItem('monitored');
-    if (monitored && monitored !== '[]') {
-        if (matchPattern(monitored, host)) {
-            return true;
-        }
-    }
-    var fileExt = localStorage.getItem('fileExt');
-    if (fileExt && fileExt !== '') {
-        if (fileExt.includes(ext)) {
-            return true;
-        }
-    }
-    var fileSize = localStorage.getItem('fileSize');
-    if (fileSize && fileSize > 0) {
-        if (size >= fileSize) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function matchPattern(pattern, string) {
-    var match = JSON.parse(pattern).filter(item => string.includes(item));
-    if (match.length !== 0) {
-        return true;
-    }
-    return false;
-}
