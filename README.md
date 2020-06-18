@@ -15,17 +15,17 @@
   - Show `Active`, `Waiting`, `Stopped` task counts
   - Filter task queues based on their status
   - Show global `Download`, `Upload` speed
-  - Better `Progress` bar, click to pause and unpause the task
+  - Better `Progress` bar, click to pause or unpause the task
   - `Options` button to open `options.html` instantly
-  - Show notification on authentication failure or network error
-  - Ability to list the files of the target download task
+  - Show notification when an error occurs
+  - Click `👁️` to show the all files of the task with details
 - Bug fixes
   - Fixed capture, if `File Size` checkbox is unchecked, other filters won't work
   - Fixed cookies, `array.prototype.join()` is better than `string1` + `string2`
 - Other optimization
   - New library `jQuery-3.5.1.js`
   - New icons
-  - Removed libraries `fancysettings.js`, `store.js`, `popuplib.min.js`, `i18n.js`
+  - Removed libraries `fancysettings.js`, `store.js`, and `popuplib.min.js`
   - Removed unnecessary `*.js`, `chrome` api and `manifest` key usage
   - Better code readability, coding logic and performance
   - Better notifications
