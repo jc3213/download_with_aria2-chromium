@@ -27,7 +27,8 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     function captureAdd(item) {
         var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
         if (captured) {
-            chrome.downloads.erase({'id': item.id}, () => {
+            chrome.downloads.cancel(item.id, () => {
+                chrome.downloads.erase({'id': item.id});
                 downWithAria2(item.finalUrl, item.referrer);
             });
         }
