@@ -18,7 +18,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         }
         else {
             chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
-                item.referrer = tab[0].url;
+                item.referrer = tabs[0].url;
                 captureAdd(item);
             });
         }
