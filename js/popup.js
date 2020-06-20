@@ -91,10 +91,10 @@ function printTaskFiles(gid) {
     jsonRPCRequest(
         createJSON('aria2.tellStatus', {'gid': gid}),
         (result) => {
-            if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name) {
+            try {
                 var name = result.bittorrent.info.name;
             }
-            else {
+            catch(error) {
                 name = result.files[0].path.split('/').pop();
             }
             var taskFiles = result.files.map((item, index) => item = '<tr><td>'
@@ -118,25 +118,20 @@ function printTaskInfo(result) {
     var completedLength = bytesToFileSize(result.completedLength);
     var estimatedTime = secondsToHHMMSS((result.totalLength - result.completedLength) / result.downloadSpeed);
     var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-    if (result.bittorrent && result.bittorrent.info && result.bittorrent.info.name) {
+    try {
         var taskName = result.bittorrent.info.name;
+        var numSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
+        var uploadSpeed = ', ⇧: ' + bytesToFileSize(result.uploadSpeed) + '/s';
     }
-    else {
+    catch(error) {
         taskName = result.files[0].path.split('/').pop();
-    }
-    if (result.bittorrent) {
-        var uploadSpeed = bytesToFileSize(result.uploadSpeed);
-        var seedsInfo = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
-        var uploadInfo = ', ⇧: ' + uploadSpeed + '/s';
-    }
-    else {
-        seedsInfo = '';
-        uploadInfo = '';
+        numSeeders = '';
+        uploadSpeed = '';
     }
     return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
     +          '<div><span class="taskName">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
     +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
-    +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + seedsInfo + ', ⇩: ' + downloadSpeed + '/s' + uploadInfo + '</div>'
+    +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
     +          '<div class="progress ' + result.status + '_bar"><span class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
     +      '</div>'
 }
