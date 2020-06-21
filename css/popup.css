@@ -127,7 +127,7 @@ td {
     background-color: #CC3;
 }
 
-.error, .removed {
+.error {
     background-color: #C33;
 }
 
@@ -135,7 +135,7 @@ td {
     background-color: #3C3;
 }
 
-.upload {
+.removed, .upload {
     background-color: #C3C;
 }
 

@@ -75,7 +75,7 @@ $('div.taskQueue').on('click', '#remove_btn', (event) => {
     clearInterval(keepFilesAlive);
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), name = taskInfo.attr('name');
-    $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + status + '">' + name + '</div><hr><div id="showFiles"></div>').show();
+    $('#showTaskFiles').show();
     printTaskFiles(gid);
     keepFilesAlive = setInterval(() => {
         printTaskFiles(gid);
@@ -92,10 +92,10 @@ function printTaskFiles(gid) {
         createJSON('aria2.tellStatus', {'gid': gid}),
         (result) => {
             try {
-                var name = result.bittorrent.info.name;
+                var taskName = result.bittorrent.info.name;
             }
             catch(error) {
-                name = result.files[0].path.split('/').pop();
+                taskName = result.files[0].path.split('/').pop();
             }
             var taskFiles = result.files.map((item, index) => item = '<tr><td>'
             +   multiDecimalNumber(index + 1, 3) + '</td><td style="text-align: left;">'
@@ -103,7 +103,7 @@ function printTaskFiles(gid) {
             +   bytesToFileSize(item.length) + '</td><td>'
             +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
-            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + name + '</div><hr>'
+            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + taskName + '</div><hr>'
             +   '<div id="showFiles"><table>'
             +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
             +       taskFiles.join('')
