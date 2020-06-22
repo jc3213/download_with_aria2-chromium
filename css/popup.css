@@ -39,10 +39,6 @@ body {
     padding: 1px;
 }
 
-.checked {
-    border-top: 2px solid #F00;
-}
-
 .status {
     color: #FFF;
     padding: 3px;

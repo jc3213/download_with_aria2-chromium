@@ -20,12 +20,12 @@ body {
 }
 
 .button:active {
-    border-style: inset;
     filter: contrast(25%);
 }
 
 .checked {
     border-style: inset;
+    box-shadow: 0px -1px 1px #C33;
 }
 
 input, textarea {
