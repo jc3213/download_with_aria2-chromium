@@ -3,6 +3,10 @@
 - This extension is forked from [chrome-aria2-integration](https://github.com/robbielj/chrome-aria2-integration)
 - All codes have been completely rewritten
 
+# Firefox Quantum
+
+- Visit [Download with Aria2 for Firefox](https://github.com/jc3213/download_with_aria2-firefox/)
+
 # Advantages
 
 - Brand new option window
@@ -33,7 +37,3 @@
 - Neither `Google Web Store`, nor `Microsoft Store` supports
   - My country has blocked all `Google` services
   - `Google` has a 5$ fee, and `Microsoft` has a $18 fee
-
-# Firefox Quantum
-
-- Visit [Download with Aria2 for Firefox](https://github.com/jc3213/download_with_aria2-firefox/)
