@@ -54,10 +54,10 @@ $('div.taskQueue').on('click', (event) => {
         }, 1000);
     }
     else if (event.target.id === 'remove_btn') {
-        removeTask(status, gid, name);
+        removeTask(status, gid);
     }
     else if (event.target.id === 'progress_bar') {
-        toggleTask(status, gid, name);
+        toggleTask(status, gid);
     }
 
     function removeTask(status, gid, name) {
@@ -68,7 +68,7 @@ $('div.taskQueue').on('click', (event) => {
             method = 'aria2.removeDownloadResult';
         }
         else {
-            console.log(status);
+            return console.log(status);
         }
         jsonRPCRequest(createJSON(method, {'gid': gid}));
     }
@@ -77,14 +77,14 @@ $('div.taskQueue').on('click', (event) => {
         if (['active', 'waiting'].includes(status)) {
             var method = 'aria2.pause';
         }
-        else if (['paused', 'error', 'removed'].includes(status)) {
+        else if (status === 'paused') {
             method = 'aria2.unpause';
         }
-        else if (status === 'complete') {
+        else if (['complete', 'error', 'removed'].includes(status)) {
             method = 'aria2.removeDownloadResult';
         }
         else {
-            console.log(status);
+            return console.log(status);
         }
         jsonRPCRequest(createJSON(method, {'gid': gid}));
     }
