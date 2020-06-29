@@ -53,10 +53,10 @@ $('div.taskQueue').on('click', (event) => {
             printTaskFiles(gid);
         }, 1000);
     }
-    if (event.target.id === 'remove_btn') {
+    else if (event.target.id === 'remove_btn') {
         removeTask(status, gid, name);
     }
-    if (event.target.id === 'progress_bar') {
+    else if (event.target.id === 'progress_bar') {
         toggleTask(status, gid, name);
     }
 
