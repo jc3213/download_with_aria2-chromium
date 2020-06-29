@@ -42,115 +42,83 @@ $('#options_btn').on('click', (event) => {
     open('options.html', '_blank');
 });
 
-$('div.taskQueue').on('click', '#remove_btn', (event) => {
-    var taskInfo = $('div.taskInfo').has($(event.target));
-    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
-    if (['active', 'waiting', 'paused'].includes(status)) {
-        var method = 'aria2.forceRemove';
-    }
-    else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'aria2.removeDownloadResult';
-    }
-    else {
-        console.log(status);
-    }
-    jsonRPCRequest(createJSON(method, {'gid': gid}));
-}).on('click', 'div.progress', (event) => {
-    var taskInfo = $('div.taskInfo').has($(event.target));
-    var status = taskInfo.attr('status'), gid = taskInfo.attr('gid');
-    if (['active', 'waiting'].includes(status)) {
-        var method = 'aria2.pause';
-    }
-    else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'aria2.removeDownloadResult';
-    }
-    else if (status === 'paused') {
-        method = 'aria2.unpause';
-    }
-    else {
-        console.log(status);
-    }
-    jsonRPCRequest(createJSON(method, {'gid': gid}));
-}).on('click', '#show_btn', (event) => {
-    clearInterval(keepFilesAlive);
+$('div.taskQueue').on('click', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status'), gid = taskInfo.attr('gid'), name = taskInfo.attr('name');
-    $('#showTaskFiles').show();
-    printTaskFiles(gid);
-    keepFilesAlive = setInterval(() => {
+    if (event.target.id === 'show_btn') {
+        clearInterval(keepFilesAlive);
+        $('#showTaskFiles').show();
         printTaskFiles(gid);
-    }, 1000);
+        keepFilesAlive = setInterval(() => {
+            printTaskFiles(gid);
+        }, 1000);
+    }
+    if (event.target.id === 'remove_btn') {
+        removeTask(status, gid, name);
+    }
+    if (event.target.id === 'progress_bar') {
+        toggleTask(status, gid, name);
+    }
+
+    function removeTask(status, gid, name) {
+        if (['active', 'waiting', 'paused'].includes(status)) {
+            var method = 'aria2.forceRemove';
+        }
+        else if (['complete', 'error', 'removed'].includes(status)) {
+            method = 'aria2.removeDownloadResult';
+        }
+        else {
+            console.log(status);
+        }
+        jsonRPCRequest(createJSON(method, {'gid': gid}));
+    }
+
+    function toggleTask(status, gid, name) {
+        if (['active', 'waiting'].includes(status)) {
+            var method = 'aria2.pause';
+        }
+        else if (['paused', 'error', 'removed'].includes(status)) {
+            method = 'aria2.unpause';
+        }
+        else if (status === 'complete') {
+            method = 'aria2.removeDownloadResult';
+        }
+        else {
+            console.log(status);
+        }
+        jsonRPCRequest(createJSON(method, {'gid': gid}));
+    }
+
+    function printTaskFiles(gid) {
+        jsonRPCRequest(
+            createJSON('aria2.tellStatus', {'gid': gid}),
+            (result) => {
+                try {
+                    var taskName = result.bittorrent.info.name;
+                }
+                catch(error) {
+                    taskName = result.files[0].path.split('/').pop();
+                }
+                var taskFiles = result.files.map((item, index) => item = '<tr><td>'
+                +   multiDecimalNumber(index + 1, 3) + '</td><td style="text-align: left;">'
+                +   item.path.split('/').pop() + '</td><td>'
+                +   bytesToFileSize(item.length) + '</td><td>'
+                +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
+                );
+                $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + taskName + '</div><hr>'
+                +   '<div id="showFiles"><table>'
+                +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
+                +       taskFiles.join('')
+                +   '</table></div>');
+            }
+        );
+    }
 });
 
 $('#showTaskFiles').on('click', '#showTask', (event) => {
     clearInterval(keepFilesAlive);
     $('#showTaskFiles').hide();
 });
-
-function printTaskFiles(gid) {
-    jsonRPCRequest(
-        createJSON('aria2.tellStatus', {'gid': gid}),
-        (result) => {
-            try {
-                var taskName = result.bittorrent.info.name;
-            }
-            catch(error) {
-                taskName = result.files[0].path.split('/').pop();
-            }
-            var taskFiles = result.files.map((item, index) => item = '<tr><td>'
-            +   multiDecimalNumber(index + 1, 3) + '</td><td style="text-align: left;">'
-            +   item.path.split('/').pop() + '</td><td>'
-            +   bytesToFileSize(item.length) + '</td><td>'
-            +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
-            );
-            $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + taskName + '</div><hr>'
-            +   '<div id="showFiles"><table>'
-            +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
-            +       taskFiles.join('')
-            +   '</table></div>');
-        }
-    );
-}
-
-function printTaskInfo(result) {
-    var downloadSpeed = bytesToFileSize(result.downloadSpeed);
-    var totalLength = bytesToFileSize(result.totalLength);
-    var completedLength = bytesToFileSize(result.completedLength);
-    var estimatedTime = secondsToHHMMSS((result.totalLength - result.completedLength) / result.downloadSpeed);
-    var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-    try {
-        var taskName = result.bittorrent.info.name;
-        var numSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
-        var uploadSpeed = ', ⇧: ' + bytesToFileSize(result.uploadSpeed) + '/s';
-    }
-    catch(error) {
-        taskName = result.files[0].path.split('/').pop();
-        numSeeders = '';
-        uploadSpeed = '';
-    }
-    return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-    +          '<div><span class="taskName">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
-    +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
-    +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
-    +          '<div class="progress ' + result.status + '_bar"><span class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
-    +      '</div>'
-}
-
-function printTaskQueue(globalWaiting, globalStopped) {
-    jsonRPCRequest([
-        createJSON('aria2.tellActive'),
-        createJSON('aria2.tellWaiting', {'params': [0, globalWaiting]}),
-        createJSON('aria2.tellStopped', {'params': [0, globalStopped]}),
-    ], (activeQueue, waitingQueue, stoppedQueue) => {
-        var active = activeQueue.map(item => printTaskInfo(item));
-        var waiting = waitingQueue.map(item => printTaskInfo(item));
-        var stopped = stoppedQueue.map(item => printTaskInfo(item));
-        $('#allTaskQueue').html([...active, ...waiting, ...stopped].join('<hr>'));
-        $('#activeQueue').html(active.join('<hr>'));
-        $('#waitingQueue').html(waiting.join('<hr>'));
-        $('#stoppedQueue').html(stopped.join('<hr>'));
-    });
-}
 
 function printMainFrame() {
     jsonRPCRequest(
@@ -174,6 +142,46 @@ function printMainFrame() {
             $('#globalError').show().html(error);
         }
     );
+
+    function printTaskQueue(globalWaiting, globalStopped) {
+        jsonRPCRequest([
+            createJSON('aria2.tellActive'),
+            createJSON('aria2.tellWaiting', {'params': [0, globalWaiting]}),
+            createJSON('aria2.tellStopped', {'params': [0, globalStopped]}),
+        ], (activeQueue, waitingQueue, stoppedQueue) => {
+            var active = activeQueue.map(item => printTaskInfo(item));
+            var waiting = waitingQueue.map(item => printTaskInfo(item));
+            var stopped = stoppedQueue.map(item => printTaskInfo(item));
+            $('#allTaskQueue').html([...active, ...waiting, ...stopped].join('<hr>'));
+            $('#activeQueue').html(active.join('<hr>'));
+            $('#waitingQueue').html(waiting.join('<hr>'));
+            $('#stoppedQueue').html(stopped.join('<hr>'));
+        });
+    }
+
+    function printTaskInfo(result) {
+        var downloadSpeed = bytesToFileSize(result.downloadSpeed);
+        var totalLength = bytesToFileSize(result.totalLength);
+        var completedLength = bytesToFileSize(result.completedLength);
+        var estimatedTime = secondsToHHMMSS((result.totalLength - result.completedLength) / result.downloadSpeed);
+        var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
+        try {
+            var taskName = result.bittorrent.info.name;
+            var numSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
+            var uploadSpeed = ', ⇧: ' + bytesToFileSize(result.uploadSpeed) + '/s';
+        }
+        catch(error) {
+            taskName = result.files[0].path.split('/').pop();
+            numSeeders = '';
+            uploadSpeed = '';
+        }
+        return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
+        +          '<div><span class="taskName">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
+        +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
+        +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
+        +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
+        +      '</div>'
+    }
 }
 
 printMainFrame();
