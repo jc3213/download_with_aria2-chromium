@@ -14,7 +14,7 @@ function saveOption(event) {
 
 $('#aria2Check').on('click', (event) => {
     jsonRPCRequest(
-        createJSON('aria2.getVersion'),
+        {'method': 'aria2.getVersion'},
         (result) => {
             showNotification(result.version, 'Aria2 version');
         },

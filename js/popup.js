@@ -6,7 +6,7 @@ $('#addTask_btn, #cancel_btn').on('click', (event) => {
 });
 
 $('#purdge_btn').on('click', (event) => {
-    jsonRPCRequest(createJSON('aria2.purgeDownloadResult'));
+    jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
 });
 
 $('#addMore_btn, #addLess_btn').on('click', (event) => {
@@ -70,7 +70,7 @@ $('div.taskQueue').on('click', (event) => {
         else {
             return console.log(status);
         }
-        jsonRPCRequest(createJSON(method, {'gid': gid}));
+        jsonRPCRequest({'method': method, 'gid': gid});
     }
 
     function toggleTask(status, gid, name) {
@@ -86,12 +86,12 @@ $('div.taskQueue').on('click', (event) => {
         else {
             return console.log(status);
         }
-        jsonRPCRequest(createJSON(method, {'gid': gid}));
+        jsonRPCRequest({'method': method, 'gid': gid});
     }
 
     function printTaskFiles(gid) {
         jsonRPCRequest(
-            createJSON('aria2.tellStatus', {'gid': gid}),
+            {'method': 'aria2.tellStatus', 'gid': gid},
             (result) => {
                 try {
                     var taskName = result.bittorrent.info.name;
@@ -122,7 +122,7 @@ $('#showTaskFiles').on('click', '#showTask', (event) => {
 
 function printMainFrame() {
     jsonRPCRequest(
-        createJSON('aria2.getGlobalStat'),
+        {'method': 'aria2.getGlobalStat'},
         (result) => {
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
@@ -145,9 +145,9 @@ function printMainFrame() {
 
     function printTaskQueue(globalWaiting, globalStopped) {
         jsonRPCRequest([
-            createJSON('aria2.tellActive'),
-            createJSON('aria2.tellWaiting', {'params': [0, globalWaiting]}),
-            createJSON('aria2.tellStopped', {'params': [0, globalStopped]}),
+            {'method': 'aria2.tellActive'},
+            {'method': 'aria2.tellWaiting', 'params': [0, globalWaiting]},
+            {'method': 'aria2.tellStopped', 'params': [0, globalStopped]},
         ], (activeQueue, waitingQueue, stoppedQueue) => {
             var active = activeQueue.map(item => printTaskInfo(item));
             var waiting = waitingQueue.map(item => printTaskInfo(item));

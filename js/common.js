@@ -1,32 +1,14 @@
-function createJSON(method, options) {
-    var token = localStorage.getItem('token') || '';
-    var json = {
-        'jsonrpc': 2.0,
-        'method': method,
-        'id': '',
-        'params': [
-            'token:' + token
-        ]
-    };
-    if (options) {
-        if (options.gid) {
-            json.params.push(options.gid);
-        }
-        if (options.url) {
-            json.params.push([options.url]);
-        }
-        if (options.params) {
-            json.params = [...json.params, ...options.params];
-        }
-    }
-    return json;
-}
-
-function jsonRPCRequest(json, success, failure) {
+function jsonRPCRequest(options, success, failure) {
     success = success || function() {};
     failure = failure || function() {};
     var rpc = localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc';
     var xhr = new XMLHttpRequest();
+    if (options.length) {
+        var json = options.map(item => createJSON(item));
+    }
+    else {
+        json = createJSON(options);
+    }
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
@@ -49,7 +31,31 @@ function jsonRPCRequest(json, success, failure) {
         failure('No response', rpc);
     };
     xhr.send(JSON.stringify(json));
-    
+
+    function createJSON(options) {
+        var token = localStorage.getItem('token') || '';
+        var json = {
+            'jsonrpc': 2.0,
+            'method': options.method,
+            'id': '',
+            'params': [
+                'token:' + token
+            ]
+        };
+        if (options) {
+            if (options.gid) {
+                json.params.push(options.gid);
+            }
+            if (options.url) {
+                json.params.push([options.url]);
+            }
+            if (options.params) {
+                json.params = [...json.params, ...options.params];
+            }
+        }
+        return json;
+    }
+
     function multiRequest(response) {
         var result = response.map(item => item = item.result);
         if (result[0]) {
@@ -95,16 +101,16 @@ function downWithAria2(url, referer) {
                     'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
                 ]
             }
-            sendRequest(createJSON('aria2.addUri', {'url': url, 'params': [params]}), url);
+            sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [params]}, url);
         });
     }
     else {
-        sendRequest(createJSON('aria2.addUri', {'url': url}), url);
+        sendRequest({'method': 'aria2.addUri', 'url': url}, url);
     }
 
-    function sendRequest(json, url) {
+    function sendRequest(options, url) {
         jsonRPCRequest(
-            json,
+            options,
             (result) => {
                 showNotification('Downloading', url);
             },
