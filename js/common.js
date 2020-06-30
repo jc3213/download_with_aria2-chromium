@@ -42,16 +42,14 @@ function jsonRPCRequest(options, success, failure) {
                 'token:' + token
             ]
         };
-        if (options) {
-            if (options.gid) {
-                json.params.push(options.gid);
-            }
-            if (options.url) {
-                json.params.push([options.url]);
-            }
-            if (options.params) {
-                json.params = [...json.params, ...options.params];
-            }
+        if (options.gid) {
+            json.params.push(options.gid);
+        }
+        if (options.url) {
+            json.params.push([options.url]);
+        }
+        if (options.params) {
+            json.params = [...json.params, ...options.params];
         }
         return json;
     }
@@ -83,7 +81,7 @@ function showNotification(title, message) {
         'type': 'basic',
         'title': title,
         'iconUrl': 'icons/icon64.png',
-        'message': message
+        'message': message || ''
     };
     chrome.notifications.create(id, notification, () => {
         setTimeout(() => {
