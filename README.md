@@ -5,7 +5,7 @@
 
 # Firefox Quantum
 
-- Visit [Download with Aria2 for Firefox](https://github.com/jc3213/download_with_aria2-firefox/)
+- Visit [Download with Aria2 for Firefox](https://github.com/jc3213/download_with_aria2-firefox)
 
 # Advantages
 
