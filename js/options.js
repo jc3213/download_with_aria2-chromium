@@ -1,5 +1,6 @@
 function saveOption(event) {
     localStorage.setItem(event.target.id, event.target.value);
+    console.log(event.target.value);
 }
 
 [
@@ -8,8 +9,8 @@ function saveOption(event) {
     {'id': 'sizeEntry', 'value': 0, 'change': calcFileSize},
     {'id': 'sizeUnit', 'value': 2, 'change': calcFileSize},
     {'id': 'fileExt', 'value': '', 'change': saveOption},
-    {'id': 'monitoredList', 'value': '', 'change': makePattern},
-    {'id': 'ignoredList', 'value': '', 'change': makePattern}
+    {'id': 'monitored', 'value': '', 'change': saveOption},
+    {'id': 'ignored', 'value': '', 'change': saveOption}
 ].map(item => $('#' + item.id).val(localStorage.getItem(item.id) || item.value).on('change', item.change));
 
 $('#aria2Check').on('click', (event) => {
@@ -62,11 +63,5 @@ function calcFileSize(event) {
         size = number * Math.pow(1024, unit);
     }
     localStorage.setItem('fileSize', size);
-    saveOption(event);
-}
-
-function makePattern(event) {
-    var pattern = event.target.value.split('\n').filter(item => item !== '');
-    localStorage.setItem(event.target.id.replace('List', ''), JSON.stringify(pattern));
     saveOption(event);
 }

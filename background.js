@@ -25,7 +25,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     }
 
     function captureAdd(item) {
-        var captured = captureCheck(item.referrer.split('/')[2], item.filename.split('.').pop(), item.fileSize);
+        var captured = captureCheck(getDomain(item.referrer), item.filename.split('.').pop(), item.fileSize);
         if (captured) {
             chrome.downloads.cancel(item.id, () => {
                 chrome.downloads.erase({'id': item.id});
@@ -34,30 +34,28 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         }
     }
 
-    function captureCheck(host, ext, size) {
+    function getDomain(url) {
+        var host = url.split('/')[2];
+        var temp = host.split('.').reverse();
+        return temp[1] + '.' + temp[0];
+    }
+
+    function captureCheck(domain, ext, size) {
         var ignored = localStorage.getItem('ignored');
-        if (ignored && ignored !== '[]') {
-            if (matchPattern(ignored, host)) {
-                return false;
-            }
+        if (ignored && ignored.includes(domain)) {
+            return false;
         }
         var monitored = localStorage.getItem('monitored');
-        if (monitored && monitored !== '[]') {
-            if (matchPattern(monitored, host)) {
-                return true;
-            }
+        if (monitored && monitored.includes(domain)) {
+            return true;
         }
         var fileExt = localStorage.getItem('fileExt');
-        if (fileExt && fileExt !== '') {
-            if (fileExt.includes(ext)) {
-                return true;
-            }
+        if (fileExt && fileExt.includes(ext)) {
+            return true;
         }
         var fileSize = localStorage.getItem('fileSize');
-        if (fileSize && fileSize > 0) {
-            if (size >= fileSize) {
-                return true;
-            }
+        if (fileSize && size >= fileSize) {
+            return true;
         }
         return false;
     }

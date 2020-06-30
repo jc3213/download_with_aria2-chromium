@@ -42,16 +42,16 @@
         "message": "capture downloads base on file extensions, <u>one entry per line</u>"
     },
     "option_monitored": {
-        "message": "Monitored Hosts"
+        "message": "Monitored Domains"
     },
     "option_monitored_desc": {
-        "message": "capture downloads from these web hosts, <u>one entry per line</u>"
+        "message": "capture downloads from these domain names, <u>one entry per line</u>"
     },
     "option_ignored": {
-        "message": "Ignored Hosts"
+        "message": "Ignored Domains"
     },
     "option_ignored_desc": {
-        "message": "<b>ignore</b> downloads from these web hosts, <u>one entry per line</u>"
+        "message": "<b>ignore</b> downloads from these domain names, <u>one entry per line</u>"
     },
     "popup_active_button": {
         "message": "Active"
