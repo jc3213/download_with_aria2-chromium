@@ -13,8 +13,8 @@
   - You can check whether `JSONRPC URI` or `Secret Token` is correct or not on `options.html`
   - Capture filters won't appear if the main `Capture` option is not checked
   - Capture filter `File Size` have two settings, `number` and `unit`
-  - Priority of filter `Ignored Hosts` > `Monitored Hosts` > `File Extensions` > `File Sizes`
-  - Filter performance `File Size` > `File Extensions` > `Ignored Hosts` = `Monitored Hosts`
+  - Priority of filter `Ignored Domains` > `Monitored Domains` > `File Extensions` > `File Sizes`
+  - Filter performance `File Size` > `File Extensions` = `Ignored Hosts` = `Monitored Hosts`
 - Brand new popup window
   - Show `Active`, `Waiting`, `Stopped` task counts
   - Filter task queues based on their status

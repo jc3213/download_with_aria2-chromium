@@ -59,12 +59,4 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         }
         return false;
     }
-
-    function matchPattern(pattern, string) {
-        var match = JSON.parse(pattern).filter(item => string.includes(item));
-        if (match.length !== 0) {
-            return true;
-        }
-        return false;
-    }
 });
