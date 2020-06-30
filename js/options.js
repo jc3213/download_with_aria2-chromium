@@ -1,6 +1,5 @@
 function saveOption(event) {
     localStorage.setItem(event.target.id, event.target.value);
-    console.log(event.target.value);
 }
 
 [
