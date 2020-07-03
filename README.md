@@ -14,7 +14,7 @@
   - Capture filters won't appear if the main `Capture` option is not checked
   - Capture filter `File Size` have two settings, `number` and `unit`
   - Priority of filter `Ignored Domains` > `Monitored Domains` > `File Extensions` > `File Sizes`
-  - Filter performance `File Size` > `Ignored Hosts` = `Monitored Hosts` = `File Extensions`
+  - Filter performance `File Size` > `Ignored Domains` = `Monitored Domains` = `File Extensions`
 - Brand new popup window
   - Show `Active`, `Waiting`, `Stopped` task counts
   - Filter task queues based on their status
