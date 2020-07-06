@@ -126,9 +126,9 @@ function printMainFrame() {
         (result) => {
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var active = result.numActive || 0;
-            var waiting = result.numWaiting || 0;
-            var stopped = result.numStopped || 0;
+            var active = (result.numActive | 0);
+            var waiting = (result.numWaiting | 0);
+            var stopped = (result.numStopped | 0);
             $('#numActive').html(active);
             $('#numWaiting').html(waiting);
             $('#numStopped').html(stopped);
