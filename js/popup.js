@@ -126,9 +126,9 @@ function printMainFrame() {
         (result) => {
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var active = (result.numActive | 0);
-            var waiting = (result.numWaiting | 0);
-            var stopped = (result.numStopped | 0);
+            var active = result.numActive || 0;
+            var waiting = result.numWaiting || 0;
+            var stopped = result.numStopped || 0;
             $('#numActive').html(active);
             $('#numWaiting').html(waiting);
             $('#numStopped').html(stopped);
@@ -149,6 +149,9 @@ function printMainFrame() {
             {'method': 'aria2.tellWaiting', 'params': [0, globalWaiting]},
             {'method': 'aria2.tellStopped', 'params': [0, globalStopped]},
         ], (activeQueue, waitingQueue, stoppedQueue) => {
+            activeQueue = activeQueue || [];
+            waitingQueue = waitingQueue || [];
+            stoppedQueue = stoppedQueue || [];
             var active = activeQueue.map(item => printTaskInfo(item));
             var waiting = waitingQueue.map(item => printTaskInfo(item));
             var stopped = stoppedQueue.map(item => printTaskInfo(item));
