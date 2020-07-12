@@ -1,24 +1,19 @@
 $('#addTask_btn, #cancel_btn').on('click', (event) => {
     $('#addTask_btn, #cancel_btn, #addTaskWindow').toggle();
-    $('#addMore_btn, #taskInput').show();
-    $('#addLess_btn, #taskBatch').hide();
-    $('#taskInput, #taskBatch').val('');
+    $('#taskReferer, #taskBatch').val('');
 });
 
 $('#purdge_btn').on('click', (event) => {
     jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
 });
 
-$('#addMore_btn, #addLess_btn').on('click', (event) => {
-    $('#addMore_btn, #addLess_btn, #taskInput, #taskBatch').toggle();
-});
-
 $('#submit_btn').on('click', (event) => {
-    var url = $('#taskBatch').val() || $('#taskInput').val();
-    var json = url.split('\n').filter(item => item !== '').map(item => downWithAria2(item));
+    var url = $('#taskBatch').val().split('\n');
+    var referer = $('taskReferer').val();
+    var json = url.filter(item => item !== '').map(item => downWithAria2(item, referer));
     $('#addTask_btn').show();
     $('#cancel_btn, #addTaskWindow').hide();
-    $('#taskInput, #taskBatch').val('');
+    $('#taskReferer, #taskBatch').val('');
 });
 
 $('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {

@@ -20,13 +20,17 @@ body {
     position: absolute;
     top: 34px;
     width: 380px;
+    height: 395px;
     padding: 10px;
 }
 
-#addTaskMenu {
+#taskBatch {
+    height: 260px;
+}
+
+#submit_btn {
     position: absolute;
-    top: 14px;
-    right: 10px;
+    left: 177px;
 }
 
 .taskQueue {
@@ -49,7 +53,7 @@ body {
 }
 
 input, textarea {
-    width: 277px;
+    width: 370px;
 }
 
 .taskInfo {

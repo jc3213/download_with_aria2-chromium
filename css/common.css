@@ -35,6 +35,7 @@ input, textarea {
 
 textarea {
     height: 200px;
+    word-break: break-word;
 }
 
 option:checked {

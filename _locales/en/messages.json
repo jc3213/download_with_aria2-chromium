@@ -103,5 +103,11 @@
     },
     "task_complete_ratio": {
         "message": "Completed"
+    },
+    "add_task_referer": {
+        "message": "Referer"
+    },
+    "add_task_batch": {
+        "message": "Download Urls"
     }
 }
