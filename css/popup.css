@@ -56,13 +56,13 @@ input, textarea {
     width: 370px;
 }
 
-.taskInfo {
-    width: 380px;
-}
-
-.taskName {
+.title {
     font-weight: bold;
     word-break: break-word;
+}
+
+.taskInfo {
+    width: 380px;
 }
 
 #showTaskFiles {

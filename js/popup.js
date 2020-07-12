@@ -100,7 +100,7 @@ $('div.taskQueue').on('click', (event) => {
                 +   bytesToFileSize(item.length) + '</td><td>'
                 +   ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
                 );
-                $('#showTaskFiles').html('<div id="showTask" class="taskName status button ' + result.status + '">' + taskName + '</div><hr>'
+                $('#showTaskFiles').html('<div id="showTask" class="title status button ' + result.status + '">' + taskName + '</div><hr>'
                 +   '<div id="showFiles"><table>'
                 +       '<tr><td>' + window['task_file_index'] + '</td><td>' + window['task_file_name'] + '</td><td>' + window['task_download_size'] + '</td><td>' + window['task_complete_ratio'] + '</td></tr>'
                 +       taskFiles.join('')
@@ -174,7 +174,7 @@ function printMainFrame() {
             uploadSpeed = '';
         }
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="taskName">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
+        +          '<div><span class="title">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
         +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
         +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
         +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
