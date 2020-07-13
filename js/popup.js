@@ -1,18 +1,13 @@
 $('#addTask_btn, #cancel_btn').on('click', (event) => {
-    $('#addTask_btn, #cancel_btn, #addTaskWindow').toggle();
+    $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
-});
-
-$('#purdge_btn').on('click', (event) => {
-    jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
 });
 
 $('#submit_btn').on('click', (event) => {
     var url = $('#taskBatch').val().split('\n');
     var referer = $('taskReferer').val();
     var json = url.filter(item => item !== '').map(item => downWithAria2(item, referer));
-    $('#addTask_btn').show();
-    $('#cancel_btn, #addTaskWindow').hide();
+    $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
 });
 
@@ -31,6 +26,10 @@ $('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {
         $(inactiveQueue).hide();
     }
     $(active).toggleClass('checked');
+});
+
+$('#purdge_btn').on('click', (event) => {
+    jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
 });
 
 $('#options_btn').on('click', (event) => {
