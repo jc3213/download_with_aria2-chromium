@@ -46,6 +46,9 @@ function jsonRPCRequest(options, success, failure) {
             json.params.push(options.gid);
         }
         if (options.url) {
+            if (!options.url.match(/\[\d+-\d+\]/)) {
+                options.url = options.url.replace(/\[/g, '%5B').replace(/\]/g, '%5D');
+            }
             json.params.push([options.url]);
         }
         if (options.params) {
