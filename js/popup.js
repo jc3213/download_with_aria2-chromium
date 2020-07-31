@@ -14,7 +14,7 @@ $('#setTaskProxy').val(localStorage.getItem('proxy') || '').on('change', (event)
 $('#submit_btn').on('click', (event) => {
     var referer = $('taskReferer').val();
     var proxy = $('#addTaskProxy').prop('checked') ? $('#setTaskProxy').val() : '';
-    $('#taskBatch').val().split('\n').map(item => item === '' ?  '' : downWithAria2(item, referer, proxy));
+    var url = $('#taskBatch').val().split('\n').filter(item => item === '' ?  '' : downWithAria2(item, referer, proxy));
     $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
     $('#addTaskProxy').prop('checked', false);

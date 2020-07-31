@@ -103,14 +103,14 @@ function downWithAria2(url, referer, proxy) {
                 ],
                 'all-proxy': proxy
             }
-            sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [params]}, url);
+            sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [params]});
         });
     }
     else {
-        sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [{'all-proxy': proxy}]}, url);
+        sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [{'all-proxy': proxy}]});
     }
 
-    function sendRequest(options, url) {
+    function sendRequest(options) {
         jsonRPCRequest(
             options,
             (result) => {
@@ -121,6 +121,8 @@ function downWithAria2(url, referer, proxy) {
             }
         );
     }
+
+    return url;
 }
 
 function bytesToFileSize(bytes) {
