@@ -3,12 +3,22 @@ $('#addTask_btn, #cancel_btn').on('click', (event) => {
     $('#taskReferer, #taskBatch').val('');
 });
 
+$('#addTaskProxy').on('click', (event) => {
+    $('#setTaskProxy').prop('disabled', (index, value) => !value);
+});
+
+$('#setTaskProxy').val(localStorage.getItem('proxy') || '').on('change', (event) => {
+    localStorage.setItem('proxy', event.target.value);
+});
+
 $('#submit_btn').on('click', (event) => {
-    var url = $('#taskBatch').val().split('\n');
     var referer = $('taskReferer').val();
-    var json = url.filter(item => item !== '').map(item => downWithAria2(item, referer));
+    var proxy = $('#addTaskProxy').prop('checked') ? $('#setTaskProxy').val() : '';
+    $('#taskBatch').val().split('\n').map(item => item === '' ?  '' : downWithAria2(item, referer, proxy));
     $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
+    $('#addTaskProxy').prop('checked', false);
+    $('#setTaskProxy').prop('disabled', 'disabled');
 });
 
 $('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {

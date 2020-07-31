@@ -109,5 +109,8 @@
     },
     "add_task_batch": {
         "message": "下载链接"
+    },
+    "add_task_proxy": {
+        "message": "使用代理"
     }
 }

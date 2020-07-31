@@ -25,7 +25,12 @@ body {
 }
 
 #taskBatch {
-    height: 260px;
+    height: 200px;
+}
+
+#addTaskProxy {
+    width: fit-content;
+    transform: scale(1.25);
 }
 
 #submit_btn {

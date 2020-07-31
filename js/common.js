@@ -93,20 +93,21 @@ function showNotification(title, message) {
     });
 }
 
-function downWithAria2(url, referer) {
+function downWithAria2(url, referer, proxy) {
     if (referer) {
         chrome.cookies.getAll({'url': referer}, (cookies) => {
             var params = {
                 'header': [
                     'Referer: ' + referer,
                     'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
-                ]
+                ],
+                'all-proxy': proxy
             }
             sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [params]}, url);
         });
     }
     else {
-        sendRequest({'method': 'aria2.addUri', 'url': url}, url);
+        sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [{'all-proxy': proxy}]}, url);
     }
 
     function sendRequest(options, url) {

@@ -109,5 +109,8 @@
     },
     "add_task_batch": {
         "message": "Download Urls"
+    },
+    "add_task_proxy": {
+        "message": "Use Proxy"
     }
 }
