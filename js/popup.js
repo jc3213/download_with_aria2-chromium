@@ -1,6 +1,8 @@
 $('#addTask_btn, #cancel_btn').on('click', (event) => {
     $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
+    $('#addTaskProxy').prop('checked', false);
+    $('#setTaskProxy').prop('disabled', 'disabled');
 });
 
 $('#addTaskProxy').on('click', (event) => {
@@ -17,8 +19,6 @@ $('#submit_btn').on('click', (event) => {
     var url = $('#taskBatch').val().split('\n').filter(item => item === '' ?  '' : downWithAria2(item, referer, proxy));
     $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
-    $('#addTaskProxy').prop('checked', false);
-    $('#setTaskProxy').prop('disabled', 'disabled');
 });
 
 $('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {
