@@ -160,10 +160,7 @@ function multiDecimalNumber(number, decimal) {
 }
 
 function secondsToHHMMSS(number) {
-    if (isNaN(number)) {
-        return '-';
-    }
-    if (number === Infinity) {
+    if (isNaN(number) || number === Infinity) {
         return '∞';
     }
     var hours = (number / 3600 | 0);
