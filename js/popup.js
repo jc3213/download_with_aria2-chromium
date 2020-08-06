@@ -57,6 +57,9 @@ $('div.taskQueue').on('click', (event) => {
             printTaskFiles(gid);
         }, 1000);
     }
+    else if (event.target.id === 'copy_btn') {
+        getDownloadURLs(gid);
+    }
     else if (event.target.id === 'remove_btn') {
         removeTask(status, gid);
     }
@@ -75,6 +78,17 @@ $('div.taskQueue').on('click', (event) => {
             return console.log(status);
         }
         jsonRPCRequest({'method': method, 'gid': gid});
+    }
+
+    function getDownloadURLs(gid) {
+        jsonRPCRequest(
+            {'method': 'aria2.getUris', 'gid': gid},
+            (result) => {
+                var url = result[0].uri;
+                navigator.clipboard.writeText(url);
+                showNotification(window['warn_url_copied'], url);
+            }
+        );
     }
 
     function toggleTask(status, gid, name) {
@@ -176,14 +190,16 @@ function printMainFrame() {
             var taskName = result.bittorrent.info.name;
             var numSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
             var uploadSpeed = ', ⇧: ' + bytesToFileSize(result.uploadSpeed) + '/s';
+            var copyButton = '';
         }
         catch(error) {
             taskName = result.files[0].path.split('/').pop();
             numSeeders = '';
             uploadSpeed = '';
+            copyButton = ' <span id="copy_btn" class="button">📋</span>';
         }
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="title">' + taskName + '</span> <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
+        +          '<div><span class="title">' + taskName + '</span>' + copyButton + ' <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
         +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
         +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
         +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'

@@ -112,5 +112,11 @@
     },
     "add_task_proxy": {
         "message": "使用代理"
+    },
+    "warn_aria2_version": {
+        "message": "Aria2版本"
+    },
+    "warn_url_copied": {
+        "message": "已复制链接"
     }
 }

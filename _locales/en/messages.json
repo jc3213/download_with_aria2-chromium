@@ -112,5 +112,11 @@
     },
     "add_task_proxy": {
         "message": "Use Proxy"
+    },
+    "warn_aria2_version": {
+        "message": "Aria2 Version"
+    },
+    "warn_url_copied": {
+        "message": "URL Copied"
     }
 }
