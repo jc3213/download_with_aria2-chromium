@@ -106,12 +106,7 @@ $('div.taskQueue').on('click', (event) => {
         jsonRPCRequest(
             {'method': 'aria2.tellStatus', 'gid': gid},
             (result) => {
-                try {
-                    var taskName = result.bittorrent.info.name;
-                }
-                catch(error) {
-                    taskName = result.files[0].path.split('/').pop();
-                }
+                var taskName = result.bittorrent.info.name;
                 var taskFiles = result.files.map((item, index) => item = '<tr><td>'
                 +   multiDecimalNumber(index + 1, 3) + '</td><td style="text-align: left;">'
                 +   item.path.split('/').pop() + '</td><td>'
@@ -184,23 +179,22 @@ function printMainFrame() {
         if (result.bittorrent) {
             if (result.bittorrent.info) {
                 var taskName = result.bittorrent.info.name;
-            }
-            else {
-                taskName = result.files[0].path.split('/').pop();
+                var showButton = ' <span id="show_btn" class="button">👁️</span>';
             }
             var numSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
             var uploadSpeed = ', ⇧: ' + bytesToFileSize(result.uploadSpeed) + '/s';
-            var copyButton = '';
         }
         else {
-            taskUrl = result.files[0].uris[0].uri;
-            taskName = result.files[0].path.split('/').pop() || taskUrl;
-            numSeeders = '';
-            uploadSpeed = '';
-            copyButton = ' <span id="copy_btn" class="button" uri="' + taskUrl + '">📋</span>';
+            var taskUrl = result.files[0].uris[0].uri;
+            var copyButton = ' <span id="copy_btn" class="button" uri="' + taskUrl + '">📋</span>';
         }
+        taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
+        numSeeders = numSeeders || '';
+        uploadSpeed = uploadSpeed || '';
+        showButton = showButton || '';
+        copyButton = copyButton || '';
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="title">' + taskName + '</span>' + copyButton + ' <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
+        +          '<div><span class="title">' + taskName + '</span>' + copyButton + showButton + ' <span id="remove_btn" class="button">❌</span></div>'
         +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
         +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
         +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
