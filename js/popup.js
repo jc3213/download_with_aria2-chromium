@@ -81,14 +81,9 @@ $('div.taskQueue').on('click', (event) => {
     }
 
     function getDownloadURLs(gid) {
-        jsonRPCRequest(
-            {'method': 'aria2.getUris', 'gid': gid},
-            (result) => {
-                var url = result[0].uri;
-                navigator.clipboard.writeText(url);
-                showNotification(window['warn_url_copied'], url);
-            }
-        );
+        var url = $(event.target).attr('uri');
+        navigator.clipboard.writeText(url);
+        showNotification(window['warn_url_copied'], url);
     }
 
     function toggleTask(status, gid, name) {
@@ -186,17 +181,23 @@ function printMainFrame() {
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = secondsToHHMMSS((result.totalLength - result.completedLength) / result.downloadSpeed);
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-        try {
-            var taskName = result.bittorrent.info.name;
+        if (result.bittorrent) {
+            if (result.bittorrent.info) {
+                var taskName = result.bittorrent.info.name;
+            }
+            else {
+                taskName = result.files[0].path.split('/').pop();
+            }
             var numSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
             var uploadSpeed = ', ⇧: ' + bytesToFileSize(result.uploadSpeed) + '/s';
             var copyButton = '';
         }
-        catch(error) {
-            taskName = result.files[0].path.split('/').pop();
+        else {
+            taskUrl = result.files[0].uris[0].uri;
+            taskName = result.files[0].path.split('/').pop() || taskUrl;
             numSeeders = '';
             uploadSpeed = '';
-            copyButton = ' <span id="copy_btn" class="button">📋</span>';
+            copyButton = ' <span id="copy_btn" class="button" uri="' + taskUrl + '">📋</span>';
         }
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
         +          '<div><span class="title">' + taskName + '</span>' + copyButton + ' <span id="show_btn" class="button">👁️</span> <span id="remove_btn" class="button">❌</span></div>'
