@@ -8,18 +8,20 @@
         <script src="js/common.js"></script>
     </head>
     <body>
-        <div id="globalHeader">
-            <span id="active_btn" class="active status button" i18n>popup_active_button</span> <span id="numActive">0</span>
-            -
-            <span id="waiting_btn" class="paused status button" i18n>popup_waiting_button</span> <span id="numWaiting">0</span>
-            -
-            <span id="stopped_btn" class="stopped status button" i18n>popup_stopped_button</span> <span id="numStopped">0</span>
-        </div>
-        <span id="globalError" class="error status hidden"></span>
-        <div id="globalMenu">
-            <span id="addTask_btn" class="button" i18n>popup_add_button</span>
-            <span id="cancel_btn" class="button hidden" i18n>popup_cancel_button</span>
-            <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
+        <div class="menuContainer">
+            <div id="queueTabs">
+                <span id="active_btn" class="active status button" i18n>popup_active_button</span> <span id="numActive">0</span>
+                -
+                <span id="waiting_btn" class="paused status button" i18n>popup_waiting_button</span> <span id="numWaiting">0</span>
+                -
+                <span id="stopped_btn" class="stopped status button" i18n>popup_stopped_button</span> <span id="numStopped">0</span>
+            </div>
+            <div id="networkStatus" class="error status hidden"></div>
+            <div id="taskManager">
+                <span id="addTask_btn" class="button" i18n>popup_add_button</span>
+                <span id="cancel_btn" class="button hidden" i18n>popup_cancel_button</span>
+                <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
+            </div>
         </div>
         <div id="addTaskWindow" class="hidden">
             <span class="title" i18n>add_task_referer</span>
@@ -41,13 +43,15 @@
         <div id="stoppedQueue" class="taskQueue hidden"></div>
         <div id="showTaskFiles" class="hidden"></div>
         <hr>
-        <div id="globalFooter">
-            <span class="download status" i18n>popup_download</span> <span id="downloadSpeed">0 B/s</span>
-            -
-            <span class="upload status" i18n>popup_upload</span> <span id="uploadSpeed">0 B/s</span>
-        </div>
-        <div id="optionsMenu">
-            <span id="options_btn" class="button" i18n>popup_options_button</span>
+        <div class="menuContainer">
+            <div id="networkBandwidth">
+                <span class="download status" i18n>popup_download</span> <span id="downloadSpeed">0 B/s</span>
+                -
+                <span class="upload status" i18n>popup_upload</span> <span id="uploadSpeed">0 B/s</span>
+            </div>
+            <div id="aboutExtension">
+                <span id="options_btn" class="button" i18n>popup_options_button</span>
+            </div>
         </div>
     </body>
     <script src="js/i18n.js"></script>

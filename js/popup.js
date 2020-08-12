@@ -142,12 +142,12 @@ function printMainFrame() {
             $('#numStopped').html(stopped);
             $('#downloadSpeed').html(downloadSpeed);
             $('#uploadSpeed').html(uploadSpeed);
-            $('#globalHeader, #globalMenu').show();
-            $('#globalError').hide();
+            $('#queueTabs, #taskManager').show();
+            $('#networkStatus').hide();
             printTaskQueue(waiting, stopped);
         }, (error, rpc) => {
-            $('#globalHeader, #globalMenu').hide();
-            $('#globalError').show().html(error);
+            $('#queueTabs, #taskManager').hide();
+            $('#networkStatus').show().html(error);
         }
     );
 

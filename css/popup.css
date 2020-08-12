@@ -2,13 +2,17 @@ body {
     width: 400px;
 }
 
-#globalMenu {
+.menuContainer {
+    height: 20px;
+}
+
+#taskManager {
     position: absolute;
     top: 8px;
     right: 8px;
 }
 
-#optionsMenu {
+#aboutExtension {
     position: absolute;
     bottom: 8px;
     right: 8px;
@@ -18,14 +22,10 @@ body {
     background-color: #FFF;
     border: 1px solid #CCC;
     position: absolute;
-    top: 34px;
+    top: 35px;
     width: 380px;
     height: 395px;
     padding: 10px;
-}
-
-#taskBatch {
-    height: 200px;
 }
 
 #addTaskProxy {
