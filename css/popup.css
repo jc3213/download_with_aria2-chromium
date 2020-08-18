@@ -18,7 +18,7 @@ body {
     right: 8px;
 }
 
-#addTaskWindow {
+#newTaskWindow {
     background-color: #FFF;
     border: 1px solid #CCC;
     position: absolute;
@@ -28,7 +28,7 @@ body {
     padding: 10px;
 }
 
-#addTaskProxy {
+#setProxy {
     width: fit-content;
     transform: scale(1.25);
 }

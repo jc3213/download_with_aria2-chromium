@@ -1,23 +1,23 @@
-$('#addTask_btn, #cancel_btn').on('click', (event) => {
-    $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
+$('#newTask_btn, #cancel_btn').on('click', (event) => {
+    $('#newTask_btn, #cancel_btn, #purdge_btn, #newTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
-    $('#addTaskProxy').prop('checked', false);
-    $('#setTaskProxy').prop('disabled', 'disabled');
+    $('#setProxy').prop('checked', false);
+    $('#taskProxy').prop('disabled', 'disabled');
 });
 
-$('#addTaskProxy').on('click', (event) => {
-    $('#setTaskProxy').prop('disabled', (index, value) => !value);
+$('#setProxy').on('click', (event) => {
+    $('#taskProxy').prop('disabled', (index, value) => !value);
 });
 
-$('#setTaskProxy').val(localStorage.getItem('proxy') || '').on('change', (event) => {
+$('#taskProxy').val(localStorage.getItem('proxy') || '').on('change', (event) => {
     localStorage.setItem('proxy', event.target.value);
 });
 
 $('#submit_btn').on('click', (event) => {
     var referer = $('taskReferer').val();
-    var proxy = $('#addTaskProxy').prop('checked') ? $('#setTaskProxy').val() : '';
+    var proxy = $('#setProxy').prop('checked') ? $('#taskProxy').val() : '';
     var url = $('#taskBatch').val().split('\n').filter(item => item === '' ?  '' : downWithAria2(item, referer, proxy));
-    $('#addTask_btn, #cancel_btn, #purdge_btn, #addTaskWindow').toggle();
+    $('#newTask_btn, #cancel_btn, #purdge_btn, #newTaskWindow').toggle();
     $('#taskReferer, #taskBatch').val('');
 });
 
