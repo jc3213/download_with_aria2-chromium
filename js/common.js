@@ -166,6 +166,6 @@ function secondsToHHMMSS(number) {
     var hours = (number / 3600 | 0);
     var minutes = ((number - hours * 3600) / 60 | 0);
     var seconds = (number - hours * 3600 - minutes * 60 | 0);
-    var time = multiDecimalNumber(hours) + 'h' + multiDecimalNumber(minutes) + 'm' + multiDecimalNumber(seconds) + 's';
-    return time.replace(/(00[hms])*/, '');
+    var time = hours + 'h:' + minutes + 'm:' + seconds + 's';
+    return time.replace(/(0[hm]:)*/, '');
 }
