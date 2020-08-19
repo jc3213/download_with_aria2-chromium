@@ -60,24 +60,14 @@ $('div.taskQueue').on('click', (event) => {
     else if (event.target.id === 'copy_btn') {
         getDownloadURLs(gid);
     }
+    else if (event.target.id === 'stop_btn') {
+        jsonRPCRequest({'method': 'aria2.forceRemove', 'gid': gid});
+    }
     else if (event.target.id === 'remove_btn') {
-        removeTask(status, gid);
+        jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid});
     }
     else if (event.target.id === 'progress_bar') {
         toggleTask(status, gid);
-    }
-
-    function removeTask(status, gid, name) {
-        if (['active', 'waiting', 'paused'].includes(status)) {
-            var method = 'aria2.forceRemove';
-        }
-        else if (['complete', 'error', 'removed'].includes(status)) {
-            method = 'aria2.removeDownloadResult';
-        }
-        else {
-            return console.log(status);
-        }
-        jsonRPCRequest({'method': method, 'gid': gid});
     }
 
     function getDownloadURLs(gid) {
@@ -194,7 +184,7 @@ function printMainFrame() {
         showButton = showButton || '';
         copyButton = copyButton || '';
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="title">' + taskName + '</span>' + copyButton + showButton + ' <span id="remove_btn" class="button">❌</span></div>'
+        +          '<div><span class="title">' + taskName + '</span>' + copyButton + showButton + ' <span id="stop_btn" class="button hidden ' + result.status + '_stop">🔳</span><span id="remove_btn" class="button hidden ' + result.status + '_remove">❌</span></div>'
         +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
         +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
         +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'

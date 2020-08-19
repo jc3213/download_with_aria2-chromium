@@ -151,3 +151,11 @@ td {
 .complete_info {
     display: none;
 }
+
+.active_stop {
+    display: initial;
+}
+
+.paused_remove, .error_remove, .complete_remove {
+    display: initial;
+}
