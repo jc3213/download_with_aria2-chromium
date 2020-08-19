@@ -184,7 +184,7 @@ function printMainFrame() {
         showButton = showButton || '';
         copyButton = copyButton || '';
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="title">' + taskName + '</span>' + copyButton + showButton + ' <span id="stop_btn" class="button hidden ' + result.status + '_stop">⛔</span><span id="remove_btn" class="button hidden ' + result.status + '_remove">❌</span></div>'
+        +          '<div><span class="title">' + taskName + '</span>' + copyButton + showButton + ' <span id="stop_btn" class="button hidden ' + result.status + '_stop">⛔</span><span id="remove_btn" class="button ' + result.status + '_remove">❌</span></div>'
         +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
         +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
         +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'

@@ -156,6 +156,6 @@ td {
     display: initial;
 }
 
-.paused_remove, .error_remove, .complete_remove {
-    display: initial;
+.active_remove {
+    display: none;
 }
