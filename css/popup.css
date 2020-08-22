@@ -151,11 +151,3 @@ td {
 .complete_info {
     display: none;
 }
-
-.active_stop {
-    display: initial;
-}
-
-.active_remove {
-    display: none;
-}
