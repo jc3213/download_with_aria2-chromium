@@ -35,8 +35,11 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     }
 
     function getDomain(url) {
-        var host = url.split('/')[2];
+        var host = url.split(/[\/:]+/)[1];
         var temp = host.split('.').reverse();
+        if ('com,net,org,edu,gov,co'.includes(temp[1])) {
+            return temp[2] + '.' + temp[1] + '.' + temp[0];
+        }
         return temp[1] + '.' + temp[0];
     }
 
