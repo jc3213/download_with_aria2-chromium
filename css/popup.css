@@ -70,7 +70,7 @@ input, textarea {
     width: 380px;
 }
 
-#showTaskFiles {
+#taskDetails {
     background-color: #FFF;
     padding-top: 5px;
     position: absolute;
@@ -79,16 +79,16 @@ input, textarea {
     height: 440px;
 }
 
-#showTask {
+#taskDetails div {
+    margin-bottom: 10px;
+}
+
+#taskName div {
     height: 44px;
     overflow-y: hidden;
 }
 
-#showTask:active {
-    filter: contrast(25%);
-}
-
-#showFiles {
+#taskFiles {
     height: 370px;
     overflow-y: scroll;
 }

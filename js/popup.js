@@ -97,7 +97,6 @@ function printMainFrame() {
         if (result.bittorrent) {
             if (result.bittorrent.info) {
                 var taskName = result.bittorrent.info.name;
-                var showButton = ' <span id="show_btn" class="button">👁️</span>';
             }
             var numSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
             var uploadSpeed = ', ⇧: ' + bytesToFileSize(result.uploadSpeed) + '/s';
@@ -109,10 +108,9 @@ function printMainFrame() {
         taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
         numSeeders = numSeeders || '';
         uploadSpeed = uploadSpeed || '';
-        showButton = showButton || '';
         copyButton = copyButton || '';
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="title">' + taskName + '</span>' + copyButton + showButton + ' <span id="remove_btn" class="button">❌</span></div>'
+        +          '<div><span class="title">' + taskName + '</span>' + copyButton + ' <span id="option_btn" class="button">⚙️</span> <span id="remove_btn" class="button">❌</span></div>'
         +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
         +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
         +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
