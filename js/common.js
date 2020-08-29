@@ -46,15 +46,26 @@ function jsonRPCRequest(options, success, failure) {
             json.params.push(options.gid);
         }
         if (options.url) {
-            if (!options.url.match(/\[\d+-\d+\]/)) {
-                options.url = options.url.replace(/\[/g, '%5B').replace(/\]/g, '%5D');
-            }
-            json.params.push([options.url]);
+            var url = santilizeLoop(options.url);
+            json.params.push([url]);
         }
         if (options.params) {
             json.params = [...json.params, ...options.params];
         }
         return json;
+    }
+
+    function santilizeLoop(url) {
+        var loop = url.match(/\[[^\]]+\]/g);
+        if (loop) {
+            loop.map(item => {
+                if (!item.match(/\[\d+-\d+\]/)) {
+                    var frag = item.replace('[', '%5B').replace(']', '%5D');
+                    url = url.replace(item, frag);
+                }
+            });
+        }
+        return url;
     }
 
     function multiRequest(response) {
