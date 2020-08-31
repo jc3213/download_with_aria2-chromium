@@ -21,11 +21,11 @@ body {
 #newTaskWindow {
     background-color: #FFF;
     border: 1px solid #CCC;
+    padding: 10px;
     position: absolute;
     top: 35px;
     width: 380px;
     height: 395px;
-    padding: 10px;
 }
 
 #setProxy {
@@ -79,23 +79,19 @@ input, textarea {
     height: 440px;
 }
 
-#taskDetails div {
-    margin-bottom: 10px;
-}
-
 #taskName div {
     height: 40px;
     overflow-y: hidden;
 }
 
-#taskOption {
-    border: 1px solid #CCC;
+.torrentTracker {
+    border: 1px inset #CCC;
+    margin-top: 3px;
     height: 100px;
     overflow-y: scroll;
 }
 
-#taskFiles {
-    border: 1px solid #CCC;
+.torrentFiles {
     height: 270px;
     overflow-y: scroll;
 }

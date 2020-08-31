@@ -79,20 +79,23 @@ $('div.taskQueue').on('click', (event) => {
         var taskFiles = result.files.map(item => item = '<span class="fileInfo" index="' + item.index + '">'
         +           window['task_file_name'] + ': ' + item.path.split('/').pop() + '<br>'
         +           window['task_download_size'] + ': ' + bytesToFileSize(item.length) + '<br>'
-        +           window['task_complete_ratio'] + ': ' + ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</span>'
-        );
-        $('#taskOption').html(result.bittorrent.announceList.join('<br>'))
-        $('#taskFiles').html(taskFiles.join('<hr>'));
+        +           window['task_complete_ratio'] + ': ' + ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%'
+        +           '</span>');
+        $('#taskTorrent').html('<div class="torrentTracker">'
+        +           result.bittorrent.announceList.join('<br>')
+        +           '</div><hr><div class="torrentFiles">'
+        +           taskFiles.join('<hr>')
+        +           '</div>')
     }
 
     function detailedDownload(result) {
-        $('#taskOption').html();
+        $('#taskCommon').html();
     }
 });
 
 $('#taskName').on('click', (event) => {
     clearInterval(taskManager);
-    $('#taskName, #taskOption, #taskFiles').empty();
+    $('#taskName, #taskCommon, #taskTorrent').empty();
     $('#taskDetails').hide();
 });
 
