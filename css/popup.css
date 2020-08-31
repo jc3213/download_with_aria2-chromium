@@ -86,18 +86,31 @@ input, textarea {
 
 .torrentTracker {
     border: 1px inset #CCC;
-    margin-top: 3px;
+    margin-top: 5px;
     height: 100px;
     overflow-y: scroll;
 }
 
 .torrentFiles {
-    height: 270px;
+    border: 1px outset #CCC;
+    margin-top: 3px;
+    height: 280px;
     overflow-y: scroll;
 }
 
 .fileInfo {
     word-break: break-word;
+}
+
+.fileIndex {
+    min-width: 40px;
+    max-width: 60px;
+    display: inline-block;
+}
+
+.fileRatio {
+    width: 50px;
+    display: inline-block;
 }
 
 .progress {
