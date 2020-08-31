@@ -76,7 +76,6 @@ $('div.taskQueue').on('click', (event) => {
     }
 
     function detailedTorrent(result) {
-        console.log(result);
         var taskFiles = result.files.map(item => item = '<div class="fileInfo" index="' + item.index + '">'
         +           '<div class="fileIndex">No.' + item.index + '</div> '
         +           '<div class="fileRatio">' + ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</div> '

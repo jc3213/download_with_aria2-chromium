@@ -95,12 +95,6 @@
     "task_bit_seeders": {
         "message": "Seeders"
     },
-    "task_file_name": {
-        "message": "File Name"
-    },
-    "task_complete_ratio": {
-        "message": "Completed"
-    },
     "new_task_referer": {
         "message": "Referer"
     },

@@ -95,12 +95,6 @@
     "task_bit_seeders": {
         "message": "种子"
     },
-    "task_file_name": {
-        "message": "文件名"
-    },
-    "task_complete_ratio": {
-        "message": "已完成"
-    },
     "new_task_referer": {
         "message": "引用页"
     },
