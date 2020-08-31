@@ -95,9 +95,6 @@
     "task_bit_seeders": {
         "message": "种子"
     },
-    "task_file_index": {
-        "message": "序号"
-    },
     "task_file_name": {
         "message": "文件名"
     },

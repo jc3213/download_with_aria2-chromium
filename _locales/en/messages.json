@@ -95,9 +95,6 @@
     "task_bit_seeders": {
         "message": "Seeders"
     },
-    "task_file_index": {
-        "message": "Index"
-    },
     "task_file_name": {
         "message": "File Name"
     },

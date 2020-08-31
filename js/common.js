@@ -166,7 +166,7 @@ function multiDecimalNumber(number, decimal) {
     if (number.toString().length >= decimal ) {
         return number.toString();
     }
-    var result = number + Math.pow(10, decimal);
+    var result = (number | 0) + Math.pow(10, decimal);
     return result.toString().substr(1);
 }
 

@@ -84,24 +84,23 @@ input, textarea {
 }
 
 #taskName div {
-    height: 44px;
+    height: 40px;
     overflow-y: hidden;
 }
 
-#taskFiles {
-    height: 370px;
+#taskOption {
+    border: 1px solid #CCC;
+    height: 100px;
     overflow-y: scroll;
 }
 
-table {
-    border-collapse: collapse;
-    width: 380px;
+#taskFiles {
+    border: 1px solid #CCC;
+    height: 270px;
+    overflow-y: scroll;
 }
 
-td {
-    border: 1px solid #CCC;
-    max-width: 200px;
-    text-align: center;
+.fileInfo {
     word-break: break-word;
 }
 
