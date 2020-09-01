@@ -84,18 +84,41 @@ input, textarea {
     overflow-y: hidden;
 }
 
-.torrentTracker {
+#torrentTracker {
     border: 1px inset #CCC;
     margin-top: 5px;
     height: 100px;
     overflow-y: scroll;
 }
 
-.torrentFiles {
+#torrentFiles {
     border: 1px outset #CCC;
     margin-top: 3px;
     height: 280px;
     overflow-y: scroll;
+}
+
+#torrentFiles td {
+    border: 1px inset #CCC;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#torrentFiles td:nth-child(1) {
+    width: 20px;
+}
+
+#torrentFiles td:nth-child(2) {
+    text-align: left;
+}
+
+#torrentFiles td:nth-child(3) {
+    width: 70px;
+}
+
+#torrentFiles td:nth-child(4) {
+    width: 50px;
 }
 
 .fileInfo {

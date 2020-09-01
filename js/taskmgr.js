@@ -76,16 +76,14 @@ $('div.taskQueue').on('click', (event) => {
     }
 
     function detailedTorrent(result) {
-        var taskFiles = result.files.map(item => item = '<div class="fileInfo" index="' + item.index + '">'
-        +           '<div class="fileIndex">No.' + item.index + '</div> '
-        +           '<div class="fileRatio">' + ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</div> '
-        +           item.path.split('/').pop() + ' (' + bytesToFileSize(item.length) + ')'
-        +           '</div>');
-        $('#taskTorrent').html('<div class="torrentTracker">'
-        +           result.bittorrent.announceList.join('<br>')
-        +           '</div><div class="torrentFiles">'
-        +           taskFiles.join('')
-        +           '</div>')
+        var taskFiles = result.files.map((item, index) => item = '<tr><td>'
+        +           multiDecimalNumber(item.index, result.files.length.toString().length) + '</td><td>'
+        +           item.path.split('/').pop() + '</td><td>'
+        +           bytesToFileSize(item.length) + '</td><td>'
+        +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
+        );
+        $('#torrentTracker').html(result.bittorrent.announceList.join('<br>'));
+        $('#torrentFiles').html(taskFiles.join(''));
     }
 
     function detailedDownload(result) {
