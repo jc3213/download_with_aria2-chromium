@@ -5,9 +5,9 @@ $('div.taskQueue').on('click', (event) => {
     var name = taskInfo.attr('name');
     if (event.target.id === 'option_btn') {
         $('#taskDetails').show();
-        printTaskOption(gid);
+        printTaskDetails(gid);
         taskManager = setInterval(() => {
-            printTaskOption(gid);
+            printTaskDetails(gid);
         }, 1000);
     }
     else if (event.target.id === 'copy_btn') {
@@ -55,7 +55,7 @@ $('div.taskQueue').on('click', (event) => {
         jsonRPCRequest({'method': method, 'gid': gid});
     }
 
-    function printTaskOption(gid) {
+    function printTaskDetails(gid) {
         jsonRPCRequest(
             {'method': 'aria2.tellStatus', 'gid': gid},
             (result) => {
@@ -93,7 +93,7 @@ $('div.taskQueue').on('click', (event) => {
 
 $('#taskName').on('click', (event) => {
     clearInterval(taskManager);
-    $('#taskName, #taskCommon, #taskTorrent').empty();
+    $('#taskName, #commonOption, #torrentTracker, #torrentFiles').empty();
     $('#taskDetails').hide();
 });
 
