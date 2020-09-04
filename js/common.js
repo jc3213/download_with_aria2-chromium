@@ -1,13 +1,13 @@
-function jsonRPCRequest(options, success, failure) {
+function jsonRPCRequest(request, success, failure) {
     success = success || function() {};
     failure = failure || function() {};
     var rpc = localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc';
     var xhr = new XMLHttpRequest();
-    if (options.length) {
-        var json = options.map(item => createJSON(item));
+    if (request.length) {
+        var json = request.map(item => createJSON(item));
     }
     else {
-        json = createJSON(options);
+        json = createJSON(request);
     }
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {
@@ -32,25 +32,28 @@ function jsonRPCRequest(options, success, failure) {
     };
     xhr.send(JSON.stringify(json));
 
-    function createJSON(options) {
+    function createJSON(request) {
         var token = localStorage.getItem('token') || '';
         var json = {
             'jsonrpc': 2.0,
-            'method': options.method,
+            'method': request.method,
             'id': '',
             'params': [
                 'token:' + token
             ]
         };
-        if (options.gid) {
-            json.params.push(options.gid);
+        if (request.gid) {
+            json.params.push(request.gid);
         }
-        if (options.url) {
-            var url = santilizeLoop(options.url);
+        if (request.index) {
+            json.params = [...json.params, ...request.index];
+        }
+        if (request.url) {
+            var url = santilizeLoop(request.url);
             json.params.push([url]);
         }
-        if (options.params) {
-            json.params = [...json.params, ...options.params];
+        if (request.options) {
+            json.params.push(request.options);
         }
         return json;
     }
@@ -107,23 +110,23 @@ function showNotification(title, message) {
 function downWithAria2(url, referer, proxy) {
     if (referer) {
         chrome.cookies.getAll({'url': referer}, (cookies) => {
-            var params = {
+            var options = {
                 'header': [
                     'Referer: ' + referer,
                     'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
                 ],
                 'all-proxy': proxy
             }
-            sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [params]});
+            sendRequest({'method': 'aria2.addUri', 'url': url, 'options': options});
         });
     }
     else {
-        sendRequest({'method': 'aria2.addUri', 'url': url, 'params': [{'all-proxy': proxy}]});
+        sendRequest({'method': 'aria2.addUri', 'url': url, 'options': {'all-proxy': proxy}});
     }
 
-    function sendRequest(options) {
+    function sendRequest(request) {
         jsonRPCRequest(
-            options,
+            request,
             (result) => {
                 showNotification('Downloading', url);
             },

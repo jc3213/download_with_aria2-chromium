@@ -3,7 +3,7 @@ $('div.taskQueue').on('click', (event) => {
     var status = taskInfo.attr('status');
     var gid = taskInfo.attr('gid');
     var name = taskInfo.attr('name');
-    if (event.target.id === 'option_btn') {
+    if (event.target.id === 'show_btn') {
         $('#taskDetails').show();
         printTaskDetails(gid);
         taskManager = setInterval(() => {
@@ -59,41 +59,23 @@ $('div.taskQueue').on('click', (event) => {
         jsonRPCRequest(
             {'method': 'aria2.tellStatus', 'gid': gid},
             (result) => {
-                if (result.bittorrent) {
-                    if (result.bittorrent.info) {
-                        var taskName = result.bittorrent.info.name;
-                    }
-                    detailedTorrent(result);
-                }
-                else {
-                    var taskUrl = result.files[0].uris[0].uri;
-                    detailedDownload(result);
-                }
-                taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
-                $('#taskName').html('<div class="title status button ' + result.status + '">' + taskName + '</div>');
+                $('#taskName').html('<div class="title status button ' + result.status + '">' + result.bittorrent.info.name + '</div>');
+                var taskFiles = result.files.map((item, index) => item = '<tr><td>'
+                +           multiDecimalNumber(item.index, result.files.length.toString().length) + '</td><td>'
+                +           item.path.split('/').pop() + '</td><td>'
+                +           bytesToFileSize(item.length) + '</td><td>'
+                +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
+                );
+                $('#taskOption').html(result.bittorrent.announceList.join('<br>'));
+                $('#taskFiles').html(taskFiles.join(''));
             }
         );
-    }
-
-    function detailedTorrent(result) {
-        var taskFiles = result.files.map((item, index) => item = '<tr><td>'
-        +           multiDecimalNumber(item.index, result.files.length.toString().length) + '</td><td>'
-        +           item.path.split('/').pop() + '</td><td>'
-        +           bytesToFileSize(item.length) + '</td><td>'
-        +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
-        );
-        $('#torrentTracker').html(result.bittorrent.announceList.join('<br>'));
-        $('#torrentFiles').html(taskFiles.join(''));
-    }
-
-    function detailedDownload(result) {
-        $('#taskCommon').html();
     }
 });
 
 $('#taskName').on('click', (event) => {
     clearInterval(taskManager);
-    $('#taskName, #commonOption, #torrentTracker, #torrentFiles').empty();
+    $('#taskName, #taskOption, #taskFiles').empty();
     $('#taskDetails').hide();
 });
 
