@@ -111,7 +111,7 @@ function downWithAria2(url, referer, proxy) {
     var domain = domainFromUrl(url);
     var proxied = localStorage.getItem('proxied') || '';
     if (proxied.includes(domain)) {
-        proxy = localStorage.getItem('allproxy') || '';
+        proxy = proxy || localStorage.getItem('allproxy') || '';
     }
     var options = {
         'header': [
