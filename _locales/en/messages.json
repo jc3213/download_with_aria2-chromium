@@ -29,6 +29,18 @@
     "option_useragent_desc": {
         "message": "customize user agent to bypass the restrictions of some websites"
     },
+    "option_allproxy": {
+        "message": "All Proxy"
+    },
+    "option_allproxy_desc": {
+        "message": "server of \"all-proxy\" for Aria2 downlaods, **<u><i>http</i></u> or <u><i>https</i></u> protocol only"
+    },
+    "option_proxied": {
+        "message": "Domains over Proxy"
+    },
+    "option_proxied_desc": {
+        "message": "downloads from these domains will have \"all-proxy\" option added, <u>one entry per line</u>"
+    },
     "option_capture": {
         "message": "Capture"
     },

@@ -29,6 +29,18 @@
     "option_useragent_desc": {
         "message": "通过自定义用户代理来回避一些网站的下载限制"
     },
+    "option_allproxy": {
+        "message": "代理服务器"
+    },
+    "option_allproxy_desc": {
+        "message": "设置Aria2下载中\"all-proxy\"的服务器, **仅支持<u><i>http</i></u>或<u><i>https</i></u>协议"
+    },
+    "option_proxied": {
+        "message": "代理域名"
+    },
+    "option_proxied_desc": {
+        "message": "来自列表中域名的下载将自动添加\"all-proxy\"选项, <u>每行一条</u>"
+    },
     "option_capture": {
         "message": "抓取"
     },

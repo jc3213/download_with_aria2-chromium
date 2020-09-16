@@ -9,9 +9,7 @@ $('#setProxy').on('click', (event) => {
     $('#taskProxy').prop('disabled', (index, value) => !value);
 });
 
-$('#taskProxy').val(localStorage.getItem('proxy') || '').on('change', (event) => {
-    localStorage.setItem('proxy', event.target.value);
-});
+$('#taskProxy').val(localStorage.getItem('allproxy') || '');
 
 $('#submit_btn').on('click', (event) => {
     var referer = $('taskReferer').val();
