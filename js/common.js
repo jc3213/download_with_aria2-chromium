@@ -108,25 +108,26 @@ function showNotification(title, message) {
 }
 
 function downWithAria2(url, referer, proxy) {
+    var options = {
+        'header': [
+            'User-Agent: ' + navigator.userAgent
+        ],
+        'all-proxy': proxy
+    }
     if (referer) {
         chrome.cookies.getAll({'url': referer}, (cookies) => {
-            var options = {
-                'header': [
-                    'Referer: ' + referer,
-                    'Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' ')
-                ],
-                'all-proxy': proxy
-            }
-            sendRequest({'method': 'aria2.addUri', 'url': url, 'options': options});
+            options.header.push('Referer: ' + referer);
+            options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
+            sendRequest(options);
         });
     }
     else {
-        sendRequest({'method': 'aria2.addUri', 'url': url, 'options': {'all-proxy': proxy}});
+        sendRequest(options);
     }
 
     function sendRequest(request) {
         jsonRPCRequest(
-            request,
+            {'method': 'aria2.addUri', 'url': url, 'options': options},
             (result) => {
                 showNotification('Downloading', url);
             },
