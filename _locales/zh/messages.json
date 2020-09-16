@@ -5,6 +5,15 @@
     "extension_description": {
         "message": "本扩展使得 Chromium 浏览器能够通过 Aria2 进行下载"
     },
+    "option_basic": {
+        "message": "基础"
+    },
+    "option_advanced": {
+        "message": "高级"
+    },
+    "option_download": {
+        "message": "下载"
+    },
     "option_jsonrpc": {
         "message": "JSONRPC 链接"
     },

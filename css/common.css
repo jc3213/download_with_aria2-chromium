@@ -7,6 +7,14 @@ body {
     display: none;
 }
 
+.tab {
+    border: 2px outset #CCC;
+    border-radius: 10%;
+    border-color: #CCC;
+    cursor: pointer;
+    padding: 5px;
+}
+
 .button {
     background-color: #FFF;
     border: 1px outset #CCC;
@@ -15,16 +23,17 @@ body {
     padding: 3px;
 }
 
-.button:hover {
+.button:hover, .tab:hover {
     filter: contrast(75%);
 }
 
-.button:active {
+.button:active, .tab:active {
     filter: contrast(25%);
 }
 
 .checked {
     border-style: inset;
+    border-color: #C33;
 }
 
 input, textarea {

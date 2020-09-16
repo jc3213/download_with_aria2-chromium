@@ -48,10 +48,6 @@ body {
     padding: 1px;
 }
 
-.checked {
-    box-shadow: 0px -1px 1px #C33;
-}
-
 .status {
     color: #FFF;
     padding: 3px;

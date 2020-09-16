@@ -4,6 +4,10 @@ body {
     width: 600px;
 }
 
+#menuTab {
+    font-size: 20px;
+}
+
 .container {
     padding: 10px;
 }

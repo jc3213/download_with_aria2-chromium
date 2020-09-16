@@ -5,6 +5,15 @@
     "extension_description": {
         "message": "An extension for Chromium that allows you to download with Aria2"
     },
+    "option_basic": {
+        "message": "Basic"
+    },
+    "option_advanced": {
+        "message": "Advanced"
+    },
+    "option_download": {
+        "message": "Download"
+    },
     "option_jsonrpc": {
         "message": "JSONRPC URI"
     },
