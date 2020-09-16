@@ -130,7 +130,7 @@ function downWithAria2(url, referer, proxy) {
         sendRequest(options);
     }
 
-    function sendRequest(request) {
+    function sendRequest(options) {
         jsonRPCRequest(
             {'method': 'aria2.addUri', 'url': url, 'options': options},
             (result) => {
