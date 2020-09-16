@@ -1,8 +1,8 @@
-$('#tabBasic, #tabAdvanced, #tabCapture').click((event) => {
+$('#tabBasic, #tabAdvanced, #tabDownload').click((event) => {
     var check = '#' + event.target.id;
     var menu = check.replace('tab', 'menu');
-    var uncheck = ['#tabBasic', '#tabAdvanced', '#tabCapture'].filter(item => item !== check).join(', ');
-    var hide = ['#menuBasic', '#menuAdvanced', '#menuCapture'].filter(item => item !== menu).join(', ');
+    var uncheck = ['#tabBasic', '#tabAdvanced', '#tabDownload'].filter(item => item !== check).join(', ');
+    var hide = ['#menuBasic', '#menuAdvanced', '#menuDownload'].filter(item => item !== menu).join(', ');
     $(uncheck).removeClass('checked');
     $(hide).hide();
     $(check).addClass('checked');
@@ -64,5 +64,5 @@ function calcFileSize(event) {
         size = number * Math.pow(1024, unit);
     }
     localStorage.setItem('fileSize', size);
-    localStorage.setItem(event.target.id, event.target.value)
+    localStorage.setItem(event.target.id, event.target.value);
 }
