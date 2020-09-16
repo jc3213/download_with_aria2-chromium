@@ -23,6 +23,12 @@
     "option_show": {
         "message": "Show"
     },
+    "option_useragent": {
+        "message": "User Agent"
+    },
+    "option_useragent_desc": {
+        "message": "customize user agent to bypass the restrictions of some websites"
+    },
     "option_capture": {
         "message": "Capture"
     },

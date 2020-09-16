@@ -23,6 +23,12 @@
     "option_show": {
         "message": "显示"
     },
+    "option_useragent": {
+        "message": "用户代理"
+    },
+    "option_useragent_desc": {
+        "message": "通过自定义用户代理来回避一些网站的下载限制"
+    },
     "option_capture": {
         "message": "抓取"
     },

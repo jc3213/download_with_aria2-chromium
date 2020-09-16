@@ -110,7 +110,7 @@ function showNotification(title, message) {
 function downWithAria2(url, referer, proxy) {
     var options = {
         'header': [
-            'User-Agent: ' + navigator.userAgent
+            'User-Agent: ' + localStorage.getItem('useragent') || navigator.userAgent
         ],
         'all-proxy': proxy
     }

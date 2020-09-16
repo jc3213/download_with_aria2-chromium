@@ -5,6 +5,7 @@ function saveOption(event) {
 [
     {'id': 'jsonrpc', 'value': 'http://localhost:6800/jsonrpc', 'change': saveOption},
     {'id': 'token', 'value': '', 'change': saveOption},
+    {'id': 'useragent', 'value': navigator.userAgent, 'change': saveOption},
     {'id': 'sizeEntry', 'value': 0, 'change': calcFileSize},
     {'id': 'sizeUnit', 'value': 2, 'change': calcFileSize},
     {'id': 'fileExt', 'value': '', 'change': saveOption},
