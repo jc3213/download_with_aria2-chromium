@@ -50,7 +50,7 @@ function initiateOption(option) {
         $('#' + option.id).prop('checked', JSON.parse(localStorage.getItem(option.id)) || option.value).on('change', event => localStorage.setItem(event.target.id, event.target.checked));
     }
     else {
-        $('#' + option.id).val(localStorage.getItem(option.id) || option.value).on('change', event => localStorage.setItem(event.target.id, event.target.value));
+        $('#' + option.id).val(localStorage.getItem(option.id) || option.value).on('change', event => option.change ? option.change(event) : localStorage.setItem(event.target.id, event.target.value));
     }
 }
 
@@ -64,5 +64,5 @@ function calcFileSize(event) {
         size = number * Math.pow(1024, unit);
     }
     localStorage.setItem('fileSize', size);
-    saveOption(event);
+    localStorage.setItem(event.target.id, event.target.value)
 }
