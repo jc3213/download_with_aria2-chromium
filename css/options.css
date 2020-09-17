@@ -18,7 +18,11 @@ body {
 }
 
 input, textarea {
-    width: 300px;
+    width: 350px;
+}
+
+#useragent {
+    height: 52px;
 }
 
 #capture {
@@ -27,7 +31,7 @@ input, textarea {
 }
 
 #sizeEntry {
-    width: 240px;
+    width: 300px;
 }
 
 #sizeUnit {
