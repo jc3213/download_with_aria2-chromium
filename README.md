@@ -73,6 +73,18 @@ Popup.html
             <br><b>Stopped</b> - Filter downloads stopped or completed
             </details>
         <b>New</b> - Open <b>New Task Window</b>
+            <details>
+                <b>New Task Window</b>
+                <details>
+                    <b>Referer</b> - Change the referer of this download session
+                    <br><b>Download Url</b> - Input the urls of this download session
+                    <br><b>Use Proxy</b>
+                    <details>
+                        <b>checkbox</b> - Add <b>all-proxy</b> option to this download session (Only this time)
+                        <br><b>textarea</b> - Change proxy service of this download session (Only this time)
+                    </details>
+                </details>
+            </details>
         <br><b>Purdge</b> - Purdge all downloads that are completed or stopped
     </details>
     <b>Task Manager</b>
@@ -87,16 +99,6 @@ Popup.html
         <b>Download Speed</b> - Global download speed
         <br><b>Upload Speed</b> - Global updload speed
         <br><b>Option</b> - Open <b>Options.html</b>
-    </details>
-    <b>New Task Window</b>
-    <details>
-        <b>Referer</b> - Change the referer of this download session
-        <br><b>Download Url</b> - Input the urls of this download session
-        <br><b>Use Proxy</b>
-        <details>
-            <b>checkbox</b> - Add <b>all-proxy</b> option to this download session (Only this time)
-            <br><b>textarea</b> - Change proxy service of this download session (Only this time)
-        </details>
     </details>
 </details>
 
