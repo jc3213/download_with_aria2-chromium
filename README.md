@@ -10,65 +10,95 @@
 
 Options.html
 <details>
-  You can check whether <b>JSONRPC URI</b> or <b>Secret Token</b> is correct or not <br/>
-  You can modify <b>User Agent</b> for download to bypass some restrictions <br/>
-  You can set <b>all-proxy</b> property for downloads manually or automatically <br/>
-  Capture filters now have better logic, and better user approach <br/>
-  Priority of filter <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b> <br/>
-  Filter performance <b>File Size</b> > <b>Ignored Domains</b> = <b>Monitored Domains</b> = <b>File Extensions</b>
+  You can check whether <b>JSONRPC URI</b> or <b>Secret Token</b> is correct or not
+  <br>You can modify <b>User Agent</b> for download to bypass some restrictions
+  <br>You can set <b>all-proxy</b> property for downloads manually or automatically
+  <br>Capture filters now have better logic, and better user approach
+  <br>Priority of filter <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
+  <br>Filter performance <b>File Size</b> > <b>Ignored Domains</b> = <b>Monitored Domains</b> = <b>File Extensions</b>
 </details>
 Popup.html
 <details>
-  Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts <br/>
-  Filter task queues based on their status <br/>
-  Show global <b>Download</b>, <b>Upload</b> speed <br/>
-  Better <b>Progress</b> bar, click to pause or unpause the task <br/>
-  <b>Options</b> button to open <b>Options.html</b> instantly <br/>
-  Show error message on top when an error occurs <br/>
-  Click <b>📋</b> to copy download url to clipboard <br/>
-  Click <b>👁️</b> to show the all files of bit-torrent downloads
+  Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
+  <br>Filter task queues based on their status
+  <br>Show global <b>Download</b>, <b>Upload</b> speed
+  <br>Advanced <b>Progress</b> bar, click to pause or unpause the task
+  <br><b>Options</b> button to open <b>Options.html</b> - instantly
+  <br>Show error message on top when an error occurs
+  <br>Click <b>📋</b> to copy download url to clipboard
+  <br>Click <b>👁️</b> to show the all files of bit-torrent downloads
 </details>
 Other optimization
 <details>
-  New library <b>jQuery-3.5.1.js</b> <br/>
-  New icons <br/>
-  Native i18n supports <br/>
-  Removed libraries <b>fancysettings.js</b>, <b>store.js</b>, <b>i18n.js</b>, and <b>popuplib.min.js</b> <br/>
-  Removed unnecessary <b>*.js</b>, <b>chrome</b> api and <b>manifest</b> key usage <br/>
-  Better notifications and performance
+    New library <b>jQuery-3.5.1.js</b>
+    <br>New icons
+    <br>Native i18n supports
+    <br>Removed libraries <b>fancysettings.js</b>, <b>store.js</b>, <b>i18n.js</b>, and <b>popuplib.min.js</b>
+    <br>Removed unnecessary <b>*.js</b>, <b>chrome</b> api and <b>manifest</b> key usage
+    <br>Better notifications and performance
 </details>
 
 # How to use
 
-- Options.html
-  - `Basic`
-      - `JSONRPC URI`: 
-      - `Secret Token`: 
-  - `Advanced`
-      - `User Agent`:
-      - `All Proxy`: 
-      - `Domains over Proxy`: 
-  - `Download`
-      - `Capture`
-          - `File Size`: 
-          - `File Extensions`: 
-          - `Monitored Domains`: 
-          - `Ignored Domains`: 
-- Popup.html
-  - `New`: 
-  - `Purdge`:  
-  - `Option`: 
-- `New Task Window` @ Popup.html
-  - `Referer`: 
-  - `Download Url`: 
-  - `Use Proxy`
-      - `checkbox`: 
-      - `textarea`: 
-- `Task Manager` @ Popup.html
-  - `Progress Bar`: 
-  - `❌ Button`: 
-  - `👁️ Button`: 
-  - `📋 Button`: 
+Options.html
+<details>
+    <b>Basic</b>
+    <details>
+        <b>JSONRPC URI</b> - Url of your Aria2 jsonrpc
+        <br><b>Secret Token</b> - Secret token of your Aria2 jsonrpc
+    </details>
+    <b>Advanced</b>
+    <details>
+        <b>User Agent</b> - You can modified user agent for every download
+        <br><b>All Proxy</b> - Url of http or https protocol proxy services
+        <br><b>Domains over Proxy</b> - Domains that needs a proxy service to download (auto-proxy profile)
+    </details>
+    <b>Download</b>
+    <details>
+        <b>Capture</b> - Ability to capture downloads from browser
+        <br><b>File Size</b> - Filter downloads based on file size
+        <br><b>File Extensions</b> - Filter downloads based on file extensions
+        <br><b>Monitored Domains</b> - Capture downloads from listed domains
+        <br><b>Ignored Domains</b> - Ignore downloads from listed domains
+    </details>
+</details>
+Popup.html
+<details>
+    <b>Top Menu</b>
+    <details>
+        <b>Tabs with Status</b>
+            <details>
+            <b>Active</b> - Filter only active downloads on <b>Task Manager</b>
+            <br><b>Waiting</b> - Filter downloads those are paused or still in queue
+            <br><b>Stopped</b> - Filter downloads stopped or completed
+            </details>
+        <b>New</b> - Open <b>New Task Window</b>
+        <br><b>Purdge</b> - Purdge all downloads that are completed or stopped
+    </details>
+    <b>Task Manager</b>
+    <details>
+        <b>❌</b> - Stop downloading task or remove stopped task from <b>Task Manager</b>
+        <br><b>👁️</b> - Show files and trackers for bit-torrent downloads
+        <br><b>📋</b> - Copy url of targeted download to clipboard
+        <br><b>Progress Bar</b> - Click to pause or unpause targeted download
+    </details>
+    <b>Bottom Menu</b>
+    <details>
+        <b>Download Speed</b> - Global download speed
+        <br><b>Upload Speed</b> - Global updload speed
+        <br><b>Option</b> - Open <b>Options.html</b>
+    </details>
+    <b>New Task Window</b>
+    <details>
+        <b>Referer</b> - Change the referer of this download session
+        <br><b>Download Url</b> - Input the urls of this download session
+        <br><b>Use Proxy</b>
+        <details>
+            <b>checkbox</b> - Add <b>all-proxy</b> option to this download session (Only this time)
+            <br><b>textarea</b> - Change proxy service of this download session (Only this time)
+        </details>
+    </details>
+</details>
 
 # Disadvantages
 
