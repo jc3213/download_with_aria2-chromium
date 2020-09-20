@@ -8,33 +8,33 @@
 
 # Differences
 
-- Brand new option window
+Options.html
 <details>
-  You can check whether `JSONRPC URI` or `Secret Token` is correct or not <br />
-  You can modify `User Agent` for download to bypass some restrictions <br />
-  You can set `all-proxy` property for downloads manually or automatically <br />
-  Capture filters now have better logic, and better user approach <br />
-  Priority of filter `Ignored Domains` > `Monitored Domains` > `File Extensions` > `File Sizes` <br />
-  Filter performance `File Size` > `Ignored Domains` = `Monitored Domains` = `File Extensions` 
+  You can check whether <b>JSONRPC URI</b> or <b>Secret Token</b> is correct or not <br/>
+  You can modify <b>User Agent</b> for download to bypass some restrictions <br/>
+  You can set <b>all-proxy</b> property for downloads manually or automatically <br/>
+  Capture filters now have better logic, and better user approach <br/>
+  Priority of filter <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b> <br/>
+  Filter performance <b>File Size</b> > <b>Ignored Domains</b> = <b>Monitored Domains</b> = <b>File Extensions</b>
 </details>
-- Brand new popup window
+Popup.html
 <details>
-  Show `Active`, `Waiting`, `Stopped` task counts <br />
-  Filter task queues based on their status <br />
-  Show global `Download`, `Upload` speed <br />
-  Better `Progress` bar, click to pause or unpause the task <br />
-  `Options` button to open `options.html` instantly <br />
-  Show error message on top when an error occurs <br />
-  Click `📋` to copy download url to clipboard <br />
-  Click `👁️` to show the all files of bit-torrent downloads
+  Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts <br/>
+  Filter task queues based on their status <br/>
+  Show global <b>Download</b>, <b>Upload</b> speed <br/>
+  Better <b>Progress</b> bar, click to pause or unpause the task <br/>
+  <b>Options</b> button to open <b>Options.html</b> instantly <br/>
+  Show error message on top when an error occurs <br/>
+  Click <b>📋</b> to copy download url to clipboard <br/>
+  Click <b>👁️</b> to show the all files of bit-torrent downloads
 </details>
-- Other optimization
+Other optimization
 <details>
-  New library `jQuery-3.5.1.js` <br />
-  New icons <br />
-  Native i18n supports <br />
-  Removed libraries `fancysettings.js`, `store.js`, `i18n.js`, and `popuplib.min.js` <br />
-  Removed unnecessary `*.js`, `chrome` api and `manifest` key usage <br />
+  New library <b>jQuery-3.5.1.js</b> <br/>
+  New icons <br/>
+  Native i18n supports <br/>
+  Removed libraries <b>fancysettings.js</b>, <b>store.js</b>, <b>i18n.js</b>, and <b>popuplib.min.js</b> <br/>
+  Removed unnecessary <b>*.js</b>, <b>chrome</b> api and <b>manifest</b> key usage <br/>
   Better notifications and performance
 </details>
 
