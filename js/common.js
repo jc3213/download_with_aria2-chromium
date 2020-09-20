@@ -107,10 +107,9 @@ function showNotification(title, message) {
     });
 }
 
-function downWithAria2(url, referer, proxy) {
-    var domain = referer ? domainFromUrl(referer) : undefined;
+function downWithAria2(session, proxy) {
     var proxied = localStorage.getItem('proxied') || '';
-    if (proxied.includes(domain)) {
+    if (proxied.includes(session.domain)) {
         proxy = proxy || localStorage.getItem('allproxy') || '';
     }
     var options = {
@@ -119,9 +118,9 @@ function downWithAria2(url, referer, proxy) {
         ],
         'all-proxy': proxy
     }
-    if (referer) {
-        chrome.cookies.getAll({'url': referer}, (cookies) => {
-            options.header.push('Referer: ' + referer);
+    if (session.referer) {
+        chrome.cookies.getAll({'url': session.referer}, (cookies) => {
+            options.header.push('Referer: ' + session.referer);
             options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
             sendRequest(options);
         });
@@ -132,17 +131,17 @@ function downWithAria2(url, referer, proxy) {
 
     function sendRequest(options) {
         jsonRPCRequest(
-            {'method': 'aria2.addUri', 'url': url, 'options': options},
+            {'method': 'aria2.addUri', 'url': session.url, 'options': options},
             (result) => {
-                showNotification('Downloading', url);
+                showNotification('Downloading', session.url);
             },
             (error, rpc) => {
-                showNotification(error, rpc || url || 'No URI to download');
+                showNotification(error, rpc || session.url || 'No URI to download');
             }
         );
     }
 
-    return url;
+    return session.url;
 }
 
 function domainFromUrl(url) {

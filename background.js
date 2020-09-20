@@ -6,7 +6,7 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2') {
-        downWithAria2(info.linkUrl, tab.url);
+        downWithAria2({'url': info.linkUrl, 'referer': tab.url});
     }
 });
 
@@ -25,11 +25,12 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     }
 
     function captureAdd(capture, item) {
-        var check = captureCheck(domainFromUrl(item.referrer), item.filename.split('.').pop(), item.fileSize);
+        var domain = domainFromUrl(item.referrer);
+        var check = captureCheck(domain, item.filename.split('.').pop(), item.fileSize);
         if (capture === 2 || check) {
             chrome.downloads.cancel(item.id, () => {
                 chrome.downloads.erase({'id': item.id}, () => {
-                    downWithAria2(item.finalUrl, item.referrer);
+                    downWithAria2({'url': item.finalUrl, 'referer': item.referrer});
                 });
             });
         }
