@@ -57,8 +57,12 @@
         </div>
         <div id="menuDownload" class="hidden">
             <div class="container">
-                <span class="title" i18n>option_capture</span>
-                <input id="capture" type="checkbox">
+                <span class="title" i18n>option_capture</span>  
+                <select id="capture">
+                    <option value="0" i18n>option_capture_disabled</option>
+                    <option value="1" i18n>option_capture_filters</option>
+                    <option value="2" i18n>option_capture_always</option>
+                </select>
                 <br>
                 <span i18n>option_capture_desc</span>
             </div>
