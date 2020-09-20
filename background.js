@@ -25,7 +25,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     }
 
     function captureAdd(item) {
-        var captured = captureCheck(getDomain(item.referrer), item.filename.split('.').pop(), item.fileSize);
+        var captured = captureCheck(domainFromUrl((item.referrer), item.filename.split('.').pop(), item.fileSize);
         if (captured) {
             chrome.downloads.cancel(item.id, () => {
                 chrome.downloads.erase({'id': item.id}, () => {
@@ -33,15 +33,6 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
                 });
             });
         }
-    }
-
-    function getDomain(url) {
-        var host = url.split(/[\/:]+/)[1];
-        var temp = host.split('.').reverse();
-        if ('com,net,org,edu,gov,co'.includes(temp[1])) {
-            return temp[2] + '.' + temp[1] + '.' + temp[0];
-        }
-        return temp[1] + '.' + temp[0];
     }
 
     function captureCheck(domain, ext, size) {

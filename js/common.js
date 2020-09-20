@@ -108,7 +108,7 @@ function showNotification(title, message) {
 }
 
 function downWithAria2(url, referer, proxy) {
-    var domain = domainFromUrl(url);
+    var domain = referer ? domainFromUrl(referer) : undefined;
     var proxied = localStorage.getItem('proxied') || '';
     if (proxied.includes(domain)) {
         proxy = proxy || localStorage.getItem('allproxy') || '';
