@@ -11,22 +11,22 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    var capture = JSON.parse(localStorage.getItem('capture')) || false;
-    if (capture) {
+    var capture = (localStorage.getItem('capture') | 0);
+    if (capture > 0) {
         if (item.referrer) {
-            captureAdd(item);
+            captureAdd(capture, item);
         }
         else {
             chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
                 item.referrer = tabs[0].url;
-                captureAdd(item);
+                captureAdd(capture, item);
             });
         }
     }
 
-    function captureAdd(item) {
-        var captured = captureCheck(domainFromUrl((item.referrer), item.filename.split('.').pop(), item.fileSize);
-        if (captured) {
+    function captureAdd(capture, item) {
+        var check = captureCheck(domainFromUrl(item.referrer), item.filename.split('.').pop(), item.fileSize);
+        if (capture === 2 || check) {
             chrome.downloads.cancel(item.id, () => {
                 chrome.downloads.erase({'id': item.id}, () => {
                     downWithAria2(item.finalUrl, item.referrer);

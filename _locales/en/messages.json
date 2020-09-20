@@ -51,10 +51,19 @@
         "message": "downloads from these domains will have \"all-proxy\" option added, <u>one entry per line</u>"
     },
     "option_capture": {
-        "message": "Capture"
+        "message": "Capture Downloads"
+    },
+    "option_capture_disabled": {
+        "message": "Disabled"
+    },
+    "option_capture_filters": {
+        "message": "Built-in Filters"
+    },
+    "option_capture_always": {
+        "message": "Always"
     },
     "option_capture_desc": {
-        "message": "capture browser downloads based on built-in filters"
+        "message": "capture downloads from the browser based on user settings"
     },
     "option_filesize": {
         "message": "File Size"

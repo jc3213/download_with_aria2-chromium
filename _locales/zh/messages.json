@@ -51,10 +51,19 @@
         "message": "来自列表中域名的下载将自动添加\"all-proxy\"选项, <u>每行一条</u>"
     },
     "option_capture": {
-        "message": "抓取"
+        "message": "抓取下载"
+    },
+    "option_capture_disabled": {
+        "message": "禁用"
+    },
+    "option_capture_filters": {
+        "message": "基于条件"
+    },
+    "option_capture_always": {
+        "message": "总是"
     },
     "option_capture_desc": {
-        "message": "抓取符合内置过滤器条件的下载"
+        "message": "根据用户设置抓取来自浏览器的下载请求"
     },
     "option_filesize": {
         "message": "文件大小"
@@ -69,16 +78,16 @@
         "message": "抓取符合列表中的文件后缀的下载, <u>每行一条</u>"
     },
     "option_monitored": {
-        "message": "监听域名"
+        "message": "监视域名"
     },
     "option_monitored_desc": {
-        "message": "抓取来自列表中的域名的下载, <u>每行一条</u>"
+        "message": "监视来自列表中的域名的下载, <u>每行一条</u>"
     },
     "option_ignored": {
-        "message": "无视域名"
+        "message": "忽略域名"
     },
     "option_ignored_desc": {
-        "message": "<b>无视</b>来自列表中的域名的下载, <u>每行一条</u>"
+        "message": "<b>忽略</b>来自列表中的域名的下载, <u>每行一条</u>"
     },
     "popup_active_button": {
         "message": "下载中"

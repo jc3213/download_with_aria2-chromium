@@ -15,7 +15,7 @@ $('#tabBasic, #tabAdvanced, #tabDownload').click((event) => {
     {'id': 'useragent', 'value': navigator.userAgent},
     {'id': 'allproxy', 'value': ''},
     {'id': 'proxied', 'value': ''},
-    {'id': 'capture', 'value': false, 'checkbox': true},
+    {'id': 'capture', 'value': 0},
     {'id': 'sizeEntry', 'value': 0, 'change': calcFileSize},
     {'id': 'sizeUnit', 'value': 2, 'change': calcFileSize},
     {'id': 'fileExt', 'value': ''},
