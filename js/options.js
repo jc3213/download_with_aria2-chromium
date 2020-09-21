@@ -50,9 +50,9 @@ function initiateOption(option) {
         option.target = $('#' + option.id).prop('checked', JSON.parse(localStorage.getItem(option.id)) || option.value).on('change', event => localStorage.setItem(event.target.id, event.target.checked));
     }
     else {
-        option.target = $('#' + option.id).val(localStorage.getItem(option.id) || option.value).on('change', event => option.change ? option.change(event) : localStorage.setItem(event.target.id, event.target.value));
+        option.target = $('#' + option.id).val(localStorage.getItem(option.id) || option.value).on('change', event => localStorage.setItem(event.target.id, event.target.value));
     }
-    option.target.ready(option.load);
+    option.target.ready(option.load).on('change', option.change);
 }
 
 function captureFilters() {
