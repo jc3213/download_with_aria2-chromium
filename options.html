@@ -66,39 +66,41 @@
                 <br>
                 <span i18n>option_capture_desc</span>
             </div>
-            <div class="container">
-                <span class="title" i18n>option_filesize</span>
-                <br>
-                <input id="sizeEntry" type="number" min="0">
-                <select id="sizeUnit">
-                    <option value="1">KB</option>
-                    <option value="2">MB</option>
-                    <option value="3">GB</option>
-                    <option value="4">TB</option>
-                </select>
-                <br>
-                <span i18n>option_filesize_desc</span>
-            </div>
-            <div class="container">
-                <span class="title" i18n>option_fileext</span>
-                <br>
-                <textarea id="fileExt" placeholder="zip&#10;exe&#10;jpg"></textarea>
-                <br>
-                <span i18n>option_fileext_desc</span>
-            </div>
-            <div class="container">
-                <span class="title" i18n>option_monitored</span>
-                <br>
-                <textarea id="monitored" placeholder="domain.com&#10;example.net"></textarea>
-                <br>
-                <span i18n>option_monitored_desc</span>
-            </div>
-            <div class="container">
-                <span class="title" i18n>option_ignored</span>
-                <br>
-                <textarea id="ignored" placeholder="domain.com&#10;example.net"></textarea>
-                <br>
-                <span i18n>option_ignored_desc</span>
+            <div id="captureFilters" class="container">
+                <div class="container">
+                    <span class="title" i18n>option_filesize</span>
+                    <br>
+                    <input id="sizeEntry" type="number" min="0">
+                    <select id="sizeUnit">
+                        <option value="1">KB</option>
+                        <option value="2">MB</option>
+                        <option value="3">GB</option>
+                        <option value="4">TB</option>
+                    </select>
+                    <br>
+                    <span i18n>option_filesize_desc</span>
+                </div>
+                <div class="container">
+                    <span class="title" i18n>option_fileext</span>
+                    <br>
+                    <textarea id="fileExt" placeholder="zip&#10;exe&#10;jpg"></textarea>
+                    <br>
+                    <span i18n>option_fileext_desc</span>
+                </div>
+                <div class="container">
+                    <span class="title" i18n>option_monitored</span>
+                    <br>
+                    <textarea id="monitored" placeholder="domain.com&#10;example.net"></textarea>
+                    <br>
+                    <span i18n>option_monitored_desc</span>
+                </div>
+                <div class="container">
+                    <span class="title" i18n>option_ignored</span>
+                    <br>
+                    <textarea id="ignored" placeholder="domain.com&#10;example.net"></textarea>
+                    <br>
+                    <span i18n>option_ignored_desc</span>
+                </div>
             </div>
         </div>
     </body>
