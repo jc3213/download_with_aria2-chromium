@@ -56,10 +56,12 @@ Options.html
     <b>Download</b>
     <details>
         <b>Capture</b> - Ability to capture downloads from browser
-        <br><b>File Size</b> - Filter downloads based on file size
-        <br><b>File Extensions</b> - Filter downloads based on file extensions
-        <br><b>Monitored Domains</b> - Capture downloads from listed domains
-        <br><b>Ignored Domains</b> - Ignore downloads from listed domains
+        <details>
+            <b>File Size</b> - Filter downloads based on file size
+            <br><b>File Extensions</b> - Filter downloads based on file extensions
+            <br><b>Monitored Domains</b> - Capture downloads from listed domains
+            <br><b>Ignored Domains</b> - Ignore downloads from listed domains
+        </details>
     </details>
 </details>
 Popup.html
