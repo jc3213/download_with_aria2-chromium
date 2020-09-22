@@ -42,7 +42,7 @@
         "message": "显示"
     },
     "option_token_desc": {
-        "message": "设置 Aria2 安全密钥"
+        "message": "设置 Aria2 \"token\" 密钥"
     },
     "option_useragent": {
         "message": "用户代理"

@@ -33,7 +33,7 @@
         "message": "Check"
     },
     "option_jsonrpc_desc": {
-        "message": "Setting Aria2 JSONRPC URI"
+        "message": "Setting Aria2 \"jsonrpc\" URI"
     },
     "option_token": {
         "message": "Secret Token"
@@ -42,7 +42,7 @@
         "message": "Show"
     },
     "option_token_desc": {
-        "message": "Setting Aria2 Secret Token"
+        "message": "Setting Aria2 \"token\" option"
     },
     "option_useragent": {
         "message": "User Agent"
