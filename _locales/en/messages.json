@@ -81,19 +81,19 @@
         "message": "File Extensions"
     },
     "option_fileext_desc": {
-        "message": "Capture downloads base on file extensions"
+        "message": "Capture downloads base on listed file extensions"
     },
     "option_monitored": {
         "message": "Monitored Domains"
     },
     "option_monitored_desc": {
-        "message": "Capture downloads from these domain names"
+        "message": "Monitoring downloads from listed domain names"
     },
     "option_ignored": {
         "message": "Ignored Domains"
     },
     "option_ignored_desc": {
-        "message": "<b>Ignore</b> downloads from these domain names"
+        "message": "Ignore downloads from listed domain names"
     },
     "popup_active_button": {
         "message": "Active"

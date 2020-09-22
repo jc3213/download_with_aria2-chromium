@@ -93,7 +93,7 @@
         "message": "忽略域名"
     },
     "option_ignored_desc": {
-        "message": "<b>忽略</b>来自列表中的域名的下载"
+        "message": "忽略来自列表中的域名的下载"
     },
     "popup_active_button": {
         "message": "下载中"
