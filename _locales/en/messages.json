@@ -29,20 +29,20 @@
     "option_jsonrpc": {
         "message": "JSONRPC URI"
     },
-    "option_jsonrpc_desc": {
-        "message": "Setting Aria2 JSONRPC URI"
-    },
     "option_check": {
         "message": "Check"
+    },
+    "option_jsonrpc_desc": {
+        "message": "Setting Aria2 JSONRPC URI"
     },
     "option_token": {
         "message": "Secret Token"
     },
-    "option_token_desc": {
-        "message": "Setting Aria2 Secret Token"
-    },
     "option_show": {
         "message": "Show"
+    },
+    "option_token_desc": {
+        "message": "Setting Aria2 Secret Token"
     },
     "option_useragent": {
         "message": "User Agent"
@@ -75,7 +75,7 @@
         "message": "File Size"
     },
     "option_filesize_desc": {
-        "message": "Capture downloads those are larger than your settings"
+        "message": "Capture downloads those are larger than user setting"
     },
     "option_fileext": {
         "message": "File Extensions"
