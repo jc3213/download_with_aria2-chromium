@@ -30,7 +30,7 @@
         "message": "JSONRPC 链接"
     },
     "option_jsonrpc_desc": {
-        "message": "默认"
+        "message": "设置 Aria2 JSONRPC 链接"
     },
     "option_check": {
         "message": "检查"
@@ -39,7 +39,7 @@
         "message": "密钥"
     },
     "option_token_desc": {
-        "message": "若需要密钥请联系网络管理员"
+        "message": "设置 Aria2 安全密钥"
     },
     "option_show": {
         "message": "显示"
@@ -48,19 +48,19 @@
         "message": "用户代理"
     },
     "option_useragent_desc": {
-        "message": "通过自定义用户代理来回避一些网站的下载限制"
+        "message": "自定义用户代理以回避一些网站的下载限制"
     },
     "option_allproxy": {
         "message": "代理服务器"
     },
     "option_allproxy_desc": {
-        "message": "设置Aria2下载中\"all-proxy\"的服务器, **仅支持<u><i>http</i></u>或<u><i>https</i></u>协议"
+        "message": "设置 \"all-proxy\" 选项的服务器"
     },
     "option_proxied": {
-        "message": "代理域名"
+        "message": "需代理域名"
     },
     "option_proxied_desc": {
-        "message": "来自列表中域名的下载将自动添加\"all-proxy\"选项, <u>每行一条</u>"
+        "message": "为来自列表中的域名的下载自动添加 \"all-proxy\" 选项"
     },
     "option_capture": {
         "message": "抓取"
@@ -75,25 +75,25 @@
         "message": "文件大小"
     },
     "option_filesize_desc": {
-        "message": "抓取文件大小超过**<u><i>200MB</i></u>的下载"
+        "message": "抓取文件大小超过设置的下载"
     },
     "option_fileext": {
         "message": "文件后缀"
     },
     "option_fileext_desc": {
-        "message": "抓取符合列表中的文件后缀的下载, <u>每行一条</u>"
+        "message": "抓取匹配列表中的文件后缀的下载"
     },
     "option_monitored": {
         "message": "监视域名"
     },
     "option_monitored_desc": {
-        "message": "监视来自列表中的域名的下载, <u>每行一条</u>"
+        "message": "监视来自列表中的域名的下载"
     },
     "option_ignored": {
         "message": "忽略域名"
     },
     "option_ignored_desc": {
-        "message": "<b>忽略</b>来自列表中的域名的下载, <u>每行一条</u>"
+        "message": "<b>忽略</b>来自列表中的域名的下载"
     },
     "popup_active_button": {
         "message": "下载中"
