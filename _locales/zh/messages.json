@@ -69,7 +69,7 @@
         "message": "基于条件"
     },
     "option_capture_desc": {
-        "message": "根据用户设置抓取来自浏览器的下载请求"
+        "message": "根据用户设置抓取浏览器的下载请求"
     },
     "option_filesize": {
         "message": "文件大小"

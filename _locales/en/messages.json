@@ -69,7 +69,7 @@
         "message": "Built-in Filters"
     },
     "option_capture_desc": {
-        "message": "Capture downloads from the browser based on user settings"
+        "message": "Capture browser downloads depend on user settings"
     },
     "option_filesize": {
         "message": "File Size"
