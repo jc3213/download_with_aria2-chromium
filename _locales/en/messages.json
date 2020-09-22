@@ -81,7 +81,7 @@
         "message": "File Extensions"
     },
     "option_fileext_desc": {
-        "message": "Capture downloads base on listed file extensions"
+        "message": "Capture downloads match the listed file extensions"
     },
     "option_monitored": {
         "message": "Monitored Domains"
