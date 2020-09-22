@@ -14,6 +14,18 @@
     "option_download": {
         "message": "下载"
     },
+    "option_default": {
+        "message": "禁用"
+    },
+    "option_disabled": {
+        "message": "禁用"
+    },
+    "option_always": {
+        "message": "总是"
+    },
+    "option_protocol": {
+        "message": "协议"
+    },
     "option_jsonrpc": {
         "message": "JSONRPC 链接"
     },
@@ -51,16 +63,10 @@
         "message": "来自列表中域名的下载将自动添加\"all-proxy\"选项, <u>每行一条</u>"
     },
     "option_capture": {
-        "message": "抓取下载"
-    },
-    "option_capture_disabled": {
-        "message": "禁用"
+        "message": "抓取"
     },
     "option_capture_filters": {
         "message": "基于条件"
-    },
-    "option_capture_always": {
-        "message": "总是"
     },
     "option_capture_desc": {
         "message": "根据用户设置抓取来自浏览器的下载请求"

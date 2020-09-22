@@ -14,11 +14,23 @@
     "option_download": {
         "message": "Download"
     },
+    "option_default": {
+        "message": "Default"
+    },
+    "option_disabled": {
+        "message": "Disabled"
+    },
+    "option_always": {
+        "message": "Always"
+    },
+    "option_protocol": {
+        "message": "Protocol"
+    },
     "option_jsonrpc": {
         "message": "JSONRPC URI"
     },
     "option_jsonrpc_desc": {
-        "message": "default"
+        "message": "Setting Aria2 JSONRPC URI"
     },
     "option_check": {
         "message": "Check"
@@ -27,7 +39,7 @@
         "message": "Secret Token"
     },
     "option_token_desc": {
-        "message": "ask the administrator if secret token is required"
+        "message": "Setting Aria2 Secret Token"
     },
     "option_show": {
         "message": "Show"
@@ -36,58 +48,52 @@
         "message": "User Agent"
     },
     "option_useragent_desc": {
-        "message": "customize user agent to bypass the restrictions of some websites"
+        "message": "Customize user agent to bypass the restrictions of some websites"
     },
     "option_allproxy": {
         "message": "All Proxy"
     },
     "option_allproxy_desc": {
-        "message": "server of \"all-proxy\" for Aria2 downlaods, **<u><i>http</i></u> or <u><i>https</i></u> protocol only"
+        "message": "Setting server for \"all-proxy\" option"
     },
     "option_proxied": {
         "message": "Domains over Proxy"
     },
     "option_proxied_desc": {
-        "message": "downloads from these domains will have \"all-proxy\" option added, <u>one entry per line</u>"
+        "message": "Add \"all-proxy\" option for downloads from these domains automatically"
     },
     "option_capture": {
-        "message": "Capture Downloads"
-    },
-    "option_capture_disabled": {
-        "message": "Disabled"
+        "message": "Capturing"
     },
     "option_capture_filters": {
         "message": "Built-in Filters"
     },
-    "option_capture_always": {
-        "message": "Always"
-    },
     "option_capture_desc": {
-        "message": "capture downloads from the browser based on user settings"
+        "message": "Capture downloads from the browser based on user settings"
     },
     "option_filesize": {
         "message": "File Size"
     },
     "option_filesize_desc": {
-        "message": "capture downloads those are larger than **<u><i>200MB</i></u>"
+        "message": "Capture downloads those are larger than your settings"
     },
     "option_fileext": {
         "message": "File Extensions"
     },
     "option_fileext_desc": {
-        "message": "capture downloads base on file extensions, <u>one entry per line</u>"
+        "message": "Capture downloads base on file extensions"
     },
     "option_monitored": {
         "message": "Monitored Domains"
     },
     "option_monitored_desc": {
-        "message": "capture downloads from these domain names, <u>one entry per line</u>"
+        "message": "Capture downloads from these domain names"
     },
     "option_ignored": {
         "message": "Ignored Domains"
     },
     "option_ignored_desc": {
-        "message": "<b>ignore</b> downloads from these domain names, <u>one entry per line</u>"
+        "message": "<b>Ignore</b> downloads from these domain names"
     },
     "popup_active_button": {
         "message": "Active"
