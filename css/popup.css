@@ -29,7 +29,7 @@ body {
 }
 
 #setProxy {
-    width: fit-content;
+    width: 14px;
     transform: scale(1.25);
 }
 
