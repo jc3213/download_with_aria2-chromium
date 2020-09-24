@@ -16,7 +16,6 @@ body {
 }
 
 .button {
-    background-color: #FFF;
     border: 1px outset #CCC;
     cursor: pointer;
     font-weight: bold;
