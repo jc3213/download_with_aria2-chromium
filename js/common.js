@@ -121,14 +121,15 @@ function downWithAria2(session, proxy) {
     }
 
     function createOptions(session, proxy) {
-        var options = {
-            'header': ['User-Agent: ' + localStorage.getItem('useragent') || navigator.userAgent]
-        }
+        var useragent = localStorage.getItem('useragent') || navigator.userAgent;
         var proxied = localStorage.getItem('proxied') || '';
         if (proxied.includes(session.domain)) {
-            options['all-proxy'] = proxy || localStorage.getItem('allproxy') || '';
+            proxy = proxy || localStorage.getItem('allproxy') || '';
         }
-        return options;
+        return {
+            'header': ['User-Agent: ' + useragent],
+            'all-proxy': proxy
+        };
     }
 
     function sendRequest(options) {
