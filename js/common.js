@@ -108,16 +108,7 @@ function showNotification(title, message) {
 }
 
 function downWithAria2(session, proxy) {
-    var proxied = localStorage.getItem('proxied') || '';
-    if (proxied.includes(session.domain)) {
-        proxy = proxy || localStorage.getItem('allproxy') || '';
-    }
-    var options = {
-        'header': [
-            'User-Agent: ' + localStorage.getItem('useragent') || navigator.userAgent
-        ],
-        'all-proxy': proxy
-    }
+    var options = createOptions(session, proxy);
     if (session.referer) {
         chrome.cookies.getAll({'url': session.referer}, (cookies) => {
             options.header.push('Referer: ' + session.referer);
@@ -127,6 +118,17 @@ function downWithAria2(session, proxy) {
     }
     else {
         sendRequest(options);
+    }
+
+    function createOptions(session, proxy) {
+        var options = {
+            'header': ['User-Agent: ' + localStorage.getItem('useragent') || navigator.userAgent]
+        }
+        var proxied = localStorage.getItem('proxied') || '';
+        if (proxied.includes(session.domain)) {
+            options['all-proxy'] = proxy || localStorage.getItem('allproxy') || '';
+        }
+        return options;
     }
 
     function sendRequest(options) {
