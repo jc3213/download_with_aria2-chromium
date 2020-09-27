@@ -13,9 +13,8 @@ Options.html
   You can check whether <b>JSONRPC URI</b> or <b>Secret Token</b> is correct or not
   <br>You can modify <b>User Agent</b> for download to bypass some restrictions
   <br>You can set <b>all-proxy</b> property for downloads manually or automatically
-  <br>Capture filters now have better logic, and better user approach
+  <br>Capture filters now have better logic, and better user accessbility
   <br>Priority of filter <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
-  <br>Filter performance <b>File Size</b> > <b>Ignored Domains</b> = <b>Monitored Domains</b> = <b>File Extensions</b>
 </details>
 Popup.html
 <details>
@@ -23,14 +22,14 @@ Popup.html
   <br>Filter task queues based on their status
   <br>Show global <b>Download</b>, <b>Upload</b> speed
   <br>Advanced <b>Progress</b> bar, click to pause or unpause the task
-  <br><b>Options</b> button to open <b>Options.html</b> - instantly
+  <br><b>Options</b> button to open <b>Options.html</b> instantly
   <br>Show error message on top when an error occurs
-  <br>Click <b>📋</b> to copy download url to clipboard
+  <br>Click <b>📋</b> to copy the url of target download to clipboard
   <br>Click <b>👁️</b> to show the all files of bit-torrent downloads
 </details>
 Other optimization
 <details>
-    New library <b>jQuery-3.5.1.js</b>
+    New library <b>jQuery-3.5.1.min.js</b>
     <br>New icons
     <br>Native i18n supports
     <br>Removed libraries <b>fancysettings.js</b>, <b>store.js</b>, <b>i18n.js</b>, and <b>popuplib.min.js</b>
