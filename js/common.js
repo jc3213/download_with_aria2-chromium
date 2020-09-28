@@ -108,7 +108,15 @@ function showNotification(title, message) {
 }
 
 function downWithAria2(session) {
-    var options = createOptions(session);
+    var useragent = localStorage.getItem('useragent') || navigator.userAgent;
+    var proxied = localStorage.getItem('proxied') || '';
+    if (proxied.includes(session.domain)) {
+        var allproxy = session.proxy || localStorage.getItem('allproxy') || '';
+    }
+    var options = {
+        'header': ['User-Agent: ' + useragent],
+        'all-proxy': allproxy
+    };
     if (session.referer) {
         chrome.cookies.getAll({'url': session.referer}, (cookies) => {
             options.header.push('Referer: ' + session.referer);
@@ -118,18 +126,6 @@ function downWithAria2(session) {
     }
     else {
         sendRequest(options);
-    }
-
-    function createOptions(session, proxy) {
-        var useragent = localStorage.getItem('useragent') || navigator.userAgent;
-        var proxied = localStorage.getItem('proxied') || '';
-        if (proxied.includes(session.domain)) {
-            var allproxy = session.proxy || localStorage.getItem('allproxy') || '';
-        }
-        return {
-            'header': ['User-Agent: ' + useragent],
-            'all-proxy': allproxy
-        };
     }
 
     function sendRequest(options) {
@@ -143,8 +139,6 @@ function downWithAria2(session) {
             }
         );
     }
-
-    return session.url;
 }
 
 function domainFromUrl(url) {
