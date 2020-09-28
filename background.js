@@ -11,6 +11,10 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+    if (item.finalUrl.startsWith('blob')) {
+        return;
+    }
+
     var capture = (localStorage.getItem('capture') | 0);
     if (capture > 0) {
         if (item.referrer) {

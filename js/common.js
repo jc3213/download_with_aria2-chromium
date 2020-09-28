@@ -107,8 +107,8 @@ function showNotification(title, message) {
     });
 }
 
-function downWithAria2(session, proxy) {
-    var options = createOptions(session, proxy);
+function downWithAria2(session) {
+    var options = createOptions(session);
     if (session.referer) {
         chrome.cookies.getAll({'url': session.referer}, (cookies) => {
             options.header.push('Referer: ' + session.referer);
@@ -124,11 +124,11 @@ function downWithAria2(session, proxy) {
         var useragent = localStorage.getItem('useragent') || navigator.userAgent;
         var proxied = localStorage.getItem('proxied') || '';
         if (proxied.includes(session.domain)) {
-            proxy = proxy || localStorage.getItem('allproxy') || '';
+            var allproxy = session.proxy || localStorage.getItem('allproxy') || '';
         }
         return {
             'header': ['User-Agent: ' + useragent],
-            'all-proxy': proxy
+            'all-proxy': allproxy
         };
     }
 
