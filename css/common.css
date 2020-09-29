@@ -9,25 +9,25 @@ body {
 
 .tab {
     border: 2px outset #CCC;
-    border-radius: 10%;
-    border-color: #CCC;
+    border-radius: 5px;
     cursor: pointer;
     padding: 5px;
 }
 
 .button {
     border: 1px outset #CCC;
+    border-radius: 5px;
     cursor: pointer;
+    padding: 5px;
     font-weight: bold;
-    padding: 3px;
 }
 
 .button:hover, .tab:hover {
-    filter: contrast(75%);
+    filter: opacity(60%);
 }
 
 .button:active, .tab:active {
-    filter: contrast(25%);
+    filter: opacity(30%);
 }
 
 .checked {
@@ -37,7 +37,7 @@ body {
 
 input, textarea {
     font-size: 14px;
-    padding: 3.5px;
+    padding: 5px;
     resize: none;
 }
 

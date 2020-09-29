@@ -24,8 +24,16 @@ body {
     padding: 10px;
     position: absolute;
     top: 35px;
-    width: 380px;
+    left: 0px;
     height: 395px;
+}
+
+input, textarea {
+    width: 380px;
+}
+
+textarea {
+    height: 195px;
 }
 
 #setProxy {
@@ -33,9 +41,8 @@ body {
     transform: scale(1.25);
 }
 
-#submit_btn {
-    position: absolute;
-    left: 177px;
+#newTaskMenu {
+    text-align: center;
 }
 
 .taskQueue {
@@ -44,17 +51,13 @@ body {
 }
 
 .taskQueue .button {
-    font-size: 9px;
+    font-size: 10px;
     padding: 1px;
 }
 
 .status {
     color: #FFF;
     padding: 3px;
-}
-
-input, textarea {
-    width: 370px;
 }
 
 .title {
@@ -89,8 +92,8 @@ input, textarea {
 
 #taskFiles {
     border: 1px outset #CCC;
-    margin-top: 3px;
-    height: 280px;
+    margin-top: 5px;
+    height: 285px;
     overflow-y: scroll;
 }
 
