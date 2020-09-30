@@ -59,7 +59,7 @@ $('div.taskQueue').on('click', (event) => {
         jsonRPCRequest(
             {'method': 'aria2.tellStatus', 'gid': gid},
             (result) => {
-                $('#taskName').html('<div class="title status button ' + result.status + '">' + result.bittorrent.info.name + '</div>');
+                $('#taskName').html('<div class="taskName status button ' + result.status + '">' + result.bittorrent.info.name + '</div>');
                 var taskFiles = result.files.map((item, index) => item = '<tr><td>'
                 +           multiDecimalNumber(item.index, result.files.length.toString().length) + '</td><td title="' + item.path.replace(/\//g, '\\') + '">'
                 +           item.path.split('/').pop() + '</td><td>'

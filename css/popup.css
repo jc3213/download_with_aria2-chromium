@@ -60,11 +60,6 @@ textarea {
     padding: 3px;
 }
 
-.title {
-    font-weight: bold;
-    word-break: break-word;
-}
-
 .taskInfo {
     border: 1px outset #CCC;
     padding: 5px;
@@ -73,6 +68,7 @@ textarea {
 }
 
 .taskName {
+    font-weight: bold;
     display: inline-block;
     width: 345px;
 }
@@ -93,6 +89,7 @@ textarea {
 }
 
 #taskName div {
+    width: 390px;
     height: 40px;
     overflow-y: hidden;
 }
