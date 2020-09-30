@@ -66,7 +66,21 @@ textarea {
 }
 
 .taskInfo {
-    width: 380px;
+    border: 1px outset #CCC;
+    padding: 5px;
+    margin-bottom: 5px;
+    width: 365px;
+}
+
+.taskName {
+    display: inline-block;
+    width: 345px;
+}
+
+.taskMenu {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
 }
 
 #taskDetails {

@@ -79,10 +79,10 @@ function printMainFrame() {
             var active = activeQueue.map(item => printTaskInfo(item));
             var waiting = waitingQueue.map(item => printTaskInfo(item));
             var stopped = stoppedQueue.map(item => printTaskInfo(item));
-            $('#allTaskQueue').html([...active, ...waiting, ...stopped].join('<hr>'));
-            $('#activeQueue').html(active.join('<hr>'));
-            $('#waitingQueue').html(waiting.join('<hr>'));
-            $('#stoppedQueue').html(stopped.join('<hr>'));
+            $('#allTaskQueue').html([...active, ...waiting, ...stopped].join(''));
+            $('#activeQueue').html(active.join(''));
+            $('#waitingQueue').html(waiting.join(''));
+            $('#stoppedQueue').html(stopped.join(''));
         });
     }
 
@@ -110,7 +110,7 @@ function printMainFrame() {
         showButton = showButton || '';
         copyButton = copyButton || '';
         return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="title">' + taskName + '</span>' + copyButton + showButton + ' <span id="remove_btn" class="button">❌</span></div>'
+        +          '<div><span class="taskName title">' + taskName + '</span><span class="taskMenu">' + copyButton + showButton + ' <span id="remove_btn" class="button">❌</span></div>'
         +          '<div>' + window['task_download_size'] + ': ' + completedLength + '/' + totalLength + ', ' + window['task_estimated_time'] + ': ' + estimatedTime + '</div>'
         +          '<div class="' + result.status + '_info">' + window['task_connections'] + ': ' + result.connections + numSeeders + ', ⇩: ' + downloadSpeed + '/s' + uploadSpeed + '</div>'
         +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
