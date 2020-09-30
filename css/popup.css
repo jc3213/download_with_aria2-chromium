@@ -104,7 +104,7 @@ textarea {
 #taskFiles {
     border: 1px outset #CCC;
     margin-top: 5px;
-    height: 285px;
+    height: 275px;
     overflow-y: scroll;
 }
 
