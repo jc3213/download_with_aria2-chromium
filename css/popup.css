@@ -12,6 +12,18 @@ body {
     right: 8px;
 }
 
+#queueTabs span:nth-child(2n+1) {
+    padding: 4px;
+}
+
+#networkBandwidth span:nth-child(2n+1) {
+    padding: 5px;
+}
+
+#queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
+    margin-right: 10px;
+}
+
 #aboutExtension {
     position: absolute;
     bottom: 8px;
@@ -52,7 +64,6 @@ textarea {
 
 .status {
     color: #FFF;
-    padding: 3px;
 }
 
 .taskInfo {
