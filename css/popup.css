@@ -20,6 +20,10 @@ body {
     padding: 5px;
 }
 
+#networkStatus {
+    padding: 3px;
+}
+
 #queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
     margin-right: 10px;
 }
