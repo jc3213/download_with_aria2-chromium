@@ -117,6 +117,9 @@ function downWithAria2(session) {
         'header': ['User-Agent: ' + useragent],
         'all-proxy': allproxy
     };
+    if (session.filename) {
+        options['out'] = session.filename;
+    }
     if (session.referer) {
         chrome.cookies.getAll({'url': session.referer}, (cookies) => {
             options.header.push('Referer: ' + session.referer);

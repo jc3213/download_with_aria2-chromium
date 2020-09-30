@@ -34,7 +34,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         if (capture === 2 || check) {
             chrome.downloads.cancel(item.id, () => {
                 chrome.downloads.erase({'id': item.id}, () => {
-                    downWithAria2({'url': item.finalUrl, 'referer': item.referrer, 'domain': domain});
+                    downWithAria2({'url': item.finalUrl, 'referer': item.referrer, 'domain': domain, 'filename': item.filename});
                 });
             });
         }
