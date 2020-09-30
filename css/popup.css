@@ -50,11 +50,6 @@ textarea {
     overflow-y: scroll;
 }
 
-.taskQueue .button {
-    font-size: 10px;
-    padding: 1px;
-}
-
 .status {
     color: #FFF;
     padding: 3px;
@@ -77,6 +72,11 @@ textarea {
     display: inline-block;
     vertical-align: top;
     width: 20px;
+}
+
+.taskMenu .button {
+    font-size: 10px;
+    padding: 1px;
 }
 
 #taskDetails {
