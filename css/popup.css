@@ -75,8 +75,12 @@ textarea {
 }
 
 .taskMenu .button {
+    display: inline-block;
     font-size: 10px;
     padding: 1px;
+    width: 14px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 #taskDetails {
