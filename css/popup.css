@@ -77,22 +77,23 @@ textarea {
 }
 
 .taskBody {
-    display: inline-block;
     width: 345px;
 }
 
+.taskBody, .taskMenu, .taskBody span {
+    display: inline-block;
+}
+
 .taskBody span:nth-child(2n) {
-    margin: 0px 15px 0px 5px;
+    margin: 0px 25px 0px 5px;
 }
 
 .taskMenu {
-    display: inline-block;
     vertical-align: top;
     width: 20px;
 }
 
 .taskMenu .button {
-    display: inline-block;
     font-size: 10px;
     padding: 1px;
     width: 14px;
