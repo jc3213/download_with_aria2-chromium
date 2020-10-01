@@ -6,6 +6,10 @@ body {
     height: 20px;
 }
 
+.light {
+    color: #FFF;
+}
+
 #taskManager {
     position: absolute;
     top: 8px;
@@ -66,15 +70,14 @@ textarea {
     overflow-y: scroll;
 }
 
-.status {
-    color: #FFF;
-}
-
 .taskInfo {
     border: 1px outset #CCC;
     padding: 5px;
-    margin-bottom: 5px;
     width: 365px;
+}
+
+.taskInfo:nth-child(n+2) {
+    margin-top: 5px;
 }
 
 .taskBody {
@@ -153,7 +156,6 @@ textarea {
 }
 
 .fancybar {
-    color: #FFF;
     height: 20px;
     text-align: center;
 }
@@ -193,4 +195,8 @@ textarea {
 
 .removed, .upload {
     background-color: #C3C;
+}
+
+.stopped, .active, .paused, .error, .complete, .removed, .download, .upload {
+    color: #FFF;
 }
