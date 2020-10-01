@@ -125,18 +125,6 @@
     "popup_upload": {
         "message": "Upload"
     },
-    "task_download_size": {
-        "message": "Size"
-    },
-    "task_estimated_time": {
-        "message": "Estimated"
-    },
-    "task_connections": {
-        "message": "Connections"
-    },
-    "task_bit_seeders": {
-        "message": "Seeders"
-    },
     "new_task_referer": {
         "message": "Referer"
     },

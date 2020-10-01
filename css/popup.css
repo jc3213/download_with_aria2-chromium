@@ -77,21 +77,19 @@ textarea {
     width: 365px;
 }
 
-.taskInfo span {
+.taskBody {
     display: inline-block;
-}
-
-.taskInfo task:nth-child(2n) {
-    margin: 0px 6px 0px 3px;
-}
-
-.taskName {
-    font-weight: bold;
     width: 345px;
 }
 
+.taskBody span:nth-child(2n) {
+    margin: 0px 15px 0px 5px;
+}
+
 .taskMenu {
+    display: inline-block;
     vertical-align: top;
+    text-align: center;
     width: 20px;
 }
 
@@ -99,7 +97,6 @@ textarea {
     font-size: 10px;
     padding: 1px;
     width: 14px;
-    text-align: center;
 }
 
 #taskDetails {

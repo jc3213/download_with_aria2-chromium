@@ -3,6 +3,10 @@ body {
     user-select: none;
 }
 
+.title {
+    font-weight: bold;
+}
+
 .tab {
     border: 2px outset #CCC;
     border-radius: 5px;

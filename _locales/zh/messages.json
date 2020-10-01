@@ -125,18 +125,6 @@
     "popup_upload": {
         "message": "上传"
     },
-    "task_download_size": {
-        "message": "大小"
-    },
-    "task_estimated_time": {
-        "message": "剩余时间"
-    },
-    "task_connections": {
-        "message": "连接数"
-    },
-    "task_bit_seeders": {
-        "message": "种子"
-    },
     "new_task_referer": {
         "message": "引用页"
     },

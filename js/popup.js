@@ -97,24 +97,27 @@ function printMainFrame() {
                 var taskName = result.bittorrent.info.name;
                 var showButton = '<span id="show_btn" class="button">👁️</span>';
             }
-            var bitSeeders = ' (' + result.numSeeders + ' ' + window['task_bit_seeders'] + ')';
-            var uploadSpeed = '<task>⇧</task><task>' + bytesToFileSize(result.uploadSpeed) + '/s</task>';
+            var connections = result.numSeeders + ' (' + result.connections + ')';
+            var uploadSpeed = '<span>⏫</span><span>' + bytesToFileSize(result.uploadSpeed) + '/s</span>';
         }
         else {
             var taskUrl = result.files[0].uris[0].uri;
             var copyButton = '<span id="copy_btn" class="button" uri="' + taskUrl + '">📋</span>';
         }
         taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
-        bitSeeders = bitSeeders || '';
+        connections = connections || result.connections;
         uploadSpeed = uploadSpeed || '';
         showButton = showButton || '';
         copyButton = copyButton || '';
-        return '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
-        +          '<div><span class="taskName title">' + taskName + '</span><span class="taskMenu"><span id="remove_btn" class="button">❌</span>' + copyButton + showButton + '</div>'
-        +          '<div><task>' + window['task_download_size'] + '</task><task>' + completedLength + '/' + totalLength + '</task><task>' + window['task_estimated_time'] + '</task><task>' + estimatedTime + '</task></div>'
-        +          '<div class="' + result.status + '_info"><task>' + window['task_connections'] + '</task><task>' + result.connections + bitSeeders + '</task><task>⇩</task><task>' + downloadSpeed + '/s</task>' + uploadSpeed + '</div>'
-        +          '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
-        +      '</div>'
+        return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
+        +           '<div class="taskBody">'
+        +               '<div class="title">' + taskName + '</div>'
+        +               '<div><span>💾</span><span>' + completedLength + ' / ' + totalLength + '</span><span>⏳</span><span>' + estimatedTime + '</span></div>'
+        +               '<div class="' + result.status + '_info"><span>📶</span><span>' + connections + '</span><span>⏬</span><span>' + downloadSpeed + '/s</span>' + uploadSpeed + '</div>'
+        +           '</div>'
+        +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span>' + showButton + copyButton + '</div>'
+        +           '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
+        +       '</div>'
     }
 }
 
