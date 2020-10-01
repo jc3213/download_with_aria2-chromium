@@ -16,12 +16,12 @@ body {
     padding: 4px;
 }
 
-#networkStatus {
-    padding: 3px;
-}
-
 #networkBandwidth span:nth-child(2n+1) {
     padding: 5px;
+}
+
+#networkStatus {
+    padding: 3px;
 }
 
 #queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
@@ -79,6 +79,10 @@ textarea {
 
 .taskInfo span {
     display: inline-block;
+}
+
+.taskInfo task:nth-child(2n) {
+    margin: 0px 6px 0px 3px;
 }
 
 .taskName {
