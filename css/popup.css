@@ -6,10 +6,6 @@ body {
     height: 20px;
 }
 
-.light {
-    color: #FFF;
-}
-
 #taskManager {
     position: absolute;
     top: 8px;
