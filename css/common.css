@@ -3,10 +3,6 @@ body {
     user-select: none;
 }
 
-.hidden {
-    display: none;
-}
-
 .tab {
     border: 2px outset #CCC;
     border-radius: 5px;
