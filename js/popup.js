@@ -113,10 +113,10 @@ function printMainFrame() {
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
         +               '<div><span>💾</span><span>' + completedLength + ' / ' + totalLength + '</span><span>⏳</span><span>' + estimatedTime + '</span></div>'
-        +               '<div class="' + result.status + '_info"><span>📶</span><span>' + connections + '</span><span>⏬</span><span>' + downloadSpeed + '/s</span>' + uploadSpeed + '</div>'
+        +               '<div><span>📶</span><span>' + connections + '</span><span>⏬</span><span>' + downloadSpeed + '/s</span>' + uploadSpeed + '</div>'
         +           '</div>'
         +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span>' + showButton + copyButton + '</div>'
-        +           '<div id="progress_bar" class="progress ' + result.status + '_bar"><span id="progress_bar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
+        +           '<div id="progress_btn" class="fancybar ' + result.status + 'Bar"><span id="progress_btn" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
         +       '</div>'
     }
 }

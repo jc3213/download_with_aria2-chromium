@@ -16,7 +16,7 @@ $('div.taskQueue').on('click', (event) => {
     else if (event.target.id === 'remove_btn') {
         removeTask(status, gid);
     }
-    else if (event.target.id === 'progress_bar') {
+    else if (event.target.id === 'progress_btn') {
         toggleTask(status, gid);
     }
 

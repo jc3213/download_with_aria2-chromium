@@ -89,14 +89,15 @@ textarea {
 .taskMenu {
     display: inline-block;
     vertical-align: top;
-    text-align: center;
     width: 20px;
 }
 
 .taskMenu .button {
+    display: inline-block;
     font-size: 10px;
     padding: 1px;
     width: 14px;
+    text-align: center;
 }
 
 #taskDetails {
@@ -151,26 +152,26 @@ textarea {
     width: 50px;
 }
 
-.progress {
+.fancybar {
     color: #FFF;
     height: 20px;
     text-align: center;
 }
 
-.progress span {
+.fancybar span {
     display: block;
     height: 20px;
 }
 
-.progress:active, .progress:active span {
-    filter: contrast(25%);
+.fancybar:active, .fancybar:active span {
+    filter: opacity(30%);
 }
 
-.active_bar, .paused_bar, .download {
+.activeBar, .pausedBar, .download {
     background-color: #3CC;
 }
 
-.removed_bar, .error_bar, .stopped {
+.removedBar, .errorBar, .stopped {
     background-color: #CCC;
 }
 
@@ -192,8 +193,4 @@ textarea {
 
 .removed, .upload {
     background-color: #C3C;
-}
-
-.complete_info {
-    display: none;
 }
