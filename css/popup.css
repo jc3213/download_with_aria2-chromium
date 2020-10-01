@@ -115,18 +115,18 @@ textarea {
     overflow-y: hidden;
 }
 
-#taskOption {
+#taskOption, #taskFiles {
     border: 1px inset #CCC;
     margin-top: 5px;
-    height: 100px;
     overflow-y: scroll;
 }
 
+#taskOption {
+    height: 100px;
+}
+
 #taskFiles {
-    border: 1px outset #CCC;
-    margin-top: 5px;
     height: 275px;
-    overflow-y: scroll;
 }
 
 #taskFiles td {

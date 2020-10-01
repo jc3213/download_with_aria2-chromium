@@ -7,18 +7,18 @@ body {
     font-weight: bold;
 }
 
-.tab {
-    border: 2px outset #CCC;
+.tab, .button {
+    border: 1px outset #CCC;
     border-radius: 5px;
     cursor: pointer;
     padding: 5px;
 }
 
+.tab {
+    border-width: 2px;
+}
+
 .button {
-    border: 1px outset #CCC;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 5px;
     font-weight: bold;
 }
 
