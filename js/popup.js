@@ -98,7 +98,7 @@ function printMainFrame() {
                 var showButton = '<span id="show_btn" class="button">👁️</span>';
             }
             var connections = result.numSeeders + ' (' + result.connections + ')';
-            var uploadSpeed = '<span>⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s</span>';
+            var uploadSpeed = '⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s';
         }
         else {
             var taskUrl = result.files[0].uris[0].uri;
@@ -113,7 +113,7 @@ function printMainFrame() {
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
         +               '<div><span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span></div>'
-        +               '<div><span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span>' + uploadSpeed + '</div>'
+        +               '<div><span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span><span>' + uploadSpeed + '</span></div>'
         +           '</div>'
         +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span>' + showButton + copyButton + '</div>'
         +           '<div id="progress_btn" class="fancybar ' + result.status + 'Bar"><span id="progress_btn" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
