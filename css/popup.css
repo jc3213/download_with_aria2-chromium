@@ -79,13 +79,16 @@ textarea {
     width: calc(100% - 20px);
 }
 
+.taskBody .title {
+    word-break: break-word;
+}
+
 .taskBody, .taskMenu, .taskBody span, .taskMenu span {
     display: inline-block;
 }
 
 .taskBody span {
-    padding: 0px 5px;
-    width: 100px;
+    width: calc(100% / 3);
 }
 
 .taskMenu {
