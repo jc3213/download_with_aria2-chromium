@@ -112,7 +112,7 @@ function printMainFrame() {
         return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
-        +               '<div><span>💾 ' + completedLength + ' / ' + totalLength + '</span><span>⏳ ' + estimatedTime + '</span></div>'
+        +               '<div><span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span></div>'
         +               '<div><span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span>' + uploadSpeed + '</div>'
         +           '</div>'
         +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span>' + showButton + copyButton + '</div>'
