@@ -98,7 +98,7 @@ function printMainFrame() {
                 var showButton = '<span id="show_btn" class="button">👁️</span>';
             }
             var connections = result.numSeeders + ' (' + result.connections + ')';
-            var uploadSpeed = '<span>⏫</span><span>' + bytesToFileSize(result.uploadSpeed) + '/s</span>';
+            var uploadSpeed = '⏫<span class="variable">' + bytesToFileSize(result.uploadSpeed) + '/s</span>';
         }
         else {
             var taskUrl = result.files[0].uris[0].uri;
@@ -112,8 +112,8 @@ function printMainFrame() {
         return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
-        +               '<div><span>💾</span><span>' + completedLength + ' / ' + totalLength + '</span><span>⏳</span><span>' + estimatedTime + '</span></div>'
-        +               '<div><span>📶</span><span>' + connections + '</span><span>⏬</span><span>' + downloadSpeed + '/s</span>' + uploadSpeed + '</div>'
+        +               '<div>💾<span class="variable">' + completedLength + ' / ' + totalLength + '</span>⏳<span class="variable">' + estimatedTime + '</span></div>'
+        +               '<div>📶<span class="variable">' + connections + '</span>⏬<span class="variable">' + downloadSpeed + '/s</span>' + uploadSpeed + '</div>'
         +           '</div>'
         +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span>' + showButton + copyButton + '</div>'
         +           '<div id="progress_btn" class="fancybar ' + result.status + 'Bar"><span id="progress_btn" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'

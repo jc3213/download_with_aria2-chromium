@@ -6,14 +6,21 @@ body {
     height: 20px;
 }
 
-#taskManager {
-    position: absolute;
-    top: 8px;
-    right: 8px;
+.variable {
+    border: 1px inset #CCC;
+    margin-right: 5px;
+}
+
+#queueTabs .variable, #networkBandwidth .variable {
+    padding: 5px;
 }
 
 #queueTabs span:nth-child(2n+1) {
     padding: 4px;
+}
+
+#queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
+    margin-right: 10px;
 }
 
 #networkBandwidth span:nth-child(2n+1) {
@@ -24,8 +31,10 @@ body {
     padding: 3px;
 }
 
-#queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
-    margin-right: 10px;
+#taskManager {
+    position: absolute;
+    top: 8px;
+    right: 8px;
 }
 
 #aboutExtension {
@@ -79,12 +88,13 @@ textarea {
     width: calc(100% - 20px);
 }
 
-.taskBody, .taskMenu, .taskBody span, .taskMenu span {
+.taskBody, .taskMenu, .taskBody .variable, .taskMenu .button {
     display: inline-block;
 }
 
-.taskBody span:nth-child(2n) {
-    margin: 0px 25px 0px 5px;
+.taskBody .variable {
+    padding: 0px 5px;
+    margin-right: 25px;
 }
 
 .taskMenu {
