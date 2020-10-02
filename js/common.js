@@ -194,6 +194,6 @@ function secondsToHHMMSS(number) {
     var hours = (number / 3600 | 0);
     var minutes = ((number - hours * 3600) / 60 | 0);
     var seconds = (number - hours * 3600 - minutes * 60 | 0);
-    var time = hours + 'h' + minutes + 'm' + seconds + 's';
-    return time.replace(/(0[hm])*/, '');
+    var time = hours + '<sub>h</sub>' + minutes + '<sub>m</sub>' + seconds + '<sub>s</sub>';
+    return time.replace(/(0<sub>[hm]<\/sub>)*/, '');
 }
