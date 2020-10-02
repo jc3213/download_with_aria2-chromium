@@ -3,93 +3,66 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="css/common.css">
-        <link rel="stylesheet" href="css/options.css">
+        <link rel="stylesheet" href="css/popup.css">
         <script src="lib/jquery-3.5.1.min.js"></script>
         <script src="js/common.js"></script>
     </head>
     <body>
-        <div id="menuTab" class="container">
-            <span id="tabBasic" class="tab checked" i18n>option_basic</span>
-            <span id="tabAdvanced" class="tab" i18n>option_advanced</span>
-            <span id="tabDownload" class="tab" i18n>option_download</span>
+        <div class="menuContainer">
+            <div id="queueTabs">
+                <span id="active_btn" class="active tab" i18n>popup_active_button</span>
+                <span id="numActive">0</span>
+                <span id="waiting_btn" class="paused tab" i18n>popup_waiting_button</span>
+                <span id="numWaiting">0</span>
+                <span id="stopped_btn" class="stopped tab" i18n>popup_stopped_button</span>
+                <span id="numStopped">0</span>
+            </div>
+            <div id="networkStatus" class="error" style="display: none;"></div>
+            <div id="taskManager">
+                <span id="newTask_btn" class="button" i18n>popup_new_button</span>
+                <span id="cancel_btn" class="button" style="display: none;" i18n>popup_cancel_button</span>
+                <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
+            </div>
+        </div>
+        <div id="newTaskWindow" style="display: none;">
+            <span class="title" i18n>new_task_referer</span>
+            <input id="taskReferer" type="text">
+            <hr>
+            <span class="title" i18n>new_task_Batch</span>
+            <textarea id="taskBatch"></textarea>
+            <hr>
+            <span class="title" i18n>new_task_proxy</span>
+            <input id="setProxy" type="checkbox">
+            <input id="taskProxy" type="text" disabled="disabled">
+            <hr>
+            <div id="newTaskMenu" class="menuContainer">
+                <span id="submit_btn" class="button" i18n>popup_submit_button</span>
+            </div>
+        </div>
+        <div id="taskDetails" style="display: none;">
+            <div id="taskName"></div>
+            <div id="taskOption"></div>
+            <div id="taskFiles"></div>
         </div>
         <hr>
-        <div id="menuBasic">
-            <div class="container" title="option_jsonrpc_desc" i18n_title>
-                <span class="title" i18n>option_jsonrpc</span>
-                <br>
-                <input id="jsonrpc" type="text">
-                <span id="aria2Check" class="button" i18n>option_check</span>
-                <br>
-                <span i18n>option_default</span>: <u><i>http://localhost:6800/jsonrpc</i></u>
+        <div id="allTaskQueue" class="taskQueue"></div>
+        <div id="activeQueue" class="taskQueue" style="display: none;"></div>
+        <div id="waitingQueue" class="taskQueue" style="display: none;"></div>
+        <div id="stoppedQueue" class="taskQueue" style="display: none;"></div>
+        <hr>
+        <div class="menuContainer">
+            <div id="networkBandwidth">
+                <span class="download" i18n>popup_download</span>
+                <span id="downloadSpeed">0 B/s</span>
+                <span class="upload" i18n>popup_upload</span>
+                <span id="uploadSpeed">0 B/s</span>
             </div>
-            <div class="container" title="option_token_desc" i18n_title>
-                <span class="title" i18n>option_token</span>
-                <br>
-                <input id="token" type="password" placeholder="$$secret$$">
-                <span id="aria2Show" class="button" i18n>option_show</span>
-            </div>
-        </div>
-        <div id="menuAdvanced" style="display: none;">
-            <div class="container" title="option_useragent_desc" i18n_title>
-                <span class="title" i18n>option_useragent</span>
-                <br>
-                <textarea id="useragent"></textarea>
-            </div>
-            <div class="container" title="option_allproxy_desc" i18n_title>
-                <span class="title" i18n>option_allproxy</span>
-                <br>
-                <input id="allproxy" type="text" placeholder="http://127.0.0.1:8086">
-                <br>
-                <span i18n>option_protocol</span>: <u><i>http</i></u>/<u><i>https</i></u>
-            </div>
-            <div class="container" title="option_proxied_desc" i18n_title>
-                <span class="title" i18n>option_proxied</span>
-                <br>
-                <textarea id="proxied" placeholder="domain.com&#10;example.net"></textarea>
-            </div>
-        </div>
-        <div id="menuDownload" style="display: none;">
-            <div class="container" title="option_capture_desc" i18n_title>
-                <span class="title" i18n>option_capture</span>  
-                <select id="capture">
-                    <option value="0" i18n>option_disabled</option>
-                    <option value="1" i18n>option_capture_filters</option>
-                    <option value="2" i18n>option_always</option>
-                </select>
-            </div>
-            <div id="captureFilters" class="container">
-                <div class="container" title="option_filesize_desc" i18n_title>
-                    <span class="title" i18n>option_filesize</span>
-                    <br>
-                    <input id="sizeEntry" type="number" min="0">
-                    <select id="sizeUnit">
-                        <option value="1">KB</option>
-                        <option value="2">MB</option>
-                        <option value="3">GB</option>
-                        <option value="4">TB</option>
-                    </select>
-                    <br>
-                    <span i18n>option_disabled</span>: <u><i>0 (KB/MB/GB/TB)</i></u>
-                </div>
-                <div class="container" title="option_fileext_desc" i18n_title>
-                    <span class="title" i18n>option_fileext</span>
-                    <br>
-                    <input id="fileExt" placeholder="zip, exe, jpg"></textarea>
-                </div>
-                <div class="container" title="option_monitored_desc" i18n_title>
-                    <span class="title" i18n>option_monitored</span>
-                    <br>
-                    <textarea id="monitored" placeholder="domain.com&#10;example.net"></textarea>
-                </div>
-                <div class="container" title="option_ignored_desc" i18n_title>
-                    <span class="title" i18n>option_ignored</span>
-                    <br>
-                    <textarea id="ignored" placeholder="domain.com&#10;example.net"></textarea>
-                </div>
+            <div id="aboutExtension">
+                <span id="options_btn" class="button" i18n>popup_options_button</span>
             </div>
         </div>
     </body>
     <script src="js/i18n.js"></script>
-    <script src="js/options.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/taskmgr.js"></script>
 </html>

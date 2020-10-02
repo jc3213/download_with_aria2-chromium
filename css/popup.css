@@ -6,15 +6,6 @@ body {
     height: 20px;
 }
 
-.variable {
-    border: 1px inset #CCC;
-    margin-right: 5px;
-}
-
-#queueTabs .variable, #networkBandwidth .variable {
-    padding: 5px;
-}
-
 #queueTabs span:nth-child(2n+1) {
     padding: 4px;
 }
@@ -88,13 +79,24 @@ textarea {
     width: calc(100% - 20px);
 }
 
-.taskBody, .taskMenu, .taskBody .variable, .taskMenu .button {
+.taskBody, .taskMenu, .taskBody span, .taskMenu span {
     display: inline-block;
 }
 
-.taskBody .variable {
-    padding: 0px 5px;
-    margin-right: 25px;
+.taskBody > div:nth-child(2) > span:nth-child(1) {
+    width: 202px;
+}
+
+.taskBody > div:nth-child(2) > span:nth-child(2) {
+    width: 120px;
+}
+
+.taskBody > div:nth-child(3) > span:nth-child(1) {
+    width: 80px;
+}
+
+.taskBody > div:nth-child(3) > span:nth-child(n+2) {
+    width: 120px;
 }
 
 .taskMenu {
