@@ -111,7 +111,6 @@ textarea {
 }
 
 #taskName div {
-    width: 390px;
     height: 40px;
     overflow-y: hidden;
 }
