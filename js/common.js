@@ -3,21 +3,15 @@ function jsonRPCRequest(request, success, failure) {
     failure = failure || function() {};
     var rpc = localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc';
     var xhr = new XMLHttpRequest();
-    if (request.length) {
-        var json = request.map(item => createJSON(item));
-    }
-    else {
-        json = createJSON(request);
-    }
+    var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
     xhr.open('POST', rpc, true);
     xhr.onload = (event) => {
         var response = JSON.parse(xhr.response);
-        if (json.length) {
-            var error = multiRequest(response);
+        var result = response[0].result;
+        if (result) {
+            return success(...response.map(item => item = item.result));
         }
-        else {
-            error = singleRequest(response);
-        }
+        var error = response[0].error.message;
         if (error) {
             if (error === 'Unauthorized') {
                 failure(error, rpc);
@@ -69,26 +63,6 @@ function jsonRPCRequest(request, success, failure) {
             });
         }
         return url;
-    }
-
-    function multiRequest(response) {
-        var result = response.map(item => item = item.result);
-        if (result[0]) {
-            return success(...result);
-        }
-        var error = response.map(item => item = item.error);
-        if (error[0]) {
-            return error[0].message;
-        }
-    }
-
-    function singleRequest(response) {
-        if (response.result) {
-            return success(response.result);
-        }
-        if (response.error) {
-            return response.error.message;
-        }
     }
 }
 
