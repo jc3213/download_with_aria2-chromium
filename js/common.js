@@ -109,14 +109,16 @@ function showNotification(title, message) {
 
 function downWithAria2(session) {
     var useragent = localStorage.getItem('useragent') || navigator.userAgent;
-    var proxied = localStorage.getItem('proxied') || '';
-    if (proxied.includes(session.domain)) {
-        var allproxy = session.proxy || localStorage.getItem('allproxy') || '';
-    }
     var options = {
-        'header': ['User-Agent: ' + useragent],
-        'all-proxy': allproxy
+        'header': ['User-Agent: ' + useragent]
     };
+    var proxied = localStorage.getItem('proxied') || '';
+    if (session.proxy) {
+        options['all-proxy'] = session.proxy;
+    }
+    else if (proxied.includes(session.domain)) {
+        options['all-proxy'] = localStorage.getItem('allproxy') || '';
+    }
     if (session.filename) {
         options['out'] = session.filename;
     }
