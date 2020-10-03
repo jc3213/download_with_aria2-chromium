@@ -95,14 +95,14 @@ function printMainFrame() {
         if (result.bittorrent) {
             if (result.bittorrent.info) {
                 var taskName = result.bittorrent.info.name;
-                var showButton = '<span id="show_btn" class="button">👁️</span>';
+                var showButton = '<span id="show_btn" class="button">🔍</span>';
             }
             var connections = result.numSeeders + ' (' + result.connections + ')';
             var uploadSpeed = '⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s';
         }
         else {
             var taskUrl = result.files[0].uris[0].uri;
-            var copyButton = '<span id="copy_btn" class="button" uri="' + taskUrl + '">📋</span>';
+            var copyButton = '<span id="copy_btn" class="button" uri="' + taskUrl + '">🖨️</span>';
         }
         taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
         connections = connections || result.connections;
