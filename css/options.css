@@ -4,10 +4,6 @@ body {
     width: 600px;
 }
 
-#menuTab {
-    font-size: 20px;
-}
-
 .container {
     padding: 10px;
 }
@@ -16,12 +12,17 @@ body {
     font-size: 20px;
 }
 
+#menuTab {
+    font-size: 20px;
+}
+
 input, textarea {
     width: 350px;
 }
 
 select {
-    font-size: 20px;
+    font-size: 16px;
+    padding: 4px 0px 5px 3px;
 }
 
 #useragent {
@@ -29,9 +30,5 @@ select {
 }
 
 #sizeEntry {
-    width: 300px;
-}
-
-#sizeUnit {
-    padding: 6px 0px 5px;
+    width: 295px;
 }
