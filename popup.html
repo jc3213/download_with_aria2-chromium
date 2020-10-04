@@ -25,15 +25,19 @@
             </div>
         </div>
         <div id="newTaskWindow" style="display: none;">
-            <span class="title" i18n>new_task_referer</span>
-            <input id="taskReferer" type="text">
-            <hr>
-            <span class="title" i18n>new_task_Batch</span>
-            <textarea id="taskBatch"></textarea>
-            <hr>
-            <span class="title" i18n>new_task_proxy</span>
-            <input id="setProxy" type="checkbox">
-            <input id="taskProxy" type="text" disabled="disabled">
+            <div title="new_task_referer_desc" i18n_title>
+                <span class="title" i18n>new_task_referer</span>
+                <input id="taskReferer" type="text">
+            </div>
+            <div title="new_task_batch_desc" i18n_title>
+                <span class="title" i18n>new_task_batch</span>
+                <textarea id="taskBatch"></textarea>
+            </div>
+            <div title="new_task_proxy_desc" i18n_title>
+                <span class="title" i18n>new_task_proxy</span>
+                <input id="setProxy" type="checkbox">
+                <input id="taskProxy" type="text" disabled="disabled">
+            </div>
             <hr>
             <div id="newTaskMenu" class="menuContainer">
                 <span id="submit_btn" class="button" i18n>popup_submit_button</span>

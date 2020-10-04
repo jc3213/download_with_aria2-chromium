@@ -128,11 +128,20 @@
     "new_task_referer": {
         "message": "引用页"
     },
+    "new_task_referer_desc": {
+        "message": "为当前下载任务添加\"Referer\"及对应\"Cookies\"请求头"
+    },
     "new_task_batch": {
         "message": "下载链接"
     },
+    "new_task_batch_desc": {
+        "message": "需要下载的文件链接，每行一条"
+    },
     "new_task_proxy": {
         "message": "使用代理"
+    },
+    "new_task_proxy_desc": {
+        "message": "为当前下载任务添加\"all-proxy\"选项"
     },
     "warn_aria2_version": {
         "message": "Aria2版本"

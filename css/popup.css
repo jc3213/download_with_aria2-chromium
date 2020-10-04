@@ -44,6 +44,10 @@ body {
     height: 395px;
 }
 
+#newTaskWindow > [title]:nth-child(n+2) {
+    margin-top: 15px;
+}
+
 input, textarea {
     width: 380px;
 }

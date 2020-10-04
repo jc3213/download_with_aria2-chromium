@@ -128,11 +128,20 @@
     "new_task_referer": {
         "message": "Referer"
     },
+    "new_task_referer_desc": {
+        "message": "Add \"Referer\" and \"Cookies\" headers for this download session"
+    },
     "new_task_batch": {
         "message": "Download Urls"
     },
+    "new_task_batch_desc": {
+        "message": "The urls to be downloaded, one entry per line"
+    },
     "new_task_proxy": {
         "message": "Use Proxy"
+    },
+    "new_task_proxy_desc": {
+        "message": "Add \"all-proxy\" option to this download session"
     },
     "warn_aria2_version": {
         "message": "Aria2 Version"
