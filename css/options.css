@@ -20,12 +20,12 @@ input, textarea {
     width: 350px;
 }
 
-#useragent {
-    height: 52px;
+select {
+    font-size: 20px;
 }
 
-#capture {
-    font-size: 20px;
+#useragent {
+    height: 52px;
 }
 
 #sizeEntry {
