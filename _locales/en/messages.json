@@ -129,7 +129,7 @@
         "message": "Referer"
     },
     "new_task_referer_desc": {
-        "message": "Add \"Referer\" and \"Cookies\" headers for this download session"
+        "message": "Add \"Referer\" and \"Cookies\" headers to this download session"
     },
     "new_task_batch": {
         "message": "Download Urls"
