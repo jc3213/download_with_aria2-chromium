@@ -17,7 +17,7 @@ body {
 }
 
 input, textarea {
-    width: 350px;
+    width: 355px;
 }
 
 select {
@@ -26,9 +26,9 @@ select {
 }
 
 #useragent {
-    height: 52px;
+    height: 55px;
 }
 
 #sizeEntry {
-    width: 295px;
+    width: 300px;
 }
