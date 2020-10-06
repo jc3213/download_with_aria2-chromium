@@ -1,6 +1,5 @@
 body {
     font-family: "Segoe UI", Tahoma, sans-serif;
-    font-size: 14px;
     user-select: none;
 }
 
@@ -9,6 +8,7 @@ body {
 }
 
 .tab, .button {
+    font-size: 14px;
     border: 1px outset #CCC;
     border-radius: 5px;
     cursor: pointer;
@@ -36,8 +36,11 @@ body {
     border-color: #C33;
 }
 
-input, textarea {
+input, textarea, select {
     font-size: 15px;
+}
+
+input, textarea {
     padding: 5px;
     resize: none;
 }

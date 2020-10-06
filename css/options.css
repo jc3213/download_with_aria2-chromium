@@ -12,7 +12,7 @@ body {
     font-size: 20px;
 }
 
-#menuTab {
+.tab {
     font-size: 20px;
 }
 
@@ -21,8 +21,7 @@ input, textarea {
 }
 
 select {
-    font-size: 16px;
-    padding: 5px 0px 5px 3px;
+    padding: 5px 1px 5px 3px;
 }
 
 #useragent {
