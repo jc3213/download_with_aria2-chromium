@@ -163,13 +163,14 @@ function multiDecimalNumber(number, decimal) {
     return result.toString().substr(1);
 }
 
-function secondsToHHMMSS(number) {
+function numberToTimeFormat(number) {
     if (isNaN(number) || number === Infinity) {
         return '∞';
     }
-    var hours = (number / 3600 | 0);
-    var minutes = ((number - hours * 3600) / 60 | 0);
-    var seconds = (number - hours * 3600 - minutes * 60 | 0);
-    var time = hours + '<sub>h</sub>' + minutes + '<sub>m</sub>' + seconds + '<sub>s</sub>';
-    return time.replace(/(0<sub>[hm]<\/sub>)*/, '');
+    var days = (number / 86400 | 0);
+    var hours = (number / 3600 - days * 24 | 0);
+    var minutes = (number / 60 - days * 1440 - hours * 60 | 0);
+    var seconds = (number - days * 86400 - hours * 3600 - minutes * 60 | 0);
+    var time = days + '<sub>d</sub>' + hours + '<sub>h</sub>' + minutes + '<sub>m</sub>' + seconds + '<sub>s</sub>';
+    return time.replace(/(0<sub>[dhm]<\/sub>)*/, '');
 }

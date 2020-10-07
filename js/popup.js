@@ -90,7 +90,7 @@ function printMainFrame() {
         var downloadSpeed = bytesToFileSize(result.downloadSpeed);
         var totalLength = bytesToFileSize(result.totalLength);
         var completedLength = bytesToFileSize(result.completedLength);
-        var estimatedTime = secondsToHHMMSS((result.totalLength - result.completedLength) / result.downloadSpeed);
+        var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
         if (result.bittorrent) {
             if (result.bittorrent.info) {
