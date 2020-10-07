@@ -6,7 +6,6 @@ $('div.taskQueue').on('click', (event) => {
     if (event.target.id === 'show_btn') {
         $('#taskDetails').show();
         printTaskDetails(gid);
-        taskManager = setInterval(() => printTaskDetails(gid), 1000);
     }
     else if (event.target.id === 'copy_btn') {
         getDownloadURLs(gid);
@@ -59,22 +58,42 @@ $('div.taskQueue').on('click', (event) => {
                 {'method': 'aria2.getOption', 'gid': gid},
             ],
             (result, option) => {
-                var taskUrl = result.files[0].uris.length > 0 ? result.files[0].uris[0].uri : '';
-                var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
+                taskManager = setInterval(() => refreshTaskDetails(result.gid), 1000);
+                printTaskName(result);
+                $('#optionDownload').attr('gid', result.gid).val(option['max-download-limit']);
+                $('#optionUpload').attr('gid', result.gid).val(option['max-upload-limit']).attr('disabled', !Object.keys(result).includes('bittorrent'));
+                $('#optionProxy').attr('gid', result.gid).val(option['all-proxy'] || '').attr('disabled', Object.keys(result).includes('bittorrent'));
                 var decimal = result.files.length.toString().length;
-                $('#taskName').html('<div class="title button ' + result.status + '">' + taskName + '</div>');
-                $('#optionDownload').val(option['max-download-limit'] || 0);
-                $('#optionUpload').val(option['max-upload-limit'] || 0).attr('disabled', !Object.keys(result).includes('bittorrent'));
-                $('#optionProxy').val(option['all-proxy'] || '').attr('disabled', Object.keys(result).includes('bittorrent'));
-                var taskFiles = result.files.map(item => item = '<table><tr><td>'
+                var taskFiles = result.files.map(item => item = '<tr><td>'
                 +           multiDecimalNumber(item.index, decimal) + '</td><td title="' + item.path.replace(/\//g, '\\') + '">'
                 +           item.path.split('/').pop() + '</td><td>'
                 +           bytesToFileSize(item.length) + '</td><td>'
-                +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr></table>'
+                +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
                 );
-                $('#taskFiles').html(taskFiles.join(''));
+                $('#taskFiles').html('<table>' + taskFiles.join('') + '</table>');
             }
         );
+    }
+
+    function refreshTaskDetails(gid) {
+        jsonRPCRequest(
+            {'method': 'aria2.tellStatus', 'gid': gid},
+            (result) => {
+                printTaskName(result);
+                var completeRatio = result.files.map(item => ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%');
+                console.log(completeRatio);
+                $('#taskFiles').find('td:nth-child(4)').each((index, element) => {
+                    $(element).html(completeRatio[index]);
+                    console.log(element, completeRatio[index], index, typeof index);
+                });
+            }
+        );
+    }
+
+    function printTaskName(result) {
+        var taskUrl = result.files[0].uris.length > 0 ? result.files[0].uris[0].uri : '';
+        var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
+        $('#taskName').html('<div class="button ' + result.status + '">' + taskName + '</div>');
     }
 });
 
@@ -82,6 +101,21 @@ $('#taskName').on('click', (event) => {
     clearInterval(taskManager);
     $('#taskName, #taskFiles').empty();
     $('#taskDetails').hide();
+});
+
+$('#optionDownload, #optionUpload, #optionProxy').on('change', (event) => {
+    var gid = $(event.target).attr('gid');
+    var value = event.target.value;
+    if (event.target.id === 'optionDownload') {
+        var options = {'max-download-limit': value};
+    }
+    else if (event.target.id === 'optionUpload') {
+        options = {'max-upload-limit': value};
+    }
+    else if (event.target.id === 'optionProxy') {
+        options = {'all-proxy': value};
+    }
+    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options});
 });
 
 var taskManager;

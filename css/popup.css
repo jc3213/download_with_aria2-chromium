@@ -133,7 +133,7 @@ textarea {
 }
 
 #taskOption > div:nth-child(-n+2) input {
-    width: calc(100% - 50px);
+    width: calc(100% - 15px);
 }
 
 #taskOption > div:nth-child(n+3) {
@@ -141,6 +141,7 @@ textarea {
 }
 
 #taskFiles {
+    height: calc(100% - 176px);
     overflow-y: auto;
 }
 
