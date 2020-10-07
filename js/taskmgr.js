@@ -53,16 +53,12 @@ $('div.taskQueue').on('click', (event) => {
     }
 
     function printTaskDetails(gid) {
-        jsonRPCRequest([
-                {'method': 'aria2.tellStatus', 'gid': gid},
-                {'method': 'aria2.getOption', 'gid': gid},
-            ],
-            (result, option) => {
+        jsonRPCRequest(
+            {'method': 'aria2.tellStatus', 'gid': gid},
+            (result) => {
                 taskManager = setInterval(() => refreshTaskDetails(result.gid), 1000);
                 printTaskName(result);
-                $('#optionDownload').attr('gid', result.gid).val(option['max-download-limit']);
-                $('#optionUpload').attr('gid', result.gid).val(option['max-upload-limit']).attr('disabled', !Object.keys(result).includes('bittorrent'));
-                $('#optionProxy').attr('gid', result.gid).val(option['all-proxy'] || '').attr('disabled', Object.keys(result).includes('bittorrent'));
+                printTaskOption(result.gid)
                 var decimal = result.files.length.toString().length;
                 var taskFiles = result.files.map(item => item = '<tr><td>'
                 +           multiDecimalNumber(item.index, decimal) + '</td><td title="' + item.path.replace(/\//g, '\\') + '">'
@@ -81,10 +77,8 @@ $('div.taskQueue').on('click', (event) => {
             (result) => {
                 printTaskName(result);
                 var completeRatio = result.files.map(item => ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%');
-                console.log(completeRatio);
                 $('#taskFiles').find('td:nth-child(4)').each((index, element) => {
                     $(element).html(completeRatio[index]);
-                    console.log(element, completeRatio[index], index, typeof index);
                 });
             }
         );
@@ -94,8 +88,24 @@ $('div.taskQueue').on('click', (event) => {
         var taskUrl = result.files[0].uris.length > 0 ? result.files[0].uris[0].uri : '';
         var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
         $('#taskName').html('<div class="button ' + result.status + '">' + taskName + '</div>');
+        var bittorrent = Object.keys(result).includes('bittorrent');
+        var complete = result.status === 'complete';
+        $('#optionDownload').attr({'gid': result.gid, 'disabled': complete});
+        $('#optionUpload').attr({'gid': result.gid, 'disabled': !bittorrent || complete});
+        $('#optionProxy').attr({'gid': result.gid, 'disabled': bittorrent || complete});
     }
 });
+
+function printTaskOption(gid) {
+    jsonRPCRequest(
+        {'method': 'aria2.getOption', 'gid': gid},
+        (result) => {
+            $('#optionDownload').val(result['max-download-limit']);
+            $('#optionUpload').val(result['max-upload-limit']);
+            $('#optionProxy').val(result['all-proxy'] || '');
+        }
+    )
+}
 
 $('#taskName').on('click', (event) => {
     clearInterval(taskManager);
@@ -115,7 +125,7 @@ $('#optionDownload, #optionUpload, #optionProxy').on('change', (event) => {
     else if (event.target.id === 'optionProxy') {
         options = {'all-proxy': value};
     }
-    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options});
+    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
 });
 
 var taskManager;
