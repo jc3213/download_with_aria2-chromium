@@ -91,8 +91,8 @@ Popup.html
     <b>Task Manager</b>
     <details>
         <b>❌</b> - Stop downloading task or remove stopped task from <b>Task Manager</b>
-        <br><b>👁️</b> - Show files and trackers for bit-torrent downloads
-        <br><b>📋</b> - Copy url of targeted download to clipboard
+        <br><b>🔍</b> - Show options and files of seleted task
+        <br><b>🖨️</b> - Copy url of targeted download to clipboard
         <br><b>Progress Bar</b> - Click to pause or unpause targeted download
     </details>
     <b>Bottom Menu</b>
