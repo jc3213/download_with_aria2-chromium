@@ -95,7 +95,6 @@ function printMainFrame() {
         if (result.bittorrent) {
             if (result.bittorrent.info) {
                 var taskName = result.bittorrent.info.name;
-                var showButton = '<span id="show_btn" class="button">🔍</span>';
             }
             var connections = result.numSeeders + ' (' + result.connections + ')';
             var uploadSpeed = '⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s';
@@ -107,7 +106,6 @@ function printMainFrame() {
         taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
         connections = connections || result.connections;
         uploadSpeed = uploadSpeed || '';
-        showButton = showButton || '';
         copyButton = copyButton || '';
         return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
         +           '<div class="taskBody">'
@@ -115,7 +113,7 @@ function printMainFrame() {
         +               '<div><span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span></div>'
         +               '<div><span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span><span>' + uploadSpeed + '</span></div>'
         +           '</div>'
-        +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span>' + showButton + copyButton + '</div>'
+        +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span><span id="show_btn" class="button">🔍</span>' + copyButton + '</div>'
         +           '<div id="progress_btn" class="fancybar ' + result.status + 'Bar"><span id="progress_btn" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
         +       '</div>'
     }

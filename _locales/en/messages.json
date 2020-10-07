@@ -143,6 +143,24 @@
     "new_task_proxy_desc": {
         "message": "Add \"all-proxy\" option to this download session"
     },
+    "task_option_download": {
+        "message": "Max Download Speed"
+    },
+    "task_option_download_desc": {
+        "message": "Limit maximum download speed via \"max-download-limit\" option"
+    },
+    "task_option_upload": {
+        "message": "Max Upload Speed"
+    },
+    "task_option_upload_desc": {
+        "message": "Limit maximum upload speed via \"max-upload-limit\" option"
+    },
+    "task_option_proxy": {
+        "message": "Proxy Server"
+    },
+    "task_option_proxy_desc": {
+        "message": "Change proxy server for \"all-proxy\" option, only \"http\" or \"https\" protocal"
+    },
     "warn_aria2_version": {
         "message": "Aria2 Version"
     },

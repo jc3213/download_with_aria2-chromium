@@ -120,17 +120,33 @@ textarea {
 }
 
 #taskDetails > div:nth-child(n+2) {
-    border: 1px inset #CCC;
-    margin-top: 5px;
-    overflow-y: auto;
+    margin-top: 10px;
 }
 
-#taskOption {
-    height: 100px;
+#taskOption > div:nth-child(-n+2) {
+    display: inline-block;
+    width: calc(100% / 2 - 10px);
+}
+
+#taskOption > div:nth-child(2) {
+    margin-left: 15px;
+}
+
+#taskOption > div:nth-child(-n+2) input {
+    width: calc(100% - 50px);
+}
+
+#taskOption > div:nth-child(n+3) {
+    margin-top: 5px;
 }
 
 #taskFiles {
-    height: 280px;
+    overflow-y: auto;
+}
+
+#taskFiles table {
+    table-layout: fixed;
+    width: 100%;
 }
 
 #taskFiles td {
@@ -146,6 +162,7 @@ textarea {
 
 #taskFiles td:nth-child(2) {
     text-align: left;
+    width: calc(100% - 140px);
 }
 
 #taskFiles td:nth-child(3) {
