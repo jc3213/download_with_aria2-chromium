@@ -125,11 +125,11 @@ textarea {
 
 #taskOption > div:nth-child(-n+2) {
     display: inline-block;
-    width: calc(100% / 2 - 10px);
+    width: calc((100% - 15px) / 2 );
 }
 
 #taskOption > div:nth-child(2) {
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 #taskOption > div:nth-child(-n+2) input {
