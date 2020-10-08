@@ -101,17 +101,21 @@ function printMainFrame() {
         }
         else {
             var taskUrl = result.files[0].uris[0].uri;
+            if (['error', 'removed'].includes(result.status)) {
+                var retryButton = '<span id="retry_btn" class="button">🌌</span>'
+            }
         }
         taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
         connections = connections || result.connections;
         uploadSpeed = uploadSpeed || '';
+        retryButton = retryButton || '';
         return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '" name="' + taskName + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
         +               '<div><span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span></div>'
         +               '<div><span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span><span>' + uploadSpeed + '</span></div>'
         +           '</div>'
-        +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span><span id="show_btn" class="button">🔍</span></div>'
+        +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span><span id="show_btn" class="button">🔍</span>' + retryButton + '</div>'
         +           '<div id="progress_btn" class="fancybar ' + result.status + 'Bar"><span id="progress_btn" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
         +       '</div>'
     }

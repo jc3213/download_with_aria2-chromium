@@ -2,15 +2,18 @@ $('div.taskQueue').on('click', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status');
     var gid = taskInfo.attr('gid');
-    if (event.target.id === 'show_btn') {
-        $('#taskDetails').show();
-        printTaskDetails(gid);
-    }
-    else if (event.target.id === 'remove_btn') {
+    if (event.target.id === 'remove_btn') {
         removeTask(status, gid);
     }
     else if (event.target.id === 'progress_btn') {
         toggleTask(status, gid);
+    }
+    else if (event.target.id === 'show_btn') {
+        $('#taskDetails').show();
+        printTaskDetails(gid);
+    }
+    else if (event.target.id === 'retry_btn') {
+        retryTask(gid);
     }
 });
 
@@ -82,7 +85,7 @@ function printTaskDetails(gid) {
         var taskUrl = result.files[0].uris.length > 0 ? result.files[0].uris[0].uri : '';
         var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
         $('#taskName').html('<div class="button ' + result.status + '">' + taskName + '</div>');
-        var bittorrent = Object.keys(result).includes('bittorrent');
+        var bittorrent = result.bittorrent;
         var complete = result.status === 'complete';
         $('#optionDownload').attr({'gid': result.gid, 'disabled': complete});
         $('#optionUpload').attr({'gid': result.gid, 'disabled': !bittorrent || complete});
@@ -97,6 +100,19 @@ function printTaskOption(gid) {
             $('#optionDownload').val(result['max-download-limit']);
             $('#optionUpload').val(result['max-upload-limit']);
             $('#optionProxy').val(result['all-proxy'] || '');
+        }
+    );
+}
+
+function retryTask(gid) {
+    jsonRPCRequest([
+            {'method': 'aria2.getFiles', 'gid': gid},
+            {'method': 'aria2.getOption', 'gid': gid},
+        ], (files, options) => {
+            var url = files[0].uris[0].uri;
+            var filename = files[0].path.split('/').pop();
+            var path = files[0].path.replace(filename, '').replace(/\//g, '\\');
+            jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => downWithAria2({'url': url, 'filename': filename, 'path': path, 'options': options}));
         }
     );
 }
