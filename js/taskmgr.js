@@ -2,13 +2,9 @@ $('div.taskQueue').on('click', (event) => {
     var taskInfo = $('div.taskInfo').has($(event.target));
     var status = taskInfo.attr('status');
     var gid = taskInfo.attr('gid');
-    var name = taskInfo.attr('name');
     if (event.target.id === 'show_btn') {
         $('#taskDetails').show();
         printTaskDetails(gid);
-    }
-    else if (event.target.id === 'retry_btn') {
-        retryTask(gid);
     }
     else if (event.target.id === 'remove_btn') {
         removeTask(status, gid);
@@ -54,11 +50,10 @@ function printTaskDetails(gid) {
             taskManager = setInterval(() => refreshTaskDetails(result.gid), 1000);
             printTaskName(result);
             printTaskOption(result.gid);
-            var decimal = result.files.length.toString().length;
             var taskFiles = result.files.map(item => item = '<tr><td>'
-            +           multiDecimalNumber(item.index, decimal) + '</td><td title="' + item.path.replace(/\//g, '\\') + '"'
-            +           (result.files[0].uris.length > 0 ? ' uri="' + result.files[0].uris[0].uri + '">' : '>')
-            +           item.path.split('/').pop() + '</td><td>'
+            +           item.index + '</td><td title="' + item.path.replace(/\//g, '\\') 
+            +           (item.uris.length > 0 ? '" uri="' + item.uris[0].uri : '') + '">'
+            +           (item.path || item.uris[0].uri).split('/').pop() + '</td><td>'
             +           bytesToFileSize(item.length) + '</td><td>'
             +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
@@ -102,19 +97,6 @@ function printTaskOption(gid) {
             $('#optionDownload').val(result['max-download-limit']);
             $('#optionUpload').val(result['max-upload-limit']);
             $('#optionProxy').val(result['all-proxy'] || '');
-        }
-    );
-}
-
-function retryTask(gid) {
-    jsonRPCRequest([
-            {'method': 'aria2.getFiles', 'gid': gid},
-            {'method': 'aria2.getOption', 'gid': gid}
-        ],
-        (result, options) => {
-            showNotification('Caution', 'This function is not available at this moment');
-            // https://github.com/ziahamza/webui-aria2/blob/dddf776a18b095ac373a22b28135c5dd6858496b/docs/app.js#L1989
-            // Wait for porting
         }
     );
 }
