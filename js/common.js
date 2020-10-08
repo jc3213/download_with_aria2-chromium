@@ -97,9 +97,6 @@ function downWithAria2(session) {
     if (session.filename) {
         options['out'] = session.filename;
     }
-    if (session.path) {
-        options['dir'] = session.path;
-    }
     if (session.referer) {
         chrome.cookies.getAll({'url': session.referer}, (cookies) => {
             options.header.push('Referer: ' + session.referer);
