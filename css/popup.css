@@ -146,12 +146,13 @@ textarea {
 }
 
 #taskFiles table {
+    border-collapse: collapse;
     table-layout: fixed;
     width: 100%;
 }
 
 #taskFiles td {
-    border: 1px inset #CCC;
+    border: 1px outset #CCC;
     padding: 5px;
     vertical-align: middle;
     text-align: center;
@@ -165,6 +166,11 @@ textarea {
     text-align: left;
     width: calc(100% - 140px);
     word-break: break-word;
+}
+
+#taskFiles td:nth-child(2):active {
+    border-style: inset;
+    filter: opacity(60%);
 }
 
 #taskFiles td:nth-child(3) {
