@@ -164,6 +164,7 @@ textarea {
 #taskFiles td:nth-child(2) {
     text-align: left;
     width: calc(100% - 140px);
+    word-break: break-word;
 }
 
 #taskFiles td:nth-child(3) {
