@@ -109,10 +109,9 @@ function retryTask(gid) {
             {'method': 'aria2.getFiles', 'gid': gid},
             {'method': 'aria2.getOption', 'gid': gid},
         ], (files, options) => {
-            var url = files[0].uris[0].uri;
-            var filename = files[0].path.split('/').pop();
-            var path = files[0].path.replace('/' + filename, '');
-            jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => downWithAria2({'url': url, 'filename': filename, 'path': path, 'options': options}));
+            jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
+                downWithAria2({'url': files[0].uris[0].uri, 'filename': filename, 'path': path, 'options': options})
+            });
         }
     );
 }
