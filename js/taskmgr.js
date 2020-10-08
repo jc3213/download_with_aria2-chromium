@@ -50,23 +50,24 @@ function printTaskDetails(gid) {
     jsonRPCRequest(
         {'method': 'aria2.tellStatus', 'gid': gid},
         (result) => {
-            taskManager = setInterval(() => refreshTaskDetails(result.gid), 1000);
             printTaskName(result);
             printTaskOption(result.gid);
             var taskFiles = result.files.map(item => item = '<tr><td>'
-            +           item.index + '</td><td title="' + item.path.replace(/\//g, '\\') 
-            +           (item.uris.length > 0 ? '" uri="' + item.uris[0].uri : '') + '">'
+            +           item.index + '</td><td title="' + item.path.replace(/\//g, '\\') + '">'
             +           (item.path || item.uris[0].uri).split('/').pop() + '</td><td>'
             +           bytesToFileSize(item.length) + '</td><td>'
             +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
             );
-            $('#taskFiles').html('<table>' + taskFiles.join('') + '</table>').find('td:nth-child(2)').on('click', (event) => {
-                var uri = $(event.target).attr('uri');
-                if (uri) {
+            $('#taskFiles').html('<table>' + taskFiles.join('') + '</table>').find('tr').on('click', (event) => {
+                var file = $('#taskFiles').find('tr').has($(event.target));
+                var index = file.children('td:nth-child(1)').html() - 1 ;
+                if (!result.bittorrent) {
+                    var uri = result.files[index].uris[0].uri;
                     navigator.clipboard.writeText(uri);
                     showNotification(window['warn_url_copied'], uri);
                 }
             });
+            taskManager = setInterval(() => refreshTaskDetails(result.gid), 1000);
         }
     );
 

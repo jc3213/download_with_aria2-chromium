@@ -158,6 +158,10 @@ textarea {
     text-align: center;
 }
 
+#taskFiles tr:active {
+    filter: opacity(60%);
+}
+
 #taskFiles td:nth-child(1) {
     width: 20px;
 }
@@ -166,11 +170,6 @@ textarea {
     text-align: left;
     width: calc(100% - 140px);
     word-break: break-word;
-}
-
-#taskFiles td:nth-child(2):active {
-    border-style: inset;
-    filter: opacity(60%);
 }
 
 #taskFiles td:nth-child(3) {
