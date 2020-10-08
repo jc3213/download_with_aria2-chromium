@@ -82,7 +82,7 @@ function showNotification(title, message) {
 }
 
 function downWithAria2(session) {
-    var options = session.options ? session.options : {};
+    var options = session.options || {};
     if (!options['header']) {
         var useragent = localStorage.getItem('useragent') || navigator.userAgent;
         options['header'] = ['User-Agent: ' + useragent];
