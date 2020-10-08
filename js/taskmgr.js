@@ -110,7 +110,7 @@ function retryTask(gid) {
             {'method': 'aria2.getOption', 'gid': gid},
         ], (files, options) => {
             jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
-                downWithAria2({'url': files[0].uris[0].uri, 'filename': filename, 'path': path, 'options': options})
+                downWithAria2({'url': files[0].uris[0].uri, 'options': options})
             });
         }
     );
