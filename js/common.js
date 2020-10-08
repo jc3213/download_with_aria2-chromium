@@ -83,9 +83,8 @@ function showNotification(title, message) {
 
 function downWithAria2(session) {
     var useragent = localStorage.getItem('useragent') || navigator.userAgent;
-    var options = {
-        'header': ['User-Agent: ' + useragent]
-    };
+    var options = session.options ? session.options : {};
+    options['header'] = ['User-Agent: ' + useragent];
     var proxied = localStorage.getItem('proxied') || '';
     if (session.proxy) {
         options['all-proxy'] = session.proxy;

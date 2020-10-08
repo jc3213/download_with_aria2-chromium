@@ -111,7 +111,7 @@ function retryTask(gid) {
         ], (files, options) => {
             var url = files[0].uris[0].uri;
             var filename = files[0].path.split('/').pop();
-            var path = files[0].path.replace(filename, '').replace(/\//g, '\\');
+            var path = files[0].path.replace('/' + filename, '');
             jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => downWithAria2({'url': url, 'filename': filename, 'path': path, 'options': options}));
         }
     );
