@@ -42,10 +42,10 @@ $('#purdge_btn').on('click', (event) => {
 
 $('#options_btn').on('click', (event) => {
     if ($(event.target).hasClass('checked')) {
-        $('iframe.options').remove();
+        $('#optionsWindow').remove();
     }
     else {
-        $('<iframe src="options.html" class="options">').appendTo('body');
+        $('<iframe id="optionsWindow" src="options.html">').appendTo('body');
     }
     $(event.target).toggleClass('checked');
 });
