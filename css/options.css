@@ -12,15 +12,15 @@ body {
 }
 
 input, textarea {
-    width: 370px;
+    width: 390px;
 }
 
 select {
     padding: 5px 2px;
 }
 
-#menuBasic input {
-    width: 330px;
+#jsonrpc, #token {
+    width: 340px;
 }
 
 #useragent {
@@ -28,5 +28,5 @@ select {
 }
 
 #sizeEntry {
-    width: 315px;
+    width: 335px;
 }
