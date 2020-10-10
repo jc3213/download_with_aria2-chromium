@@ -3,64 +3,30 @@ body {
     width: 430px;
 }
 
-body > div {
+.container {
     margin-left: 10px;
 }
 
-body > div:nth-child(n+2) div {
+.container:nth-child(n+2) {
     margin-top: 10px;
 }
 
-#captureFilters > div {
-    margin-left: 10px;
-}
-
 input, textarea {
-    width: calc(100% - 25px);
+    width: 370px;
 }
 
 select {
-    padding: 6px 1.5px;
+    padding: 5px 2px;
 }
 
-.icon {
-    position: absolute;
-    right: 30px;
-    margin-top: 5px;
-}
-
-.icon:hover {
-    filter: opacity(60%);
-}
-
-.icon:active {
-    filter: opacity(30%);
-}
-
-.password {
-    filter: grayscale(100%) contrast(50%);
-}
-
-.password:hover {
-    filter: grayscale(50%) contrast(50%) opacity(60%);
-}
-
-.password:active {
-    filter: grayscale(100%) contrast(50%) opacity(30%);
-}
-
-.text:hover {
-    filter: grayscale(50%) opacity(60%);
-}
-
-.text:active {
-    filter: grayscale(50%) contrast(50%) opacity(30%);
-}
-
-#sizeEntry {
-    width: calc(100% - 80px);
+#menuBasic input {
+    width: 330px;
 }
 
 #useragent {
-    height: 58px;
+    height: 55px;
+}
+
+#sizeEntry {
+    width: 315px;
 }

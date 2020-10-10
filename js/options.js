@@ -36,13 +36,13 @@ $('#aria2Check').on('click', (event) => {
 });
 
 $('#aria2Show').on('click', (event) => {
-    if ($('#aria2Show').hasClass('password')) {
-        $('#token').attr('type', 'text');
-    }
-    else {
+    if ($('#aria2Show').hasClass('checked')) {
         $('#token').attr('type', 'password');
     }
-    $('#aria2Show').toggleClass('password text');
+    else {
+        $('#token').attr('type', 'text');
+    }
+    $('#aria2Show').toggleClass('checked');
 });
 
 function initiateOption(option) {
