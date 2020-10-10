@@ -41,7 +41,13 @@ $('#purdge_btn').on('click', (event) => {
 });
 
 $('#options_btn').on('click', (event) => {
-    open('options.html', '_blank');
+    if ($(event.target).hasClass('checked')) {
+        $('iframe.options').remove();
+    }
+    else {
+        $('<iframe src="options.html" class="options">').appendTo('body');
+    }
+    $(event.target).toggleClass('checked');
 });
 
 function printMainFrame() {

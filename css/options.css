@@ -1,23 +1,22 @@
 body {
-    position: absolute;
-    left: calc((100% - 600px) / 2);
-    width: 600px;
+    margin-left: calc((100% - 430px) / 2);
+    width: 430px;
 }
 
 .container {
     padding: 10px;
 }
 
-.title {
-    font-size: 20px;
+#menuBasic input {
+    width: 330px;
 }
 
-.tab {
-    font-size: 20px;
+#menuAdvanced input, #menuAdvanced textarea {
+    width: 370px;
 }
 
-input, textarea {
-    width: 355px;
+#menuDownload input, #menuDownload textarea {
+    width: 370px;
 }
 
 select {
@@ -29,5 +28,5 @@ select {
 }
 
 #sizeEntry {
-    width: 300px;
+    width: 315px !important;
 }

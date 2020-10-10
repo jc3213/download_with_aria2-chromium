@@ -1,9 +1,19 @@
 body {
-    width: 400px;
+    width: 440px;
 }
 
 .menuContainer {
     height: 20px;
+}
+
+.options {
+    background-color: #FFF;
+    border: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: calc(100% - 40px);
 }
 
 #queueTabs span:nth-child(2n+1) {
@@ -22,26 +32,30 @@ body {
     padding: 3px;
 }
 
-#taskManager {
+#menuTop, #menuBottom {
     position: absolute;
-    top: 8px;
     right: 8px;
 }
 
-#aboutExtension {
-    position: absolute;
+#menuTop {
+    top: 8px;
+}
+
+#menuBottom {
     bottom: 8px;
-    right: 8px;
+}
+
+#newTaskWindow, #taskDetails {
+    background-color: #FFF;
+    padding: 10px;
+    position: absolute;
+    left: 0px;
+    width: calc(100% - 20px);
 }
 
 #newTaskWindow {
-    background-color: #FFF;
-    border: 1px solid #CCC;
-    padding: 10px;
-    position: absolute;
-    top: 35px;
-    left: 0px;
-    height: 395px;
+    top: 40px;
+    height: calc(100% - 100px);
 }
 
 #newTaskWindow > [title]:nth-child(n+2) {
@@ -49,7 +63,7 @@ body {
 }
 
 input, textarea {
-    width: 380px;
+    width: calc(100% - 15px);
 }
 
 textarea {
@@ -57,61 +71,18 @@ textarea {
 }
 
 #setProxy {
-    width: 14px;
-    transform: scale(1.25);
+    width: 15px;
+    transform: scale(1.3);
 }
 
 #newTaskMenu {
     text-align: center;
 }
 
-.taskQueue {
-    height: 400px;
-    overflow-y: auto;
-}
-
-.taskInfo {
-    border: 1px outset #CCC;
-    padding: 5px;
-}
-
-.taskInfo:nth-child(n+2) {
-    margin-top: 5px;
-}
-
-.taskBody {
-    width: calc(100% - 20px);
-}
-
-.taskBody .title {
-    word-break: break-word;
-}
-
-.taskBody, .taskMenu, .taskBody span, .taskMenu span {
-    display: inline-block;
-}
-
-.taskBody span {
-    width: calc(100% / 3);
-}
-
-.taskMenu {
-    vertical-align: top;
-    width: 20px;
-}
-
-.taskMenu .button {
-    font-size: 10px;
-    padding: 1px;
-}
-
 #taskDetails {
-    background-color: #FFF;
-    padding-top: 5px;
-    position: absolute;
     top: 0px;
-    width: 400px;
-    height: 445px;
+    padding: 3px 10px;
+    height: calc(100% - 45px);
 }
 
 #taskName div {
@@ -125,7 +96,7 @@ textarea {
 
 #taskOption > div:nth-child(-n+2) {
     display: inline-block;
-    width: calc((100% - 15px) / 2 );
+    width: calc((100% - 15px) / 2);
 }
 
 #taskOption > div:nth-child(2) {
@@ -178,6 +149,46 @@ textarea {
 
 #taskFiles td:nth-child(4) {
     width: 50px;
+}
+
+.taskQueue {
+    height: 410px;
+    overflow-y: auto;
+}
+
+.taskInfo {
+    border: 1px outset #CCC;
+    padding: 5px;
+}
+
+.taskInfo:nth-child(n+2) {
+    margin-top: 5px;
+}
+
+.taskBody {
+    width: calc(100% - 20px);
+}
+
+.taskBody .title {
+    word-break: break-word;
+}
+
+.taskBody, .taskMenu, .taskBody span, .taskMenu span {
+    display: inline-block;
+}
+
+.taskBody span {
+    width: calc(100% / 3);
+}
+
+.taskMenu {
+    vertical-align: top;
+    width: 20px;
+}
+
+.taskMenu .button {
+    font-size: 10px;
+    padding: 1px;
 }
 
 .fancybar {
