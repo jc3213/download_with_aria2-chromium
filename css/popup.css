@@ -89,6 +89,7 @@ input, textarea {
 #taskName div {
     height: 40px;
     overflow-y: hidden;
+    word-break: break-word;
 }
 
 #taskDetails > div:nth-child(n+2) {
