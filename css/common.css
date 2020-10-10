@@ -1,6 +1,6 @@
 body {
     font-family: "Segoe UI", Tahoma, sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     user-select: none;
 }
 
@@ -23,11 +23,11 @@ body {
     font-weight: bold;
 }
 
-.button:hover, .tab:hover {
+.button:hover, .tab:hover, .icon:hover {
     filter: opacity(60%);
 }
 
-.button:active, .tab:active {
+.button:active, .tab:active, .icon:active {
     filter: opacity(30%);
 }
 
@@ -37,11 +37,11 @@ body {
 }
 
 input, textarea, select {
-    font-size: 15px;
+    font-size: 16px;
 }
 
 input, textarea {
-    padding: 5px;
+    padding: 6px 5px 5px 5px;
     resize: none;
 }
 

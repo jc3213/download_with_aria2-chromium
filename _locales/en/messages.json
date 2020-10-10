@@ -29,17 +29,11 @@
     "option_jsonrpc": {
         "message": "JSONRPC URI"
     },
-    "option_check": {
-        "message": "Check"
-    },
     "option_jsonrpc_desc": {
         "message": "Setting Aria2 \"jsonrpc\" URI"
     },
     "option_token": {
         "message": "Secret Token"
-    },
-    "option_show": {
-        "message": "Show"
     },
     "option_token_desc": {
         "message": "Setting Aria2 \"token\" option"

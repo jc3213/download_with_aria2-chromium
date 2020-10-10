@@ -3,26 +3,36 @@ body {
     width: 430px;
 }
 
-.container {
-    padding: 10px;
+body > div {
+    margin-left: 10px;
+}
+
+body > div:nth-child(n+2) div {
+    margin-top: 10px;
+}
+
+#captureFilters > div {
+    margin-left: 10px;
 }
 
 input, textarea {
-    width: 370px;
+    width: calc(100% - 25px);
 }
 
 select {
-    padding: 5px 2px;
+    padding: 6px 1.5px;
 }
 
-#menuBasic input {
-    width: 330px;
-}
-
-#useragent {
-    height: 55px;
+.icon {
+    position: absolute;
+    right: 30px;
+    margin-top: 5px;
 }
 
 #sizeEntry {
-    width: 315px;
+    width: calc(100% - 90px);
+}
+
+#useragent {
+    height: 58px;
 }
