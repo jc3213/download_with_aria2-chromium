@@ -67,7 +67,7 @@ function captureFilters() {
 
 function calcFileSize(event) {
     var number = ($('#sizeEntry').val() | 0);
-    var unit = $('#sizeUnit').val();
+    var unit = ($('#sizeUnit').val() | 0);
     var size = number * Math.pow(1024, unit);
     localStorage.setItem('fileSize', size);
 }

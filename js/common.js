@@ -155,15 +155,6 @@ function bytesToFileSize(bytes) {
     }
 }
 
-function multiDecimalNumber(number, decimal) {
-    decimal = decimal || 2;
-    if (number.toString().length >= decimal ) {
-        return number.toString();
-    }
-    var result = (number | 0) + Math.pow(10, decimal);
-    return result.toString().substr(1);
-}
-
 function numberToTimeFormat(number) {
     if (isNaN(number) || number === Infinity) {
         return '∞';

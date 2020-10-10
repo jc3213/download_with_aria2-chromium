@@ -53,7 +53,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         if (fileExt && fileExt.includes(ext)) {
             return true;
         }
-        var fileSize = localStorage.getItem('fileSize');
+        var fileSize = (localStorage.getItem('fileSize') | 0);
         if (fileSize > 0 && size >= fileSize) {
             return true;
         }
