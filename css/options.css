@@ -7,15 +7,7 @@ body {
     padding: 10px;
 }
 
-#menuBasic input {
-    width: 330px;
-}
-
-#menuAdvanced input, #menuAdvanced textarea {
-    width: 370px;
-}
-
-#menuDownload input, #menuDownload textarea {
+input, textarea {
     width: 370px;
 }
 
@@ -23,10 +15,14 @@ select {
     padding: 5px 2px;
 }
 
+#menuBasic input {
+    width: 330px;
+}
+
 #useragent {
     height: 55px;
 }
 
 #sizeEntry {
-    width: 315px !important;
+    width: 315px;
 }
