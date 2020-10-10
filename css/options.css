@@ -29,8 +29,36 @@ select {
     margin-top: 5px;
 }
 
+.icon:hover {
+    filter: opacity(60%);
+}
+
+.icon:active {
+    filter: opacity(30%);
+}
+
+.password {
+    filter: grayscale(100%) contrast(50%);
+}
+
+.password:hover {
+    filter: grayscale(50%) contrast(50%) opacity(60%);
+}
+
+.password:active {
+    filter: grayscale(100%) contrast(50%) opacity(30%);
+}
+
+.text:hover {
+    filter: grayscale(50%) opacity(60%);
+}
+
+.text:active {
+    filter: grayscale(50%) contrast(50%) opacity(30%);
+}
+
 #sizeEntry {
-    width: calc(100% - 90px);
+    width: calc(100% - 80px);
 }
 
 #useragent {

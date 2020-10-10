@@ -36,14 +36,13 @@ $('#aria2Check').on('click', (event) => {
 });
 
 $('#aria2Show').on('click', (event) => {
-    if ($('#aria2Show').html() === '📖') {
-        $('#token').attr('type', 'password');
-        $('#aria2Show').html('👁️‍🗨️');
+    if ($('#aria2Show').hasClass('password')) {
+        $('#token').attr('type', 'text');
     }
     else {
-        $('#token').attr('type', 'text');
-        $('#aria2Show').html('📖');
+        $('#token').attr('type', 'password');
     }
+    $('#aria2Show').toggleClass('password text');
 });
 
 function initiateOption(option) {

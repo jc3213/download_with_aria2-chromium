@@ -23,11 +23,11 @@ body {
     font-weight: bold;
 }
 
-.button:hover, .tab:hover, .icon:hover {
+.button:hover, .tab:hover {
     filter: opacity(60%);
 }
 
-.button:active, .tab:active, .icon:active {
+.button:active, .tab:active {
     filter: opacity(30%);
 }
 
