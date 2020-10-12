@@ -64,11 +64,11 @@ function printMainFrame() {
             $('#numStopped').html(stopped);
             $('#downloadSpeed').html(downloadSpeed);
             $('#uploadSpeed').html(uploadSpeed);
-            $('#queueTabs, #taskManager').show();
+            $('#queueTabs, #menuTop').show();
             $('#networkStatus').hide();
             printTaskQueue(waiting, stopped);
         }, (error, rpc) => {
-            $('#queueTabs, #taskManager').hide();
+            $('#queueTabs, #menuTop').hide();
             $('#networkStatus').show().html(error);
         }
     );

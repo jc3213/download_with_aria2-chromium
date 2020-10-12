@@ -2,8 +2,8 @@ body {
     width: 440px;
 }
 
-.menuContainer {
-    height: 20px;
+#queueTabs [i18n], #networkBandwidth [i18n], #networkStatus {
+    color: #FFF;
 }
 
 input, textarea {
@@ -199,42 +199,40 @@ input, textarea {
 }
 
 .fancybar span {
+    background-color: #33C;
+    color: #FFF;
     display: block;
-    height: 20px;
 }
 
 .fancybar:active, .fancybar:active span {
     filter: opacity(30%);
 }
 
-.activeBar, .pausedBar, .download {
-    background-color: #3CC;
-}
-
-.removedBar, .errorBar, .stopped {
-    background-color: #CCC;
-}
-
-.active {
+.active, .download {
     background-color: #33C;
 }
 
-.paused {
+.waiting, .pausedBar, .waitingBar {
     background-color: #CC3;
+}
+
+.stopped, .upload {
+    background-color: #C3C;
 }
 
 .error {
     background-color: #C33;
 }
 
+.activeBar {
+    background-color: #3CC;
+}
+
+
+.removedBar, .errorBar {
+    background-color: #CCC;
+}
+
 .complete {
-    background-color: #3C3;
-}
-
-.removed, .upload {
-    background-color: #C3C;
-}
-
-.stopped, .active, .paused, .error, .complete, .removed, .download, .upload {
-    color: #FFF;
+    background-color: #3C3 !important;
 }
