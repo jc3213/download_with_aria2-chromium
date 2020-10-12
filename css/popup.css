@@ -87,7 +87,7 @@ input, textarea {
 }
 
 #taskName div {
-    height: 40px;
+    height: 45px;
     overflow-y: hidden;
     word-break: break-word;
 }
@@ -193,17 +193,12 @@ input, textarea {
     padding: 1px;
 }
 
-.fancybar {
-    height: 20px;
-    text-align: center;
-}
-
 .fancybar span {
+    text-align: center;
     display: block;
-    height: 20px;
 }
 
-.fancybar:active, .fancybar:active span {
+.fancybar:active {
     filter: opacity(30%);
 }
 

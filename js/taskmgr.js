@@ -8,7 +8,7 @@ $('div.taskQueue').on('click', (event) => {
     else if (event.target.id === 'progress_btn') {
         toggleTask(status, gid);
     }
-    else if (event.target.id === 'show_btn') {
+    else if (event.target.id === 'invest_btn') {
         $('#taskDetails').show();
         printTaskOption(gid)
         printTaskDetails(gid);
