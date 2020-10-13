@@ -60,15 +60,18 @@ function printTaskDetails(gid) {
             $('#optionDownload').attr({'gid': result.gid, 'disabled': complete});
             $('#optionUpload').attr({'gid': result.gid, 'disabled': !bittorrent || complete});
             $('#optionProxy').attr({'gid': result.gid, 'disabled': bittorrent || complete});
-            var taskFiles = result.files.map(item => item = '<tr><td>'
-            +           item.index + '</td><td title="' + item.path.replace(/\//g, '\\') + '">'
-            +           (item.path || item.uris[0].uri).split('/').pop() + '</td><td>'
-            +           bytesToFileSize(item.length) + '</td><td>'
-            +           ((item.completedLength / item.length * 10000 | 0) / 100).toString() + '%</td></tr>'
-            );
+            var taskFiles = result.files.map(item => item = printFileInfo(item));
             $('#taskFiles').attr('uri', taskUrl).html('<table>' + taskFiles.join('') + '</table>')
         }
     );
+
+    function printFileInfo(info) {
+        var index = '<td>' + info.index + '</td>';
+        var filename = '<td title="' + info.path.replace(/\//g, '\\') + '">' + (info.path || info.uris[0].uri).split('/').pop() + '</td>';
+        var fileSize = '<td>' + bytesToFileSize(info.length) + '</td>';
+        var ratio = '<td>' + ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%</td>';
+        return '<tr>' + index + filename + fileSize + ratio + '</tr>';
+    }
 }
 
 function printTaskOption(gid) {
@@ -88,7 +91,7 @@ function retryTask(gid) {
             {'method': 'aria2.getOption', 'gid': gid},
         ], (files, options) => {
             jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
-                downWithAria2({'url': files[0].uris[0].uri, 'options': options})
+                downWithAria2({'url': files[0].uris[0].uri, 'options': options});
             });
         }
     );
