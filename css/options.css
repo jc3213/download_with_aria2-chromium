@@ -3,20 +3,24 @@ body {
     width: 430px;
 }
 
-.container {
-    margin-left: 10px;
-}
-
-.container:nth-child(n+2) {
-    margin-top: 10px;
-}
-
 input, textarea {
     width: 390px;
 }
 
+textarea {
+    height: 180px;
+}
+
 select {
     padding: 5px 2px;
+}
+
+.container {
+    margin-left: 5px;
+}
+
+.container:nth-child(n+2) {
+    margin-top: 10px;
 }
 
 #jsonrpc, #token {

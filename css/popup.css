@@ -2,10 +2,6 @@ body {
     width: 440px;
 }
 
-.menuContainer {
-    height: 20px;
-}
-
 input, textarea {
     width: calc(100% - 15px);
 }
@@ -63,8 +59,8 @@ input, textarea {
     height: calc(100% - 100px);
 }
 
-#newTaskWindow > [title]:nth-child(n+2) {
-    margin-top: 15px;
+#newTaskWindow > div:nth-child(n+2) {
+    margin-top: 10px;
 }
 
 #taskBatch {
