@@ -24,15 +24,8 @@ input, textarea {
 
 #menuTop, #menuBottom {
     position: absolute;
-    right: 8px;
-}
-
-#menuTop {
-    top: 8px;
-}
-
-#menuBottom {
-    bottom: 8px;
+    width: calc(100% - 16px);
+    text-align: right;
 }
 
 #optionsWindow, #newTaskWindow, #taskDetails {
