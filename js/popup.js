@@ -79,12 +79,9 @@ function printMainFrame() {
             {'method': 'aria2.tellWaiting', 'index': [0, globalWaiting]},
             {'method': 'aria2.tellStopped', 'index': [0, globalStopped]},
         ], (activeQueue, waitingQueue, stoppedQueue) => {
-            activeQueue = activeQueue || [];
-            waitingQueue = waitingQueue || [];
-            stoppedQueue = stoppedQueue || [];
-            var active = activeQueue.map(item => printTaskInfo(item));
-            var waiting = waitingQueue.map(item => printTaskInfo(item));
-            var stopped = stoppedQueue.map(item => printTaskInfo(item));
+            var active = activeQueue ? activeQueue.map(item => printTaskInfo(item)) : [];
+            var waiting = waitingQueue ? waitingQueue.map(item => printTaskInfo(item)) : [];
+            var stopped = stoppedQueue ? stoppedQueue.map(item => printTaskInfo(item)) : [];
             $('#allTaskQueue').html([...active, ...waiting, ...stopped].join(''));
             $('#activeQueue').html(active.join(''));
             $('#waitingQueue').html(waiting.join(''));
