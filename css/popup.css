@@ -22,16 +22,16 @@ input, textarea {
     padding: 3px;
 }
 
-#menuTop, #menuBottom {
-    position: absolute;
-    width: calc(100% - 16px);
-    text-align: right;
-}
-
-#optionsWindow, #newTaskWindow, #taskDetails {
+#menuTop, #menuBottom, #optionsWindow, #newTaskWindow, #taskDetails {
     background-color: #FFF;
     border: none;
     position: absolute;
+}
+
+#menuTop, #menuBottom {
+    width: calc(100% - 16px);
+    height: 0px;
+    text-align: right;
 }
 
 #optionsWindow {
