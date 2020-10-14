@@ -95,23 +95,11 @@ function printMainFrame() {
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-        if (result.bittorrent) {
-            if (result.bittorrent.info) {
-                var taskName = result.bittorrent.info.name;
-            }
-            var connections = result.numSeeders + ' (' + result.connections + ')';
-            var uploadSpeed = '⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s';
-        }
-        else {
-            var taskUrl = result.files[0].uris[0].uri;
-            if (['error', 'removed'].includes(result.status)) {
-                var retryButton = '<span id="retry_btn" class="button">🌌</span>'
-            }
-        }
-        taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
-        connections = connections || result.connections;
-        uploadSpeed = uploadSpeed || '';
-        retryButton = retryButton || '';
+        var taskUrl = !result.bittorrent ? result.files[0].uris[0].uri : '';
+        var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
+        var connections = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
+        var uploadSpeed = result.bittorrent ? '⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s' : '';
+        var retryButton = !result.bittorrent && ['error', 'removed'].includes(result.status) ? '<span id="retry_btn" class="button">🌌</span>' : '';
         return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'

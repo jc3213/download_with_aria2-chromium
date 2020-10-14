@@ -52,7 +52,7 @@ function printTaskDetails(gid) {
     jsonRPCRequest(
         {'method': 'aria2.tellStatus', 'gid': gid},
         (result) => {
-            var taskUrl = result.files[0].uris.length > 0 ? result.files[0].uris[0].uri : '';
+            var taskUrl = !result.bittorrent ? result.files[0].uris[0].uri : '';
             var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
             $('#taskName').html('<div class="button ' + result.status + '">' + taskName + '</div>');
             var bittorrent = result.bittorrent;
@@ -66,11 +66,11 @@ function printTaskDetails(gid) {
     );
 
     function printFileInfo(info) {
-        var index = '<td>' + info.index + '</td>';
-        var filename = '<td title="' + info.path.replace(/\//g, '\\') + '">' + (info.path || info.uris[0].uri).split('/').pop() + '</td>';
-        var fileSize = '<td>' + bytesToFileSize(info.length) + '</td>';
-        var ratio = '<td>' + ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%</td>';
-        return '<tr>' + index + filename + fileSize + ratio + '</tr>';
+        var cellIndex = '<td>' + info.index + '</td>';
+        var cellName = '<td title="' + info.path.replace(/\//g, '\\') + '">' + (info.path || info.uris[0].uri).split('/').pop() + '</td>';
+        var cellSize = '<td>' + bytesToFileSize(info.length) + '</td>';
+        var cellRatio = '<td>' + ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%</td>';
+        return '<tr>' + cellIndex + cellName + cellSize + cellRatio + '</tr>';
     }
 }
 
