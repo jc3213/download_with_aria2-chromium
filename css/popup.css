@@ -6,7 +6,7 @@ input, textarea {
     width: calc(100% - 15px);
 }
 
-#queueTabs span:nth-child(2n+1) {
+#queueTabs .tab {
     padding: 4px;
 }
 
@@ -203,7 +203,7 @@ input, textarea {
     background-color: #33C;
 }
 
-.paused {
+.waiting, .paused {
     background-color: #CC3;
 }
 
@@ -219,6 +219,6 @@ input, textarea {
     background-color: #C3C;
 }
 
-.stopped, .active, .paused, .error, .complete, .removed, .download, .upload {
+.stopped, .active, .waiting, .paused, .error, .complete, .removed, .download, .upload {
     color: #FFF;
 }

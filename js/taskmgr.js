@@ -61,16 +61,18 @@ function printTaskDetails(gid) {
             $('#optionUpload').attr({'gid': result.gid, 'disabled': !bittorrent || complete});
             $('#optionProxy').attr({'gid': result.gid, 'disabled': bittorrent || complete});
             var taskFiles = result.files.map(item => item = printFileInfo(item));
-            $('#taskFiles').attr('uri', taskUrl).html('<table>' + taskFiles.join('') + '</table>')
+            $('#taskFiles').html('<table>' + taskFiles.join('') + '</table>');
         }
     );
 
     function printFileInfo(info) {
+        var fileUri = info.uris[0].uri;
+        var filename = (info.path || info.uris[0].uri).split('/').pop();
         var cellIndex = '<td>' + info.index + '</td>';
-        var cellName = '<td title="' + info.path.replace(/\//g, '\\') + '">' + (info.path || info.uris[0].uri).split('/').pop() + '</td>';
+        var cellName = '<td title="' + info.path.replace(/\//g, '\\') + '">' + filename + '</td>';
         var cellSize = '<td>' + bytesToFileSize(info.length) + '</td>';
         var cellRatio = '<td>' + ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%</td>';
-        return '<tr>' + cellIndex + cellName + cellSize + cellRatio + '</tr>';
+        return '<tr uri="' + fileUri + '">' + cellIndex + cellName + cellSize + cellRatio + '</tr>';
     }
 }
 
@@ -104,7 +106,8 @@ $('#taskName').on('click', (event) => {
 });
 
 $('#taskFiles').on('click', (event) => {
-    var uri = $('#taskFiles').attr('uri');
+    var file = $('tr').has($(event.target));
+    var uri = file.attr('uri');
     if (uri) {
         navigator.clipboard.writeText(uri);
         showNotification(window['warn_url_copied'], uri);
