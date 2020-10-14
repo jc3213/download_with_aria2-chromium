@@ -53,15 +53,20 @@ function jsonRPCRequest(request, success, failure) {
     }
 
     function santilizeLoop(url) {
-        var loop = url.match(/\[[^\]]+\]/g);
+        var loop = url.match(/\[[^\[\]]+\]/g);
+        var log = [];
         if (loop) {
             loop.map(item => {
-                if (!item.match(/\[\d+-\d+\]/)) {
-                    var frag = item.replace('[', '%5B').replace(']', '%5D');
-                    url = url.replace(item, frag);
+                if (item.match(/\[\d+-\d+\]/)) {
+                    log.push(item);
+                }
+                else {
+                    url = url.replace(item, encodeURI(item));
                 }
             });
-            santilizeLoop(url);
+            if (JSON.stringify(loop) !== JSON.stringify(log)) {
+                return santilizeLoop(url)
+            }
         }
         return url;
     }
