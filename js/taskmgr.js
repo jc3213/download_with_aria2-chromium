@@ -112,17 +112,11 @@ $('#taskFiles').on('click', (event) => {
 });
 
 $('#optionDownload, #optionUpload, #optionProxy').on('change', (event) => {
+    var options = {};
     var gid = $(event.target).attr('gid');
-    var value = event.target.value;
-    if (event.target.id === 'optionDownload') {
-        var options = {'max-download-limit': value};
-    }
-    else if (event.target.id === 'optionUpload') {
-        options = {'max-upload-limit': value};
-    }
-    else if (event.target.id === 'optionProxy') {
-        options = {'all-proxy': value};
-    }
+    var index = ['#optionDownload', '#optionUpload', '#optionProxy'].indexOf('#' + event.target.id);
+    var call = ['max-download-limit', 'max-upload-limit', 'all-proxy'][index];
+    options[call] = event.target.value;
     jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
 });
 
