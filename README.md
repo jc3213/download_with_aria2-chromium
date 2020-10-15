@@ -8,33 +8,35 @@
 
 # Differences
 
-Options.html
+Extension options
 <details>
-  You can check whether <b>JSONRPC URI</b> or <b>Secret Token</b> is correct or not
-  <br>You can modify <b>User Agent</b> for download to bypass some restrictions
-  <br>You can set <b>all-proxy</b> property for downloads manually or automatically
-  <br>Capture filters now have better logic, and better user accessbility
-  <br>Priority of filter <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
+  Don't open <b>Options<b> in new tab
+  <br>Ability to check for <b>JSONRPC URI</b> and <b>Secret Token</b>
+  <br>Ability to modify <b>User Agent</b> for downloads
+  <br>Ability to set <b>all-proxy</b> option for downloads automatically
+  <br>Capture filters now have better logic, and better performance
+  <br>Priority of filters: <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
 </details>
-Popup.html
+Extension task managers
 <details>
   Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
-  <br>Filter task queues based on their status
+  <br>Ability to filter task queues based on their status
   <br>Show global <b>Download</b>, <b>Upload</b> speed
-  <br>Advanced <b>Progress</b> bar, click to pause or unpause the task
-  <br><b>Options</b> button to open <b>Options.html</b> instantly
-  <br>Show error message on top when an error occurs
-  <br>Click <b>📋</b> to copy the url of target download to clipboard
-  <br>Click <b>👁️</b> to show the all files of bit-torrent downloads
+  <br>Better <b>progress bar</b>, click to pause or unpause the task
+  <br><b>Options</b> button to open <b>Options</b> instantly
+  <br>Show error message if an error happens while contacting with <b>Aria2 jsonrpc</b>
+  <br>Click <b>❌</b> to stop current task or remove download result
+  <br>Click <b>🔍</b> to to open <b>taskDetails</b> window for more detailed infomations
+  <br>Click <b>🌌</b> to restart <b>removed</b> or <b>error<b> non-bittorrent downloads
 </details>
-Other optimization
+Better performance and accessbility
 <details>
-    New library <b>jQuery-3.5.1.min.js</b>
     <br>New icons
     <br>Native i18n supports
+    <br>New library <b>jQuery-3.5.1.min.js</b>
     <br>Removed libraries <b>fancysettings.js</b>, <b>store.js</b>, <b>i18n.js</b>, and <b>popuplib.min.js</b>
     <br>Removed unnecessary <b>*.js</b>, <b>chrome</b> api and <b>manifest</b> key usage
-    <br>Better notifications and performance
+    <br>Better notifications
 </details>
 
 # How to use
@@ -77,23 +79,33 @@ Popup.html
             <details>
                 <b>New Task Window</b>
                 <details>
-                    <b>Referer</b> - Change the referer of this download session
-                    <br><b>Download Url</b> - Input the urls of this download session
+                    <b>Referer</b> - Change the referer of current download session
+                    <br><b>Download Url</b> - Input the urls of current download session
                     <br><b>Use Proxy</b>
                     <details>
-                        <b>checkbox</b> - Add <b>all-proxy</b> option to this download session (Only this time)
-                        <br><b>textarea</b> - Change proxy service of this download session (Only this time)
+                        <b>checkbox</b> - Add <b>all-proxy</b> option to current download session (Only once)
+                        <br><b>textarea</b> - Change proxy service of current download session (Only once)
                     </details>
                 </details>
             </details>
         <br><b>Purdge</b> - Purdge all downloads that are completed or stopped
+        <br><b>Cancel</b> - Close the <b>New Task Window</b>
     </details>
     <b>Task Manager</b>
     <details>
         <b>❌</b> - Stop downloading task or remove stopped task from <b>Task Manager</b>
-        <br><b>🔍</b> - Show options and files of seleted task
-        <br><b>🖨️</b> - Copy url of targeted download to clipboard
+        <br><b>🔍</b> - Click to show current <b>Task Details</b>
+        <br><b>🌌️</b> - Restart <b>removed<b> or <b>error</b> non-bittorrent downloads
         <br><b>Progress Bar</b> - Click to pause or unpause targeted download
+    </details>
+    <b>Task Details</b>
+    <details>
+        <b>Task Name</b> - Click to close <b>Task Details</b> window
+        <br><b>Max Download Speed</b> - Ability to limit the max download speed of current download
+        <br><b>Max Upload Speed</b> - Ability to limit the max upload speed of current download
+        <br><b>Proxy Server</b> - Ability to change proxy server of current download
+        <br>
+        <br><b>TaskFiles></b> - Files of current download, click to copy uri for non-bittorrent download
     </details>
     <b>Bottom Menu</b>
     <details>
