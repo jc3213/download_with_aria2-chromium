@@ -11,8 +11,8 @@ function toggleTaskQueue(event) {
     }
     else {
         document.querySelector(activeQueue).style.display = 'block';
-        taskTabs.forEach(item => { if (item !== active) document.querySelector(item).classList.remove('checked') });
-        taskQueues.forEach(item => { if (item !== activeQueue) document.querySelector(item).style.display = 'none' });
+        taskTabs.forEach(item => { if (item !== active) document.querySelector(item).classList.remove('checked'); });
+        taskQueues.forEach(item => { if (item !== activeQueue) document.querySelector(item).style.display = 'none'; });
     }
     event.target.classList.toggle('checked');
 }

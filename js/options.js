@@ -7,8 +7,8 @@ function toggleTabs(event) {
     var active = check.replace('tab', 'menu');
     document.querySelector(check).classList.add('checked');
     document.querySelector(active).style.display = 'block';
-    menuTabs.forEach(item => { if (item !== check) document.querySelector(item).classList.remove('checked') });
-    menuQueues.forEach(item => { if (item !== active) document.querySelector(item).style.display = 'none' });
+    menuTabs.forEach(item => { if (item !== check) document.querySelector(item).classList.remove('checked'); });
+    menuQueues.forEach(item => { if (item !== active) document.querySelector(item).style.display = 'none'; });
 }
 
 [

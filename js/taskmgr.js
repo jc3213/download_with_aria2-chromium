@@ -1,6 +1,6 @@
 document.querySelector('div.taskQueue').addEventListener('click', (event) => {
     var taskInfo;
-    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) taskInfo = item });
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) taskInfo = item; });
     var status = taskInfo.getAttribute('status');
     var gid = taskInfo.getAttribute('gid');
     if (event.target.id === 'remove_btn') {
@@ -13,7 +13,7 @@ document.querySelector('div.taskQueue').addEventListener('click', (event) => {
         document.querySelector('#taskDetails').style.display = 'block';
         printTaskOption(gid)
         printTaskDetails(gid);
-        taskManager = setInterval(() => printTaskDetails(gid), 1000);
+        //taskManager = setInterval(() => printTaskDetails(gid), 1000);
     }
     else if (event.target.id === 'retry_btn') {
         retryTask(gid);
@@ -62,18 +62,17 @@ function printTaskDetails(gid) {
             document.querySelector('#optionProxy').setAttribute('gid', result.gid);
             document.querySelector('#optionProxy').disabled = bittorrent || complete;
             var taskFiles = result.files.map(item => item = printFileInfo(item));
-            document.querySelector('#taskFiles').setAttribute('uri', taskUrl);
             document.querySelector('#taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
         }
     );
 
     function printFileInfo(info) {
-        var fileUrl = info.uris[0].uri || '';
+        var fileUrl = info.uris.length > 0 ? info.uris[0].uri : '';
         var filename = (info.path || fileUrl).split('/').pop();
         var filePath = info.path.replace(/\//g, '\\');
         var fileSize = bytesToFileSize(info.length);
         var fileRatio = ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%';
-        return '<tr><td>' + info.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
+        return '<tr uri="' + fileUrl + '"><td>' + info.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
     }
 }
 
@@ -118,7 +117,11 @@ document.querySelector('#taskName').addEventListener('click', (event) => {
 });
 
 document.querySelector('#taskFiles').addEventListener('click', (event) => {
-    var uri = document.querySelector('#taskFiles').getAttribute('uri');
+    var fileInfo;
+    var taskFiles;
+    var fileTree = [];
+    document.querySelectorAll('tr').forEach((item, index)=> { if (item.contains(event.target)) fileInfo = item; });
+    var uri = fileInfo.getAttribute('uri');
     if (uri) {
         navigator.clipboard.writeText(uri);
         showNotification(window['warn_url_copied'], uri);
