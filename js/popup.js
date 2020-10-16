@@ -1,53 +1,65 @@
-$('#newTask_btn, #cancel_btn').on('click', (event) => {
-    $('#newTask_btn, #cancel_btn, #purdge_btn, #newTaskWindow').toggle();
-    $('#taskReferer, #taskBatch').val('');
-    $('#setProxy').prop('checked', false);
-    $('#taskProxy').prop('disabled', 'disabled');
+var newTaskButton = ['#newTask_btn', '#cancel_btn'];
+var newTaskWindow = ['#newTask_btn', '#cancel_btn', '#purdge_btn', '#newTaskWindow'];
+newTaskButton.forEach(item => document.querySelector(item).addEventListener('click', clickNewTaskButton));
+
+function clickNewTaskButton(event) {
+    document.querySelector('#setProxy').checked = false;
+    document.querySelector('#taskProxy').disabled = true;
+    document.querySelector('#taskProxy').value = localStorage.getItem('allproxy') || '';
+    toggleNewTaskWindow();
+}
+
+function toggleNewTaskWindow() {
+    document.querySelector('#taskReferer').value = '';
+    document.querySelector('#taskBatch').value = '';
+    newTaskWindow.forEach(item => document.querySelector(item).style.display = document.querySelector(item).style.display === 'none' ? 'initial' : 'none');
+}
+
+document.querySelector('#setProxy').addEventListener('click', (event) => {
+    document.querySelector('#taskProxy').disabled = !document.querySelector('#taskProxy').disabled;
 });
 
-$('#setProxy').on('click', (event) => {
-    $('#taskProxy').prop('disabled', (index, value) => !value);
+document.querySelector('#submit_btn').addEventListener('click', (event) => {
+    var referer = document.querySelector('#taskReferer').value;
+    var proxy = document.querySelector('#setProxy').checked ? document.querySelector('#taskProxy').value : '';
+    var url = document.querySelector('#taskBatch').value.split('\n').forEach(item => { if (item !== '') downWithAria2({'url': item, 'referer': referer, 'proxy': proxy}) });
+    toggleNewTaskWindow();
 });
 
-$('#taskProxy').val(localStorage.getItem('allproxy') || '');
+var tabs = ['#active_btn', '#waiting_btn', '#stopped_btn'];
+var queues = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'];
+tabs.forEach(item => document.querySelector(item).addEventListener('click', toggleTaskQueue));
 
-$('#submit_btn').on('click', (event) => {
-    var referer = $('taskReferer').val();
-    var proxy = $('#setProxy').prop('checked') ? $('#taskProxy').val() : '';
-    var url = $('#taskBatch').val().split('\n').filter(item => item === '' ?  '' : downWithAria2({'url': item, 'referer': referer, 'proxy': proxy}));
-    $('#newTask_btn, #cancel_btn, #purdge_btn, #newTaskWindow').toggle();
-    $('#taskReferer, #taskBatch').val('');
-});
-
-$('#active_btn, #waiting_btn, #stopped_btn').on('click', (event) => {
+function toggleTaskQueue(event) {
     var active = '#' + event.target.id;
     var activeQueue = active.replace('_btn', 'Queue');
-    var inactive = ['#active_btn', '#waiting_btn', '#stopped_btn'].filter(item => item !== active).join(', ');
-    var inactiveQueue = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'].filter(item => item !== activeQueue).join(', ');
-    if ($(active).hasClass('checked')) {
-        $('#allTaskQueue').show();
-        $(activeQueue).hide();
+    if (event.target.classList.contains('checked')) {
+        document.querySelector('#allTaskQueue').style.display = 'block';
+        document.querySelector(activeQueue).style.display = 'none';
     }
     else {
-        $(inactive).removeClass('checked');
-        $(activeQueue).show();
-        $(inactiveQueue).hide();
+        document.querySelector(activeQueue).style.display = 'block';
+        tabs.forEach(item => { if (item !== active) document.querySelector(item).classList.remove('checked') });
+        queues.forEach(item => { if (item !== activeQueue) document.querySelector(item).style.display = 'none' });
     }
-    $(active).toggleClass('checked');
-});
+    event.target.classList.toggle('checked');
+}
 
-$('#purdge_btn').on('click', (event) => {
+document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
 });
 
-$('#options_btn').on('click', (event) => {
-    if ($(event.target).hasClass('checked')) {
-        $('#optionsWindow').remove();
+document.querySelector('#options_btn').addEventListener('click', (event) => {
+    if (event.target.classList.contains('checked')) {
+        document.querySelector('#optionsWindow').remove();
     }
     else {
-        $('<iframe id="optionsWindow" src="options.html">').appendTo('body');
+        var optionsWindow = document.createElement('iframe');
+        optionsWindow.id = 'optionsWindow';
+        optionsWindow.src = 'options.html';
+        document.querySelector('body').appendChild(optionsWindow);
     }
-    $(event.target).toggleClass('checked');
+    event.target.classList.toggle('checked');
 });
 
 function printMainFrame() {
@@ -59,17 +71,20 @@ function printMainFrame() {
             var active = (result.numActive | 0);
             var waiting = (result.numWaiting | 0);
             var stopped = (result.numStopped | 0);
-            $('#numActive').html(active);
-            $('#numWaiting').html(waiting);
-            $('#numStopped').html(stopped);
-            $('#downloadSpeed').html(downloadSpeed);
-            $('#uploadSpeed').html(uploadSpeed);
-            $('#queueTabs, #menuTop').show();
-            $('#networkStatus').hide();
             printTaskQueue(waiting, stopped);
+            document.querySelector('#numActive').innerHTML = active;
+            document.querySelector('#numWaiting').innerHTML = waiting;
+            document.querySelector('#numStopped').innerHTML = stopped;
+            document.querySelector('#downloadSpeed').innerHTML = downloadSpeed;
+            document.querySelector('#uploadSpeed').innerHTML = uploadSpeed;
+            document.querySelector('#queueTabs').style.display = 'block';
+            document.querySelector('#menuTop').style.display = 'block';
+            document.querySelector('#networkStatus').style.display = 'none';
         }, (error, rpc) => {
-            $('#queueTabs, #menuTop').hide();
-            $('#networkStatus').show().html(error);
+            document.querySelector('#queueTabs').style.display = 'none';
+            document.querySelector('#menuTop').style.display = 'none';
+            document.querySelector('#networkStatus').innerHTML = error;
+            document.querySelector('#networkStatus').style.display = 'block';
         }
     );
 
@@ -82,10 +97,10 @@ function printMainFrame() {
             var active = activeQueue ? activeQueue.map(item => printTaskInfo(item)) : [];
             var waiting = waitingQueue ? waitingQueue.map(item => printTaskInfo(item)) : [];
             var stopped = stoppedQueue ? stoppedQueue.map(item => printTaskInfo(item)) : [];
-            $('#allTaskQueue').html([...active, ...waiting, ...stopped].join(''));
-            $('#activeQueue').html(active.join(''));
-            $('#waitingQueue').html(waiting.join(''));
-            $('#stoppedQueue').html(stopped.join(''));
+            document.querySelector('#allTaskQueue').innerHTML = [...active, ...waiting, ...stopped].join('');
+            document.querySelector('#activeQueue').innerHTML = active.join('');
+            document.querySelector('#waitingQueue').innerHTML = waiting.join('');
+            document.querySelector('#stoppedQueue').innerHTML = stopped.join('');
         });
     }
 

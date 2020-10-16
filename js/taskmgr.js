@@ -1,7 +1,8 @@
-$('div.taskQueue').on('click', (event) => {
-    var taskInfo = $('div.taskInfo').has($(event.target));
-    var status = taskInfo.attr('status');
-    var gid = taskInfo.attr('gid');
+document.querySelector('div.taskQueue').addEventListener('click', (event) => {
+    var taskInfo;
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) taskInfo = item });
+    var status = taskInfo.getAttribute('status');
+    var gid = taskInfo.getAttribute('gid');
     if (event.target.id === 'remove_btn') {
         removeTask(status, gid);
     }
@@ -9,7 +10,7 @@ $('div.taskQueue').on('click', (event) => {
         toggleTask(status, gid);
     }
     else if (event.target.id === 'invest_btn') {
-        $('#taskDetails').show();
+        document.querySelector('#taskDetails').style.display = 'block';
         printTaskOption(gid)
         printTaskDetails(gid);
         taskManager = setInterval(() => printTaskDetails(gid), 1000);
@@ -27,7 +28,7 @@ function removeTask(status, gid) {
         method = 'aria2.removeDownloadResult';
     }
     else {
-        return console.log(status);
+        return;
     }
     jsonRPCRequest({'method': method, 'gid': gid});
 }
@@ -39,11 +40,8 @@ function toggleTask(status, gid) {
     else if (status === 'paused') {
         method = 'aria2.unpause';
     }
-    else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'aria2.removeDownloadResult';
-    }
     else {
-        return console.log(status);
+        return;
     }
     jsonRPCRequest({'method': method, 'gid': gid});
 }
@@ -54,14 +52,18 @@ function printTaskDetails(gid) {
         (result) => {
             var taskUrl = !result.bittorrent ? result.files[0].uris[0].uri : '';
             var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-            $('#taskName').html('<div class="button ' + result.status + '">' + taskName + '</div>');
+            document.querySelector('#taskName').innerHTML = '<div class="button ' + result.status + '">' + taskName + '</div>';
             var bittorrent = result.bittorrent;
             var complete = result.status === 'complete';
-            $('#optionDownload').attr({'gid': result.gid, 'disabled': complete});
-            $('#optionUpload').attr({'gid': result.gid, 'disabled': !bittorrent || complete});
-            $('#optionProxy').attr({'gid': result.gid, 'disabled': bittorrent || complete});
+            document.querySelector('#optionDownload').setAttribute('gid', result.gid);
+            document.querySelector('#optionDownload').disabled = complete;
+            document.querySelector('#optionUpload').setAttribute('gid', result.gid);
+            document.querySelector('#optionUpload').disabled = !bittorrent || complete;
+            document.querySelector('#optionProxy').setAttribute('gid', result.gid);
+            document.querySelector('#optionProxy').disabled = bittorrent || complete;
             var taskFiles = result.files.map(item => item = printFileInfo(item));
-            $('#taskFiles').attr('uri', taskUrl).html('<table>' + taskFiles.join('') + '</table>');
+            document.querySelector('#taskFiles').setAttribute('uri', taskUrl);
+            document.querySelector('#taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
         }
     );
 
@@ -72,17 +74,6 @@ function printTaskDetails(gid) {
         var cellRatio = '<td>' + ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%</td>';
         return '<tr>' + cellIndex + cellName + cellSize + cellRatio + '</tr>';
     }
-}
-
-function printTaskOption(gid) {
-    jsonRPCRequest(
-        {'method': 'aria2.getOption', 'gid': gid},
-        (result) => {
-            $('#optionDownload').val(result['max-download-limit']);
-            $('#optionUpload').val(result['max-upload-limit']);
-            $('#optionProxy').val(result['all-proxy'] || '');
-        }
-    );
 }
 
 function retryTask(gid) {
@@ -97,27 +88,40 @@ function retryTask(gid) {
     );
 }
 
-$('#taskName').on('click', (event) => {
+var taskOptions = ['#optionDownload', '#optionUpload', '#optionProxy'];
+var optionsCall = ['max-download-limit', 'max-upload-limit', 'all-proxy'];
+taskOptions.forEach(item => document.querySelector(item).addEventListener('change', changeTaskOption));
+
+function changeTaskOption(event) {
+    var options = {};
+    var gid = event.target.getAttribute('gid');
+    var index = taskOptions.indexOf('#' + event.target.id);
+    options[optionsCall[index]] = event.target.value;
+    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
+}
+
+function printTaskOption(gid) {
+    jsonRPCRequest(
+        {'method': 'aria2.getOption', 'gid': gid},
+        (result) => {
+            taskOptions.forEach((item, index) => document.querySelector(item).value = result[optionsCall[index]] || '');
+        }
+    );
+}
+
+document.querySelector('#taskName').addEventListener('click', (event) => {
     clearInterval(taskManager);
-    $('#taskName, #taskFiles').empty();
-    $('#taskDetails').hide();
+    document.querySelector('#taskName').innerHTML = '';
+    document.querySelector('#taskFiles').innerHTML = '';
+    document.querySelector('#taskDetails').style.display = 'none';
 });
 
-$('#taskFiles').on('click', (event) => {
-    var uri = $('#taskFiles').attr('uri');
+document.querySelector('#taskFiles').addEventListener('click', (event) => {
+    var uri = document.querySelector('#taskFiles').getAttribute('uri');
     if (uri) {
         navigator.clipboard.writeText(uri);
         showNotification(window['warn_url_copied'], uri);
     }
-});
-
-$('#optionDownload, #optionUpload, #optionProxy').on('change', (event) => {
-    var options = {};
-    var gid = $(event.target).attr('gid');
-    var index = ['#optionDownload', '#optionUpload', '#optionProxy'].indexOf('#' + event.target.id);
-    var call = ['max-download-limit', 'max-upload-limit', 'all-proxy'][index];
-    options[call] = event.target.value;
-    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
 });
 
 var taskManager;
