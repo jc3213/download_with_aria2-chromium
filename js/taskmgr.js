@@ -13,7 +13,7 @@ document.querySelector('div.taskQueue').addEventListener('click', (event) => {
         document.querySelector('#taskDetails').style.display = 'block';
         printTaskOption(gid)
         printTaskDetails(gid);
-        //taskManager = setInterval(() => printTaskDetails(gid), 1000);
+        taskManager = setInterval(() => printTaskDetails(gid), 1000);
     }
     else if (event.target.id === 'retry_btn') {
         retryTask(gid);
@@ -118,8 +118,6 @@ document.querySelector('#taskName').addEventListener('click', (event) => {
 
 document.querySelector('#taskFiles').addEventListener('click', (event) => {
     var fileInfo;
-    var taskFiles;
-    var fileTree = [];
     document.querySelectorAll('tr').forEach((item, index)=> { if (item.contains(event.target)) fileInfo = item; });
     var uri = fileInfo.getAttribute('uri');
     if (uri) {
