@@ -68,11 +68,12 @@ function printTaskDetails(gid) {
     );
 
     function printFileInfo(info) {
-        var cellIndex = '<td>' + info.index + '</td>';
-        var cellName = '<td title="' + info.path.replace(/\//g, '\\') + '">' + (info.path || info.uris[0].uri).split('/').pop() + '</td>';
-        var cellSize = '<td>' + bytesToFileSize(info.length) + '</td>';
-        var cellRatio = '<td>' + ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%</td>';
-        return '<tr>' + cellIndex + cellName + cellSize + cellRatio + '</tr>';
+        var fileUrl = info.uris[0].uri || '';
+        var filename = (info.path || fileUrl).split('/').pop();
+        var filePath = info.path.replace(/\//g, '\\');
+        var fileSize = bytesToFileSize(info.length);
+        var fileRatio = ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%';
+        return '<tr><td>' + info.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
     }
 }
 

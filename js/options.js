@@ -1,14 +1,14 @@
-var tabs = ['#tabBasic', '#tabAdvanced', '#tabDownload'];
-var menus = ['#menuBasic', '#menuAdvanced', '#menuDownload'];
-tabs.forEach(item => document.querySelector(item).addEventListener('click', toggleTabs));
+var menuTabs = ['#tabBasic', '#tabAdvanced', '#tabDownload'];
+var menuQueues = ['#menuBasic', '#menuAdvanced', '#menuDownload'];
+menuTabs.forEach(item => document.querySelector(item).addEventListener('click', toggleTabs));
 
 function toggleTabs(event) {
     var check = '#' + event.target.id;
     var active = check.replace('tab', 'menu');
     document.querySelector(check).classList.add('checked');
     document.querySelector(active).style.display = 'block';
-    tabs.forEach(item => { if (item !== check) document.querySelector(item).classList.remove('checked') });
-    menus.forEach(item => { if (item !== active) document.querySelector(item).style.display = 'none' });
+    menuTabs.forEach(item => { if (item !== check) document.querySelector(item).classList.remove('checked') });
+    menuQueues.forEach(item => { if (item !== active) document.querySelector(item).style.display = 'none' });
 }
 
 [

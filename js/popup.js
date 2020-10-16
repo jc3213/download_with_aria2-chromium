@@ -1,3 +1,22 @@
+var taskTabs = ['#active_btn', '#waiting_btn', '#stopped_btn'];
+var taskQueues = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'];
+taskTabs.forEach(item => document.querySelector(item).addEventListener('click', toggleTaskQueue));
+
+function toggleTaskQueue(event) {
+    var active = '#' + event.target.id;
+    var activeQueue = active.replace('_btn', 'Queue');
+    if (event.target.classList.contains('checked')) {
+        document.querySelector('#allTaskQueue').style.display = 'block';
+        document.querySelector(activeQueue).style.display = 'none';
+    }
+    else {
+        document.querySelector(activeQueue).style.display = 'block';
+        taskTabs.forEach(item => { if (item !== active) document.querySelector(item).classList.remove('checked') });
+        taskQueues.forEach(item => { if (item !== activeQueue) document.querySelector(item).style.display = 'none' });
+    }
+    event.target.classList.toggle('checked');
+}
+
 var newTaskButton = ['#newTask_btn', '#cancel_btn'];
 var newTaskWindow = ['#newTask_btn', '#cancel_btn', '#purdge_btn', '#newTaskWindow'];
 newTaskButton.forEach(item => document.querySelector(item).addEventListener('click', clickNewTaskButton));
@@ -25,25 +44,6 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
     var url = document.querySelector('#taskBatch').value.split('\n').forEach(item => { if (item !== '') downWithAria2({'url': item, 'referer': referer, 'proxy': proxy}) });
     toggleNewTaskWindow();
 });
-
-var tabs = ['#active_btn', '#waiting_btn', '#stopped_btn'];
-var queues = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'];
-tabs.forEach(item => document.querySelector(item).addEventListener('click', toggleTaskQueue));
-
-function toggleTaskQueue(event) {
-    var active = '#' + event.target.id;
-    var activeQueue = active.replace('_btn', 'Queue');
-    if (event.target.classList.contains('checked')) {
-        document.querySelector('#allTaskQueue').style.display = 'block';
-        document.querySelector(activeQueue).style.display = 'none';
-    }
-    else {
-        document.querySelector(activeQueue).style.display = 'block';
-        tabs.forEach(item => { if (item !== active) document.querySelector(item).classList.remove('checked') });
-        queues.forEach(item => { if (item !== activeQueue) document.querySelector(item).style.display = 'none' });
-    }
-    event.target.classList.toggle('checked');
-}
 
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
