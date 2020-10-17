@@ -46,6 +46,7 @@ input, textarea, select {
 }
 
 input, textarea {
+    width: calc(100% - 15px);
     padding: 5px;
     resize: none;
 }

@@ -2,10 +2,6 @@ body {
     width: 425px;
 }
 
-input, textarea {
-    width: calc(100% - 20px);
-}
-
 textarea {
     height: 180px;
 }

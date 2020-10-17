@@ -2,10 +2,6 @@ body {
     width: 425px;
 }
 
-input, textarea {
-    width: calc(100% - 15px);
-}
-
 body > div:nth-child(n+2) {
     margin-top: 10px;
 }
