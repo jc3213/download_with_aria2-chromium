@@ -10,7 +10,7 @@
 
 <b>Easy-to-access options</b>
 <details>
-  Don't open <b>Options<b> in new tab
+  Don't open <b>Options</b> in new tab
   <br>Ability to check for <b>JSONRPC URI</b> and <b>Secret Token</b>
   <br>Ability to modify <b>User Agent</b> for downloads
   <br>Ability to set <b>all-proxy</b> option for downloads automatically
