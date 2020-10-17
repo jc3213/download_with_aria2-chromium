@@ -8,7 +8,7 @@
 
 # Differences
 
-Extension options
+<b>Easy-to-access options</b>
 <details>
   Don't open <b>Options<b> in new tab
   <br>Ability to check for <b>JSONRPC URI</b> and <b>Secret Token</b>
@@ -17,7 +17,8 @@ Extension options
   <br>Capture filters now have better logic, and better performance
   <br>Priority of filters: <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
 </details>
-Extension task managers
+
+<b>Built-in task managers</b>
 <details>
   Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
   <br>Ability to filter task queues based on their status
@@ -29,20 +30,47 @@ Extension task managers
   <br>Click <b>🔍</b> to to open <b>taskDetails</b> window for more detailed infomations
   <br>Click <b>🌌</b> to restart <b>removed</b> or <b>error<b> non-bittorrent downloads
 </details>
-Better performance and accessbility
+
+<b>Better performance and accessbility</b>
 <details>
-    <br>Full modularization
+    Full modularization
     <br>New icons
     <br>Native i18n supports
-    <br>New library <b>jQuery-3.5.1.min.js</b>
-    <br>Removed libraries <b>fancysettings.js</b>, <b>store.js</b>, <b>i18n.js</b>, and <b>popuplib.min.js</b>
-    <br>Removed unnecessary <b>*.js</b>, <b>chrome</b> api and <b>manifest</b> key usage
+    <br>Removed unnecessary <b>libraries</b>, <b>chrome</b> api and <b>manifest</b> key usage
     <br>Better notifications
 </details>
 
 # How to use
 
-Options.html
+<b>Popup.html</b>
+<details>
+    <b>Top Menu</b>
+    <details>
+        <b>Tabs with Status</b>
+            <details>
+            <b>Active</b> - Filter only active downloads on <b>Task Manager</b>
+            <br><b>Waiting</b> - Filter downloads those are paused or still in queue
+            <br><b>Stopped</b> - Filter downloads stopped or completed
+            </details>
+        <b>New</b> - Toggle the <b>New Task Window</b>
+        <br><b>Purdge</b> - Purdge all downloads that are completed or stopped
+    </details>
+    <b>Task Manager</b>
+    <details>
+        <b>❌</b> - Stop downloading task or remove stopped task from <b>Task Manager</b>
+        <br><b>🔍</b> - Click to show current <b>Task Details</b>
+        <br><b>🌌️</b> - Restart <b>removed<b> or <b>error</b> non-bittorrent downloads
+        <br><b>Progress Bar</b> - Click to pause or unpause targeted download
+    </details>
+    <b>Bottom Menu</b>
+    <details>
+        <b>Download Speed</b> - Global download speed
+        <br><b>Upload Speed</b> - Global updload speed
+        <br><b>Option</b> - Open <b>Options.html</b>
+    </details>
+</details>
+
+<b>Options</b>
 <details>
     <b>Basic</b>
     <details>
@@ -66,54 +94,28 @@ Options.html
         </details>
     </details>
 </details>
-Popup.html
+
+<b>New Task</b>
 <details>
-    <b>Top Menu</b>
+    <b>New Task Window</b>
     <details>
-        <b>Tabs with Status</b>
-            <details>
-            <b>Active</b> - Filter only active downloads on <b>Task Manager</b>
-            <br><b>Waiting</b> - Filter downloads those are paused or still in queue
-            <br><b>Stopped</b> - Filter downloads stopped or completed
-            </details>
-        <b>New</b> - Open <b>New Task Window</b>
-            <details>
-                <b>New Task Window</b>
-                <details>
-                    <b>Referer</b> - Change the referer of current download session
-                    <br><b>Download Url</b> - Input the urls of current download session
-                    <br><b>Use Proxy</b>
-                    <details>
-                        <b>checkbox</b> - Add <b>all-proxy</b> option to current download session (Only once)
-                        <br><b>textarea</b> - Change proxy service of current download session (Only once)
-                    </details>
-                </details>
-            </details>
-        <br><b>Purdge</b> - Purdge all downloads that are completed or stopped
-        <br><b>Cancel</b> - Close the <b>New Task Window</b>
+        <b>Referer</b> - Change the referer of current download session
+        <br><b>Download Url</b> - Input the urls of current download session
+        <br><b>Use Proxy</b>
+        <details>
+            <b>checkbox</b> - Add <b>all-proxy</b> option to current download session (Only once)
+            <br><b>textarea</b> - Change proxy service of current download session (Only once)
+        </details>
     </details>
-    <b>Task Manager</b>
-    <details>
-        <b>❌</b> - Stop downloading task or remove stopped task from <b>Task Manager</b>
-        <br><b>🔍</b> - Click to show current <b>Task Details</b>
-        <br><b>🌌️</b> - Restart <b>removed<b> or <b>error</b> non-bittorrent downloads
-        <br><b>Progress Bar</b> - Click to pause or unpause targeted download
-    </details>
-    <b>Task Details</b>
-    <details>
-        <b>Task Name</b> - Click to close <b>Task Details</b> window
-        <br><b>Max Download Speed</b> - Ability to limit the max download speed of current download
-        <br><b>Max Upload Speed</b> - Ability to limit the max upload speed of current download
-        <br><b>Proxy Server</b> - Ability to change proxy server of current download
-        <br>
-        <br><b>TaskFiles></b> - Files of current download, click to copy uri for non-bittorrent download
-    </details>
-    <b>Bottom Menu</b>
-    <details>
-        <b>Download Speed</b> - Global download speed
-        <br><b>Upload Speed</b> - Global updload speed
-        <br><b>Option</b> - Open <b>Options.html</b>
-    </details>
+</details>
+
+<b>Task Manager</b>
+<details>
+    <b>Task Name</b> - Click to close <b>Task Details</b> window
+    <br><b>Max Download Speed</b> - Ability to limit the max download speed of current download
+    <br><b>Max Upload Speed</b> - Ability to limit the max upload speed of current download
+    <br><b>Proxy Server</b> - Ability to change proxy server of current download
+    <br><b>TaskFiles></b> - Files of current download, click to copy uri for non-bittorrent download
 </details>
 
 # Disadvantages
