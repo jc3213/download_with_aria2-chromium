@@ -10,9 +10,5 @@ document.getElementById('submit_btn').addEventListener('click', (event) => {
 });
 
 window.addEventListener('load', (event) => {
-    document.getElementById('taskReferer').value = '';
-    document.getElementById('taskBatch').value = '';
-    document.getElementById('setProxy').checked = false;
     document.getElementById('taskProxy').value = localStorage.getItem('allproxy') || '';
-    document.getElementById('taskProxy').disabled = true;
 });
