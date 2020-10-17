@@ -66,20 +66,19 @@ document.getElementById('aria2Show').addEventListener('click', (event) => {
     event.target.classList.toggle('checked');
 });
 
-
 function captureFilters() {
-    var capture = (document.querySelector('#capture').value | 0);
+    var capture = (document.getElementById('capture').value | 0);
     if (capture === 1) {
-        document.querySelector('#captureFilters').style.display = 'block';
+        document.getElementById('captureFilters').style.display = 'block';
     }
     else {
-        document.querySelector('#captureFilters').style.display = 'none';
+        document.getElementById('captureFilters').style.display = 'none';
     }
 }
 
 function calcFileSize(event) {
-    var number = (document.querySelector('#sizeEntry').value | 0);
-    var unit = (document.querySelector('#sizeUnit').value | 0);
+    var number = (document.getElementById('sizeEntry').value | 0);
+    var unit = (document.getElementById('sizeUnit').value | 0);
     var size = number * Math.pow(1024, unit);
     localStorage.setItem('fileSize', size);
 }
