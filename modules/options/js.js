@@ -3,12 +3,13 @@ var menuQueues = ['menuBasic', 'menuAdvanced', 'menuDownload'];
 menuTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTabs));
 
 function toggleTabs(event) {
-    var check = event.target.id;
-    var active = check.replace('tab', 'menu');
-    document.getElementById(check).classList.add('checked');
-    document.getElementById(active).style.display = 'block';
-    menuTabs.forEach(item => { if (item !== check) document.getElementById(item).classList.remove('checked'); });
-    menuQueues.forEach(item => { if (item !== active) document.getElementById(item).style.display = 'none'; });
+    var active = event.target.id;
+    var index = menuTabs.indexOf(active);
+    var activeTab = menuQueues[index];
+    document.getElementById(active).classList.add('checked');
+    document.getElementById(activeTab).style.display = 'block';
+    menuTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
+    menuQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
 }
 
 [

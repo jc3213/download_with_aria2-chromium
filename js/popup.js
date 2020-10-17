@@ -1,18 +1,19 @@
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
-var taskQueues = ['allTaskQueue', 'activeQueue', 'waitingQueue', 'stoppedQueue'];
+var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue', 'allTaskQueue'];
 taskTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskQueue));
 
 function toggleTaskQueue(event) {
     var active = event.target.id;
-    var activeQueue = active.replace('_btn', 'Queue');
+    var index = taskTabs.indexOf(active);
+    var activeTab = taskQueues[index];
     if (event.target.classList.contains('checked')) {
         document.getElementById('allTaskQueue').style.display = 'block';
-        document.getElementById(activeQueue).style.display = 'none';
+        document.getElementById(activeTab).style.display = 'none';
     }
     else {
-        document.getElementById(activeQueue).style.display = 'block';
+        document.getElementById(activeTab).style.display = 'block';
         taskTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
-        taskQueues.forEach(item => { if (item !== activeQueue) document.getElementById(item).style.display = 'none'; });
+        taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
     }
     event.target.classList.toggle('checked');
 }
@@ -24,17 +25,15 @@ var modules = [
 modules.forEach(item => initialModules(item));
 
 function initialModules(module) {
-    var module_btn = document.getElementById(module.id);
-    var module_win;
-    module_btn.addEventListener('click', (event) => {
+    document.getElementById(module.id).addEventListener('click', (event) => {
         if (event.target.classList.contains('checked')) {
-            module_win.remove();
+            document.getElementById(module.win).remove();
         }
         else {
-            module_win = document.createElement('iframe');
-            module_win.id = module.win;
-            module_win.src = '/modules/' + module.name + '/index.html';
-            document.querySelector('body').appendChild(module_win);
+            var iframe = document.createElement('iframe');
+            iframe.id = module.win;
+            iframe.src = '/modules/' + module.name + '/index.html';
+            document.querySelector('body').appendChild(iframe);
         }
         event.target.classList.toggle('checked');
     });
