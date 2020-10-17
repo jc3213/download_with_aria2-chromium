@@ -28,7 +28,7 @@
   <br>Show error message if an error happens while contacting with <b>Aria2 jsonrpc</b>
   <br>Click <b>❌</b> to stop current task or remove download result
   <br>Click <b>🔍</b> to to open <b>taskDetails</b> window for more detailed infomations
-  <br>Click <b>🌌</b> to restart <b>removed</b> or <b>error<b> non-bittorrent downloads
+  <br>Click <b>🌌</b> to restart <b>removed</b> or <b>error</b> non-bittorrent downloads
 </details>
 
 <b>Better performance and accessbility</b>
