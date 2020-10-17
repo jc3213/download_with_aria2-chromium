@@ -49,7 +49,7 @@
         <b>Tabs with Status</b>
             <details>
             <b>Active</b> - Filter only active downloads on <b>Task Manager</b>
-            <br><b>Waiting</b> - Filter downloads those are paused or still in queue
+            <br><b>Waiting</b> - Filter downloads those are paused or waiting in queue
             <br><b>Stopped</b> - Filter downloads stopped or completed
             </details>
         <b>New</b> - Toggle the <b>New Task Window</b>
@@ -59,14 +59,14 @@
     <details>
         <b>❌</b> - Stop downloading task or remove stopped task from <b>Task Manager</b>
         <br><b>🔍</b> - Click to show current <b>Task Details</b>
-        <br><b>🌌️</b> - Restart <b>removed<b> or <b>error</b> non-bittorrent downloads
+        <br><b>🌌️</b> - Restart <b>removed</b> or <b>error</b> non-bittorrent downloads
         <br><b>Progress Bar</b> - Click to pause or unpause targeted download
     </details>
     <b>Bottom Menu</b>
     <details>
         <b>Download Speed</b> - Global download speed
         <br><b>Upload Speed</b> - Global updload speed
-        <br><b>Option</b> - Open <b>Options.html</b>
+        <br><b>Option</b> - Open <b>Options Window</b>
     </details>
 </details>
 
