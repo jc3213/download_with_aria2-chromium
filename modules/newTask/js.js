@@ -1,6 +1,4 @@
-window.addEventListener('load', (event) => {
-    document.getElementById('taskProxy').value = localStorage.getItem('allproxy') || '';
-});
+document.getElementById('taskProxy').value = localStorage.getItem('allproxy') || '';
 
 document.getElementById('setProxy').addEventListener('click', (event) => {
     document.getElementById('taskProxy').disabled = !document.getElementById('taskProxy').disabled;
