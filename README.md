@@ -70,7 +70,7 @@
     </details>
 </details>
 
-<b>Options</b>
+<b>Options Window</b>
 <details>
     <b>Basic</b>
     <details>
@@ -95,27 +95,25 @@
     </details>
 </details>
 
-<b>New Task</b>
+<b>New Task Window</b>
 <details>
-    <b>New Task Window</b>
+    <b>Referer</b> - Change the referer of current download session
+    <br><b>Download Url</b> - Input the urls of current download session
+    <br><b>Use Proxy</b>
     <details>
-        <b>Referer</b> - Change the referer of current download session
-        <br><b>Download Url</b> - Input the urls of current download session
-        <br><b>Use Proxy</b>
-        <details>
-            <b>checkbox</b> - Add <b>all-proxy</b> option to current download session (Only once)
-            <br><b>textarea</b> - Change proxy service of current download session (Only once)
-        </details>
+        <b>checkbox</b> - Add <b>all-proxy</b> option to current download session (Only once)
+        <br><b>textarea</b> - Change proxy service of current download session (Only once)
     </details>
+    <b>Submit</b> - Create new download session with information provided
 </details>
 
-<b>Task Manager</b>
+<b>Task Manager Window</b>
 <details>
     <b>Task Name</b> - Click to close <b>Task Details</b> window
     <br><b>Max Download Speed</b> - Ability to limit the max download speed of current download
     <br><b>Max Upload Speed</b> - Ability to limit the max upload speed of current download
     <br><b>Proxy Server</b> - Ability to change proxy server of current download
-    <br><b>TaskFiles></b> - Files of current download, click to copy uri for non-bittorrent download
+    <br><b>TaskFiles</b> - Files of current download, click to copy uri for non-bittorrent download
 </details>
 
 # Disadvantages
