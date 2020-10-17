@@ -31,6 +31,7 @@ Extension task managers
 </details>
 Better performance and accessbility
 <details>
+    <br>Full modularization
     <br>New icons
     <br>Native i18n supports
     <br>New library <b>jQuery-3.5.1.min.js</b>
