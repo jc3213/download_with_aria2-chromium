@@ -88,7 +88,6 @@ function showNotification(title, message) {
 }
 
 function downWithAria2(session) {
-console.log(session);
     var options = session.options || {};
     var proxied = localStorage.getItem('proxied') || '';
     if (session.proxy) {
