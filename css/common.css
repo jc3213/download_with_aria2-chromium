@@ -4,6 +4,11 @@ body {
     user-select: none;
 }
 
+iframe {
+    background-color: #FFF;
+    border: none;
+}
+
 .title {
     font-weight: bold;
 }

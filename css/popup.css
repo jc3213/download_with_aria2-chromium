@@ -22,9 +22,7 @@ input, textarea {
     padding: 3px;
 }
 
-#menuTop, #menuBottom, #optionsWindow, #newTaskWindow, #taskDetails {
-    background-color: #FFF;
-    border: none;
+#menuTop, #menuBottom {
     position: absolute;
 }
 
@@ -34,17 +32,15 @@ input, textarea {
     text-align: right;
 }
 
+#optionsWindow, #newTaskWindow, #taskMgrWindow {
+    position: absolute;
+    width: 100%
+}
+
 #optionsWindow {
     top: 0px;
     left: 0px;
-    width: 100%;
     height: calc(100% - 40px);
-}
-
-#newTaskWindow, #taskDetails {
-    padding: 10px;
-    left: 0px;
-    width: calc(100% - 20px);
 }
 
 #newTaskWindow {
@@ -52,94 +48,9 @@ input, textarea {
     height: calc(100% - 100px);
 }
 
-#newTaskWindow > div:nth-child(n+2) {
-    margin-top: 10px;
-}
-
-#taskBatch {
-    height: 200px;
-}
-
-#setProxy {
-    width: 15px;
-    transform: scale(1.3);
-}
-
-#newTaskMenu {
-    text-align: center;
-}
-
-#taskDetails {
+#taskMgrWindow {
     top: 0px;
-    padding: 3px 10px;
     height: calc(100% - 45px);
-}
-
-#taskName div {
-    height: 45px;
-    overflow-y: hidden;
-    word-break: break-word;
-}
-
-#taskDetails > div:nth-child(n+2) {
-    margin-top: 10px;
-}
-
-#taskOption > div:nth-child(-n+2) {
-    display: inline-block;
-    width: calc((100% - 15px) / 2);
-}
-
-#taskOption > div:nth-child(2) {
-    margin-left: 10px;
-}
-
-#taskOption > div:nth-child(-n+2) input {
-    width: calc(100% - 15px);
-}
-
-#taskOption > div:nth-child(n+3) {
-    margin-top: 5px;
-}
-
-#taskFiles {
-    height: calc(100% - 176px);
-    overflow-y: auto;
-}
-
-#taskFiles table {
-    border-collapse: collapse;
-    table-layout: fixed;
-    width: 100%;
-}
-
-#taskFiles td {
-    border: 1px outset #CCC;
-    padding: 5px;
-    vertical-align: middle;
-    text-align: center;
-}
-
-#taskFiles tr:active {
-    filter: opacity(60%);
-}
-
-#taskFiles td:nth-child(1) {
-    width: 20px;
-}
-
-#taskFiles td:nth-child(2) {
-    text-align: left;
-    width: calc(100% - 140px);
-    word-break: break-word;
-}
-
-#taskFiles td:nth-child(3) {
-    width: 70px;
-}
-
-#taskFiles td:nth-child(4) {
-    width: 50px;
 }
 
 .taskQueue {

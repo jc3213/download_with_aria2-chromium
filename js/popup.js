@@ -1,65 +1,51 @@
-var taskTabs = ['#active_btn', '#waiting_btn', '#stopped_btn'];
-var taskQueues = ['#allTaskQueue', '#activeQueue', '#waitingQueue', '#stoppedQueue'];
-taskTabs.forEach(item => document.querySelector(item).addEventListener('click', toggleTaskQueue));
+var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
+var taskQueues = ['allTaskQueue', 'activeQueue', 'waitingQueue', 'stoppedQueue'];
+taskTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskQueue));
 
 function toggleTaskQueue(event) {
-    var active = '#' + event.target.id;
+    var active = event.target.id;
     var activeQueue = active.replace('_btn', 'Queue');
     if (event.target.classList.contains('checked')) {
-        document.querySelector('#allTaskQueue').style.display = 'block';
-        document.querySelector(activeQueue).style.display = 'none';
+        document.getElementById('allTaskQueue').style.display = 'block';
+        document.getElementById(activeQueue).style.display = 'none';
     }
     else {
-        document.querySelector(activeQueue).style.display = 'block';
-        taskTabs.forEach(item => { if (item !== active) document.querySelector(item).classList.remove('checked'); });
-        taskQueues.forEach(item => { if (item !== activeQueue) document.querySelector(item).style.display = 'none'; });
+        document.getElementById(activeQueue).style.display = 'block';
+        taskTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
+        taskQueues.forEach(item => { if (item !== activeQueue) document.getElementById(item).style.display = 'none'; });
     }
     event.target.classList.toggle('checked');
 }
 
-var newTaskButton = ['#newTask_btn', '#cancel_btn'];
-var newTaskWindow = ['#newTask_btn', '#cancel_btn', '#purdge_btn', '#newTaskWindow'];
-newTaskButton.forEach(item => document.querySelector(item).addEventListener('click', clickNewTaskButton));
+var modules = [
+    {'id': 'newTask_btn', 'win': 'newTaskWindow', 'name': 'newTask'}, 
+    {'id': 'options_btn', 'win': 'optionsWindow', 'name': 'options'}
+];
+modules.forEach(item => initialModules(item));
 
-function clickNewTaskButton(event) {
-    document.querySelector('#setProxy').checked = false;
-    document.querySelector('#taskProxy').disabled = true;
-    document.querySelector('#taskProxy').value = localStorage.getItem('allproxy') || '';
-    toggleNewTaskWindow();
+function initialModules(module) {
+    var module_btn = document.getElementById(module.id);
+    var module_win;
+    module_btn.addEventListener('click', (event) => {
+        if (event.target.classList.contains('checked')) {
+            module_win.remove();
+        }
+        else {
+            module_win = document.createElement('iframe');
+            module_win.id = module.win;
+            module_win.src = '/modules/' + module.name + '/index.html';
+            document.querySelector('body').appendChild(module_win);
+        }
+        event.target.classList.toggle('checked');
+    });
 }
 
-function toggleNewTaskWindow() {
-    document.querySelector('#taskReferer').value = '';
-    document.querySelector('#taskBatch').value = '';
-    newTaskWindow.forEach(item => document.querySelector(item).style.display = document.querySelector(item).style.display === 'none' ? 'initial' : 'none');
-}
-
-document.querySelector('#setProxy').addEventListener('click', (event) => {
-    document.querySelector('#taskProxy').disabled = !document.querySelector('#taskProxy').disabled;
-});
-
-document.querySelector('#submit_btn').addEventListener('click', (event) => {
-    var referer = document.querySelector('#taskReferer').value;
-    var proxy = document.querySelector('#setProxy').checked ? document.querySelector('#taskProxy').value : '';
-    var url = document.querySelector('#taskBatch').value.split('\n').forEach(item => { if (item !== '') downWithAria2({'url': item, 'referer': referer, 'proxy': proxy}) });
-    toggleNewTaskWindow();
-});
-
-document.querySelector('#purdge_btn').addEventListener('click', (event) => {
+document.getElementById('purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
 });
 
-document.querySelector('#options_btn').addEventListener('click', (event) => {
-    if (event.target.classList.contains('checked')) {
-        document.querySelector('#optionsWindow').remove();
-    }
-    else {
-        var optionsWindow = document.createElement('iframe');
-        optionsWindow.id = 'optionsWindow';
-        optionsWindow.src = 'options.html';
-        document.querySelector('body').appendChild(optionsWindow);
-    }
-    event.target.classList.toggle('checked');
+window.addEventListener('message', (event) => {
+    document.getElementById(event.data).remove();
 });
 
 function printMainFrame() {
@@ -72,19 +58,19 @@ function printMainFrame() {
             var waiting = (result.numWaiting | 0);
             var stopped = (result.numStopped | 0);
             printTaskQueue(waiting, stopped);
-            document.querySelector('#numActive').innerHTML = active;
-            document.querySelector('#numWaiting').innerHTML = waiting;
-            document.querySelector('#numStopped').innerHTML = stopped;
-            document.querySelector('#downloadSpeed').innerHTML = downloadSpeed;
-            document.querySelector('#uploadSpeed').innerHTML = uploadSpeed;
-            document.querySelector('#queueTabs').style.display = 'block';
-            document.querySelector('#menuTop').style.display = 'block';
-            document.querySelector('#networkStatus').style.display = 'none';
+            document.getElementById('numActive').innerHTML = active;
+            document.getElementById('numWaiting').innerHTML = waiting;
+            document.getElementById('numStopped').innerHTML = stopped;
+            document.getElementById('downloadSpeed').innerHTML = downloadSpeed;
+            document.getElementById('uploadSpeed').innerHTML = uploadSpeed;
+            document.getElementById('queueTabs').style.display = 'block';
+            document.getElementById('menuTop').style.display = 'block';
+            document.getElementById('networkStatus').style.display = 'none';
         }, (error, rpc) => {
-            document.querySelector('#queueTabs').style.display = 'none';
-            document.querySelector('#menuTop').style.display = 'none';
-            document.querySelector('#networkStatus').innerHTML = error;
-            document.querySelector('#networkStatus').style.display = 'block';
+            document.getElementById('queueTabs').style.display = 'none';
+            document.getElementById('menuTop').style.display = 'none';
+            document.getElementById('networkStatus').innerHTML = error;
+            document.getElementById('networkStatus').style.display = 'block';
         }
     );
 
@@ -97,10 +83,10 @@ function printMainFrame() {
             var active = activeQueue ? activeQueue.map(item => printTaskInfo(item)) : [];
             var waiting = waitingQueue ? waitingQueue.map(item => printTaskInfo(item)) : [];
             var stopped = stoppedQueue ? stoppedQueue.map(item => printTaskInfo(item)) : [];
-            document.querySelector('#allTaskQueue').innerHTML = [...active, ...waiting, ...stopped].join('');
-            document.querySelector('#activeQueue').innerHTML = active.join('');
-            document.querySelector('#waitingQueue').innerHTML = waiting.join('');
-            document.querySelector('#stoppedQueue').innerHTML = stopped.join('');
+            document.getElementById('allTaskQueue').innerHTML = [...active, ...waiting, ...stopped].join('');
+            document.getElementById('activeQueue').innerHTML = active.join('');
+            document.getElementById('waitingQueue').innerHTML = waiting.join('');
+            document.getElementById('stoppedQueue').innerHTML = stopped.join('');
         });
     }
 

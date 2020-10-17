@@ -1,0 +1,31 @@
+body {
+    width: 425px;
+}
+
+input, textarea {
+    width: calc(100% - 20px);
+}
+
+textarea {
+    height: 180px;
+}
+
+select {
+    padding: 5px 2px;
+}
+
+.container {
+    margin-left: 5px;
+}
+
+.container:nth-child(n+2) {
+    margin-top: 10px;
+}
+
+#jsonrpc, #token, #sizeEntry {
+    width: calc(100% - 75px);
+}
+
+#useragent {
+    height: 55px;
+}

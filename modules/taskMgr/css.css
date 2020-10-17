@@ -1,0 +1,94 @@
+body {
+    width: 425px;
+}
+
+div:nth-child(n+2) {
+    margin-top: 10px;
+}
+
+#taskName div {
+    height: 45px;
+    overflow-y: hidden;
+    word-break: break-word;
+}
+
+#taskOption > div:nth-child(-n+2) {
+    display: inline-block;
+    width: calc((100% - 15px) / 2);
+}
+
+#taskOption > div:nth-child(2) {
+    margin-left: 10px;
+}
+
+#taskOption > div:nth-child(-n+2) input {
+    width: calc(100% - 15px);
+}
+
+#taskOption > div:nth-child(n+3) {
+    margin-top: 5px;
+}
+
+#taskFiles {
+    height: calc(100% - 176px);
+    overflow-y: auto;
+}
+
+#taskFiles table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#taskFiles td {
+    border: 1px outset #CCC;
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#taskFiles tr:active {
+    filter: opacity(60%);
+}
+
+#taskFiles td:nth-child(1) {
+    width: 20px;
+}
+
+#taskFiles td:nth-child(2) {
+    text-align: left;
+    width: calc(100% - 140px);
+    word-break: break-word;
+}
+
+#taskFiles td:nth-child(3) {
+    width: 70px;
+}
+
+#taskFiles td:nth-child(4) {
+    width: 50px;
+}
+
+.active {
+    background-color: #33C;
+}
+
+.paused {
+    background-color: #CC3;
+}
+
+.error {
+    background-color: #C33;
+}
+
+.complete {
+    background-color: #3C3;
+}
+
+.removed {
+    background-color: #C3C;
+}
+
+.active, .paused, .error, .complete, .removed {
+    color: #FFF;
+}

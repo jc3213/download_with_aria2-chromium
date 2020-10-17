@@ -77,7 +77,7 @@ function showNotification(title, message) {
     var notification = {
         'type': 'basic',
         'title': title,
-        'iconUrl': 'icons/icon64.png',
+        'iconUrl': '/icons/icon64.png',
         'message': message || ''
     };
     chrome.notifications.create(id, notification, () => {
@@ -88,6 +88,7 @@ function showNotification(title, message) {
 }
 
 function downWithAria2(session) {
+console.log(session);
     var options = session.options || {};
     var proxied = localStorage.getItem('proxied') || '';
     if (session.proxy) {

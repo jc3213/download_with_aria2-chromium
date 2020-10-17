@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="css/common.css">
-        <link rel="stylesheet" href="css/popup.css">
-        <script src="js/common.js"></script>
+        <link rel="stylesheet" href="/css/common.css">
+        <link rel="stylesheet" href="/css/popup.css">
+        <script src="/js/common.js"></script>
     </head>
     <body>
         <div id="menuTop">
@@ -21,43 +21,6 @@
             <span id="numStopped">0</span>
         </div>
         <div id="networkStatus" class="error" style="display: none;"></div>
-        <div id="newTaskWindow" style="display: none;">
-            <div title="new_task_referer_desc" i18n_title>
-                <span class="title" i18n>new_task_referer</span>
-                <input id="taskReferer" type="text">
-            </div>
-            <div title="new_task_batch_desc" i18n_title>
-                <span class="title" i18n>new_task_batch</span>
-                <textarea id="taskBatch"></textarea>
-            </div>
-            <div title="new_task_proxy_desc" i18n_title>
-                <span class="title" i18n>new_task_proxy</span>
-                <input id="setProxy" type="checkbox">
-                <input id="taskProxy" type="text" disabled="disabled">
-            </div>
-            <hr>
-            <div id="newTaskMenu" class="menuContainer">
-                <span id="submit_btn" class="button" i18n>popup_submit_button</span>
-            </div>
-        </div>
-        <div id="taskDetails" style="display: none;">
-            <div id="taskName" class="title"></div>
-            <div id="taskOption">
-                <div title="task_option_download_desc" i18n_title>
-                    <span class="title" i18n>task_option_download</span>
-                    <input id="optionDownload" type="text">
-                </div>
-                <div title="task_option_upload_desc" i18n_title>
-                    <span class="title" i18n>task_option_upload</span>
-                    <input id="optionUpload" type="text">
-                </div>
-                <div title="task_option_proxy_desc" i18n_title>
-                    <span class="title" i18n>task_option_proxy</span>
-                    <input id="optionProxy" type="text">
-                </div>
-            </div>
-            <div id="taskFiles"></div>
-        </div>
         <hr>
         <div id="allTaskQueue" class="taskQueue"></div>
         <div id="activeQueue" class="taskQueue" style="display: none;"></div>
@@ -74,7 +37,7 @@
             <span id="uploadSpeed">0 B/s</span>
         </div>
     </body>
-    <script src="js/i18n.js"></script>
-    <script src="js/popup.js"></script>
-    <script src="js/taskmgr.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/popup.js"></script>
+    <script src="/js/taskmgr.js"></script>
 </html>
