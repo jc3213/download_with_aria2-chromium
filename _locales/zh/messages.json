@@ -107,9 +107,6 @@
     "popup_new_button": {
         "message": "新下载"
     },
-    "popup_cancel_button": {
-        "message": "取消"
-    },
     "popup_purge_button": {
         "message": "清理"
     },

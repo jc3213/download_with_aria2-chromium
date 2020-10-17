@@ -105,10 +105,7 @@
         "message": "Stopped"
     },
     "popup_new_button": {
-        "message": "New"
-    },
-    "popup_cancel_button": {
-        "message": "Cancel"
+        "message": "New Task"
     },
     "popup_purge_button": {
         "message": "Purge"
