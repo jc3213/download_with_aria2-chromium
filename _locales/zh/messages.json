@@ -110,9 +110,6 @@
     "popup_purge_button": {
         "message": "清理"
     },
-    "popup_submit_button": {
-        "message": "确认"
-    },
     "popup_options_button": {
         "message": "选项"
     },
@@ -139,6 +136,9 @@
     },
     "new_task_proxy_desc": {
         "message": "为当前下载任务添加\"all-proxy\"选项"
+    },
+    "new_task_submit": {
+        "message": "确认"
     },
     "task_option_download": {
         "message": "最大下载速度"
