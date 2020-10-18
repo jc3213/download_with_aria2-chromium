@@ -34,23 +34,23 @@ input, textarea {
 
 #optionsWindow, #newTaskWindow, #taskMgrWindow {
     position: absolute;
-    width: 100%
+    width: 100%;
+    left: 0px;
 }
 
 #optionsWindow {
     top: 0px;
-    left: 0px;
     height: calc(100% - 40px);
+}
+
+#taskMgrWindow {
+    top: -5px;
+    height: calc(100% - 35px);
 }
 
 #newTaskWindow {
     top: 40px;
-    height: calc(100% - 100px);
-}
-
-#taskMgrWindow {
-    top: 0px;
-    height: calc(100% - 45px);
+    height: calc(100% - 80px);
 }
 
 .taskQueue {
