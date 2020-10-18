@@ -47,9 +47,8 @@ function toggleTaskQueue(event) {
 }
 
 function toggleTaskManager(event) {
-    var taskInfo;
-    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) taskInfo = item; });
-    if (!taskInfo) {
+    var taskInfo = event.target.parentElement.parentElement;
+    if (!taskInfo.classList.contains('taskInfo')) {
         return;
     }
     var status = taskInfo.getAttribute('status');
