@@ -47,27 +47,23 @@ function toggleTaskQueue(event) {
 }
 
 function toggleTaskManager(event) {
-    var taskInfo = event.target.parentElement.parentElement;
-    if (!taskInfo.classList.contains('taskInfo')) {
-        return;
-    }
-    var status = taskInfo.getAttribute('status');
-    var gid = taskInfo.getAttribute('gid');
+    var task;
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) task = {'gid': item.getAttribute('gid'), 'status': item.getAttribute('status')}; })
     if (event.target.id === 'remove_btn') {
-        removeTask(status, gid);
+        removeTask(task.gid, task.status);
     }
     if (event.target.id === 'invest_btn') {
-        initialModules(event, {'name': 'taskMgr', 'win': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
+        initialModules(event, {'name': 'taskMgr', 'win': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(task.gid)});
     }
     if (event.target.id === 'retry_btn') {
-        retryTask(gid);
+        retryTask(task.gid);
     }
     if (event.target.id === 'progress_btn') {
-        toggleTask(status, gid);
+        toggleTask(task.gid, task.status);
     }
 }
 
-function removeTask(status, gid) {
+function removeTask(gid, status) {
     if (['active', 'waiting', 'paused'].includes(status)) {
         var method = 'aria2.forceRemove';
     }
@@ -80,7 +76,7 @@ function removeTask(status, gid) {
     jsonRPCRequest({'method': method, 'gid': gid});
 }
 
-function toggleTask(status, gid) {
+function toggleTask(gid, status) {
     if (['active', 'waiting'].includes(status)) {
         var method = 'aria2.pause';
     }
