@@ -4,24 +4,25 @@ window.addEventListener('message', (event) => {
 });
 
 var modules = [
-    {'id': 'newTask_btn', 'win': 'newTaskWindow', 'name': 'newTask'}, 
-    {'id': 'options_btn', 'win': 'optionsWindow', 'name': 'options'}
+    {'id': 'newTask_btn', 'name': 'newTask', 'win': 'newTaskWindow'}, 
+    {'id': 'options_btn', 'name': 'options', 'win': 'optionsWindow'}
 ];
-modules.forEach(item => initialModules(item));
+modules.forEach(item => document.getElementById(item.id).addEventListener('click', (event) => initialModules(event, item)));
 
-function initialModules(module) {
-    document.getElementById(module.id).addEventListener('click', (event) => {
-        if (event.target.classList.contains('checked')) {
-            document.getElementById(module.win).remove();
+function initialModules(event, module) {
+    if (event.target.classList.contains('checked')) {
+        document.getElementById(module.win).remove();
+    }
+    else {
+        var iframe = document.createElement('iframe');
+        iframe.id = module.win;
+        iframe.src = '/modules/' + module.name + '/index.html';
+        if (module.load) {
+            iframe.addEventListener('load', module.load);
         }
-        else {
-            var iframe = document.createElement('iframe');
-            iframe.id = module.win;
-            iframe.src = '/modules/' + module.name + '/index.html';
-            document.querySelector('body').appendChild(iframe);
-        }
-        event.target.classList.toggle('checked');
-    });
+        document.querySelector('body').appendChild(iframe);
+    }
+    event.target.classList.toggle('checked');
 }
 
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
@@ -47,6 +48,63 @@ function toggleTaskQueue(event) {
 document.getElementById('purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
 });
+
+document.querySelector('div.taskQueue').addEventListener('click', (event) => {
+    var taskInfo;
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) taskInfo = item; });
+    var status = taskInfo.getAttribute('status');
+    var gid = taskInfo.getAttribute('gid');
+    if (event.target.id === 'remove_btn') {
+        removeTask(status, gid);
+    }
+    else if (event.target.id === 'progress_btn') {
+        toggleTask(status, gid);
+    }
+    else if (event.target.id === 'invest_btn') {
+        initialModules(event, {'name': 'taskMgr', 'win': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
+    }
+    else if (event.target.id === 'retry_btn') {
+        retryTask(gid);
+    }
+});
+
+function removeTask(status, gid) {
+    if (['active', 'waiting', 'paused'].includes(status)) {
+        var method = 'aria2.forceRemove';
+    }
+    else if (['complete', 'error', 'removed'].includes(status)) {
+        method = 'aria2.removeDownloadResult';
+    }
+    else {
+        return;
+    }
+    jsonRPCRequest({'method': method, 'gid': gid});
+}
+
+function toggleTask(status, gid) {
+    if (['active', 'waiting'].includes(status)) {
+        var method = 'aria2.pause';
+    }
+    else if (status === 'paused') {
+        method = 'aria2.unpause';
+    }
+    else {
+        return;
+    }
+    jsonRPCRequest({'method': method, 'gid': gid});
+}
+
+function retryTask(gid) {
+    jsonRPCRequest([
+            {'method': 'aria2.getFiles', 'gid': gid},
+            {'method': 'aria2.getOption', 'gid': gid},
+        ], (files, options) => {
+            jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
+                downWithAria2({'url': files[0].uris[0].uri, 'options': options});
+            });
+        }
+    );
+}
 
 function printMainFrame() {
     jsonRPCRequest(
