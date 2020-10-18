@@ -1,22 +1,7 @@
-var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
-var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue', 'allTaskQueue'];
-taskTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskQueue));
-
-function toggleTaskQueue(event) {
-    var active = event.target.id;
-    var index = taskTabs.indexOf(active);
-    var activeTab = taskQueues[index];
-    if (event.target.classList.contains('checked')) {
-        document.getElementById('allTaskQueue').style.display = 'block';
-        document.getElementById(activeTab).style.display = 'none';
-    }
-    else {
-        document.getElementById(activeTab).style.display = 'block';
-        taskTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
-        taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
-    }
-    event.target.classList.toggle('checked');
-}
+window.addEventListener('message', (event) => {
+    document.getElementById(event.data).remove();
+    modules.forEach(item => { if (item.win === event.data) document.getElementById(item.id).classList.remove('checked'); });
+});
 
 var modules = [
     {'id': 'newTask_btn', 'win': 'newTaskWindow', 'name': 'newTask'}, 
@@ -39,13 +24,28 @@ function initialModules(module) {
     });
 }
 
+var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
+var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue', 'allTaskQueue'];
+taskTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskQueue));
+
+function toggleTaskQueue(event) {
+    var active = event.target.id;
+    var index = taskTabs.indexOf(active);
+    var activeTab = taskQueues[index];
+    if (event.target.classList.contains('checked')) {
+        document.getElementById('allTaskQueue').style.display = 'block';
+        document.getElementById(activeTab).style.display = 'none';
+    }
+    else {
+        document.getElementById(activeTab).style.display = 'block';
+        taskTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
+        taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
+    }
+    event.target.classList.toggle('checked');
+}
+
 document.getElementById('purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
-});
-
-window.addEventListener('message', (event) => {
-    document.getElementById(event.data).remove();
-    modules.forEach(item => { if (item.win === event.data) document.getElementById(item.id).classList.remove('checked'); });
 });
 
 function printMainFrame() {
