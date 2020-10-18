@@ -10,24 +10,24 @@
 
 <b>Easy-to-access options</b>
 <details>
-  Ability to check for <b>JSONRPC URI</b> and <b>Secret Token</b>
-  <br>Ability to modify <b>User Agent</b> for downloads
-  <br>Ability to set <b>all-proxy</b> option for downloads automatically
-  <br>Capture filters now have better logic, and better performance
-  <br>Priority of filters: <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
+    Ability to check for <b>JSONRPC URI</b> and <b>Secret Token</b>
+    <br>Ability to modify <b>User Agent</b> for downloads
+    <br>Ability to set <b>all-proxy</b> option for downloads automatically
+    <br>Capture filters now have better logic, and better performance
+    <br>Priority of filters: <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
 </details>
 
 <b>Built-in task managers</b>
 <details>
-  Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
-  <br>Ability to filter task queues based on their status
-  <br>Show global <b>Download</b>, <b>Upload</b> speed
-  <br>Better <b>progress bar</b>, click to pause or unpause the task
-  <br><b>Options</b> button to open <b>Options</b> instantly
-  <br>Show error message if an error happens while contacting with <b>Aria2 jsonrpc</b>
-  <br>Click <b>❌</b> to stop current task or remove download result
-  <br>Click <b>🔍</b> to to open <b>taskDetails</b> window for more detailed infomations
-  <br>Click <b>🌌</b> to restart <b>removed</b> or <b>error</b> non-bittorrent downloads
+    Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
+    <br>Ability to filter task queues based on their status
+    <br>Show global <b>Download</b>, <b>Upload</b> speed
+    <br>Better <b>progress bar</b>, click to pause or unpause the task
+    <br><b>Options</b> button to open <b>Options</b> instantly
+    <br>Show error message if an error happens while contacting with <b>Aria2 jsonrpc</b>
+    <br>Click <b>❌</b> to stop current task or remove download result
+    <br>Click <b>🔍</b> to to open <b>taskDetails</b> window for more detailed infomations
+    <br>Click <b>🌌</b> to restart <b>removed</b> or <b>error</b> non-bittorrent downloads
 </details>
 
 <b>Better performance and accessbility</b>
@@ -118,7 +118,7 @@
 # Disadvantages
 
 - Neither `Google Web Store`, nor `Microsoft Store` supports
-  - My country has blocked all `Google` services
-  - `Google` has a $5 fee, and `Microsoft` has a $18 fee
+    - My country has blocked all `Google` services
+    - `Google` has a $5 fee, and `Microsoft` has a $18 fee
 - Embedded `popup.html` may not be powerful enough for advanced users
-  - Alternative [`Aria2 WebUI`](https://ziahamza.github.io/webui-aria2/) or [`Yet Another Aria2 Web Frontend`](http://binux.github.io/yaaw/demo/)
+    - Alternative [`Aria2 WebUI`](https://ziahamza.github.io/webui-aria2/) or [`Yet Another Aria2 Web Frontend`](http://binux.github.io/yaaw/demo/)
