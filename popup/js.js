@@ -28,6 +28,7 @@ function initialModules(event, module) {
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
 var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue', 'allTaskQueue'];
 taskTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskQueue));
+taskQueues.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskManager));
 
 function toggleTaskQueue(event) {
     var active = event.target.id;
@@ -45,28 +46,27 @@ function toggleTaskQueue(event) {
     event.target.classList.toggle('checked');
 }
 
-document.getElementById('purdge_btn').addEventListener('click', (event) => {
-    jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
-});
-
-document.querySelector('div.taskQueue').addEventListener('click', (event) => {
+function toggleTaskManager(event) {
     var taskInfo;
     document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) taskInfo = item; });
+    if (!taskInfo) {
+        return;
+    }
     var status = taskInfo.getAttribute('status');
     var gid = taskInfo.getAttribute('gid');
     if (event.target.id === 'remove_btn') {
         removeTask(status, gid);
     }
-    else if (event.target.id === 'progress_btn') {
-        toggleTask(status, gid);
-    }
-    else if (event.target.id === 'invest_btn') {
+    if (event.target.id === 'invest_btn') {
         initialModules(event, {'name': 'taskMgr', 'win': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
     }
-    else if (event.target.id === 'retry_btn') {
+    if (event.target.id === 'retry_btn') {
         retryTask(gid);
     }
-});
+    if (event.target.id === 'progress_btn') {
+        toggleTask(status, gid);
+    }
+}
 
 function removeTask(status, gid) {
     if (['active', 'waiting', 'paused'].includes(status)) {
@@ -105,6 +105,10 @@ function retryTask(gid) {
         }
     );
 }
+
+document.getElementById('purdge_btn').addEventListener('click', (event) => {
+    jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
+});
 
 function printMainFrame() {
     jsonRPCRequest(
