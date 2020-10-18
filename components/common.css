@@ -1,0 +1,57 @@
+body {
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: 15px;
+    user-select: none;
+}
+
+iframe {
+    background-color: #FFF;
+    border: none;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.tab, .button {
+    border: 1px outset #CCC;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.button {
+    font-weight: bold;
+}
+
+.button:hover, .tab:hover {
+    filter: opacity(60%);
+}
+
+.button:active, .tab:active {
+    filter: opacity(30%);
+}
+
+.checked {
+    padding: 4px;
+    border: 2px inset #C33;
+}
+
+input, textarea, select {
+    font-size: 15px;
+}
+
+input, textarea {
+    width: calc(100% - 15px);
+    padding: 5px;
+    resize: none;
+}
+
+textarea {
+    word-break: break-word;
+}
+
+option:checked {
+    font-weight: bold;
+    color: #F00;
+}

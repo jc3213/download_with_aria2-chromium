@@ -1,0 +1,131 @@
+body {
+    width: 440px;
+}
+
+input, textarea {
+    width: calc(100% - 15px);
+}
+
+#queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
+    margin-right: 10px;
+}
+
+#networkBandwidth span:nth-child(2n+1) {
+    padding: 5px;
+}
+
+#networkStatus {
+    padding: 3px;
+}
+
+#menuTop, #menuBottom {
+    position: absolute;
+}
+
+#menuTop, #menuBottom {
+    width: calc(100% - 16px);
+    height: 0px;
+    text-align: right;
+}
+
+#optionsWindow, #newTaskWindow, #taskMgrWindow {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+}
+
+#optionsWindow {
+    top: 0px;
+    height: calc(100% - 40px);
+}
+
+#taskMgrWindow {
+    top: -5px;
+    height: calc(100% - 35px);
+}
+
+#newTaskWindow {
+    top: 40px;
+    height: calc(100% - 80px);
+}
+
+.taskQueue {
+    height: 410px;
+    overflow-y: auto;
+}
+
+.taskInfo {
+    border: 1px outset #CCC;
+    padding: 5px;
+}
+
+.taskInfo:nth-child(n+2) {
+    margin-top: 5px;
+}
+
+.taskBody {
+    width: calc(100% - 20px);
+}
+
+.taskBody .title {
+    word-break: break-word;
+}
+
+.taskBody, .taskMenu, .taskBody span, .taskMenu span {
+    display: inline-block;
+}
+
+.taskBody span {
+    width: calc(100% / 3);
+}
+
+.taskMenu {
+    vertical-align: top;
+    width: 20px;
+}
+
+.taskMenu .button {
+    font-size: 12px;
+    padding: 1px;
+}
+
+.fancybar span {
+    text-align: center;
+    display: block;
+}
+
+.fancybar:active {
+    filter: opacity(30%);
+}
+
+.activeBar, .pausedBar, .download {
+    background-color: #3CC;
+}
+
+.removedBar, .errorBar, .stopped {
+    background-color: #CCC;
+}
+
+.active {
+    background-color: #33C;
+}
+
+.waiting, .paused {
+    background-color: #CC3;
+}
+
+.error {
+    background-color: #C33;
+}
+
+.complete {
+    background-color: #3C3;
+}
+
+.removed, .upload {
+    background-color: #C3C;
+}
+
+.stopped, .active, .waiting, .paused, .error, .complete, .removed, .download, .upload {
+    color: #FFF;
+}
