@@ -28,11 +28,8 @@ function toggleTabs(event) {
 
 function initiateOption(menuitem) {
     var setting = document.getElementById(menuitem.id);
-    if (menuitem.load) {
-        setting.addEventListener('load', menuitem.load)
-    }
     if (menuitem.change) {
-        setting.addEventListener('change', menuitem.change);   
+        setting.addEventListener('change', menuitem.change);
     }
     if (menuitem.checkbox) {
         setting.setAttribute('checked', JSON.parse(localStorage.getItem(menuitem.id)) || menuitem.value);
@@ -41,6 +38,9 @@ function initiateOption(menuitem) {
     else {
         setting.value = localStorage.getItem(menuitem.id) || menuitem.value
         setting.addEventListener('change', event => localStorage.setItem(menuitem.id, event.target.value));
+    }
+    if (menuitem.load) {
+        menuitem.load();
     }
 }
 
