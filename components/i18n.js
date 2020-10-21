@@ -1,14 +1,11 @@
 document.querySelectorAll('[i18n]').forEach(item => {
     var message = item.getAttribute('i18n');
-    var i18n = chrome.i18n.getMessage(message);
-    var textNode = document.createTextNode(i18n);
-    item.appendChild(textNode);
+    item.innerHTML = chrome.i18n.getMessage(message);
 });
 
 document.querySelectorAll('[i18n_title]').forEach(item => {
     var message = item.getAttribute('i18n_title');
-    var i18n = chrome.i18n.getMessage(message);
-    item.title = i18n;   
+    item.title = chrome.i18n.getMessage(message);
 });
 
 [
