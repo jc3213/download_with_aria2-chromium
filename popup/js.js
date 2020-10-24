@@ -10,7 +10,6 @@ var modules = [
 modules.forEach(item => document.getElementById(item.id).addEventListener('click', (event) => initialModules(event.target, item)));
 
 function initialModules(element, module) {
-console.log(element, module);
     if (element.classList.contains('checked')) {
         document.getElementById(module.win).remove();
     }
