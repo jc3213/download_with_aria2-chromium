@@ -7,10 +7,11 @@ var modules = [
     {'id': 'newTask_btn', 'name': 'newTask', 'win': 'newTaskWindow'}, 
     {'id': 'options_btn', 'name': 'options', 'win': 'optionsWindow'}
 ];
-modules.forEach(item => document.getElementById(item.id).addEventListener('click', (event) => initialModules(event, item)));
+modules.forEach(item => document.getElementById(item.id).addEventListener('click', (event) => initialModules(event.target, item)));
 
-function initialModules(event, module) {
-    if (event.target.classList.contains('checked')) {
+function initialModules(element, module) {
+console.log(element, module);
+    if (element.classList.contains('checked')) {
         document.getElementById(module.win).remove();
     }
     else {
@@ -22,19 +23,16 @@ function initialModules(event, module) {
         }
         document.querySelector('body').appendChild(iframe);
     }
-    event.target.classList.toggle('checked');
+    element.classList.toggle('checked');
 }
 
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
 var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue', 'allTaskQueue'];
-taskTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskQueue));
-taskQueues.forEach(item => document.getElementById(item).addEventListener('click', toggleTaskManager));
+taskTabs.forEach((item, index) => document.getElementById(item).addEventListener('click', (event) => toggleTaskQueue(event.target, item, taskQueues[index])));
+taskQueues.forEach(item => document.getElementById(item).addEventListener('click', (event) => toggleTaskManager(event.target)));
 
-function toggleTaskQueue(event) {
-    var active = event.target.id;
-    var index = taskTabs.indexOf(active);
-    var activeTab = taskQueues[index];
-    if (event.target.classList.contains('checked')) {
+function toggleTaskQueue(element, active, activeTab) {
+    if (element.classList.contains('checked')) {
         document.getElementById('allTaskQueue').style.display = 'block';
         document.getElementById(activeTab).style.display = 'none';
     }
@@ -43,22 +41,21 @@ function toggleTaskQueue(event) {
         taskTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
         taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
     }
-    event.target.classList.toggle('checked');
+    element.classList.toggle('checked');
 }
 
-function toggleTaskManager(event) {
-    var task;
-    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) task = {'gid': item.getAttribute('gid'), 'status': item.getAttribute('status')}; })
-    if (event.target.id === 'remove_btn') {
+function toggleTaskManager(element, task) {
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(element)) task = {'gid': item.getAttribute('gid'), 'status': item.getAttribute('status')}; })
+    if (element.id === 'remove_btn') {
         removeTask(task.gid, task.status);
     }
-    if (event.target.id === 'invest_btn') {
-        initialModules(event, {'name': 'taskMgr', 'win': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(task.gid)});
+    if (element.id === 'invest_btn') {
+        initialModules(element, {'name': 'taskMgr', 'win': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(task.gid)});
     }
-    if (event.target.id === 'retry_btn') {
+    if (element.id === 'retry_btn') {
         retryTask(task.gid);
     }
-    if (event.target.id === 'progress_btn') {
+    if (element.id === 'progress_btn') {
         toggleTask(task.gid, task.status);
     }
 }

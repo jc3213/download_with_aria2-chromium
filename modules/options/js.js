@@ -1,11 +1,8 @@
 var menuTabs = ['tabBasic', 'tabAdvanced', 'tabDownload'];
 var menuQueues = ['menuBasic', 'menuAdvanced', 'menuDownload'];
-menuTabs.forEach(item => document.getElementById(item).addEventListener('click', toggleTabs));
+menuTabs.forEach((item, index) => document.getElementById(item).addEventListener('click', (event) => toggleTabs(item, menuQueues[index])));
 
-function toggleTabs(event) {
-    var active = event.target.id;
-    var index = menuTabs.indexOf(active);
-    var activeTab = menuQueues[index];
+function toggleTabs(active, activeTab) {
     document.getElementById(active).classList.add('checked');
     document.getElementById(activeTab).style.display = 'block';
     menuTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
@@ -66,7 +63,7 @@ document.getElementById('aria2Show').addEventListener('click', (event) => {
     event.target.classList.toggle('checked');
 });
 
-function captureFilters() {
+function captureFilters() {   
     var capture = (document.getElementById('capture').value | 0);
     if (capture === 1) {
         document.getElementById('captureFilters').style.display = 'block';

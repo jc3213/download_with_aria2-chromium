@@ -8,7 +8,7 @@ function printTaskDetails(gid) {
     jsonRPCRequest(
         {'method': 'aria2.tellStatus', 'gid': gid},
         (result) => {
-            var taskUrl = !result.bittorrent ? result.files[0].uris[0].uri : '';
+            var taskUrl = result.bittorrent ?  '' : result.files[0].uris[0].uri;
             var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
             document.getElementById('taskName').innerHTML = '<div class="button ' + result.status + '">' + taskName + '</div>';
             var bittorrent = result.bittorrent;
@@ -36,13 +36,11 @@ function printTaskDetails(gid) {
 
 var taskOptions = ['optionDownload', 'optionUpload', 'optionProxy'];
 var optionsCall = ['max-download-limit', 'max-upload-limit', 'all-proxy'];
-taskOptions.forEach(item => document.getElementById(item).addEventListener('change', changeTaskOption));
+taskOptions.forEach((item, index) => document.getElementById(item).addEventListener('change', (event) => changeTaskOption(event.target, optionsCall[index], {})));
 
-function changeTaskOption(event) {
-    var options = {};
-    var gid = event.target.getAttribute('gid');
-    var index = taskOptions.indexOf(event.target.id);
-    options[optionsCall[index]] = event.target.value;
+function changeTaskOption(element, call, options) {
+    var gid = element.getAttribute('gid');
+    options[call] = element.value;
     jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
 }
 
