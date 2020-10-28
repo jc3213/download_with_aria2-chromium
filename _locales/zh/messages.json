@@ -155,6 +155,9 @@
     "task_option_proxy": {
         "message": "代理服务器"
     },
+    "task_option_proxy_load": {
+        "message": "加载"
+    },
     "task_option_proxy_desc": {
         "message": "修改用于\"all-proxy\"选项的代理服务器, 仅限\"http\"或\"https\"协议"
     },

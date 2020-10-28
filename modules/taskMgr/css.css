@@ -25,8 +25,8 @@ div:nth-child(n+2) {
     width: calc(100% - 15px);
 }
 
-#taskOption > div:nth-child(n+3) {
-    margin-top: 5px;
+#taskOption > div:nth-child(3) input {
+    width: calc(100% - 70px);
 }
 
 #taskFiles {

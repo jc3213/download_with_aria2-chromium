@@ -36,10 +36,11 @@ function printTaskDetails(gid) {
 
 var taskOptions = ['optionDownload', 'optionUpload', 'optionProxy'];
 var optionsCall = ['max-download-limit', 'max-upload-limit', 'all-proxy'];
-taskOptions.forEach((item, index) => document.getElementById(item).addEventListener('change', (event) => changeTaskOption(event.target, optionsCall[index], {})));
+taskOptions.forEach((item, index) => document.getElementById(item).addEventListener('change', (event) => changeTaskOption(event.target, optionsCall[index])));
 
 function changeTaskOption(element, call, options) {
     var gid = element.getAttribute('gid');
+    options = options || {};
     options[call] = element.value;
     jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
 }
@@ -52,6 +53,12 @@ function printTaskOption(gid) {
         }
     );
 }
+
+document.getElementById('loadProxy').addEventListener('click', (event) => {
+    var element = document.getElementById('optionProxy');
+    element.value = localStorage.getItem('allproxy') || '';
+    changeTaskOption(element, 'all-proxy');
+});
 
 document.getElementById('taskName').addEventListener('click', (event) => {
     window.parent.window.postMessage('taskMgrWindow');

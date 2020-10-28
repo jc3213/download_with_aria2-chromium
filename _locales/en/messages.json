@@ -155,6 +155,9 @@
     "task_option_proxy": {
         "message": "Proxy Server"
     },
+    "task_option_proxy_load": {
+        "message": "Load"
+    },
     "task_option_proxy_desc": {
         "message": "Change proxy server for \"all-proxy\" option, only \"http\" or \"https\" protocal"
     },
