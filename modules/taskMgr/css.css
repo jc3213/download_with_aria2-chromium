@@ -22,7 +22,7 @@ div:nth-child(n+2) {
 }
 
 #taskOption > div:nth-child(-n+2) input {
-    width: calc(100% - 15px);
+    width: calc(100% - 45px);
 }
 
 #taskOption > div:nth-child(3) input {
