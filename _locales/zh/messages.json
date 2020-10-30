@@ -29,17 +29,11 @@
     "option_jsonrpc": {
         "message": "JSONRPC 链接"
     },
-    "option_check": {
-        "message": "检查"
-    },
     "option_jsonrpc_desc": {
         "message": "设置 Aria2 JSONRPC 链接"
     },
     "option_token": {
         "message": "密钥"
-    },
-    "option_show": {
-        "message": "显示"
     },
     "option_token_desc": {
         "message": "设置 Aria2 \"token\" 密钥"

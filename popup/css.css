@@ -87,6 +87,8 @@ input, textarea {
 .taskMenu .button {
     font-size: 12px;
     padding: 1px;
+    width: 16px;
+    height: 16px;
 }
 
 .fancybar span {

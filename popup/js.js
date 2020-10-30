@@ -20,7 +20,7 @@ function initialModules(element, module) {
         if (module.load) {
             iframe.addEventListener('load', module.load);
         }
-        document.querySelector('body').appendChild(iframe);
+        document.body.appendChild(iframe);
     }
     element.classList.toggle('checked');
 }
@@ -153,7 +153,7 @@ function printMainFrame() {
         var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
         var connections = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
         var uploadSpeed = result.bittorrent ? '⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s' : '';
-        var retryButton = !result.bittorrent && ['error', 'removed'].includes(result.status) ? '<span id="retry_btn" class="button">🌌</span>' : '';
+        var retryButton = !result.bittorrent && ['error', 'removed'].includes(result.status) ? '<span id="retry_btn" class="button">♻️</span>' : '';
         return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
