@@ -26,14 +26,13 @@ function initialModules(element, module) {
 }
 
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
-var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue', 'allTaskQueue'];
+var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue'];
 taskTabs.forEach((item, index) => document.getElementById(item).addEventListener('click', (event) => toggleTaskQueue(event.target, item, taskQueues[index])));
 taskQueues.forEach(item => document.getElementById(item).addEventListener('click', (event) => toggleTaskManager(event.target)));
 
 function toggleTaskQueue(element, active, activeTab) {
     if (element.classList.contains('checked')) {
-        document.getElementById('allTaskQueue').style.display = 'block';
-        document.getElementById(activeTab).style.display = 'none';
+        taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'block'; });
     }
     else {
         document.getElementById(activeTab).style.display = 'block';
@@ -136,7 +135,6 @@ function printMainFrame() {
             var active = activeQueue ? activeQueue.map(item => printTaskInfo(item)) : [];
             var waiting = waitingQueue ? waitingQueue.map(item => printTaskInfo(item)) : [];
             var stopped = stoppedQueue ? stoppedQueue.map(item => printTaskInfo(item)) : [];
-            document.getElementById('allTaskQueue').innerHTML = [...active, ...waiting, ...stopped].join('');
             document.getElementById('activeQueue').innerHTML = active.join('');
             document.getElementById('waitingQueue').innerHTML = waiting.join('');
             document.getElementById('stoppedQueue').innerHTML = stopped.join('');
