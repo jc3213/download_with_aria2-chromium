@@ -1,6 +1,6 @@
 window.addEventListener('message', (event) => {
     document.getElementById(event.data).remove();
-    modules.forEach(item => { if (item.id === event.data) document.getElementById(item.id).classList.remove('checked'); });
+    modules.forEach(item => { if (item.id === event.data) document.getElementById(item.button).classList.remove('checked'); });
 });
 
 var modules = [
