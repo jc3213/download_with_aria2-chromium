@@ -164,4 +164,4 @@ function retryTask(gid) {
 }
 
 printMainFrame();
-//var keepContentAlive = setInterval(printMainFrame, 1000);
+var keepContentAlive = setInterval(printMainFrame, 1000);
