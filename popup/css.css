@@ -67,10 +67,6 @@ input, textarea {
     width: calc(100% - 20px);
 }
 
-.taskBody .title {
-    word-break: break-word;
-}
-
 .taskBody, .taskMenu, .taskBody span, .taskMenu span {
     display: inline-block;
 }
@@ -99,7 +95,7 @@ input, textarea {
     filter: opacity(30%);
 }
 
-.activeBar, .waitingBar, .pausedBar, {
+.activeBar, .waitingBar, .pausedBar {
     background-color: #3CC;
 }
 

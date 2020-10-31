@@ -10,7 +10,8 @@ function printTaskDetails(gid) {
         (result) => {
             var taskUrl = result.bittorrent ?  '' : result.files[0].uris[0].uri;
             var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-            document.getElementById('taskName').innerHTML = '<div class="button ' + result.status + '">' + taskName + '</div>';
+            document.getElementById('taskName').innerHTML = taskName;
+            document.getElementById('taskName').className = 'button title ' + result.status;
             var bittorrent = result.bittorrent;
             var complete = result.status === 'complete';
             document.getElementById('optionDownload').setAttribute('gid', result.gid);
@@ -19,18 +20,19 @@ function printTaskDetails(gid) {
             document.getElementById('optionUpload').disabled = !bittorrent || complete;
             document.getElementById('optionProxy').setAttribute('gid', result.gid);
             document.getElementById('optionProxy').disabled = bittorrent || complete;
-            var taskFiles = result.files.map(item => item = printFileInfo(item));
+            var taskFiles = result.files.map(item => item = printFileInfo(item, result.bittorrent));
             document.getElementById('taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
         }
     );
 
-    function printFileInfo(info) {
+    function printFileInfo(info, bittorrent) {
         var fileUrl = info.uris.length > 0 ? info.uris[0].uri : '';
         var filename = (info.path || fileUrl).split('/').pop();
         var filePath = info.path.replace(/\//g, '\\');
         var fileSize = bytesToFileSize(info.length);
         var fileRatio = ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%';
-        return '<tr uri="' + fileUrl + '"><td>' + info.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
+        var clickEvent = bittorrent ? '' : 'copyFileUrl(\'' + fileUrl + '\')';
+        return '<tr onclick="' + clickEvent + '"><td>' + info.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
     }
 }
 
@@ -65,14 +67,9 @@ document.getElementById('taskName').addEventListener('click', (event) => {
     clearInterval(taskManager);
 });
 
-document.getElementById('taskFiles').addEventListener('click', (event) => {
-    var fileInfo;
-    document.querySelectorAll('tr').forEach((item, index)=> { if (item.contains(event.target)) fileInfo = item; });
-    var uri = fileInfo.getAttribute('uri');
-    if (uri) {
-        navigator.clipboard.writeText(uri);
-        showNotification(window['warn_url_copied'], uri);
-    }
-});
+function copyFileUrl(url) {
+    navigator.clipboard.writeText(url);
+    showNotification(window['warn_url_copied'], url);
+}
 
 var taskManager;

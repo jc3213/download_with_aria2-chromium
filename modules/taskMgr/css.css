@@ -6,10 +6,9 @@ div:nth-child(n+2) {
     margin-top: 10px;
 }
 
-#taskName div {
+#taskName {
     height: 45px;
     overflow-y: hidden;
-    word-break: break-word;
 }
 
 #taskOption > div:nth-child(-n+2) {
