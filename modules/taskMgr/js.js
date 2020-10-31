@@ -8,12 +8,12 @@ function printTaskDetails(gid) {
     jsonRPCRequest(
         {'method': 'aria2.tellStatus', 'gid': gid},
         (result) => {
-            var taskUrl = result.bittorrent ?  '' : result.files[0].uris[0].uri;
-            var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-            document.getElementById('taskName').innerHTML = taskName;
-            document.getElementById('taskName').className = 'button title ' + result.status;
             var bittorrent = result.bittorrent;
             var complete = result.status === 'complete';
+            var taskUrl = bittorrent ?  '' : result.files[0].uris[0].uri;
+            var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
+            document.getElementById('taskName').innerHTML = taskName;
+            document.getElementById('taskName').className = 'button title ' + result.status;
             document.getElementById('optionDownload').setAttribute('gid', result.gid);
             document.getElementById('optionDownload').disabled = complete;
             document.getElementById('optionUpload').setAttribute('gid', result.gid);

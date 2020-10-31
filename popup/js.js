@@ -91,22 +91,23 @@ function printMainFrame() {
     }
 
     function printTaskInfo(result) {
+        var bittorrent = result.bittorrent;
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
         var totalLength = bytesToFileSize(result.totalLength);
-        var connections = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;        
-        var downloadSpeed = bytesToFileSize(result.downloadSpeed);
-        var upload_show = result.bittorent ? 'block' : 'none';
+        var connections = bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;        
+        var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
+        var upload_show = bittorrent ? 'inline-block' : 'none';
         var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-        var taskUrl = !result.bittorrent ? result.files[0].uris[0].uri : '';
-        var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-        var retry_show = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'block' : 'none';
+        var taskUrl = bittorrent ?  '' : result.files[0].uris[0].uri;
+        var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
+        var retry_show = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
         return  '<div class="taskInfo">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
         +               '<span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>'
-        +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span><span style="display: ' + upload_show + '">' + uploadSpeed + '</span>'
+        +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + upload_show + '">⏫ ' + uploadSpeed + '</span>'
         +           '</div>'
         +           '<div class="taskMenu">'
         +               '<span class="button" onclick="removeTask(\'' + result.gid + '\',\'' + result.status + '\')">❌</span>'
@@ -163,4 +164,4 @@ function retryTask(gid) {
 }
 
 printMainFrame();
-var keepContentAlive = setInterval(printMainFrame, 1000);
+//var keepContentAlive = setInterval(printMainFrame, 1000);
