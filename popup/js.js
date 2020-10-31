@@ -1,34 +1,37 @@
 window.addEventListener('message', (event) => {
     document.getElementById(event.data).remove();
-    modules.forEach(item => { if (item.win === event.data) document.getElementById(item.id).classList.remove('checked'); });
+    modules.forEach(item => { if (item.id === event.data) document.getElementById(item.id).classList.remove('checked'); });
 });
 
 var modules = [
-    {'id': 'newTask_btn', 'name': 'newTask', 'win': 'newTaskWindow'}, 
-    {'id': 'options_btn', 'name': 'options', 'win': 'optionsWindow'}
+    {'button': 'newTask_btn', 'name': 'newTask', 'id': 'newTaskWindow'}, 
+    {'button': 'options_btn', 'name': 'options', 'id': 'optionsWindow'}
 ];
-modules.forEach(item => document.getElementById(item.id).addEventListener('click', (event) => initialModules(event.target, item)));
+modules.forEach(item => document.getElementById(item.button).addEventListener('click', (event) => initialModules(event.target, item)));
 
 function initialModules(element, module) {
     if (element.classList.contains('checked')) {
-        document.getElementById(module.win).remove();
+        document.getElementById(module.id).remove();
     }
     else {
-        var iframe = document.createElement('iframe');
-        iframe.id = module.win;
-        iframe.src = '/modules/' + module.name + '/index.html';
-        if (module.load) {
-            iframe.addEventListener('load', module.load);
-        }
-        document.body.appendChild(iframe);
+        openModuleWindow(module);
     }
     element.classList.toggle('checked');
+}
+
+function openModuleWindow(module) {
+    var iframe = document.createElement('iframe');
+    iframe.id = module.id;
+    iframe.src = '/modules/' + module.name + '/index.html';
+    if (module.load) {
+        iframe.addEventListener('load', module.load);
+    }
+    document.body.appendChild(iframe);
 }
 
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
 var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue'];
 taskTabs.forEach((item, index) => document.getElementById(item).addEventListener('click', (event) => toggleTaskQueue(event.target, item, taskQueues[index])));
-taskQueues.forEach(item => document.getElementById(item).addEventListener('click', (event) => toggleTaskManager(event.target)));
 
 function toggleTaskQueue(element, active, activeTab) {
     if (element.classList.contains('checked')) {
@@ -40,60 +43,6 @@ function toggleTaskQueue(element, active, activeTab) {
         taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
     }
     element.classList.toggle('checked');
-}
-
-function toggleTaskManager(element, task) {
-    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(element)) task = {'gid': item.getAttribute('gid'), 'status': item.getAttribute('status')}; })
-    if (element.id === 'remove_btn') {
-        removeTask(task.gid, task.status);
-    }
-    if (element.id === 'invest_btn') {
-        initialModules(element, {'name': 'taskMgr', 'win': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(task.gid)});
-    }
-    if (element.id === 'retry_btn') {
-        retryTask(task.gid);
-    }
-    if (element.id === 'progress_btn') {
-        toggleTask(task.gid, task.status);
-    }
-}
-
-function removeTask(gid, status) {
-    if (['active', 'waiting', 'paused'].includes(status)) {
-        var method = 'aria2.forceRemove';
-    }
-    else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'aria2.removeDownloadResult';
-    }
-    else {
-        return;
-    }
-    jsonRPCRequest({'method': method, 'gid': gid});
-}
-
-function toggleTask(gid, status) {
-    if (['active', 'waiting'].includes(status)) {
-        var method = 'aria2.pause';
-    }
-    else if (status === 'paused') {
-        method = 'aria2.unpause';
-    }
-    else {
-        return;
-    }
-    jsonRPCRequest({'method': method, 'gid': gid});
-}
-
-function retryTask(gid) {
-    jsonRPCRequest([
-            {'method': 'aria2.getFiles', 'gid': gid},
-            {'method': 'aria2.getOption', 'gid': gid},
-        ], (files, options) => {
-            jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
-                downWithAria2({'url': files[0].uris[0].uri, 'options': options});
-            });
-        }
-    );
 }
 
 document.getElementById('purdge_btn').addEventListener('click', (event) => {
@@ -142,26 +91,75 @@ function printMainFrame() {
     }
 
     function printTaskInfo(result) {
-        var downloadSpeed = bytesToFileSize(result.downloadSpeed);
-        var totalLength = bytesToFileSize(result.totalLength);
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
+        var totalLength = bytesToFileSize(result.totalLength);
+        var connections = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;        
+        var downloadSpeed = bytesToFileSize(result.downloadSpeed);
+        var upload_show = result.bittorent ? 'block' : 'none';
+        var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
         var taskUrl = !result.bittorrent ? result.files[0].uris[0].uri : '';
         var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-        var connections = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
-        var uploadSpeed = result.bittorrent ? '⏫ ' + bytesToFileSize(result.uploadSpeed) + '/s' : '';
-        var retryButton = !result.bittorrent && ['error', 'removed'].includes(result.status) ? '<span id="retry_btn" class="button">♻️</span>' : '';
-        return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">'
+        var retry_show = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'block' : 'none';
+        return  '<div class="taskInfo">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
-        +               '<div><span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span></div>'
-        +               '<div><span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span><span>' + uploadSpeed + '</span></div>'
+        +               '<span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>'
+        +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '/s</span><span style="display: ' + upload_show + '">' + uploadSpeed + '</span>'
         +           '</div>'
-        +           '<div class="taskMenu"><span id="remove_btn" class="button">❌</span><span id="invest_btn" class="button">🔍</span>' + retryButton + '</div>'
-        +           '<div id="progress_btn" class="fancybar ' + result.status + 'Bar"><span id="progress_btn" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</span></div>'
-        +       '</div>'
+        +           '<div class="taskMenu">'
+        +               '<span class="button" onclick="removeTask(\'' + result.gid + '\',\'' + result.status + '\')">❌</span>'
+        +               '<span class="button" onclick="investTask(\'' + result.gid + '\')">🔍</span>'
+        +               '<span class="button" onclick="retryTask(\''+ result.gid + '\')" style="display: ' + retry_show + '">♻️</span>'
+        +           '</div>'
+        +           '<div id="fancybar" class="' + result.status + 'Bar" onclick="toggleTask(\'' + result.gid + '\',\'' + result.status + '\')">'
+        +               '<div class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
+        +           '</div>'
+        +       '</div>';
     }
+}
+
+function removeTask(gid, status) {
+    if (['active', 'waiting', 'paused'].includes(status)) {
+        var method = 'aria2.forceRemove';
+    }
+    else if (['complete', 'error', 'removed'].includes(status)) {
+        method = 'aria2.removeDownloadResult';
+    }
+    else {
+        return;
+    }
+    jsonRPCRequest({'method': method, 'gid': gid});
+}
+
+function investTask(gid) {
+    openModuleWindow({'name': 'taskMgr', 'id': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
+}
+
+function toggleTask(gid, status) {
+    if (['active', 'waiting'].includes(status)) {
+        var method = 'aria2.pause';
+    }
+    else if (status === 'paused') {
+        method = 'aria2.unpause';
+    }
+    else {
+        return;
+    }
+    jsonRPCRequest({'method': method, 'gid': gid});
+}
+
+function retryTask(gid) {
+    jsonRPCRequest([
+            {'method': 'aria2.getFiles', 'gid': gid},
+            {'method': 'aria2.getOption', 'gid': gid},
+        ], (files, options) => {
+            jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
+                downWithAria2({'url': files[0].uris[0].uri, 'options': options});
+            });
+        }
+    );
 }
 
 printMainFrame();

@@ -91,16 +91,15 @@ input, textarea {
     height: 16px;
 }
 
-.fancybar span {
+#fancybar {
     text-align: center;
-    display: block;
 }
 
-.fancybar:active {
+#fancybar:active {
     filter: opacity(30%);
 }
 
-.activeBar, .waitingBar, .pausedBar {
+.activeBar, .pausedBar, .download {
     background-color: #3CC;
 }
 
@@ -108,7 +107,7 @@ input, textarea {
     background-color: #CCC;
 }
 
-.active, .download {
+.active {
     background-color: #33C;
 }
 
@@ -120,11 +119,11 @@ input, textarea {
     background-color: #C33;
 }
 
-.complete, .upload {
+.complete {
     background-color: #3C3;
 }
 
-.removed {
+.removed, .upload {
     background-color: #C3C;
 }
 
