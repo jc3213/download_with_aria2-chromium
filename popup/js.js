@@ -16,7 +16,7 @@ modules.forEach(item => document.getElementById(item.button).addEventListener('c
 
 function initialModules(element, module) {
     if (element.classList.contains('checked')) {
-        document.getElementById(module.name + 'Window').remove();
+        document.getElementById(module.id).remove();
     }
     else {
         openModuleWindow(module)
