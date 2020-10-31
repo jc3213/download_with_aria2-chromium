@@ -32,8 +32,8 @@ function openModuleWindow(module) {
     if (module.load) {
         iframe.addEventListener('load', module.load);
     }
-    if (module.parent) {
-        module.parent.appendChild(iframe);
+    if (module.target) {
+        document.getElementById(module.target).appendChild(iframe);
     }
     else {
         document.body.appendChild(iframe);
@@ -92,18 +92,18 @@ function printMainFrame() {
             {'method': 'aria2.tellWaiting', 'index': [0, globalWaiting]},
             {'method': 'aria2.tellStopped', 'index': [0, globalStopped]},
         ], (activeQueue, waitingQueue, stoppedQueue) => {
-            activeQueue.forEach(item => printTaskInfo(item, document.getElementById('activeQueue')));
-            waitingQueue.forEach(item => printTaskInfo(item, document.getElementById('waitingQueue')));
-            stoppedQueue.forEach(item => printTaskInfo(item, document.getElementById('stoppedQueue')));
+            activeQueue.forEach(item => printTaskInfo(item, 'activeQueue'));
+            waitingQueue.forEach(item => printTaskInfo(item, 'waitingQueue'));
+            stoppedQueue.forEach(item => printTaskInfo(item, 'stoppedQueue'));
         });
     }
 
-    function printTaskInfo(result, parent) {
+    function printTaskInfo(result, target) {
         if (document.getElementById(result.gid)) {
             document.getElementById(result.gid).contentWindow.postMessage(result);
         }
         else {
-            openModuleWindow({'name': 'template', 'id': result.gid, 'parent': parent, 'load': (event) => event.target.contentWindow.postMessage(result)});
+            openModuleWindow({'name': 'template', 'id': result.gid, 'target': target, 'load': (event) => event.target.contentWindow.postMessage(result)});
         }
     }
 }
