@@ -20,7 +20,7 @@ function printTaskDetails(gid) {
             document.getElementById('optionUpload').disabled = !bittorrent || complete;
             document.getElementById('optionProxy').setAttribute('gid', result.gid);
             document.getElementById('optionProxy').disabled = bittorrent || complete;
-            var taskFiles = result.files.map(item => item = printFileInfo(item, result.bittorrent));
+            var taskFiles = result.files.map(item => item = printFileInfo(item, bittorrent));
             document.getElementById('taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
         }
     );
