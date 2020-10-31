@@ -1,5 +1,4 @@
 window.addEventListener('message', (event) => {
-    console.log(event.data);
     printTaskOption(event.data);
     printTaskDetails(event.data);
     taskManager = setInterval(() => printTaskDetails(event.data), 1000);
