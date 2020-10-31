@@ -92,15 +92,9 @@ function printMainFrame() {
             {'method': 'aria2.tellWaiting', 'index': [0, globalWaiting]},
             {'method': 'aria2.tellStopped', 'index': [0, globalStopped]},
         ], (activeQueue, waitingQueue, stoppedQueue) => {
-            if (activeQueue) {
-                activeQueue.forEach(item => printTaskInfo(item, document.getElementById('activeQueue')));
-            }
-            if (waitingQueue) {
-                waitingQueue.forEach(item => printTaskInfo(item, document.getElementById('waitingQueue')));
-            }
-            if (stoppedQueue) {
-                stoppedQueue.forEach(item => printTaskInfo(item, document.getElementById('stoppedQueue')));
-            }
+            activeQueue.forEach(item => printTaskInfo(item, document.getElementById('activeQueue')));
+            waitingQueue.forEach(item => printTaskInfo(item, document.getElementById('waitingQueue')));
+            stoppedQueue.forEach(item => printTaskInfo(item, document.getElementById('stoppedQueue')));
         });
     }
 
