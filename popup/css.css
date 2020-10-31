@@ -100,7 +100,7 @@ input, textarea {
     filter: opacity(30%);
 }
 
-.activeBar, .pausedBar, .download {
+.activeBar, .waitingBar, .pausedBar {
     background-color: #3CC;
 }
 
@@ -108,7 +108,7 @@ input, textarea {
     background-color: #CCC;
 }
 
-.active {
+.active, .download {
     background-color: #33C;
 }
 
@@ -120,11 +120,11 @@ input, textarea {
     background-color: #C33;
 }
 
-.complete {
+.complete, .upload {
     background-color: #3C3;
 }
 
-.removed, .upload {
+.removed {
     background-color: #C3C;
 }
 
