@@ -26,10 +26,14 @@ function updateFrameBody(result) {
 
 document.getElementById('remove_btn').addEventListener('click', (event) => {
     if (['active', 'waiting', 'paused'].includes(status)) {
-        jsonRPCRequest({'method': 'aria2.forceRemove', 'gid': gid});
+        jsonRPCRequest({'method': 'aria2.forceRemove', 'gid': gid}, removeTask);
     }
     else if (['complete', 'error', 'removed'].includes(status)) {
-        jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => window.parent.window.postMessage({'method': 'close', 'id': gid}));
+        jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, removeTask);
+    }
+
+    function removeTask() {
+        window.parent.window.postMessage({'method': 'close', 'id': gid});
     }
 });
 

@@ -32,6 +32,9 @@ function openModuleWindow(module) {
     if (module.load) {
         iframe.addEventListener('load', module.load);
     }
+    if (module.value) {
+        iframe.value = module.value;
+    }
     if (module.target) {
         document.getElementById(module.target).appendChild(iframe);
     }
@@ -57,7 +60,10 @@ function toggleTaskQueue(element, active, activeTab) {
 }
 
 document.getElementById('purdge_btn').addEventListener('click', (event) => {
-    jsonRPCRequest({'method': 'aria2.purgeDownloadResult'});
+    jsonRPCRequest(
+        {'method': 'aria2.purgeDownloadResult'},
+        (result) => taskQueues.forEach(item => document.getElementById(item).innerHTML = '')
+    );
 });
 
 function printMainFrame() {
@@ -99,11 +105,22 @@ function printMainFrame() {
     }
 
     function printTaskInfo(result, target) {
-        if (document.getElementById(result.gid)) {
-            document.getElementById(result.gid).contentWindow.postMessage(result);
+        var task = document.getElementById(result.gid);
+        if (task) {
+            if (task.value !== 'complete' && result.status === 'complete') {
+                task.remove();
+                createTaskInfo();
+            }
+            else {
+                document.getElementById(result.gid).contentWindow.postMessage(result);
+            }
         }
         else {
-            openModuleWindow({'name': 'template', 'id': result.gid, 'target': target, 'load': (event) => event.target.contentWindow.postMessage(result)});
+            createTaskInfo();
+        }
+
+        function createTaskInfo() {
+            openModuleWindow({'name': 'template', 'id': result.gid, 'value': result.status, 'target': target, 'load': (event) => event.target.contentWindow.postMessage(result)});
         }
     }
 }
