@@ -1,7 +1,8 @@
 window.addEventListener('message', (event) => {
-    printTaskOption(event.data);
-    printTaskDetails(event.data);
-    taskManager = setInterval(() => printTaskDetails(event.data), 1000);
+    gid = event.data;
+    printTaskOption(gid);
+    printTaskDetails(gid);
+    taskManager = setInterval(() => printTaskDetails(gid), 1000);
 })
 
 function printTaskDetails(gid) {
@@ -14,11 +15,8 @@ function printTaskDetails(gid) {
             var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
             document.getElementById('taskName').innerHTML = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
-            document.getElementById('optionDownload').setAttribute('gid', result.gid);
             document.getElementById('optionDownload').disabled = complete;
-            document.getElementById('optionUpload').setAttribute('gid', result.gid);
             document.getElementById('optionUpload').disabled = !bittorrent || complete;
-            document.getElementById('optionProxy').setAttribute('gid', result.gid);
             document.getElementById('optionProxy').disabled = bittorrent || complete;
             var taskFiles = result.files.map(item => item = printFileInfo(item, bittorrent));
             document.getElementById('taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
@@ -37,13 +35,12 @@ function printTaskDetails(gid) {
 }
 
 var taskOptions = ['optionDownload', 'optionUpload', 'optionProxy'];
-var optionsCall = ['max-download-limit', 'max-upload-limit', 'all-proxy'];
-taskOptions.forEach((item, index) => document.getElementById(item).addEventListener('change', (event) => changeTaskOption(event.target, optionsCall[index])));
+var optionsType = ['max-download-limit', 'max-upload-limit', 'all-proxy'];
+taskOptions.forEach((item, index) => document.getElementById(item).addEventListener('change', (event) => changeTaskOption(event.target.value, optionsType[index])));
 
-function changeTaskOption(element, call, options) {
-    var gid = element.getAttribute('gid');
+function changeTaskOption(value, type, options) {
     options = options || {};
-    options[call] = element.value;
+    options[type] = value;
     jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
 }
 
@@ -51,15 +48,16 @@ function printTaskOption(gid) {
     jsonRPCRequest(
         {'method': 'aria2.getOption', 'gid': gid},
         (result) => {
-            taskOptions.forEach((item, index) => document.getElementById(item).value = result[optionsCall[index]] || '');
+            taskOptions.forEach((item, index) => document.getElementById(item).value = result[optionsType[index]] || '');
         }
     );
 }
 
 document.getElementById('loadProxy').addEventListener('click', (event) => {
-    var element = document.getElementById('optionProxy');
-    element.value = localStorage.getItem('allproxy') || '';
-    changeTaskOption(element, 'all-proxy');
+    if (!document.getElementById('optionProxy').disabled) {
+        var allproxy = localStorage.getItem('allproxy') || '';
+        changeTaskOption(allproxy, 'all-proxy');
+    }
 });
 
 document.getElementById('taskName').addEventListener('click', (event) => {
@@ -73,3 +71,4 @@ function copyFileUrl(url) {
 }
 
 var taskManager;
+var gid
