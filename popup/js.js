@@ -92,6 +92,8 @@ function printMainFrame() {
 
     function printTaskInfo(result) {
         var bittorrent = result.bittorrent;
+        var gid = result.gid;
+        var status = result.status;
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
         var totalLength = bytesToFileSize(result.totalLength);
@@ -102,7 +104,7 @@ function printMainFrame() {
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
         var taskUrl = bittorrent ?  '' : result.files[0].uris[0].uri;
         var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-        var retry_show = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
+        var retry_show = !bittorrent && ['error', 'removed'].includes(status) ? 'inline-block' : 'none';
         return  '<div class="taskInfo">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
@@ -110,12 +112,12 @@ function printMainFrame() {
         +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + upload_show + '">⏫ ' + uploadSpeed + '</span>'
         +           '</div>'
         +           '<div class="taskMenu">'
-        +               '<span class="button" onclick="removeTask(\'' + result.gid + '\',\'' + result.status + '\')">❌</span>'
-        +               '<span class="button" onclick="investTask(\'' + result.gid + '\')">🔍</span>'
-        +               '<span class="button" onclick="retryTask(\''+ result.gid + '\')" style="display: ' + retry_show + '">♻️</span>'
+        +               '<span class="button" onclick="removeTask(\'' + gid + '\',\'' + status + '\')">❌</span>'
+        +               '<span class="button" onclick="investTask(\'' + gid + '\')">🔍</span>'
+        +               '<span class="button" onclick="retryTask(\''+ gid + '\')" style="display: ' + retry_show + '">♻️</span>'
         +           '</div>'
-        +           '<div id="fancybar" class="' + result.status + 'Bar" onclick="toggleTask(\'' + result.gid + '\',\'' + result.status + '\')">'
-        +               '<div class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
+        +           '<div id="fancybar" class="' + status + 'Bar" onclick="toggleTask(\'' + gid + '\',\'' + status + '\')">'
+        +               '<div class="' + status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
         +           '</div>'
         +       '</div>';
     }
