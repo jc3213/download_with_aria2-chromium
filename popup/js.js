@@ -4,7 +4,7 @@ window.addEventListener('message', (event) => {
 });
 
 var modules = [
-    {'button': 'newTask_btn', 'name': 'newTask', 'id': 'newTaskWindow'}, 
+    {'button': 'newTask_btn', 'name': 'newTask', 'id': 'newTaskWindow'},
     {'button': 'options_btn', 'name': 'options', 'id': 'optionsWindow'}
 ];
 modules.forEach(item => document.getElementById(item.button).addEventListener('click', (event) => initialModules(event.target, item)));
@@ -97,7 +97,7 @@ function printMainFrame() {
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
         var totalLength = bytesToFileSize(result.totalLength);
-        var connections = bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;        
+        var connections = bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
         var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
         var upload_show = bittorrent ? 'inline-block' : 'none';
         var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
@@ -106,20 +106,20 @@ function printMainFrame() {
         var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
         var retry_show = !bittorrent && ['error', 'removed'].includes(status) ? 'inline-block' : 'none';
         return  '<div class="taskInfo">'
-        +           '<div class="taskBody">'
-        +               '<div class="title">' + taskName + '</div>'
-        +               '<span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>'
-        +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + upload_show + '">⏫ ' + uploadSpeed + '</span>'
-        +           '</div>'
-        +           '<div class="taskMenu">'
-        +               '<span class="button" onclick="removeTask(\'' + gid + '\',\'' + status + '\')">❌</span>'
-        +               '<span class="button" onclick="investTask(\'' + gid + '\')">🔍</span>'
-        +               '<span class="button" onclick="retryTask(\''+ gid + '\')" style="display: ' + retry_show + '">♻️</span>'
-        +           '</div>'
-        +           '<div id="fancybar" class="' + status + 'Bar" onclick="toggleTask(\'' + gid + '\',\'' + status + '\')">'
-        +               '<div class="' + status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
-        +           '</div>'
-        +       '</div>';
+            +       '<div class="taskBody">'
+            +       '<div class="title">' + taskName + '</div>'
+            +       '<span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>'
+            +       '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + upload_show + '">⏫ ' + uploadSpeed + '</span>'
+            +   '</div>'
+            +   '<div class="taskMenu">'
+            +       '<span class="button" onclick="removeTask(\'' + gid + '\',\'' + status + '\')">❌</span>'
+            +       '<span class="button" onclick="investTask(\'' + gid + '\')">🔍</span>'
+            +       '<span class="button" onclick="retryTask(\''+ gid + '\')" style="display: ' + retry_show + '">♻️</span>'
+            +   '</div>'
+            +   '<div id="fancybar" class="' + status + 'Bar" onclick="toggleTask(\'' + gid + '\',\'' + status + '\')">'
+            +       '<div class="' + status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
+            +   '</div>'
+            +   '</div>';
     }
 }
 

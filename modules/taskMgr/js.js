@@ -18,7 +18,7 @@ function printTaskDetails(gid) {
             document.getElementById('optionDownload').disabled = complete;
             document.getElementById('optionUpload').disabled = !bittorrent || complete;
             document.getElementById('optionProxy').disabled = bittorrent || complete;
-            var taskFiles = result.files.map(item => item = printFileInfo(item, bittorrent));
+            var taskFiles = result.files.map(item => { item = printFileInfo(item, bittorrent); });
             document.getElementById('taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
         }
     );
@@ -48,7 +48,7 @@ function printTaskOption(gid) {
     jsonRPCRequest(
         {'method': 'aria2.getOption', 'gid': gid},
         (result) => {
-            taskOptions.forEach((item, index) => document.getElementById(item).value = result[optionsType[index]] || '');
+            taskOptions.forEach((item, index) => { document.getElementById(item).value = result[optionsType[index]] || ''; });
         }
     );
 }
