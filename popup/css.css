@@ -94,35 +94,3 @@ input, textarea {
 #fancybar:active {
     filter: opacity(30%);
 }
-
-.activeBar, .waitingBar, .pausedBar {
-    background-color: #3CC;
-}
-
-.removedBar, .errorBar, .stopped {
-    background-color: #CCC;
-}
-
-.active, .download {
-    background-color: #33C;
-}
-
-.waiting, .paused {
-    background-color: #CC3;
-}
-
-.error {
-    background-color: #C33;
-}
-
-.complete, .upload {
-    background-color: #3C3;
-}
-
-.removed {
-    background-color: #C3C;
-}
-
-.stopped, .active, .waiting, .paused, .error, .complete, .removed, .download, .upload {
-    color: #FFF;
-}

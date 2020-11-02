@@ -67,27 +67,3 @@ div:nth-child(n+2) {
 #taskFiles td:nth-child(4) {
     width: 50px;
 }
-
-.active {
-    background-color: #33C;
-}
-
-.paused {
-    background-color: #CC3;
-}
-
-.error {
-    background-color: #C33;
-}
-
-.complete {
-    background-color: #3C3;
-}
-
-.removed {
-    background-color: #C3C;
-}
-
-.active, .paused, .error, .complete, .removed {
-    color: #FFF;
-}
