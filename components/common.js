@@ -5,7 +5,7 @@ function jsonRPCRequest(request, success, failure) {
     var xhr = new XMLHttpRequest();
     var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
     xhr.open('POST', rpc, true);
-    xhr.onload = (event) => {
+    xhr.onload = () => {
         var response = JSON.parse(xhr.response);
         var result = response[0].result;
         if (result) {
