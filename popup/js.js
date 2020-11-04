@@ -114,7 +114,7 @@ function printMainFrame() {
         +           '<div class="taskMenu">'
         +               '<span class="button" onclick="removeTask(\'' + gid + '\',\'' + status + '\')">❌</span>'
         +               '<span class="button" onclick="investTask(\'' + gid + '\')">🔍</span>'
-        +               '<span class="button" onclick="retryTask(\''+ gid + '\')" style="display: ' + retryButton + '">♻️</span>'
+        +               '<span class="button" onclick="retryTask(\''+ gid + '\')" style="display: ' + retryButton + '">🌌</span>'
         +           '</div>'
         +           '<div id="fancybar" class="' + status + 'Box" onclick="toggleTask(\'' + gid + '\',\'' + status + '\')">'
         +               '<div class="' + status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
