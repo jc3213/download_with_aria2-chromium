@@ -1,12 +1,4 @@
-.activeBar, .waitingBar, .pausedBar {
-    background-color: #3CC;
-}
-
-.removedBar, .errorBar {
-    background-color: #CCC;
-}
-
-.active, .download {
+.active {
     background-color: #33C;
 }
 
@@ -14,18 +6,18 @@
     background-color: #CC3;
 }
 
+.complete {
+    background-color: #3C3;
+}
+
 .error {
     background-color: #C33;
 }
 
-.complete, .upload {
-    background-color: #3C3;
-}
-
-.removed, .stopped {
+.removed {
     background-color: #C3C;
 }
 
-.stopped, .active, .waiting, .paused, .error, .complete, .removed, .download, .upload {
+.active, .waiting, .paused, .error, .complete, .removed {
     color: #FFF;
 }
