@@ -21,3 +21,11 @@
 .active, .waiting, .paused, .error, .complete, .removed {
     color: #FFF;
 }
+
+.activeBox, .waitingBox, .pausedBox {
+    background-color: #3CC;
+}
+
+.removedBox, .errorBox {
+    background-color: #CCC;
+}
