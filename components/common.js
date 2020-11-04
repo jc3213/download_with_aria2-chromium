@@ -1,28 +1,28 @@
 function jsonRPCRequest(request, success, failure) {
-    success = success || function() {};
-    failure = failure || function() {};
     var rpc = localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc';
     var xhr = new XMLHttpRequest();
     var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
     xhr.open('POST', rpc, true);
-    xhr.onload = () => {
-        var response = JSON.parse(xhr.response);
-        var result = response[0].result;
-        if (result) {
-            return success(...response.map(item => item = item.result));
-        }
-        var error = response[0].error.message;
-        if (error) {
-            if (error === 'Unauthorized') {
-                failure(error, rpc);
+    xhr.onloadend = () => {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.response);
+            var result = response[0].result;
+            var error = response[0].error;
+            if (result && typeof success === 'function') {
+                success(...response.map(item => item = item.result));
             }
-            else {
-                failure(error);
+            if (error && typeof failure === 'function') {
+                if (error.message === 'Unauthorized') {
+                    failure(error.message, rpc);
+                }
+                else {
+                    failure(error.message);
+                }
             }
         }
-    };
-    xhr.onerror = () => {
-        failure('No response', rpc);
+        else {
+            failure('No Response', rpc);
+        }
     };
     xhr.send(JSON.stringify(json));
 
