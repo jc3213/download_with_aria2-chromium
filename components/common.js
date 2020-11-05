@@ -141,26 +141,19 @@ function domainFromUrl(url) {
 }
 
 function bytesToFileSize(bytes) {
-    var KBytes = 1024;
-    var MBytes = 1048576;
-    var GBytes = 1073741824;
-    var TBytes = 1099511627776;
-    if (bytes >= 0 && bytes < KBytes) {
-        return bytes + ' B';
+    if (bytes > 1099511627776) {
+        return (bytes / 1099511627776 * 100 + 1 | 0) / 100 + ' TB';
     }
-    else if (bytes >= KBytes && bytes < MBytes) {
-        return (bytes / KBytes * 100 + 1 | 0) / 100 + ' KB';
+    if (bytes >= 1073741824 && bytes < 1099511627776) {
+        return (bytes / 1073741824 * 100 + 1 | 0) / 100 + ' GB';
     }
-    else if (bytes >= MBytes && bytes < GBytes) {
+    if (bytes >= 1048576 && bytes < 1073741824) {
         return (bytes / MBytes * 100 + 1 | 0) / 100 + ' MB';
     }
-    else if (bytes >= GBytes && bytes < TBytes) {
-        return (bytes / GBytes * 100 + 1 | 0) / 100 + ' GB';
+    if (bytes >= 1024 && bytes < 1048576) {
+        return (bytes / 1024 * 100 + 1 | 0) / 100 + ' KB';
     }
-    else if (bytes >= TBytes) {
-        return (bytes / TBytes * 100 + 1 | 0) / 100 + ' TB';
-    }
-    else {
+    if (bytes >= 0 && bytes < 1024) {
         return bytes + ' B';
     }
 }
