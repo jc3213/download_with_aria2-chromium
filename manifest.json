@@ -7,7 +7,7 @@
     "permissions": [ "contextMenus", "downloads", "tabs", "cookies", "notifications", "<all_urls>" ],
     "default_locale" : "en",
     "background": {
-        "scripts": [ "/background.js", "/components/common.js" ],
+        "scripts": [ "/components/common.js", "/background.js" ],
         "persistent": false
     },
     "browser_action": {
