@@ -6,26 +6,21 @@ input, textarea {
     width: calc(100% - 15px);
 }
 
-#queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
-    margin-right: 10px;
+#menuTop, #menuBottom {
+    height: 0px;
+    text-align: right;
 }
 
-#networkBandwidth span:nth-child(2n+1) {
-    padding: 5px;
+#queueTabs span:nth-child(2n), #networkBandwidth span:nth-child(2n) {
+    margin-right: 10px;
 }
 
 #networkStatus {
     padding: 3px;
 }
 
-#menuTop, #menuBottom {
-    position: absolute;
-}
-
-#menuTop, #menuBottom {
-    width: calc(100% - 16px);
-    height: 0px;
-    text-align: right;
+#networkBandwidth span:nth-child(2n+1) {
+    padding: 5px;
 }
 
 #optionsWindow, #newTaskWindow, #taskMgrWindow {
