@@ -72,21 +72,6 @@ function jsonRPCRequest(request, success, failure) {
     }
 }
 
-function showNotification(title, message) {
-    var id = 'aria2_' + Date.now();
-    var notification = {
-        'type': 'basic',
-        'title': title,
-        'iconUrl': '/icons/icon48.png',
-        'message': message || ''
-    };
-    chrome.notifications.create(id, notification, () => {
-        setTimeout(() => {
-            chrome.notifications.clear(id);
-        }, 5000);
-    });
-}
-
 function downWithAria2(session) {
     var options = session.options || {};
     var proxied = localStorage.getItem('proxied') || '';
@@ -117,7 +102,6 @@ function downWithAria2(session) {
         }
     }
 
-
     function sendRequest(options) {
         jsonRPCRequest(
             {'method': 'aria2.addUri', 'url': session.url, 'options': options},
@@ -129,6 +113,21 @@ function downWithAria2(session) {
             }
         );
     }
+}
+
+function showNotification(title, message) {
+    var id = 'aria2_' + Date.now();
+    var notification = {
+        'type': 'basic',
+        'title': title,
+        'iconUrl': '/icons/icon48.png',
+        'message': message || ''
+    };
+    chrome.notifications.create(id, notification, () => {
+        setTimeout(() => {
+            chrome.notifications.clear(id);
+        }, 5000);
+    });
 }
 
 function domainFromUrl(url) {
@@ -148,7 +147,7 @@ function bytesToFileSize(bytes) {
         return (bytes / 1073741824 * 100 + 1 | 0) / 100 + ' GB';
     }
     if (bytes >= 1048576 && bytes < 1073741824) {
-        return (bytes / MBytes * 100 + 1 | 0) / 100 + ' MB';
+        return (bytes / 1048576 * 100 + 1 | 0) / 100 + ' MB';
     }
     if (bytes >= 1024 && bytes < 1048576) {
         return (bytes / 1024 * 100 + 1 | 0) / 100 + ' KB';
