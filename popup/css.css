@@ -62,10 +62,6 @@ input, textarea {
     width: calc(100% - 20px);
 }
 
-.title {
-    word-break: break-word;
-}
-
 .taskBody, .taskMenu, .taskBody span, .taskMenu span {
     display: inline-block;
 }
