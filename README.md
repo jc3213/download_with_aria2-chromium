@@ -1,6 +1,6 @@
 # What is this
 
-- This extension is a completely rewritten version of [chrome-aria2-integration](https://github.com/robbielj/chrome-aria2-integration)
+- This extension is completely rewritten from [chrome-aria2-integration](https://github.com/robbielj/chrome-aria2-integration) 
 
 # Firefox Quantum
 
@@ -19,7 +19,8 @@
 
 <b>Built-in task managers</b>
 <details>
-    Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
+    Indicate concurrent <b>active</b> download numbers over extension icon
+    <br>Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
     <br>Ability to filter task queues based on their status
     <br>Show global <b>Download</b>, <b>Upload</b> speed
     <br>Better <b>progress bar</b>, click to pause or unpause the task
@@ -32,10 +33,9 @@
 
 <b>Better performance and accessbility</b>
 <details>
-    Full modularization
-    <br>New icons
+    Pure <b>DOM</b> codes
+    <br>Modularization Design
     <br>Native i18n supports
-    <br>Removed unnecessary <b>libraries</b>, <b>chrome</b> api and <b>manifest</b> key usage
     <br>Better notifications
 </details>
 
@@ -112,6 +112,7 @@
     <br><b>Max Download Speed</b> - Ability to limit the max download speed of current download
     <br><b>Max Upload Speed</b> - Ability to limit the max upload speed of current download
     <br><b>Proxy Server</b> - Ability to change proxy server of current download
+    <br><b>Load</b> - Load and set proxy server from options for current download
     <br><b>TaskFiles</b> - Files of current download, click to copy uri for non-bittorrent download
 </details>
 
