@@ -61,7 +61,7 @@ document.getElementById('loadProxy').addEventListener('click', (event) => {
 });
 
 document.getElementById('taskName').addEventListener('click', (event) => {
-    window.parent.window.postMessage({'remove': 'taskMgrWindow'});
+    window.parent.window.postMessage('taskMgrWindow');
     clearInterval(taskManager);
 });
 

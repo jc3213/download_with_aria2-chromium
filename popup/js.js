@@ -1,13 +1,6 @@
 window.addEventListener('message', (event) => {
-    var remove = event.data.remove;
-    var uncheck = event.data.uncheck;
-    if (remove) {
-        document.getElementById(remove).style.display = 'none';
-        setTimeout(() => document.getElementById(remove).remove(), event.data.wait || 0);
-    }
-    if (uncheck) {
-        document.getElementById(uncheck).classList.remove('checked');
-    }
+    document.getElementById(event.data).remove();
+    modules.forEach(item => { if (item.id === event.data) document.getElementById(item.button).classList.remove('checked'); });
 });
 
 var modules = [
