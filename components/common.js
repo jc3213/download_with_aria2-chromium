@@ -35,11 +35,10 @@ function jsonRPCRequest(request, success, failure) {
             json.params.push(request.gid);
         }
         if (request.index) {
-            json.params = [...json.params, ...request.index];
+            json.params = json.params.concat(request.index);
         }
         if (request.url) {
-            var url = santilizeLoop(request.url);
-            json.params.push([url]);
+            json.params.push([santilizeLoop(request.url)]);
         }
         if (request.options) {
             json.params.push(request.options);
