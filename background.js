@@ -11,7 +11,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    if (item.finalUrl.match(/^(blob|data)/)) {
+    var capture = (localStorage.getItem('capture') | 0);
+    if (capture === 0 || item.finalUrl.match(/^(blob|data)/)) {
         return;
     }
 
@@ -19,43 +20,33 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
         session.referer = item.referrer || tabs[0].url;
         session.domain = domainFromUrl(session.referer);
-        captureFilters();
+        if (capture === 2) {
+            return captureDownload();
+        }
+        var ignored = localStorage.getItem('ignored') || '';
+        if (ignored.includes(session.domain)) {
+            return;
+        }
+        var monitored = localStorage.getItem('monitored') || '';
+        if (monitored.includes(session.domain)) {
+            return captureDownload();
+        }
+        var fileExt = localStorage.getItem('fileExt') || '';
+        if (fileExt.includes(item.filename.split('.').pop())) {
+            return captureDownload();
+        }
+        var fileSize = (localStorage.getItem('fileSize') | 0);
+        if (fileSize !== 0 && item.fileSize >= fileSize) {
+            return captureDownload();
+        }
     });
 
-    function captureAdd() {
+    function captureDownload() {
         chrome.downloads.cancel(item.id, () => {
             chrome.downloads.erase({'id': item.id}, () => {
                 downWithAria2(session);
             });
         });
-    }
-
-    function captureFilters() {
-        var capture = (localStorage.getItem('capture') | 0);
-        if (capture === 0) {
-            return;
-        }
-        else if (capture === 2) {
-            return captureAdd();
-        }
-        else {
-            var ignored = localStorage.getItem('ignored') || '';
-            if (ignored.includes(session.domain)) {
-                return;
-            }
-            var monitored = localStorage.getItem('monitored') || '';
-            if (monitored.includes(session.domain)) {
-                return captureAdd();
-            }
-            var fileExt = localStorage.getItem('fileExt') || '';
-            if (fileExt.includes(item.filename.split('.').pop())) {
-                return captureAdd();
-            }
-            var fileSize = (localStorage.getItem('fileSize') | 0);
-            if (fileSize !== 0 && item.fileSize >= fileSize) {
-                return captureAdd();
-            }
-        }
     }
 });
 
