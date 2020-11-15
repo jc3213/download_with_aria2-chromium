@@ -11,14 +11,14 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    if (item.finalUrl.startsWith('blob')) {
+    if (item.finalUrl.match(/^(blob|data)/)) {
         return;
     }
 
     var session = {'url': item.finalUrl, 'filename': item.filename};
     chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
         session.referer = item.referrer || tabs[0].url;
-        session.domain = domainFromUrl(item.referrer);
+        session.domain = domainFromUrl(session.referrer);
         captureFilters();
     });
 
