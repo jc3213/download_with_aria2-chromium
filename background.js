@@ -15,49 +15,47 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         return;
     }
 
-    var capture = (localStorage.getItem('capture') | 0);
-    if (capture > 0) {
-        if (item.referrer) {
-            captureAdd(capture, item);
+    var session = {'url': item.finalUrl, 'filename': item.filename};
+    chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
+        session.referer = item.referrer || tabs[0].url;
+        session.domain = domainFromUrl(item.referrer);
+        captureFilters();
+    });
+
+    function captureAdd() {
+        chrome.downloads.cancel(item.id, () => {
+            chrome.downloads.erase({'id': item.id}, () => {
+                downWithAria2(session);
+            });
+        });
+    }
+
+    function captureFilters() {
+        var capture = (localStorage.getItem('capture') | 0);
+        if (capture === 0) {
+            return;
+        }
+        else if (capture === 2) {
+            return captureAdd();
         }
         else {
-            chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
-                item.referrer = tabs[0].url;
-                captureAdd(capture, item);
-            });
+            var ignored = localStorage.getItem('ignored') || '';
+            if (ignored.includes(session.domain)) {
+                return;
+            }
+            var monitored = localStorage.getItem('monitored') || '';
+            if (monitored.includes(session.domain)) {
+                return captureAdd();
+            }
+            var fileExt = localStorage.getItem('fileExt') || '';
+            if (fileExt.includes(item.filename.split('.').pop())) {
+                return captureAdd();
+            }
+            var fileSize = (localStorage.getItem('fileSize') | 0);
+            if (fileSize !== 0 && item.fileSize >= fileSize) {
+                return captureAdd();
+            }
         }
-    }
-
-    function captureAdd(capture, item) {
-        var domain = domainFromUrl(item.referrer);
-        var check = captureCheck(domain, item.filename.split('.').pop(), item.fileSize);
-        if (capture === 2 || check) {
-            chrome.downloads.cancel(item.id, () => {
-                chrome.downloads.erase({'id': item.id}, () => {
-                    downWithAria2({'url': item.finalUrl, 'referer': item.referrer, 'domain': domain, 'filename': item.filename});
-                });
-            });
-        }
-    }
-
-    function captureCheck(domain, ext, size) {
-        var ignored = localStorage.getItem('ignored');
-        if (ignored && ignored.includes(domain)) {
-            return false;
-        }
-        var monitored = localStorage.getItem('monitored');
-        if (monitored && monitored.includes(domain)) {
-            return true;
-        }
-        var fileExt = localStorage.getItem('fileExt');
-        if (fileExt && fileExt.includes(ext)) {
-            return true;
-        }
-        var fileSize = (localStorage.getItem('fileSize') | 0);
-        if (fileSize > 0 && size >= fileSize) {
-            return true;
-        }
-        return false;
     }
 });
 
