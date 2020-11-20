@@ -32,6 +32,7 @@ function openModuleWindow(module) {
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
 var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue'];
 taskTabs.forEach((item, index) => document.getElementById(item).addEventListener('click', (event) => toggleTaskQueue(event.target, item, taskQueues[index])));
+taskQueues.forEach(item => document.getElementById(item).addEventListener('click', (event) => toggleTaskManager(event.target)));
 
 function toggleTaskQueue(element, active, activeTab) {
     if (element.classList.contains('checked')) {
@@ -43,6 +44,60 @@ function toggleTaskQueue(element, active, activeTab) {
         taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
     }
     element.classList.toggle('checked');
+}
+
+function toggleTaskManager(element, task) {
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(element)) task = {'gid': item.getAttribute('gid'), 'status': item.getAttribute('status')}; });
+    if (element.id === 'remove_btn') {
+        removeTask(task.gid, task.status);
+    }
+    if (element.id === 'invest_btn') {
+        openModuleWindow({'name': 'taskMgr', 'id': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(task.gid)});
+    }
+    if (element.id === 'retry_btn') {
+        retryTask(task.gid);
+    }
+    if (element.id === 'fancybar') {
+        toggleTask(task.gid, task.status);
+    }
+
+    function removeTask(gid, status) {
+        if (['active', 'waiting', 'paused'].includes(status)) {
+            var method = 'aria2.forceRemove';
+        }
+        else if (['complete', 'error', 'removed'].includes(status)) {
+            method = 'aria2.removeDownloadResult';
+        }
+        else {
+            return;
+        }
+        jsonRPCRequest({'method': method, 'gid': gid});
+    }
+
+    function toggleTask(gid, status) {
+        if (['active', 'waiting'].includes(status)) {
+            var method = 'aria2.pause';
+        }
+        else if (status === 'paused') {
+            method = 'aria2.unpause';
+        }
+        else {
+            return;
+        }
+        jsonRPCRequest({'method': method, 'gid': gid});
+    }
+
+    function retryTask(gid) {
+        jsonRPCRequest([
+                {'method': 'aria2.getFiles', 'gid': gid},
+                {'method': 'aria2.getOption', 'gid': gid},
+            ], (files, options) => {
+                jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
+                    downWithAria2({'url': files[0].uris[0].uri, 'options': options});
+                });
+            }
+        );
+    }
 }
 
 document.getElementById('purdge_btn').addEventListener('click', (event) => {
@@ -105,64 +160,22 @@ function printMainFrame() {
         var taskUrl = bittorrent ?  '' : result.files[0].uris[0].uri;
         var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
         var retryButton = !bittorrent && ['error', 'removed'].includes(status) ? 'inline-block' : 'none';
-        return  '<div class="taskInfo">'
+        return  '<div class="taskInfo" gid="' + gid + '" status="' + status + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
         +               '<span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>'
         +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + upload_show + '">⏫ ' + uploadSpeed + '</span>'
         +           '</div>'
         +           '<div class="taskMenu">'
-        +               '<span class="button" onclick="removeTask(\'' + gid + '\',\'' + status + '\')">❌</span>'
-        +               '<span class="button" onclick="investTask(\'' + gid + '\')">🔍</span>'
-        +               '<span class="button" onclick="retryTask(\''+ gid + '\')" style="display: ' + retryButton + '">🌌</span>'
+        +               '<span class="button" id="remove_btn">❌</span>'
+        +               '<span class="button" id="invest_btn">🔍</span>'
+        +               '<span class="button" id="retry_btn" style="display: ' + retryButton + '">🌌</span>'
         +           '</div>'
-        +           '<div id="fancybar" class="' + status + 'Box" onclick="toggleTask(\'' + gid + '\',\'' + status + '\')">'
-        +               '<div class="' + status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
+        +           '<div id="fancybar" class="' + status + 'Box">'
+        +               '<div id="fancybar" class="' + status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
         +           '</div>'
         +       '</div>';
     }
-}
-
-function removeTask(gid, status) {
-    if (['active', 'waiting', 'paused'].includes(status)) {
-        var method = 'aria2.forceRemove';
-    }
-    else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'aria2.removeDownloadResult';
-    }
-    else {
-        return;
-    }
-    jsonRPCRequest({'method': method, 'gid': gid});
-}
-
-function investTask(gid) {
-    openModuleWindow({'name': 'taskMgr', 'id': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
-}
-
-function toggleTask(gid, status) {
-    if (['active', 'waiting'].includes(status)) {
-        var method = 'aria2.pause';
-    }
-    else if (status === 'paused') {
-        method = 'aria2.unpause';
-    }
-    else {
-        return;
-    }
-    jsonRPCRequest({'method': method, 'gid': gid});
-}
-
-function retryTask(gid) {
-    jsonRPCRequest([
-            {'method': 'aria2.getFiles', 'gid': gid},
-            {'method': 'aria2.getOption', 'gid': gid},
-        ], (files, options) => {
-            jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
-                downWithAria2({'url': files[0].uris[0].uri, 'options': options});
-            });
-        }
-    );
 }
 
 printMainFrame();
