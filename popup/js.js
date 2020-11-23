@@ -128,20 +128,8 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     var status;
     var gid;
     document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(element)) { gid = item.getAttribute('gid'); status = item.getAttribute('status'); } });
-    if (element.id === 'remove_btn') {
-        removeTask();
-    }
-    if (element.id === 'invest_btn') {
-        openModuleWindow({'name': 'taskMgr', 'id': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
-    }
-    if (element.id === 'retry_btn') {
-        retryTask();
-    }
-    if (element.id === 'fancybar') {
-        toggleTask();
-    }
 
-    function removeTask() {
+    if (element.id === 'remove_btn') {
         if (['active', 'waiting', 'paused'].includes(status)) {
             var method = 'aria2.forceRemove';
         }
@@ -153,8 +141,21 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
         }
         jsonRPCRequest({'method': method, 'gid': gid});
     }
-
-    function toggleTask() {
+    else if (element.id === 'invest_btn') {
+        openModuleWindow({'name': 'taskMgr', 'id': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
+    }
+    else if (element.id === 'retry_btn') {
+        jsonRPCRequest([
+                {'method': 'aria2.getFiles', 'gid': gid},
+                {'method': 'aria2.getOption', 'gid': gid},
+            ], (files, options) => {
+                jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
+                    downWithAria2({'url': files[0].uris[0].uri, 'options': options});
+                });
+            }
+        );
+    }
+    else if (element.id === 'fancybar') {
         if (['active', 'waiting'].includes(status)) {
             var method = 'aria2.pause';
         }
@@ -165,18 +166,6 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
             return;
         }
         jsonRPCRequest({'method': method, 'gid': gid});
-    }
-
-    function retryTask() {
-        jsonRPCRequest([
-                {'method': 'aria2.getFiles', 'gid': gid},
-                {'method': 'aria2.getOption', 'gid': gid},
-            ], (files, options) => {
-                jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
-                    downWithAria2({'url': files[0].uris[0].uri, 'options': options});
-                });
-            }
-        );
     }
 });
 
