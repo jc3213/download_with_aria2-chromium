@@ -32,7 +32,6 @@ function openModuleWindow(module) {
 var taskTabs = ['active_btn', 'waiting_btn', 'stopped_btn'];
 var taskQueues = ['activeQueue', 'waitingQueue', 'stoppedQueue'];
 taskTabs.forEach((item, index) => document.getElementById(item).addEventListener('click', (event) => toggleTaskQueue(event.target, item, taskQueues[index])));
-taskQueues.forEach(item => document.getElementById(item).addEventListener('click', (event) => toggleTaskManager(event.target)));
 
 function toggleTaskQueue(element, active, activeTab) {
     if (element.classList.contains('checked')) {
@@ -44,60 +43,6 @@ function toggleTaskQueue(element, active, activeTab) {
         taskQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
     }
     element.classList.toggle('checked');
-}
-
-function toggleTaskManager(element, task) {
-    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(element)) task = {'gid': item.getAttribute('gid'), 'status': item.getAttribute('status')}; });
-    if (element.id === 'remove_btn') {
-        removeTask(task.gid, task.status);
-    }
-    if (element.id === 'invest_btn') {
-        openModuleWindow({'name': 'taskMgr', 'id': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(task.gid)});
-    }
-    if (element.id === 'retry_btn') {
-        retryTask(task.gid);
-    }
-    if (element.id === 'fancybar') {
-        toggleTask(task.gid, task.status);
-    }
-
-    function removeTask(gid, status) {
-        if (['active', 'waiting', 'paused'].includes(status)) {
-            var method = 'aria2.forceRemove';
-        }
-        else if (['complete', 'error', 'removed'].includes(status)) {
-            method = 'aria2.removeDownloadResult';
-        }
-        else {
-            return;
-        }
-        jsonRPCRequest({'method': method, 'gid': gid});
-    }
-
-    function toggleTask(gid, status) {
-        if (['active', 'waiting'].includes(status)) {
-            var method = 'aria2.pause';
-        }
-        else if (status === 'paused') {
-            method = 'aria2.unpause';
-        }
-        else {
-            return;
-        }
-        jsonRPCRequest({'method': method, 'gid': gid});
-    }
-
-    function retryTask(gid) {
-        jsonRPCRequest([
-                {'method': 'aria2.getFiles', 'gid': gid},
-                {'method': 'aria2.getOption', 'gid': gid},
-            ], (files, options) => {
-                jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
-                    downWithAria2({'url': files[0].uris[0].uri, 'options': options});
-                });
-            }
-        );
-    }
 }
 
 document.getElementById('purdge_btn').addEventListener('click', (event) => {
@@ -177,6 +122,63 @@ function printMainFrame() {
         +       '</div>';
     }
 }
+
+document.getElementById('taskQueue').addEventListener('click', (event) => {
+    var element = event.target;
+    var status;
+    var gid;
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(element)) { gid = item.getAttribute('gid'); status = item.getAttribute('status'); } });
+    if (element.id === 'remove_btn') {
+        removeTask();
+    }
+    if (element.id === 'invest_btn') {
+        openModuleWindow({'name': 'taskMgr', 'id': 'taskMgrWindow', 'load': (event) => event.target.contentWindow.postMessage(gid)});
+    }
+    if (element.id === 'retry_btn') {
+        retryTask();
+    }
+    if (element.id === 'fancybar') {
+        toggleTask();
+    }
+
+    function removeTask() {
+        if (['active', 'waiting', 'paused'].includes(status)) {
+            var method = 'aria2.forceRemove';
+        }
+        else if (['complete', 'error', 'removed'].includes(status)) {
+            method = 'aria2.removeDownloadResult';
+        }
+        else {
+            return;
+        }
+        jsonRPCRequest({'method': method, 'gid': gid});
+    }
+
+    function toggleTask() {
+        if (['active', 'waiting'].includes(status)) {
+            var method = 'aria2.pause';
+        }
+        else if (status === 'paused') {
+            method = 'aria2.unpause';
+        }
+        else {
+            return;
+        }
+        jsonRPCRequest({'method': method, 'gid': gid});
+    }
+
+    function retryTask() {
+        jsonRPCRequest([
+                {'method': 'aria2.getFiles', 'gid': gid},
+                {'method': 'aria2.getOption', 'gid': gid},
+            ], (files, options) => {
+                jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
+                    downWithAria2({'url': files[0].uris[0].uri, 'options': options});
+                });
+            }
+        );
+    }
+});
 
 printMainFrame();
 var keepContentAlive = setInterval(printMainFrame, 1000);
