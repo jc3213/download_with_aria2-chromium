@@ -43,7 +43,7 @@ taskOptions.forEach((item, index) => document.getElementById(item).addEventListe
 function changeTaskOption(value, type, options) {
     options = options || {};
     options[type] = value;
-    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption());
+    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, printTaskOption);
 }
 
 function printTaskOption() {
