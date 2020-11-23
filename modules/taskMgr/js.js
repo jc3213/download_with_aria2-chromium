@@ -67,7 +67,8 @@ document.getElementById('taskName').addEventListener('click', (event) => {
     clearInterval(taskManager);
 });
 
-document.getElementById('taskFiles').addEventListener('click', (event, uri) => {
+document.getElementById('taskFiles').addEventListener('click', (event) => {
+    var uri;
     document.querySelectorAll('tr').forEach((item, index)=> { if (item.contains(event.target)) uri = item.getAttribute('uri'); });
     if (uri) {
         navigator.clipboard.writeText(uri);
