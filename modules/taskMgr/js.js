@@ -1,11 +1,14 @@
+var gid;
+var taskManager;
+
 window.addEventListener('message', (event) => {
     gid = event.data;
-    printTaskOption(gid);
-    printTaskDetails(gid);
-    taskManager = setInterval(() => printTaskDetails(gid), 1000);
+    printTaskOption();
+    printTaskDetails();
+    taskManager = setInterval(() => printTaskDetails(), 1000);
 })
 
-function printTaskDetails(gid) {
+function printTaskDetails() {
     jsonRPCRequest(
         {'method': 'aria2.tellStatus', 'gid': gid},
         (result) => {
@@ -40,10 +43,10 @@ taskOptions.forEach((item, index) => document.getElementById(item).addEventListe
 function changeTaskOption(value, type, options) {
     options = options || {};
     options[type] = value;
-    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption(gid));
+    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, () => printTaskOption());
 }
 
-function printTaskOption(gid) {
+function printTaskOption() {
     jsonRPCRequest(
         {'method': 'aria2.getOption', 'gid': gid},
         (result) => {
@@ -71,6 +74,3 @@ document.getElementById('taskFiles').addEventListener('click', (event, uri) => {
         showNotification(window['warn_url_copied'], uri);
     }
 });
-
-var taskManager;
-var gid
