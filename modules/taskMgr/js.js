@@ -5,7 +5,7 @@ window.addEventListener('message', (event) => {
     gid = event.data;
     printTaskOption();
     printTaskDetails();
-    taskManager = setInterval(() => printTaskDetails(), 1000);
+    taskManager = setInterval(printTaskDetails, 1000);
 })
 
 function printTaskDetails() {
