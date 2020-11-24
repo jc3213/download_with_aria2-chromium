@@ -3,7 +3,7 @@
         "message": "通过 Aria2 下载"
     },
     "extension_description": {
-        "message": "本扩展使得 Chromium 浏览器能够通过 Aria2 进行下载"
+        "message": "基于 Chromium 浏览器的 Aria2 下载管理器"
     },
     "option_basic": {
         "message": "基础"

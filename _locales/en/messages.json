@@ -3,7 +3,7 @@
         "message": "Download with Aria2"
     },
     "extension_description": {
-        "message": "An extension for Chromium that allows you to download with Aria2"
+        "message": "The Aria2 Download Manager for Chromium"
     },
     "option_basic": {
         "message": "Basic"
