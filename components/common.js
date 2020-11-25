@@ -16,7 +16,9 @@ function jsonRPCRequest(request, success, failure) {
             }
         }
         else {
-            failure('No Response', rpc);
+            if (typeof failure === 'function') {
+                failure('No Response', rpc);
+            }
         }
     };
     xhr.send(JSON.stringify(json));
@@ -59,7 +61,7 @@ function jsonRPCRequest(request, success, failure) {
                 }
             });
             if (JSON.stringify(loop) !== JSON.stringify(log)) {
-                return santilizeLoop(url)
+                return santilizeLoop(url);
             }
         }
         return url;
@@ -79,7 +81,7 @@ function downWithAria2(session) {
         options['out'] = session.filename;
     }
     if (options['header']) {
-        sendRequest(options);
+        sendRPCRequest();
     }
     else {
         var useragent = localStorage.getItem('useragent') || navigator.userAgent;
@@ -88,15 +90,15 @@ function downWithAria2(session) {
             chrome.cookies.getAll({'url': session.referer}, (cookies) => {
                 options.header.push('Referer: ' + session.referer);
                 options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
-                sendRequest(options);
+                sendRPCRequest();
             });
         }
         else {
-            sendRequest(options);
+            sendRPCRequest();
         }
     }
 
-    function sendRequest(options) {
+    function sendRPCRequest() {
         jsonRPCRequest(
             {'method': 'aria2.addUri', 'url': session.url, 'options': options},
             (result) => {
@@ -137,16 +139,16 @@ function bytesToFileSize(bytes) {
     if (bytes >= 0 && bytes < 1024) {
         return bytes + ' B';
     }
-    if (bytes >= 1024 && bytes < 1048576) {
+    else if (bytes >= 1024 && bytes < 1048576) {
         return (bytes / 10.24 + 1 | 0) / 100 + ' KB';
     }
-    if (bytes >= 1048576 && bytes < 1073741824) {
+    else if (bytes >= 1048576 && bytes < 1073741824) {
         return (bytes / 10485.76 + 1 | 0) / 100 + ' MB';
     }
-    if (bytes >= 1073741824 && bytes < 1099511627776) {
+    else if (bytes >= 1073741824 && bytes < 1099511627776) {
         return (bytes / 10737418.24 + 1 | 0) / 100 + ' GB';
     }
-    if (bytes >= 1099511627776) {
+    else if (bytes >= 1099511627776) {
         return (bytes / 10995116277.76 + 1 | 0) / 100 + ' TB';
     }
 }
