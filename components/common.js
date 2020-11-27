@@ -26,10 +26,10 @@ function jsonRPCRequest(request, success, failure) {
     function createJSON(request) {
         var token = localStorage.getItem('token') || '';
         var json = {
-            'jsonrpc': 2.0,
-            'method': request.method,
-            'id': '',
-            'params': ['token:' + token]
+            jsonrpc: 2.0,
+            method: request.method,
+            id: '',
+            params: ['token:' + token]
         };
         if (request.gid) {
             json.params.push(request.gid);
