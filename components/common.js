@@ -104,7 +104,9 @@ function showNotification(title, message) {
         iconUrl: '/icons/icon48.png',
         message: message || ''
     };
-    chrome.notifications.create(id, notification, () => setTimeout(() => chrome.notifications.clear(id), 5000));
+    chrome.notifications.create(id, notification, () => {
+        setTimeout(() => chrome.notifications.clear(id), 5000);
+    });
 }
 
 function domainFromUrl(url) {
