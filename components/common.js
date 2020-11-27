@@ -29,9 +29,7 @@ function jsonRPCRequest(request, success, failure) {
             'jsonrpc': 2.0,
             'method': request.method,
             'id': '',
-            'params': [
-                'token:' + token
-            ]
+            'params': ['token:' + token]
         };
         if (request.gid) {
             json.params.push(request.gid);
@@ -80,35 +78,26 @@ function downWithAria2(session) {
     if (session.filename) {
         options['out'] = session.filename;
     }
-    if (options['header']) {
-        sendRPCRequest();
-    }
-    else {
+    if (!options['header']) {
         var useragent = localStorage.getItem('useragent') || navigator.userAgent;
         options['header'] = ['User-Agent: ' + useragent];
         if (session.referer) {
             chrome.cookies.getAll({'url': session.referer}, (cookies) => {
                 options.header.push('Referer: ' + session.referer);
                 options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
-                sendRPCRequest();
             });
-        }
-        else {
-            sendRPCRequest();
         }
     }
 
-    function sendRPCRequest() {
-        jsonRPCRequest(
-            {'method': 'aria2.addUri', 'url': session.url, 'options': options},
-            (result) => {
-                showNotification('Downloading', session.url);
-            },
-            (error, rpc) => {
-                showNotification(error, rpc || session.url);
-            }
-        );
-    }
+    jsonRPCRequest(
+        {'method': 'aria2.addUri', 'url': session.url, 'options': options},
+        (result) => {
+            showNotification('Downloading', session.url);
+        },
+        (error, rpc) => {
+            showNotification(error, rpc || session.url);
+        }
+    );
 }
 
 function showNotification(title, message) {
