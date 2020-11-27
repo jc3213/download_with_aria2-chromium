@@ -55,13 +55,10 @@ function printMainFrame() {
         (result) => {
             var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
             var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            var active = (result.numActive | 0);
-            var waiting = (result.numWaiting | 0);
-            var stopped = (result.numStopped | 0);
-            printTaskQueue(waiting, stopped);
-            document.getElementById('numActive').innerHTML = active;
-            document.getElementById('numWaiting').innerHTML = waiting;
-            document.getElementById('numStopped').innerHTML = stopped;
+            printTaskQueue((result.numWaiting | 0), (result.numStopped | 0));
+            document.getElementById('numActive').innerHTML = result.numActive;
+            document.getElementById('numWaiting').innerHTML = result.numWaiting;
+            document.getElementById('numStopped').innerHTML = result.numStopped;
             document.getElementById('downloadSpeed').innerHTML = downloadSpeed;
             document.getElementById('uploadSpeed').innerHTML = uploadSpeed;
             document.getElementById('queueTabs').style.display = 'block';
@@ -75,11 +72,11 @@ function printMainFrame() {
         }
     );
 
-    function printTaskQueue(globalWaiting, globalStopped) {
+    function printTaskQueue(numWaiting, numStopped) {
         jsonRPCRequest([
             {'method': 'aria2.tellActive'},
-            {'method': 'aria2.tellWaiting', 'index': [0, globalWaiting]},
-            {'method': 'aria2.tellStopped', 'index': [0, globalStopped]},
+            {'method': 'aria2.tellWaiting', 'index': [0, numWaiting]},
+            {'method': 'aria2.tellStopped', 'index': [0, numStopped]},
         ], (activeQueue, waitingQueue, stoppedQueue) => {
             var active = activeQueue ? activeQueue.map(item => printTaskInfo(item)) : [];
             var waiting = waitingQueue ? waitingQueue.map(item => printTaskInfo(item)) : [];
@@ -147,7 +144,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
     else if (element.id === 'retry_btn') {
         jsonRPCRequest([
                 {'method': 'aria2.getFiles', 'gid': gid},
-                {'method': 'aria2.getOption', 'gid': gid},
+                {'method': 'aria2.getOption', 'gid': gid}
             ], (files, options) => {
                 jsonRPCRequest({'method': 'aria2.removeDownloadResult', 'gid': gid}, () => {
                     downWithAria2({'url': files[0].uris[0].uri, 'options': options});
