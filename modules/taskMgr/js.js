@@ -63,8 +63,7 @@ document.getElementById('loadProxy').addEventListener('click', (event) => {
 });
 
 document.getElementById('taskName').addEventListener('click', (event) => {
-    window.parent.window.postMessage('taskMgrWindow');
-    clearInterval(taskManager);
+    parent.window.postMessage({id: 'taskMgrWindow'});
 });
 
 document.getElementById('taskFiles').addEventListener('click', (event) => {

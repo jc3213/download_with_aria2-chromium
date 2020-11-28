@@ -8,6 +8,5 @@ document.getElementById('submit_btn').addEventListener('click', (event) => {
     var referer = document.getElementById('taskReferer').value;
     var proxy = document.getElementById('setProxy').checked ? document.getElementById('taskProxy').value : '';
     var url = document.getElementById('taskBatch').value.split('\n').forEach(item => { if (item !== '') downWithAria2({'url': item, 'referer': referer, 'proxy': proxy}); });
-    document.body.style.display = 'none';
-    setTimeout(() => window.parent.window.postMessage('newTaskWindow'), 1000);
+    parent.window.postMessage({id: 'newTaskWindow', delay: 1000});
 });

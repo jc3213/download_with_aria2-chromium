@@ -1,6 +1,12 @@
 window.addEventListener('message', (event) => {
-    document.getElementById(event.data).remove();
-    modules.forEach(item => { if (item.id === event.data) document.getElementById(item.button).classList.remove('checked'); });
+    if (event.data.delay) {
+        document.getElementById(event.data.id).style.display = 'none';
+        setTimeout(() => document.getElementById(event.data.id).remove(), event.data.delay);
+    }
+    else {
+        document.getElementById(event.data.id).remove();
+    }
+    modules.forEach(item => { if (item.id === event.data.id) document.getElementById(item.button).classList.remove('checked'); });
 });
 
 var modules = [
