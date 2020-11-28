@@ -1,11 +1,6 @@
 window.addEventListener('message', (event) => {
-    if (event.data.delay) {
-        document.getElementById(event.data.id).style.display = 'none';
-        setTimeout(() => document.getElementById(event.data.id).remove(), event.data.delay);
-    }
-    else {
-        document.getElementById(event.data.id).remove();
-    }
+    document.getElementById(event.data.id).style.display = 'none';
+    setTimeout(() => document.getElementById(event.data.id).remove(), event.data.delay || 0);
     modules.forEach(item => { if (item.id === event.data.id) document.getElementById(item.button).classList.remove('checked'); });
 });
 
