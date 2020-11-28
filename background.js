@@ -16,7 +16,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         return;
     }
 
-    var session = {'url': item.finalUrl, 'filename': item.filename};
+    var session = {url: item.finalUrl, options: {'out': item.filename}};
     chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
         session.referer = item.referrer || tabs[0].url;
         session.domain = domainFromUrl(session.referer);

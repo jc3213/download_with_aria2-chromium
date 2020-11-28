@@ -67,34 +67,28 @@ function jsonRPCRequest(request, success, failure) {
 }
 
 function downWithAria2(session) {
-    if (session.options) {
+    var options = session.options || {};
+    if (Object.keys(options).length > 5) {
         return sendRPCRequest();
     }
-    session.options = {};
     var proxied = localStorage.getItem('proxied') || '';
-    if (session.proxy) {
-        session.options['all-proxy'] = session.proxy;
-    }
-    else if (proxied.includes(session.domain)) {
-        session.options['all-proxy'] = localStorage.getItem('allproxy') || '';
-    }
-    if (session.filename) {
-        session.options['out'] = session.filename;
+    if (!options['all-proxy'] && proxied.includes(session.domain)) {
+        options['all-proxy'] = localStorage.getItem('allproxy') || '';
     }
     var useragent = localStorage.getItem('useragent') || navigator.userAgent;
-    session.options['header'] = ['User-Agent: ' + useragent];
+    options['header'] = ['User-Agent: ' + useragent];
     if (!session.referer) {
         return sendRPCRequest();
     }
     chrome.cookies.getAll({'url': session.referer}, (cookies) => {
-        session.options.header.push('Referer: ' + session.referer);
-        session.options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
+        options.header.push('Referer: ' + session.referer);
+        options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
         sendRPCRequest();
     });
 
     function sendRPCRequest() {
         jsonRPCRequest(
-            {'method': 'aria2.addUri', 'url': session.url, 'options': session.options},
+            {'method': 'aria2.addUri', 'url': session.url, 'options': options},
             (result) => {
                 showNotification('Downloading', session.url);
             },
