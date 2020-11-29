@@ -80,7 +80,7 @@ function downWithAria2(session) {
     if (!session.referer) {
         return sendRPCRequest();
     }
-    chrome.cookies.getAll({'url': session.referer}, (cookies) => {
+    chrome.cookies.getAll({url: session.referer}, (cookies) => {
         options.header.push('Referer: ' + session.referer);
         options.header.push('Cookie: ' + cookies.map(item => item.name + '=' + item.value + ';').join(' '));
         sendRPCRequest();
