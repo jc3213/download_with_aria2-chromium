@@ -1,12 +1,14 @@
-var menuTabs = ['tabBasic', 'tabAdvanced', 'tabDownload'];
-var menuQueues = ['menuBasic', 'menuAdvanced', 'menuDownload'];
-menuTabs.forEach((item, index) => document.getElementById(item).addEventListener('click', (event) => toggleTabs(item, menuQueues[index])));
+var menuTabs = [
+    {button: 'tabBasic', queue: 'menuBasic'},
+    {button: 'tabAdvanced', queue: 'menuAdvanced'},
+    {button: 'tabDownload', queue: 'menuDownload'}
+];
+menuTabs.forEach(item => document.getElementById(item.button).addEventListener('click', (event) => toggleMenuTab(item)));
 
-function toggleTabs(active, activeTab) {
-    document.getElementById(active).classList.add('checked');
-    document.getElementById(activeTab).style.display = 'block';
-    menuTabs.forEach(item => { if (item !== active) document.getElementById(item).classList.remove('checked'); });
-    menuQueues.forEach(item => { if (item !== activeTab) document.getElementById(item).style.display = 'none'; });
+function toggleMenuTab(active) {
+    document.getElementById(active.button).classList.add('checked');
+    document.getElementById(active.queue).style.display = 'block';
+    menuTabs.forEach(item => { if (item.queue !== active.queue) {document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');} });
 }
 
 [
