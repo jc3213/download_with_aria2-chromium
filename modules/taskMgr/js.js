@@ -12,37 +12,39 @@ function printTaskDetails() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid: gid},
         (result) => {
-            var bittorrent = result.bittorrent;
             var complete = result.status === 'complete';
-            var taskUrl = bittorrent ?  '' : result.files[0].uris[0].uri;
-            var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
+            var taskUrl = result.bittorrent ? '' : result.files[0].uris[0].uri;
+            var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
             document.getElementById('taskName').innerHTML = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
             document.getElementById('optionDownload').disabled = complete;
-            document.getElementById('optionUpload').disabled = !bittorrent || complete;
-            document.getElementById('optionProxy').disabled = bittorrent || complete;
-            var taskFiles = result.files.map(item => printFileInfo(item, bittorrent));
+            document.getElementById('optionUpload').disabled = !result.bittorrent || complete;
+            document.getElementById('optionProxy').disabled = result.bittorrent || complete;
+            var taskFiles = result.files.map(item => printFileInfo(item));
             document.getElementById('taskFiles').innerHTML = '<table>' + taskFiles.join('') + '</table>';
         }
     );
 
-    function printFileInfo(info, bittorrent) {
-        var fileUrl = info.uris.length > 0 ? info.uris[0].uri : '';
-        var filename = (info.path || fileUrl).split('/').pop();
-        var filePath = info.path.replace(/\//g, '\\');
-        var fileSize = bytesToFileSize(info.length);
-        var fileRatio = ((info.completedLength / info.length * 10000 | 0) / 100).toString() + '%';
-        return '<tr uri="' + fileUrl + '"><td>' + info.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
+    function printFileInfo(file) {
+        var fileUrl = file.uris.length > 0 ? file.uris[0].uri : '';
+        var filename = (file.path || fileUrl).split('/').pop();
+        var filePath = file.path.replace(/\//g, '\\');
+        var fileSize = bytesToFileSize(file.length);
+        var fileRatio = ((file.completedLength / file.length * 10000 | 0) / 100).toString() + '%';
+        return '<tr uri="' + fileUrl + '"><td>' + file.index + '</td><td title="' + filePath + '">' + filename + '</td><td>' + fileSize + '</td><td>' + fileRatio + '</td></tr>';
     }
 }
 
-var taskOptions = ['optionDownload', 'optionUpload', 'optionProxy'];
-var optionsType = ['max-download-limit', 'max-upload-limit', 'all-proxy'];
-taskOptions.forEach((item, index) => document.getElementById(item).addEventListener('change', (event) => changeTaskOption(event.target.value, optionsType[index])));
+var taskOptions = [
+    {id: 'optionDownload', name: 'max-download-limit', value: '0'},
+    {id: 'optionUpload', name: 'max-upload-limit', value: '0'},
+    {id: 'optionProxy', name: 'all-proxy', value: '' }
+];
+taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(event.target.value, item.name, item.value)));
 
-function changeTaskOption(value, type, options) {
-    options = options || {};
-    options[type] = value;
+function changeTaskOption(value, name, initial) {
+    var options = {};
+    options[name] = value || initial;
     jsonRPCRequest({method: 'aria2.changeOption', gid: gid, options: options}, printTaskOption);
 }
 
@@ -50,7 +52,7 @@ function printTaskOption() {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid: gid},
         (result) => {
-            taskOptions.forEach((item, index) => { document.getElementById(item).value = result[optionsType[index]] || ''; });
+            taskOptions.forEach(item => { document.getElementById(item.id).value = result[item.name] || item.value; });
         }
     );
 }
