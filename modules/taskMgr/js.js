@@ -10,7 +10,7 @@ window.addEventListener('message', (event) => {
 
 function printTaskDetails() {
     jsonRPCRequest(
-        {'method': 'aria2.tellStatus', 'gid': gid},
+        {method: 'aria2.tellStatus', gid: gid},
         (result) => {
             var bittorrent = result.bittorrent;
             var complete = result.status === 'complete';
@@ -43,12 +43,12 @@ taskOptions.forEach((item, index) => document.getElementById(item).addEventListe
 function changeTaskOption(value, type, options) {
     options = options || {};
     options[type] = value;
-    jsonRPCRequest({'method': 'aria2.changeOption', 'gid': gid, 'options': options}, printTaskOption);
+    jsonRPCRequest({method: 'aria2.changeOption', gid: gid, options: options}, printTaskOption);
 }
 
 function printTaskOption() {
     jsonRPCRequest(
-        {'method': 'aria2.getOption', 'gid': gid},
+        {method: 'aria2.getOption', gid: gid},
         (result) => {
             taskOptions.forEach((item, index) => { document.getElementById(item).value = result[optionsType[index]] || ''; });
         }

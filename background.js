@@ -1,12 +1,12 @@
 chrome.contextMenus.create({
-    'title': chrome.i18n.getMessage('extension_name'),
-    'id': 'downwitharia2',
-    'contexts': ['link']
+    title: chrome.i18n.getMessage('extension_name'),
+    id: 'downwitharia2',
+    contexts: ['link']
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'downwitharia2') {
-        downWithAria2({'url': info.linkUrl, 'referer': tab.url, 'domain': domainFromUrl(tab.url)});
+        downWithAria2({url: info.linkUrl, referer: tab.url, domain: domainFromUrl(tab.url)});
     }
 });
 
@@ -43,7 +43,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
 
     function captureDownload() {
         chrome.downloads.cancel(item.id, () => {
-            chrome.downloads.erase({'id': item.id}, () => {
+            chrome.downloads.erase({id: item.id}, () => {
                 downWithAria2(session);
             });
         });
@@ -52,14 +52,14 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
 
 function displayActiveTaskNumber() {
     jsonRPCRequest(
-        {'method': 'aria2.getGlobalStat'},
+        {method: 'aria2.getGlobalStat'},
         (result) => {
             if (result.numActive !== '0') {
-                chrome.browserAction.setBadgeText({'text': result.numActive});
-                chrome.browserAction.setBadgeBackgroundColor({'color': '#3CC'});
+                chrome.browserAction.setBadgeText({text: result.numActive});
+                chrome.browserAction.setBadgeBackgroundColor({color: '#3CC'});
             }
             else {
-                chrome.browserAction.setBadgeText({'text': ''});
+                chrome.browserAction.setBadgeText({text: ''});
             }
         }
     )

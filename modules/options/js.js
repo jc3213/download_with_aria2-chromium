@@ -10,17 +10,17 @@ function toggleTabs(active, activeTab) {
 }
 
 [
-    {'id': 'jsonrpc', 'value': 'http://localhost:6800/jsonrpc'},
-    {'id': 'token', 'value': ''},
-    {'id': 'useragent', 'value': navigator.userAgent},
-    {'id': 'allproxy', 'value': ''},
-    {'id': 'proxied', 'value': ''},
-    {'id': 'capture', 'value': 0, 'load': captureFilters, 'change': captureFilters},
-    {'id': 'sizeEntry', 'value': 0, 'change': calcFileSize},
-    {'id': 'sizeUnit', 'value': 2, 'change': calcFileSize},
-    {'id': 'fileExt', 'value': ''},
-    {'id': 'monitored', 'value': ''},
-    {'id': 'ignored', 'value': ''}
+    {id: 'jsonrpc', value: 'http://localhost:6800/jsonrpc'},
+    {id: 'token', value: ''},
+    {id: 'useragent', value: navigator.userAgent},
+    {id: 'allproxy', value: ''},
+    {id: 'proxied', value: ''},
+    {id: 'capture', value: 0, load: captureFilters, change: captureFilters},
+    {id: 'sizeEntry', value: 0, change: calcFileSize},
+    {id: 'sizeUnit', value: 2, change: calcFileSize},
+    {id: 'fileExt', value: ''},
+    {id: 'monitored', value: ''},
+    {id: 'ignored', value: ''}
 ].forEach(item => initiateOption(item));
 
 function initiateOption(menuitem) {
@@ -43,7 +43,7 @@ function initiateOption(menuitem) {
 
 document.getElementById('aria2Check').addEventListener('click', (event) => {
     jsonRPCRequest(
-        {'method': 'aria2.getVersion'},
+        {method: 'aria2.getVersion'},
         (result) => {
             showNotification(window['warn_aria2_version'], result.version);
         },

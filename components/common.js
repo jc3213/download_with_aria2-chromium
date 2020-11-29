@@ -68,7 +68,7 @@ function jsonRPCRequest(request, success, failure) {
 
 function downWithAria2(session) {
     var options = session.options || {};
-    if (Object.keys(options).length > 5) {
+    if (session.bypass) {
         return sendRPCRequest();
     }
     var proxied = localStorage.getItem('proxied') || '';
@@ -88,7 +88,7 @@ function downWithAria2(session) {
 
     function sendRPCRequest() {
         jsonRPCRequest(
-            {'method': 'aria2.addUri', 'url': session.url, 'options': options},
+            {method: 'aria2.addUri', url: session.url, options: options},
             (result) => {
                 showNotification('Downloading', session.url);
             },
@@ -103,7 +103,7 @@ function showNotification(title, message) {
     var id = 'aria2_' + Date.now();
     var notification = {
         type: 'basic',
-        title: title,
+        title: title || 'Aria2 Response',
         iconUrl: '/icons/icon48.png',
         message: message || ''
     };
