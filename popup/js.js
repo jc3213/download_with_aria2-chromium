@@ -51,17 +51,21 @@ document.getElementById('purdge_btn').addEventListener('click', (event) => {
 });
 
 function printMainFrame() {
-    jsonRPCRequest(
-        {method: 'aria2.getGlobalStat'},
-        (result) => {
-            var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-            var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
-            printTaskQueue((result.numWaiting | 0), (result.numStopped | 0));
-            document.getElementById('numActive').innerHTML = result.numActive;
-            document.getElementById('numWaiting').innerHTML = result.numWaiting;
-            document.getElementById('numStopped').innerHTML = result.numStopped;
-            document.getElementById('downloadSpeed').innerHTML = downloadSpeed;
-            document.getElementById('uploadSpeed').innerHTML = uploadSpeed;
+    jsonRPCRequest([
+            {method: 'aria2.getGlobalStat'},
+            {method: 'aria2.tellActive'},
+            {method: 'aria2.tellWaiting', index: [0, 999]},
+            {method: 'aria2.tellStopped', index: [0, 999]}
+        ],
+        (global, active, waiting, stopped) => {
+            document.getElementById('activeQueue').innerHTML = active.map(item => printTaskInfo(item)).join('');
+            document.getElementById('waitingQueue').innerHTML = waiting.map(item => printTaskInfo(item)).join('');
+            document.getElementById('stoppedQueue').innerHTML = stopped.map(item => printTaskInfo(item)).join('');
+            document.getElementById('numActive').innerHTML = global.numActive;
+            document.getElementById('numWaiting').innerHTML = global.numWaiting;
+            document.getElementById('numStopped').innerHTML = global.numStopped;
+            document.getElementById('downloadSpeed').innerHTML = bytesToFileSize(global.downloadSpeed) + '/s';
+            document.getElementById('uploadSpeed').innerHTML = bytesToFileSize(global.uploadSpeed) + '/s';
             document.getElementById('queueTabs').style.display = 'block';
             document.getElementById('menuTop').style.display = 'block';
             document.getElementById('networkStatus').style.display = 'none';
@@ -73,61 +77,42 @@ function printMainFrame() {
         }
     );
 
-    function printTaskQueue(numWaiting, numStopped) {
-        jsonRPCRequest([
-            {method: 'aria2.tellActive'},
-            {method: 'aria2.tellWaiting', index: [0, numWaiting]},
-            {method: 'aria2.tellStopped', index: [0, numStopped]},
-        ], (activeQueue, waitingQueue, stoppedQueue) => {
-            var active = activeQueue ? activeQueue.map(item => printTaskInfo(item)) : [];
-            var waiting = waitingQueue ? waitingQueue.map(item => printTaskInfo(item)) : [];
-            var stopped = stoppedQueue ? stoppedQueue.map(item => printTaskInfo(item)) : [];
-            document.getElementById('activeQueue').innerHTML = active.join('');
-            document.getElementById('waitingQueue').innerHTML = waiting.join('');
-            document.getElementById('stoppedQueue').innerHTML = stopped.join('');
-        });
-    }
-
     function printTaskInfo(result) {
-        var bittorrent = result.bittorrent;
-        var gid = result.gid;
-        var status = result.status;
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
         var totalLength = bytesToFileSize(result.totalLength);
-        var connections = bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
+        var connections = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
         var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-        var upload_show = bittorrent ? 'inline-block' : 'none';
+        var uploadShow = result.bittorrent ? 'inline-block' : 'none';
         var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-        var taskUrl = bittorrent ?  '' : result.files[0].uris[0].uri;
-        var taskName = bittorrent && bittorrent.info ? bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-        var retryButton = !bittorrent && ['error', 'removed'].includes(status) ? 'inline-block' : 'none';
-        return  '<div class="taskInfo" gid="' + gid + '" status="' + status + '">'
+        var taskUrl = result.bittorrent ?  '' : result.files[0].uris[0].uri;
+        var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
+        var retryButton = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
+        return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
         +               '<span>🖥️ ' + completedLength + '</span><span>⏲️ ' + estimatedTime + '</span><span>📦 ' + totalLength + '</span>'
-        +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + upload_show + '">⏫ ' + uploadSpeed + '</span>'
+        +               '<span>📶 ' + connections + '</span><span>⏬ ' + downloadSpeed + '</span><span style="display: ' + uploadShow + '">⏫ ' + uploadSpeed + '</span>'
         +           '</div>'
         +           '<div class="taskMenu">'
         +               '<span class="button" id="remove_btn">❌</span>'
         +               '<span class="button" id="invest_btn">🔍</span>'
         +               '<span class="button" id="retry_btn" style="display: ' + retryButton + '">🌌</span>'
         +           '</div>'
-        +           '<div id="fancybar" class="' + status + 'Box">'
-        +               '<div id="fancybar" class="' + status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
+        +           '<div id="fancybar" class="' + result.status + 'Box">'
+        +               '<div id="fancybar" class="' + result.status + '" style="width: ' + completeRatio + '">' + completeRatio + '</div>'
         +           '</div>'
         +       '</div>';
     }
 }
 
 document.getElementById('taskQueue').addEventListener('click', (event) => {
-    var element = event.target;
     var status;
     var gid;
-    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(element)) { gid = item.getAttribute('gid'); status = item.getAttribute('status'); } });
+    document.querySelectorAll('div.taskInfo').forEach(item => { if (item.contains(event.target)) { gid = item.getAttribute('gid'); status = item.getAttribute('status'); } });
 
-    if (element.id === 'remove_btn') {
+    if (event.target.id === 'remove_btn') {
         if (['active', 'waiting', 'paused'].includes(status)) {
             var method = 'aria2.forceRemove';
         }
@@ -139,10 +124,10 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
         }
         jsonRPCRequest({method: method, gid: gid});
     }
-    else if (element.id === 'invest_btn') {
+    else if (event.target.id === 'invest_btn') {
         openModuleWindow({name: 'taskMgr', id: 'taskMgrWindow', load: (event) => event.target.contentWindow.postMessage(gid)});
     }
-    else if (element.id === 'retry_btn') {
+    else if (event.target.id === 'retry_btn') {
         jsonRPCRequest([
                 {method: 'aria2.getFiles', gid: gid},
                 {method: 'aria2.getOption', gid: gid}
@@ -153,7 +138,7 @@ document.getElementById('taskQueue').addEventListener('click', (event) => {
             }
         );
     }
-    else if (element.id === 'fancybar') {
+    else if (event.target.id === 'fancybar') {
         if (['active', 'waiting'].includes(status)) {
             var method = 'aria2.pause';
         }
