@@ -33,7 +33,7 @@ body > div:nth-child(n+2) {
 }
 
 #taskFiles {
-    height: calc(100% - 176px);
+    height: 260px;
     overflow-y: auto;
 }
 
