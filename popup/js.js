@@ -30,20 +30,20 @@ function openModuleWindow(module) {
     document.body.appendChild(iframe);
 }
 
-var taskQueues = [
+var queueTabs = [
     {button: 'active_btn', queue: 'activeQueue'},
     {button: 'waiting_btn', queue: 'waitingQueue'},
     {button: 'stopped_btn', queue: 'stoppedQueue'}
 ];
-taskQueues.forEach(item => document.getElementById(item.button).addEventListener('click', (event) => toggleTaskQueue(event.target, item)));
+queueTabs.forEach(item => document.getElementById(item.button).addEventListener('click', (event) => toggleTaskQueue(event.target, item)));
 
 function toggleTaskQueue(element, active) {
     if (element.classList.contains('checked')) {
-        taskQueues.forEach(item => { if (item.queue !== active.queue) document.getElementById(item.queue).style.display = 'block'; });
+        queueTabs.forEach(item => { if (item.queue !== active.queue) document.getElementById(item.queue).style.display = 'block'; });
     }
     else {
         document.getElementById(active.queue).style.display = 'block';
-        taskQueues.forEach(item => { if (item.queue !== active.queue) document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');});
+        queueTabs.forEach(item => { if (item.queue !== active.queue) document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');});
     }
     element.classList.toggle('checked');
 }
