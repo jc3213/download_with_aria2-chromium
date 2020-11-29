@@ -43,7 +43,7 @@ function toggleTaskQueue(element, active) {
     }
     else {
         document.getElementById(active.queue).style.display = 'block';
-        queueTabs.forEach(item => { if (item.queue !== active.queue) document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');});
+        queueTabs.forEach(item => { if (item.queue !== active.queue) {document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');} });
     }
     element.classList.toggle('checked');
 }
