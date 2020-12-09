@@ -35,7 +35,7 @@ function jsonRPCRequest(request, success, failure) {
             json.params.push(request.gid);
         }
         if (request.index) {
-            json.params = json.params.concat(request.index);
+            json.params = [...json.params, ...request.index];
         }
         if (request.url) {
             json.params.push([santilizeLoop(request.url)]);
