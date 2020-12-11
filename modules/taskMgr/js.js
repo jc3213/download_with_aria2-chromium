@@ -12,9 +12,17 @@ function printTaskDetails() {
     jsonRPCRequest(
         {method: 'aria2.tellStatus', gid: gid},
         (result) => {
+            if (result.bittorrent) {
+                var taskUrl = '';
+                if (result.bittorrent.info) {
+                    var taskName = result.bittorrent.info.name;
+                }
+            }
+            else {
+                taskUrl = result.files[0].uris[0].uri;
+            }
+            taskName = taskName || result.files[0].path.split('/').pop() || taskUrl;
             var complete = result.status === 'complete';
-            var taskUrl = result.bittorrent ? '' : result.files[0].uris[0].uri;
-            var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
             document.getElementById('taskName').innerHTML = taskName;
             document.getElementById('taskName').className = 'button title ' + result.status;
             document.getElementById('optionDownload').disabled = complete;

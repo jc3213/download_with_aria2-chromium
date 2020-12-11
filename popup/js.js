@@ -83,14 +83,27 @@ function printMainFrame() {
         var completedLength = bytesToFileSize(result.completedLength);
         var estimatedTime = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
         var totalLength = bytesToFileSize(result.totalLength);
-        var connections = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
         var downloadSpeed = bytesToFileSize(result.downloadSpeed) + '/s';
-        var uploadShow = result.bittorrent ? 'inline-block' : 'none';
         var uploadSpeed = bytesToFileSize(result.uploadSpeed) + '/s';
         var completeRatio = ((result.completedLength / result.totalLength * 10000 | 0) / 100).toString() + '%';
-        var taskUrl = result.bittorrent ?  '' : result.files[0].uris[0].uri;
-        var taskName = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.split('/').pop() || taskUrl;
-        var retryButton = !result.bittorrent && ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
+        if (result.bittorrent) {
+            var connections = result.numSeeders + ' (' + result.connections + ')';
+            var uploadShow = 'inline-block';
+            var taskUrl = '';
+            if (result.bittorrent.info) {
+                var taskName = result.bittorrent.info.name;
+            }
+        }
+        else {
+            connections = result.connections;
+            uploadShow = 'none';
+            taskUrl = result.files[0].uris[0].uri;
+            if (['error', 'removed'].includes(result.status)) {
+                var retryButton = 'inline-block';
+            }
+        }
+        taskName = taskName || result.files[0].path.split('/').pop() || taskUrl
+        retryButton = retryButton || 'none';
         return  '<div class="taskInfo" gid="' + result.gid + '" status="' + result.status + '">'
         +           '<div class="taskBody">'
         +               '<div class="title">' + taskName + '</div>'
