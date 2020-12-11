@@ -1,12 +1,14 @@
-document.getElementById('tabBasic').addEventListener('click', (event) => toggleMenuQueue(event.target, document.getElementById('menuBasic')));
-document.getElementById('tabAdvanced').addEventListener('click', (event) => toggleMenuQueue(event.target, document.getElementById('menuAdvanced')));
-document.getElementById('tabDownload').addEventListener('click', (event) => toggleMenuQueue(event.target, document.getElementById('menuDownload')));
+var menuTabs = [
+    {button: 'tabBasic', queue: 'menuBasic'},
+    {button: 'tabAdvanced', queue: 'menuAdvanced'},
+    {button: 'tabDownload', queue: 'menuDownload'}
+];
+menuTabs.forEach(item => document.getElementById(item.button).addEventListener('click', (event) => toggleMenuTab(item)));
 
-function toggleMenuQueue(tab, queue) {
-    tab.classList.add('checked');
-    queue.style.display = 'block';
-    document.querySelectorAll('.tab').forEach(item => { if (item !== tab) item.classList.remove('checked'); });
-    document.querySelectorAll('.menu').forEach(item => { if (item !== queue) item.style.display = 'none'; });
+function toggleMenuTab(active) {
+    document.getElementById(active.button).classList.add('checked');
+    document.getElementById(active.queue).style.display = 'block';
+    menuTabs.forEach(item => { if (item.queue !== active.queue) {document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');} });
 }
 
 [
