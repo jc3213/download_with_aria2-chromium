@@ -147,6 +147,8 @@ function numberToTimeFormat(number) {
     var hours = (number / 3600 - days * 24 | 0);
     var minutes = (number / 60 - days * 1440 - hours * 60 | 0);
     var seconds = (number - days * 86400 - hours * 3600 - minutes * 60 | 0);
-    var time = days + '<sub>d</sub>' + hours + '<sub>h</sub>' + minutes + '<sub>m</sub>' + seconds + '<sub>s</sub>';
-    return time.replace(/(0<sub>[dhm]<\/sub>)*/, '');
+    return (days > 0 ? days + '<sub>d</sub>' : '')
+    +      (hours > 0 ? hours + '<sub>h</sub>' : '')
+    +      (minutes > 0 ? minutes + '<sub>m</sub>' : '')
+    +      seconds + '<sub>s</sub>';
 }
