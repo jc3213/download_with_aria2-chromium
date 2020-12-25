@@ -1,17 +1,14 @@
 chrome.contextMenus.create({
     title: chrome.i18n.getMessage('extension_name'),
     id: 'downwitharia2',
-    contexts: ['link']
-});
-
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === 'downwitharia2') {
+    contexts: ['link'],
+    onclick: (info, tab) => {
         downWithAria2({url: info.linkUrl, referer: tab.url, domain: domainFromUrl(tab.url)});
     }
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    var capture = (localStorage.getItem('capture') | 0);
+    var capture = localStorage.getItem('capture') | 0;
     if (capture === 0 || item.finalUrl.match(/^(blob|data)/)) {
         return;
     }
@@ -35,7 +32,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         if (fileExt.includes(item.filename.split('.').pop())) {
             return captureDownload();
         }
-        var fileSize = (localStorage.getItem('fileSize') | 0);
+        var fileSize = localStorage.getItem('fileSize') | 0;
         if (fileSize !== 0 && item.fileSize >= fileSize) {
             return captureDownload();
         }

@@ -103,7 +103,7 @@ function showNotification(title, message) {
     var id = 'aria2_' + Date.now();
     var notification = {
         type: 'basic',
-        title: title,
+        title: title || 'Aria2 Response',
         iconUrl: '/icons/icon48.png',
         message: message || ''
     };
