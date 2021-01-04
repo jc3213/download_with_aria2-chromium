@@ -11,33 +11,29 @@ menuTabs.forEach(active => {
     });
 });
 
-[
-    {id: 'jsonrpc', value: 'http://localhost:6800/jsonrpc'},
-    {id: 'token', value: ''},
-    {id: 'useragent', value: navigator.userAgent},
-    {id: 'allproxy', value: ''},
-    {id: 'proxied', value: ''},
-    {id: 'capture', value: 0, change: captureFilters, onload: captureFilters},
-    {id: 'sizeEntry', value: 0, change: calcFileSize},
-    {id: 'sizeUnit', value: 2, change: calcFileSize},
-    {id: 'fileExt', value: ''},
-    {id: 'monitored', value: ''},
-    {id: 'ignored', value: ''}
-].forEach(property => {
-    var menu = document.getElementById(property.id);
-    if (property.change) {
-        menu.addEventListener('change', property.change);
-    }
-    if (property.checkbox) {
-        menu.setAttribute('checked', JSON.parse(localStorage.getItem(property.id)) || property.value);
-        menu.addEventListener('change', (event) => localStorage.setItem(property.id, event.target.checked));
-    }
-    else {
-        menu.value = localStorage.getItem(property.id) || property.value;
-        menu.addEventListener('change', (event) => localStorage.setItem(property.id, event.target.value));
-    }
-    if (typeof property.onload === 'function') {
-        property.onload();
+var settings = new Map([
+    ['jsonrpc'],
+    ['token'],
+    ['useragent'],
+    ['allproxy'],
+    ['proxied'],
+    ['capture', {change: captureFilters, onload: captureFilters}],
+    ['sizeEntry', {change: calcFileSize}],
+    ['sizeUnit', {change: calcFileSize}],
+    ['fileExt'],
+    ['monitored'],
+    ['ignored']
+]).forEach((property, id) => {
+    var menu = document.getElementById(id);
+    menu.value = localStorage[id];
+    menu.addEventListener('change', (event) => { localStorage[id] = event.target.value; });
+    if (property) {
+        if (property.change) {
+            menu.addEventListener('change', property.change);
+        }
+        if (typeof property.onload === 'function') {
+            property.onload();
+        }
     }
 });
 
@@ -77,5 +73,5 @@ function calcFileSize(event) {
     var number = document.getElementById('sizeEntry').value | 0;
     var unit = document.getElementById('sizeUnit').value | 0;
     var size = number * Math.pow(1024, unit);
-    localStorage.setItem('fileSize', size);
+    localStorage['fileSize'] = size;
 }

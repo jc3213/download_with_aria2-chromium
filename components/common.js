@@ -1,5 +1,5 @@
 function jsonRPCRequest(request, success, failure) {
-    var rpc = localStorage.getItem('jsonrpc') || 'http://localhost:6800/jsonrpc';
+    var rpc = localStorage['jsonrpc'];
     var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
     var xhr = new XMLHttpRequest();
     xhr.open('POST', rpc, true);
@@ -24,12 +24,11 @@ function jsonRPCRequest(request, success, failure) {
     xhr.send(JSON.stringify(json));
 
     function createJSON(request) {
-        var token = localStorage.getItem('token') || '';
         var json = {
             jsonrpc: 2.0,
             method: request.method,
             id: '',
-            params: ['token:' + token]
+            params: ['token:' + localStorage['token']]
         };
         if (request.gid) {
             json.params.push(request.gid);
@@ -71,11 +70,11 @@ function downWithAria2(session) {
     if (session.bypass) {
         return sendRPCRequest();
     }
-    var proxied = localStorage.getItem('proxied') || '';
+    var proxied = localStorage['proxied'];
     if (!options['all-proxy'] && proxied.includes(session.domain)) {
-        options['all-proxy'] = localStorage.getItem('allproxy') || '';
+        options['all-proxy'] = localStorage['allproxy'];
     }
-    var useragent = localStorage.getItem('useragent') || navigator.userAgent;
+    var useragent = localStorage['useragent'];
     options['header'] = ['User-Agent: ' + useragent];
     if (!session.referer) {
         return sendRPCRequest();

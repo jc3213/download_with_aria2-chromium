@@ -7,8 +7,25 @@ chrome.contextMenus.create({
     }
 });
 
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason === 'install' || details.previousVersion < '2.4000') {
+        localStorage['jsonrpc'] = 'http://localhost:6800/jsonrpc';
+        localStorage['token'] = '';
+        localStorage['useragent'] = navigator.userAgent;
+        localStorage['allproxy'] = '';
+        localStorage['proxied'] = '';
+        localStorage['capture'] = '0';
+        localStorage['sizeUnit'] = '2';
+        localStorage['sizeEntry'] = '0';
+        localStorage['fileSize'] = '0';
+        localStorage['fileExt'] = '';
+        localStorage['monitored'] = '';
+        localStorage['ignored'] = '';
+    }
+});
+
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    var capture = localStorage.getItem('capture') | 0;
+    var capture = localStorage['capture'] | 0;
     if (capture === 0 || item.finalUrl.match(/^(blob|data)/)) {
         return;
     }
@@ -20,19 +37,19 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         if (capture === 2) {
             return captureDownload();
         }
-        var ignored = localStorage.getItem('ignored') || '';
+        var ignored = localStorage['ignored'];
         if (ignored.includes(session.domain)) {
             return;
         }
-        var monitored = localStorage.getItem('monitored') || '';
+        var monitored = localStorage['monitored'];
         if (monitored.includes(session.domain)) {
             return captureDownload();
         }
-        var fileExt = localStorage.getItem('fileExt') || '';
+        var fileExt = localStorage['fileExt'];
         if (fileExt.includes(item.filename.split('.').pop())) {
             return captureDownload();
         }
-        var fileSize = localStorage.getItem('fileSize') | 0;
+        var fileSize = localStorage['fileSize'] | 0;
         if (fileSize !== 0 && item.fileSize >= fileSize) {
             return captureDownload();
         }
