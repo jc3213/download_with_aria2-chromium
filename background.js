@@ -11,17 +11,13 @@ chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason === 'install' || details.previousVersion < '2.4000') {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', '/components/options.json', true);
-        xhr.onload = () => {
-           var storage = JSON.parse(xhr.response);
-           restoreSettings(storage, details.reason);
-        };
+        xhr.onload = () => restoreSettings(xhr.response, details.reason);
         xhr.send();
     }
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    var capture = localStorage['capture'] | 0;
-    if (capture === 0 || item.finalUrl.match(/^(blob|data)/)) {
+    if (localStorage['capture'] === '0' || item.finalUrl.match(/^(blob|data)/)) {
         return;
     }
 
@@ -29,23 +25,19 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.referer = item.referrer || tabs[0].url;
         session.domain = domainFromUrl(session.referer);
-        if (capture === 2) {
+        if (localStorage['capture'] === '2') {
             return captureDownload();
         }
-        var ignored = localStorage['ignored'];
-        if (ignored.includes(session.domain)) {
+        if (localStorage['ignored'].includes(session.domain)) {
             return;
         }
-        var monitored = localStorage['monitored'];
-        if (monitored.includes(session.domain)) {
+        if (localStorage['monitored'].includes(session.domain)) {
             return captureDownload();
         }
-        var fileExt = localStorage['fileExt'];
-        if (fileExt.includes(item.filename.split('.').pop())) {
+        if (localStorage['fileExt'].includes(item.filename.split('.').pop())) {
             return captureDownload();
         }
-        var fileSize = localStorage['fileSize'] | 0;
-        if (fileSize !== 0 && item.fileSize >= fileSize) {
+        if (item.fileSize >= localStorage['fileSize']) {
             return captureDownload();
         }
     });

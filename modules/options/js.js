@@ -11,6 +11,20 @@ menuTabs.forEach(active => {
     });
 });
 
+document.getElementById('export').addEventListener('click', (event) => {
+    var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
+    chrome.downloads.download({ url:URL.createObjectURL(blob), saveAs: true });
+});
+
+document.getElementById('import').addEventListener('click', (event) => document.getElementById('reader').click());
+
+document.getElementById('reader').addEventListener('change', (event) => {
+    var reader = new FileReader();
+    reader.readAsText(event.target.files[0]);
+    reader.onload = () => restoreSettings(reader.result, 'install');
+    location.reload();
+});
+
 [
     'jsonrpc',
     'token',

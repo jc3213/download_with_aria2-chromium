@@ -67,8 +67,7 @@ function printTaskOption() {
 
 document.getElementById('loadProxy').addEventListener('click', (event) => {
     if (!document.getElementById('optionProxy').disabled) {
-        var allproxy = localStorage.getItem('allproxy') || '';
-        changeTaskOption(allproxy, 'all-proxy');
+        changeTaskOption(localStorage['allproxy'], 'all-proxy');
     }
 });
 

@@ -70,12 +70,10 @@ function downWithAria2(session) {
     if (session.bypass) {
         return sendRPCRequest();
     }
-    var proxied = localStorage['proxied'];
-    if (!options['all-proxy'] && proxied.includes(session.domain)) {
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.domain)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    var useragent = localStorage['useragent'];
-    options['header'] = ['User-Agent: ' + useragent];
+    options['header'] = ['User-Agent: ' + localStorage['useragent']];
     if (!session.referer) {
         return sendRPCRequest();
     }
@@ -111,15 +109,16 @@ function showNotification(title, message) {
     });
 }
 
-function restoreSettings(storage, reason) {
-    Object.keys(storage).forEach(key => {
+function restoreSettings(json, reason) {
+    var options = JSON.parse(json);
+    Object.keys(options).forEach(key => {
         if (reason === 'update') {
             if (localStorage[key] !== undefined) {
-                localStorage[key] = storage[key];
+                localStorage[key] = options[key];
             }
         }
         else if (reason === 'install') {
-            localStorage[key] = storage[key];
+            localStorage[key] = options[key];
         }
     });
 };
