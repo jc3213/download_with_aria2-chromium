@@ -43,7 +43,7 @@ document.getElementById('reader').addEventListener('change', (event) => {
     menu.addEventListener('change', (event) => { localStorage[id] = event.target.value; });
 });
 
-document.getElementById('aria2Check').addEventListener('click', (event) => {
+document.getElementById('verify').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.getVersion'},
         (result) => {
@@ -55,7 +55,7 @@ document.getElementById('aria2Check').addEventListener('click', (event) => {
     );
 });
 
-document.getElementById('aria2Show').addEventListener('click', (event) => {
+document.getElementById('insight').addEventListener('click', (event) => {
     if (event.target.classList.contains('checked')) {
         document.getElementById('token').setAttribute('type', 'password');
     }
