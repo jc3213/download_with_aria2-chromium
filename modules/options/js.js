@@ -73,8 +73,7 @@ document.getElementById('sizeEntry').addEventListener('change', calcFileSize);
 document.getElementById('sizeUnit').addEventListener('change', calcFileSize);
 
 function captureFilters() {
-    var capture = document.getElementById('capture').value | 0;
-    if (capture === 1) {
+    if (localStorage['capture'] === '1') {
         document.getElementById('captureFilters').style.display = 'block';
     }
     else {
@@ -83,8 +82,7 @@ function captureFilters() {
 }
 
 function calcFileSize(event) {
-    var number = document.getElementById('sizeEntry').value | 0;
-    var unit = document.getElementById('sizeUnit').value | 0;
-    var size = number * Math.pow(1024, unit);
-    localStorage['fileSize'] = size;
+    var number = localStorage['sizeEntry'] | 0;
+    var unit = localStorage['sizeUnit'] | 0;
+    localStorage['fileSize'] = number * Math.pow(1024, unit);
 }
