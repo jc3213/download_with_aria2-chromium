@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener((details) => {
         xhr.open('GET', '/components/options.json', true);
         xhr.onload = () => {
            var storage = JSON.parse(xhr.response);
-           restoreSettings(storage);
+           restoreSettings(storage, details.reason);
         };
         xhr.send();
     }

@@ -111,9 +111,14 @@ function showNotification(title, message) {
     });
 }
 
-function restoreSettings(storage) {
+function restoreSettings(storage, reason) {
     Object.keys(storage).forEach(key => {
-        if (localStorage[key] === null) {
+        if (reason === 'update') {
+            if (localStorage[key] !== undefined) {
+                localStorage[key] = storage[key];
+            }
+        }
+        else if (reason === 'install') {
             localStorage[key] = storage[key];
         }
     });

@@ -11,30 +11,22 @@ menuTabs.forEach(active => {
     });
 });
 
-var settings = new Map([
-    ['jsonrpc'],
-    ['token'],
-    ['useragent'],
-    ['allproxy'],
-    ['proxied'],
-    ['capture', {change: captureFilters, onload: captureFilters}],
-    ['sizeEntry', {change: calcFileSize}],
-    ['sizeUnit', {change: calcFileSize}],
-    ['fileExt'],
-    ['monitored'],
-    ['ignored']
-]).forEach((property, id) => {
+[
+    'jsonrpc',
+    'token',
+    'useragent',
+    'allproxy',
+    'proxied',
+    'capture',
+    'sizeEntry',
+    'sizeUnit',
+    'fileExt',
+    'monitored',
+    'ignored'
+].forEach(id => {
     var menu = document.getElementById(id);
     menu.value = localStorage[id];
     menu.addEventListener('change', (event) => { localStorage[id] = event.target.value; });
-    if (property) {
-        if (property.change) {
-            menu.addEventListener('change', property.change);
-        }
-        if (typeof property.onload === 'function') {
-            property.onload();
-        }
-    }
 });
 
 document.getElementById('aria2Check').addEventListener('click', (event) => {
@@ -58,6 +50,13 @@ document.getElementById('aria2Show').addEventListener('click', (event) => {
     }
     event.target.classList.toggle('checked');
 });
+
+document.getElementById('capture').addEventListener('change', captureFilters);
+captureFilters();
+
+document.getElementById('sizeEntry').addEventListener('change', calcFileSize);
+
+document.getElementById('sizeUnit').addEventListener('change', calcFileSize);
 
 function captureFilters() {
     var capture = document.getElementById('capture').value | 0;
