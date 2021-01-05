@@ -111,6 +111,14 @@ function showNotification(title, message) {
     });
 }
 
+function restoreSettings(storage) {
+    Object.keys(storage).forEach(key => {
+        if (localStorage[key] === null) {
+            localStorage[key] = storage[key];
+        }
+    });
+};
+
 function domainFromUrl(url) {
     var host = url.split(/[\/:]+/)[1];
     var temp = host.split('.').reverse();

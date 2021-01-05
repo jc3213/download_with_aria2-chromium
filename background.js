@@ -9,18 +9,13 @@ chrome.contextMenus.create({
 
 chrome.runtime.onInstalled.addListener((details) => {
     if (details.reason === 'install' || details.previousVersion < '2.4000') {
-        localStorage['jsonrpc'] = 'http://localhost:6800/jsonrpc';
-        localStorage['token'] = '';
-        localStorage['useragent'] = navigator.userAgent;
-        localStorage['allproxy'] = '';
-        localStorage['proxied'] = '';
-        localStorage['capture'] = '0';
-        localStorage['sizeUnit'] = '2';
-        localStorage['sizeEntry'] = '0';
-        localStorage['fileSize'] = '0';
-        localStorage['fileExt'] = '';
-        localStorage['monitored'] = '';
-        localStorage['ignored'] = '';
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/components/options.json', true);
+        xhr.onload = () => {
+           var storage = JSON.parse(xhr.response);
+           restoreSettings(storage);
+        };
+        xhr.send();
     }
 });
 
