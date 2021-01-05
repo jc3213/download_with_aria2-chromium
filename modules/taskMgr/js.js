@@ -48,9 +48,9 @@ var taskOptions = [
     {id: 'optionUpload', name: 'max-upload-limit', value: '0'},
     {id: 'optionProxy', name: 'all-proxy', value: '' }
 ];
-taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(event.target.value, item.name, item.value)));
+taskOptions.forEach(item => document.getElementById(item.id).addEventListener('change', (event) => changeTaskOption(item.name, event.target.value, item.value)));
 
-function changeTaskOption(value, name, initial) {
+function changeTaskOption(name, value, initial) {
     var options = {};
     options[name] = value || initial;
     jsonRPCRequest({method: 'aria2.changeOption', gid: gid, options: options}, printTaskOption);
@@ -67,7 +67,7 @@ function printTaskOption() {
 
 document.getElementById('loadProxy').addEventListener('click', (event) => {
     if (!document.getElementById('optionProxy').disabled) {
-        changeTaskOption(localStorage['allproxy'], 'all-proxy');
+        changeTaskOption('all-proxy', localStorage['allproxy']);
     }
 });
 
@@ -80,6 +80,6 @@ document.getElementById('taskFiles').addEventListener('click', (event) => {
     document.querySelectorAll('tr').forEach((item, index)=> { if (item.contains(event.target)) uri = item.getAttribute('uri'); });
     if (uri) {
         navigator.clipboard.writeText(uri);
-        showNotification(chrome.i18n.getMessage('warn_url_copied'), uri);
+        showNotification(browser.i18n.getMessage('warn_url_copied'), uri);
     }
 });

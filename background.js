@@ -37,7 +37,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         if (localStorage['fileExt'].includes(item.filename.split('.').pop())) {
             return captureDownload();
         }
-        if (item.fileSize >= localStorage['fileSize']) {
+        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
             return captureDownload();
         }
     });
