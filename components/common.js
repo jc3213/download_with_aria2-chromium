@@ -70,7 +70,7 @@ function downWithAria2(session) {
     if (session.bypass) {
         return sendRPCRequest();
     }
-    if (!options['all-proxy'] && localStorage['proxied'].includes(session.domain)) {
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.host)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
     options['header'] = ['User-Agent: ' + localStorage['useragent']];
@@ -122,15 +122,6 @@ function restoreSettings(json, reason) {
         }
     });
 };
-
-function domainFromUrl(url) {
-    var host = url.split(/[\/:]+/)[1];
-    var temp = host.split('.').reverse();
-    if (['com', 'net', 'org', 'edu', 'gov', 'co'].includes(temp[1])) {
-        return temp[2] + '.' + temp[1] + '.' + temp[0];
-    }
-    return temp[1] + '.' + temp[0];
-}
 
 function bytesToFileSize(bytes) {
     if (bytes < 1024) {
