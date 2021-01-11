@@ -60,7 +60,7 @@
         "message": "需代理主机名"
     },
     "option_proxied_desc": {
-        "message": "为来自列表中的主机名的下载自动添加 \"all-proxy\" 选项"
+        "message": "为来自列表中的主机名的下载添加 \"all-proxy\" 选项"
     },
     "option_capture": {
         "message": "抓取"
