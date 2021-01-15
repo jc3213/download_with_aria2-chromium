@@ -87,5 +87,5 @@ function captureFilters() {
 function calcFileSize() {
     var number = localStorage['sizeEntry'] | 0;
     var unit = localStorage['sizeUnit'] | 0;
-    localStorage['fileSize'] = number * Math.pow(1024, unit);
+    localStorage['fileSize'] = number * 1024 ** unit;
 }
