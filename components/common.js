@@ -65,9 +65,8 @@ function jsonRPCRequest(request, success, failure) {
     }
 }
 
-function downWithAria2(session) {
-    var options = session.options || {};
-    if (session.bypass) {
+function downWithAria2(session, options = {}, bypass = false) {
+    if (bypass) {
         return sendRPCRequest();
     }
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.host)) {
