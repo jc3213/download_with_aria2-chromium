@@ -108,18 +108,9 @@ function showNotification(title, message) {
     });
 }
 
-function restoreSettings(json, reason) {
-    var options = JSON.parse(json);
-    Object.keys(options).forEach(key => {
-        if (reason === 'update') {
-            if (localStorage[key] === undefined) {
-                localStorage[key] = options[key];
-            }
-        }
-        else if (reason === 'install') {
-            localStorage[key] = options[key];
-        }
-    });
+function restoreSettings(textJSON) {
+    var options = JSON.parse(textJSON);
+    Object.keys(options).forEach(key => { localStorage[key] = options[key]; });
 };
 
 function bytesToFileSize(bytes) {

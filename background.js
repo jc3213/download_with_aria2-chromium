@@ -8,10 +8,10 @@ chrome.contextMenus.create({
 });
 
 chrome.runtime.onInstalled.addListener((details) => {
-    if (details.reason === 'install' || details.previousVersion < '2.4000') {
+    if (details.reason === 'install') {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', '/components/options.json', true);
-        xhr.onload = () => restoreSettings(xhr.response, details.reason);
+        xhr.onload = () => restoreSettings(xhr.response);
         xhr.send();
     }
 });
