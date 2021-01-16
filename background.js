@@ -22,7 +22,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     }
 
     var session = {url: item.finalUrl};
-    var options = {'out': item.filename};
+    var out = item.filename;
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.referer = item.referrer || tabs[0].url;
         session.host = new URL(session.referer).hostname;
@@ -46,7 +46,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     function captureDownload() {
         chrome.downloads.cancel(item.id, () => {
             chrome.downloads.erase({id: item.id}, () => {
-                downWithAria2(session, options);
+                downWithAria2(session, {out});
             });
         });
     }
