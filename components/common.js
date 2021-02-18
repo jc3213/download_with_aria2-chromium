@@ -153,5 +153,5 @@ function numberToTimeFormat(number) {
         time += minutes + '<sub>m</sub>';
         number -= minutes * 60;
     }
-    return time += (number | 0) + '<sub>s</sub>';
+    return time + (number | 0) + '<sub>s</sub>';
 }
