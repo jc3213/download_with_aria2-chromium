@@ -110,9 +110,14 @@ function showNotification(title, message) {
     });
 }
 
-function restoreSettings(textJSON) {
+function restoreSettings(textJSON, update = true) {
     var options = JSON.parse(textJSON);
-    Object.keys(options).forEach(key => { localStorage[key] = options[key]; });
+    Object.keys(options).forEach(key => {
+        if (localStorage[key] && update) {
+            return;
+        }
+        localStorage[key] = options[key];
+    });
 };
 
 function bytesToFileSize(bytes) {

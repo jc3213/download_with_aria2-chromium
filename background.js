@@ -8,12 +8,10 @@ chrome.contextMenus.create({
 });
 
 chrome.runtime.onInstalled.addListener((details) => {
-    if (details.reason === 'install') {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/components/options.json', true);
-        xhr.onload = () => restoreSettings(xhr.response);
-        xhr.send();
-    }
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/components/options.json', true);
+    xhr.onload = () => restoreSettings(xhr.response);
+    xhr.send();
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
