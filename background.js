@@ -15,7 +15,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
-    if (localStorage['capture'] === '0' || item.finalUrl.match(/^(blob|data)/)) {
+    if (localStorage['capture'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
     }
 
@@ -32,7 +32,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         if (localStorage['monitored'].includes(session.host)) {
             return captureDownload();
         }
-        if (localStorage['fileExt'].includes(item.filename.split('.').pop())) {
+        if (localStorage['fileExt'].includes(item.filename.match(/\.(.+)$/)[1])) {
             return captureDownload();
         }
         if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
