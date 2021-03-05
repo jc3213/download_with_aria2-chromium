@@ -8,8 +8,8 @@
 
 # Differences
 
-<b>Easy-to-access options</b>
 <details>
+    <summary><b>Easy-to-access options</b></summary>
     Ability to check for <b>JSONRPC URI</b> and <b>Secret Token</b>
     <br>Ability to modify <b>User Agent</b> for downloads
     <br>Ability to set <b>all-proxy</b> option for downloads automatically
@@ -17,8 +17,8 @@
     <br>Priority of filters: <b>Ignored Domains</b> > <b>Monitored Domains</b> > <b>File Extensions</b> > <b>File Sizes</b>
 </details>
 
-<b>Built-in task managers</b>
 <details>
+    <summary><b>Built-in task managers</b></summary>
     Indicate concurrent <b>active</b> download numbers over extension icon
     <br>Show <b>Active</b>, <b>Waiting</b>, <b>Stopped</b> task counts
     <br>Ability to filter task queues based on their status
@@ -31,8 +31,8 @@
     <br>Click <b>🌌</b> to restart <b>removed</b> or <b>error</b> non-bittorrent downloads
 </details>
 
-<b>Better performance and accessbility</b>
 <details>
+    <summary><b>Better performance and accessbility</b></summary>
     Pure <b>DOM</b> codes
     <br>Modularization Design
     <br>Native i18n supports
@@ -41,51 +41,51 @@
 
 # How to use
 
-<b>Popup.html</b>
 <details>
-    <b>Top Menu</b>
+    <summary><b>Popup.html</b></summary>
     <details>
-        <b>Tabs with Status</b>
-            <details>
+        <summary><b>Top Menu</b></summary>
+        <details>
+            <summary><b>Tabs with Status</b></summary>
             <b>Active</b> - Filter only active downloads on <b>Task Manager</b>
             <br><b>Waiting</b> - Filter downloads those are paused or waiting in queue
             <br><b>Stopped</b> - Filter downloads stopped or completed
-            </details>
+        </details>
         <b>New</b> - Toggle the <b>New Task Window</b>
         <br><b>Purdge</b> - Purdge all downloads that are completed or stopped
     </details>
-    <b>Task Manager</b>
     <details>
+        <summary><b>Task Manager</b></summary>
         <b>❌</b> - Stop downloading task or remove stopped task from <b>Task Manager</b>
         <br><b>🔍</b> - Click to show current <b>Task Details</b>
         <br><b>🌌️</b> - Restart <b>removed</b> or <b>error</b> non-bittorrent downloads
         <br><b>Progress Bar</b> - Click to pause or unpause targeted download
     </details>
-    <b>Bottom Menu</b>
     <details>
+        <summary><b>Bottom Menu</b></summary>
         <b>Download Speed</b> - Global download speed
         <br><b>Upload Speed</b> - Global updload speed
         <br><b>Option</b> - Open <b>Options Window</b>
     </details>
 </details>
 
-<b>Options Window</b>
 <details>
-    <b>Basic</b>
+    <summary><b>Options Window</b></summary>
     <details>
+        <summary><b>Basic</b></summary>
         <b>JSONRPC URI</b> - Url of your Aria2 jsonrpc
         <br><b>Secret Token</b> - Secret token of your Aria2 jsonrpc
     </details>
-    <b>Advanced</b>
     <details>
+        <summary><b>Advanced</b></summary>
         <b>User Agent</b> - You can modified user agent for every download
         <br><b>All Proxy</b> - Url of http or https protocol proxy services
         <br><b>Domains over Proxy</b> - Domains that needs a proxy service to download (auto-proxy profile)
     </details>
-    <b>Download</b>
     <details>
-        <b>Capture</b> - Ability to capture downloads from browser
+        <summary><b>Download</b></summary>
         <details>
+            <summary><b>Capture</b> - Ability to capture downloads from browser</summary>
             <b>File Size</b> - Filter downloads based on file size
             <br><b>File Extensions</b> - Filter downloads based on file extensions
             <br><b>Monitored Domains</b> - Capture downloads from listed domains
@@ -94,20 +94,20 @@
     </details>
 </details>
 
-<b>New Task Window</b>
 <details>
+    <summary><b>New Task Window</b></summary>
     <b>Referer</b> - Change the referer of current download session
     <br><b>Download Url</b> - Input the urls of current download session
-    <br><b>Use Proxy</b>
     <details>
+        <summary><b>Use Proxy</b></summary>
         <b>checkbox</b> - Add <b>all-proxy</b> option to current download session (Only once)
         <br><b>textarea</b> - Change proxy service of current download session (Only once)
     </details>
     <b>Submit</b> - Create new download session with information provided
 </details>
 
-<b>Task Manager Window</b>
 <details>
+    <summary><b>Task Manager Window</b></summary>
     <b>Task Name</b> - Click to close <b>Task Details</b> window
     <br><b>Max Download Speed</b> - Ability to limit the max download speed of current download
     <br><b>Max Upload Speed</b> - Ability to limit the max upload speed of current download
