@@ -34,7 +34,7 @@ body > div:nth-child(n+2) {
     width: 78%;
 }
 
-#all-proxy {
+div > input {
     width: calc(100% - 85px);
 }
 
@@ -52,6 +52,14 @@ td {
     border: 1px outset #CCC;
     padding: 5px;
     vertical-align: middle;
+}
+
+#taskUris {
+    margin-top: 15px;
+}
+
+#taskUris div {
+    margin-bottom: 5px;
 }
 
 #taskUris tr:active {
