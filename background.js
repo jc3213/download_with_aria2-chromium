@@ -10,7 +10,9 @@ chrome.contextMenus.create({
 chrome.runtime.onInstalled.addListener((details) => {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/components/options.json', true);
-    xhr.onload = () => restoreSettings(xhr.response);
+    xhr.onload = () => {
+        restoreSettings(xhr.response);
+    };
     xhr.send();
 });
 

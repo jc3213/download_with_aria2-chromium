@@ -25,13 +25,14 @@ body > div:nth-child(n+2) {
 }
 
 .dual .detail {
-    margin-left: 5px;
-    padding: 1px 5px;
+    width: 50%;
+    display: inline-block;
+    padding: 3px
 }
 
 .dual input {
     text-align: right;
-    width: 78%;
+    width: 25%;
 }
 
 div > input {

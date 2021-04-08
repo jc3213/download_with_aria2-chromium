@@ -88,7 +88,9 @@ function showNotification(title, message) {
         message: message || ''
     };
     chrome.notifications.create(id, notification, () => {
-        setTimeout(() => chrome.notifications.clear(id), 5000);
+        setTimeout(() => {
+            chrome.notifications.clear(id);
+        }, 5000);
     });
 }
 

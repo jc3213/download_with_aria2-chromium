@@ -7,7 +7,12 @@ menuTabs.forEach(active => {
     document.getElementById(active.button).addEventListener('click', (event) => {
         document.getElementById(active.button).classList.add('checked');
         document.getElementById(active.queue).style.display = 'block';
-        menuTabs.forEach(item => { if (item.queue !== active.queue) {document.getElementById(item.queue).style.display = 'none'; document.getElementById(item.button).classList.remove('checked');} });
+        menuTabs.forEach(item => {
+            if (item.queue !== active.queue) {
+                document.getElementById(item.queue).style.display = 'none';
+                document.getElementById(item.button).classList.remove('checked');
+            }
+        });
     });
 });
 
@@ -19,7 +24,9 @@ document.querySelector('#export').addEventListener('click', (event) => {
     saver.click();
 });
 
-document.querySelector('#import').addEventListener('click', (event) => document.querySelector('#reader').click());
+document.querySelector('#import').addEventListener('click', (event) => {
+    document.querySelector('#reader').click();
+});
 
 document.querySelector('#reader').addEventListener('change', (event) => {
     var reader = new FileReader();
@@ -45,7 +52,9 @@ document.querySelector('#reader').addEventListener('change', (event) => {
 ].forEach(id => {
     var menu = document.getElementById(id);
     menu.value = localStorage[id];
-    menu.addEventListener('change', (event) => { localStorage[id] = event.target.value; });
+    menu.addEventListener('change', (event) => {
+        localStorage[id] = event.target.value;
+    });
 });
 
 document.querySelector('#verify').addEventListener('click', (event) => {
