@@ -101,9 +101,12 @@ document.querySelector('#taskName').addEventListener('click', (event) => {
 });
 
 document.querySelector('#taskUris').addEventListener('click', (event) => {
-    var url = event.target.innerText;
-    navigator.clipboard.writeText(url);
-    showNotification(chrome.i18n.getMessage('warn_url_copied'), url);
+    if (event.ctrlKey) {
+        jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
+    }
+    else {
+        navigator.clipboard.writeText(event.target.innerText);
+    }
 });
 
 document.querySelector('#taskAddUri > span').addEventListener('click', (event) => {
