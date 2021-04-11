@@ -59,7 +59,7 @@ td {
 }
 
 #taskUris {
-    max-height: 220px;
+    max-height: 215px;
 }
 
 #taskUris tr:active {
@@ -70,8 +70,8 @@ td {
     text-align: left;
 }
 
-#taskAddUri span {
-    font-size: 14px;
+#taskAddUri {
+    padding: 1px;
 }
 
 #taskFiles {
