@@ -51,10 +51,12 @@ function printTaskManager() {
     function printTaskUris(uris) {
         var uriInfo = '<table>';
         var url = [];
+        var index = 1
         uris.forEach(uri => {
-            if (uri.status === 'used' && !url.includes(uri.uri)) {
+            if (!url.includes(uri.uri)) {
+                var status = uri.status === 'used' ? 'active' : 'waiting';
                 url.push(uri.uri);
-                uriInfo += '<tr><td>' + uri.uri + '</td></tr>';
+                uriInfo += '<tr><td class="' + status + '">' + uri.uri + '</td></tr>';
             }
         });
         return uriInfo + '</table>';
