@@ -38,6 +38,10 @@ function jsonRPCRequest(request, success, failure) {
             params.shift();
             params.push(1, [], [request.add]);
         }
+        if (request.remove) {
+            params.shift();
+            params.push(1, [request.remove], []);
+        }
         if (request.options) {
             params.push(request.options);
         }
