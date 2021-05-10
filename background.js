@@ -23,31 +23,34 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
 
     var session = {url: item.finalUrl, filename: item.filename};
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        session.referer = item.referrer || tabs[0].url;
+        session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
         session.host = new URL(session.referer).hostname;
-        if (localStorage['capture'] === '2') {
-            return captureDownload();
-        }
-        if (localStorage['ignored'].includes(session.host)) {
-            return;
-        }
-        if (localStorage['monitored'].includes(session.host)) {
-            return captureDownload();
-        }
-        if (localStorage['fileExt'].includes(item.filename.match(/[^\.]+$/)[0])) {
-            return captureDownload();
-        }
-        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
-            return captureDownload();
+        if (captureFilterWorker()) {
+            chrome.downloads.cancel(item.id, () => {
+                chrome.downloads.erase({id: item.id}, () => {
+                    downWithAria2(session);
+                });
+            });
         }
     });
 
-    function captureDownload() {
-        chrome.downloads.cancel(item.id, () => {
-            chrome.downloads.erase({id: item.id}, () => {
-                downWithAria2(session);
-            });
-        });
+    function captureFilterWorker() {
+        if (localStorage['capture'] === '2') {
+            return true;
+        }
+        if (localStorage['ignored'].includes(session.host)) {
+            return false;
+        }
+        if (localStorage['monitored'].includes(session.host)) {
+            return true;
+        }
+        if (localStorage['fileExt'].includes(item.filename.match(/[^\.]+$/)[0])) {
+            return true;
+        }
+        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
+            return true;
+        }
+        return false;
     }
 });
 
