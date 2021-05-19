@@ -62,7 +62,7 @@ function printTaskManager() {
     }
 }
 
-document.querySelectorAll('div.option > input').forEach(option => {
+document.querySelectorAll('.option > [id]').forEach(option => {
     option.addEventListener('change', (event) => {
         changeTaskOption(option.id, event.target.value || option.getAttribute('default'));
     });
@@ -77,7 +77,7 @@ function printTaskOption() {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {
-            document.querySelectorAll('div.options > input').forEach(option => {
+            document.querySelectorAll('.option > [id]').forEach(option => {
                 option.value = options[option.id] || option.getAttribute('default');
             });
         }

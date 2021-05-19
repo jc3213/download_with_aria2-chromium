@@ -1,16 +1,14 @@
-var menuTabs = [
-    {button: 'tabBasic', queue: 'menuBasic'},
-    {button: 'tabAdvanced', queue: 'menuAdvanced'},
-    {button: 'tabDownload', queue: 'menuDownload'}
-];
-menuTabs.forEach(active => {
-    document.getElementById(active.button).addEventListener('click', (event) => {
-        document.getElementById(active.button).classList.add('checked');
-        document.getElementById(active.queue).style.display = 'block';
-        menuTabs.forEach(item => {
-            if (item.queue !== active.queue) {
-                document.getElementById(item.queue).style.display = 'none';
-                document.getElementById(item.button).classList.remove('checked');
+document.querySelectorAll('span.tab').forEach(tab => {
+    tab.addEventListener('click', (event) => {
+        document.querySelectorAll('div[tab]').forEach(body => {
+            var tabId = body.getAttribute('tab');
+            if (tabId === tab.id) {
+                tab.classList.add('checked');
+                body.style.display = 'block';
+            }
+            else {
+                body.style.display = 'none';
+                document.getElementById(tabId).classList.remove('checked');
             }
         });
     });
@@ -37,23 +35,10 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     };
 });
 
-[
-    'jsonrpc',
-    'token',
-    'useragent',
-    'allproxy',
-    'proxied',
-    'capture',
-    'sizeEntry',
-    'sizeUnit',
-    'fileExt',
-    'monitored',
-    'ignored'
-].forEach(id => {
-    var menu = document.getElementById(id);
-    menu.value = localStorage[id];
+document.querySelectorAll('.option > [id]').forEach(menu => {
+    menu.value = localStorage[menu.id];
     menu.addEventListener('change', (event) => {
-        localStorage[id] = event.target.value;
+        localStorage[menu.id] = event.target.value;
     });
 });
 
