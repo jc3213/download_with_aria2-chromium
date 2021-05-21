@@ -225,7 +225,7 @@
         "message": "下载文件夹"
     },
     "aria2_adv_dir_desc": {
-        "message": "设置用于 aria2 下载的文件夹"
+        "message": "设置用于保存下载文件的文件夹"
     },
     "aria2_max_task": {
         "message": "最大任务数"
@@ -237,12 +237,12 @@
         "message": "全局下载速度"
     },
     "aria2_max_download_desc": {
-        "message": "设置所有 aria2 下载的所能达到的最大下载速度"
+        "message": "设置所有进行中的任务所能达到的最大下载速度"
     },
     "aria2_max_upload": {
         "message": "全局上传速度"
     },
     "aria2_max_upload_desc": {
-        "message": "设置所有 aria2 下载的所能达到的最大上传速度"
+        "message": "设置所有进行中的任务所能达到的最大上传速度"
     }
 }

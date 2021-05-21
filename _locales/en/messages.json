@@ -225,7 +225,7 @@
         "message": "Download Directory"
     },
     "aria2_adv_dir_desc": {
-        "message": "Set the directory for aria2 downloads"
+        "message": "Set the directory where the files are saved"
     },
     "aria2_max_task": {
         "message": "Max Concurrent Tasks"
@@ -237,12 +237,12 @@
         "message": "Global Download Speed"
     },
     "aria2_max_download_desc": {
-        "message": "Set the maximum download speed for all aria2 tasks"
+        "message": "Set the maximum download speed for all concurrent tasks"
     },
     "aria2_max_upload": {
         "message": "Global Upload Speed"
     },
     "aria2_max_upload_desc": {
-        "message": "Set the maximum upload speed for all aria2 tasks"
+        "message": "Set the maximum upload speed for all concurrent tasks"
     }
 }
