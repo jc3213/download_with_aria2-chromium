@@ -78,7 +78,7 @@ function downWithAria2(session, options = {}, bypass = false) {
         jsonRPCRequest(
             {method: 'aria2.addUri', url, options},
             (result) => {
-                showNotification('Downloading', url.join('\n'));
+                showNotification(chrome.i18n.getMessage('warn_download'), url.join('\n'));
             },
             (error, rpc) => {
                 showNotification(error, rpc || url.join('\n'));
