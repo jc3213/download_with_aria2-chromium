@@ -162,87 +162,87 @@
         "message": "BitTorrent"
     },
     "aria2_advanced": {
-        "message": "Advanced"
+        "message": "高级"
     },
     "aria2_back": {
-        "message": "Back"
+        "message": "返回"
     },
     "aria2_http_retry": {
-        "message": "Max Retries"
+        "message": "重试次数"
     },
     "aria2_http_retry_desc": {
-        "message": "Set max numbers of retry"
+        "message": "设置最大重试次数"
     },
     "aria2_http_wait": {
-        "message": "Retry Wait"
+        "message": "重试间隔"
     },
     "aria2_http_wait_desc": {
-        "message": "Set the interval time between retries"
+        "message": "设置两次重试之间的间隔 (秒)"
     },
     "aria2_http_split": {
-        "message": "Connections"
+        "message": "线程数"
     },
     "aria2_http_split_desc": {
-        "message": "Set the max connections of each download"
+        "message": "设置每个任务的最大线程数量"
     },
     "aria2_http_size": {
-        "message": "Section Size"
+        "message": "线程容量"
     },
     "aria2_http_size_desc": {
-        "message": "Set the minimum size for each connection"
+        "message": "设置每个线程的最小容量"
     },
     "aria2_bt_port": {
-        "message": "Listening Port"
+        "message": "监听端口"
     },
     "aria2_bt_port_desc": {
-        "message": "Set the listening port for DHT and UDP tracker"
+        "message": "设置与 DHT 以及 UDP 服务器交互的端口"
     },
     "aria2_bt_peers": {
-        "message": "Max Peers"
+        "message": "最大连接数"
     },
     "aria2_bt_peers_desc": {
-        "message": "Set the maximum peers of each torrent"
+        "message": "设置每个 BT 任务的最大连接数"
     },
     "aria2_bt_remove": {
-        "message": "Remove Unselected Files"
+        "message": "删除未选定文件"
     },
     "aria2_bt_remove_desc": {
-        "message": "Remove the unselected files when bittorrent download is completed"
+        "message": "当 BT 任务完成后删除未被选定的文件"
     },
     "aria2_bt_ratio": {
-        "message": "Seed Ratio"
+        "message": "分享率"
     },
     "aria2_bt_ratio_desc": {
-        "message": "Set the share ratio for bittorrent"
+        "message": "设置每个 BT 任务的分享率"
     },
     "aria2_bt_seed": {
-        "message": "Seed Time"
+        "message": "分享时间"
     },
     "aria2_bt_seed_desc": {
-        "message": "Set the time (minutes) of seeding"
+        "message": "设置每个 BT 任务的分享时间 (分)"
     },
     "aria2_adv_dir": {
-        "message": "Download Directory"
+        "message": "下载文件夹"
     },
     "aria2_adv_dir_desc": {
-        "message": "Set the directory for aria2 downloads"
+        "message": "设置用于 aria2 下载的文件夹"
     },
     "aria2_max_task": {
-        "message": "Maximum Tasks"
+        "message": "最大任务数"
     },
     "aria2_max_task_desc": {
-        "message": "Set the maximum number of concurrent tasks"
+        "message": "设置可同时进行的最大任务数"
     },
     "aria2_max_download": {
-        "message": "Global Download Speed"
+        "message": "全局下载速度"
     },
     "aria2_max_download_desc": {
-        "message": "Set the maximum download speed for all aria2 tasks"
+        "message": "设置所有 aria2 下载的所能达到的最大下载速度"
     },
     "aria2_max_upload": {
-        "message": "Global Upload Speed"
+        "message": "全局上传速度"
     },
     "aria2_max_upload_desc": {
-        "message": "Set the maximum upload speed for all aria2 tasks"
+        "message": "设置所有 aria2 下载的所能达到的最大上传速度"
     }
 }

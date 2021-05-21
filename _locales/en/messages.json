@@ -54,7 +54,7 @@
         "message": "Customize user agent to bypass the restrictions of some websites"
     },
     "option_allproxy": {
-        "message": "All Proxy"
+        "message": "Proxy Server"
     },
     "option_allproxy_desc": {
         "message": "Setting server for \"all-proxy\" option"
@@ -171,13 +171,13 @@
         "message": "Max Retries"
     },
     "aria2_http_retry_desc": {
-        "message": "Set max numbers of retry"
+        "message": "Set maximum number of retries"
     },
     "aria2_http_wait": {
-        "message": "Wait to Retry"
+        "message": "Retry Interval"
     },
     "aria2_http_wait_desc": {
-        "message": "Set the interval time between retries"
+        "message": "Set the interval time between retries (SEC)"
     },
     "aria2_http_split": {
         "message": "Sections"
@@ -207,19 +207,19 @@
         "message": "Remove Unselected Files"
     },
     "aria2_bt_remove_desc": {
-        "message": "Remove the unselected files when bittorrent download is completed"
+        "message": "Remove the unselected files when bittorrent is completed"
     },
     "aria2_bt_ratio": {
         "message": "Seeding Ratio"
     },
     "aria2_bt_ratio_desc": {
-        "message": "Set the share ratio for bittorrent"
+        "message": "Set the share ratio of each torrent"
     },
     "aria2_bt_seed": {
         "message": "Seeding Time"
     },
     "aria2_bt_seed_desc": {
-        "message": "Set the time (minutes) of seeding"
+        "message": "Set the share time of each torrent (MIN)"
     },
     "aria2_adv_dir": {
         "message": "Download Directory"
@@ -228,7 +228,7 @@
         "message": "Set the directory for aria2 downloads"
     },
     "aria2_max_task": {
-        "message": "Maximum Tasks"
+        "message": "Max Concurrent Tasks"
     },
     "aria2_max_task_desc": {
         "message": "Set the maximum number of concurrent tasks"
