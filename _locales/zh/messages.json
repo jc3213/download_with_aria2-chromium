@@ -5,6 +5,15 @@
     "extension_description": {
         "message": "基于 Chromium 浏览器的 Aria2 下载管理器"
     },
+    "common_default": {
+        "message": "默认"
+    },
+    "common_sample": {
+        "message": "样例"
+    },
+    "common_disabled": {
+        "message": "禁用"
+    },
     "option_basic": {
         "message": "基础"
     },
@@ -19,12 +28,6 @@
     },
     "option_import": {
         "message": "导入"
-    },
-    "option_default": {
-        "message": "默认"
-    },
-    "option_disabled": {
-        "message": "禁用"
     },
     "option_always": {
         "message": "总是"
@@ -152,7 +155,94 @@
     "task_upload_desc": {
         "message": "通过\"max-upload-limit\"选项限制最大上传速度"
     },
-    "warn_aria2_version": {
-        "message": "Aria2版本"
+    "aria2_http": {
+        "message": "HTTP/FTP"
+    },
+    "aria2_bittorrent": {
+        "message": "BitTorrent"
+    },
+    "aria2_advanced": {
+        "message": "Advanced"
+    },
+    "aria2_back": {
+        "message": "Back"
+    },
+    "aria2_http_retry": {
+        "message": "Max Retries"
+    },
+    "aria2_http_retry_desc": {
+        "message": "Set max numbers of retry"
+    },
+    "aria2_http_wait": {
+        "message": "Retry Wait"
+    },
+    "aria2_http_wait_desc": {
+        "message": "Set the interval time between retries"
+    },
+    "aria2_http_split": {
+        "message": "Connections"
+    },
+    "aria2_http_split_desc": {
+        "message": "Set the max connections of each download"
+    },
+    "aria2_http_size": {
+        "message": "Section Size"
+    },
+    "aria2_http_size_desc": {
+        "message": "Set the minimum size for each connection"
+    },
+    "aria2_bt_port": {
+        "message": "Listening Port"
+    },
+    "aria2_bt_port_desc": {
+        "message": "Set the listening port for DHT and UDP tracker"
+    },
+    "aria2_bt_peers": {
+        "message": "Max Peers"
+    },
+    "aria2_bt_peers_desc": {
+        "message": "Set the maximum peers of each torrent"
+    },
+    "aria2_bt_remove": {
+        "message": "Remove Unselected Files"
+    },
+    "aria2_bt_remove_desc": {
+        "message": "Remove the unselected files when bittorrent download is completed"
+    },
+    "aria2_bt_ratio": {
+        "message": "Seed Ratio"
+    },
+    "aria2_bt_ratio_desc": {
+        "message": "Set the share ratio for bittorrent"
+    },
+    "aria2_bt_seed": {
+        "message": "Seed Time"
+    },
+    "aria2_bt_seed_desc": {
+        "message": "Set the time (minutes) of seeding"
+    },
+    "aria2_adv_dir": {
+        "message": "Download Directory"
+    },
+    "aria2_adv_dir_desc": {
+        "message": "Set the directory for aria2 downloads"
+    },
+    "aria2_max_task": {
+        "message": "Maximum Tasks"
+    },
+    "aria2_max_task_desc": {
+        "message": "Set the maximum number of concurrent tasks"
+    },
+    "aria2_max_download": {
+        "message": "Global Download Speed"
+    },
+    "aria2_max_download_desc": {
+        "message": "Set the maximum download speed for all aria2 tasks"
+    },
+    "aria2_max_upload": {
+        "message": "Global Upload Speed"
+    },
+    "aria2_max_upload_desc": {
+        "message": "Set the maximum upload speed for all aria2 tasks"
     }
 }
