@@ -44,7 +44,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         if (localStorage['monitored'].includes(session.host)) {
             return true;
         }
-        if (localStorage['fileExt'].includes(item.filename.match(/[^\.]+$/)[0])) {
+        if (localStorage['fileExt'].includes(item.filename.slice(item.filename.lastIndexOf('.') + 1).toLowerCase())) {
             return true;
         }
         if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
