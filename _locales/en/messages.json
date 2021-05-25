@@ -14,14 +14,14 @@
     "common_disabled": {
         "message": "Disabled"
     },
+    "common_advanced": {
+        "message": "Advanced"
+    },
     "warn_download": {
         "message": "Aria2 Download"
     },
     "option_basic": {
         "message": "Basic"
-    },
-    "option_advanced": {
-        "message": "Advanced"
     },
     "option_download": {
         "message": "Download"
@@ -163,9 +163,6 @@
     },
     "aria2_bittorrent": {
         "message": "BitTorrent"
-    },
-    "aria2_advanced": {
-        "message": "Advanced"
     },
     "aria2_back": {
         "message": "Back"

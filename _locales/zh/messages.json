@@ -14,14 +14,14 @@
     "common_disabled": {
         "message": "禁用"
     },
+    "common_advanced": {
+        "message": "高级"
+    },
     "warn_download": {
         "message": "Aria2 开始下载"
     },
     "option_basic": {
         "message": "基础"
-    },
-    "option_advanced": {
-        "message": "高级"
     },
     "option_download": {
         "message": "下载"
@@ -163,9 +163,6 @@
     },
     "aria2_bittorrent": {
         "message": "BitTorrent"
-    },
-    "aria2_advanced": {
-        "message": "高级"
     },
     "aria2_back": {
         "message": "返回"
