@@ -1,0 +1,11 @@
+#taskBatch {
+    height: 140px;
+}
+
+#all-proxy {
+    width: calc(100% - 55px);
+}
+
+#newTaskMenu {
+    text-align: center;
+}

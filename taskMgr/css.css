@@ -1,0 +1,76 @@
+.double .detail {
+    width: 40%;
+    display: inline-block;
+    padding: 3px
+}
+
+.double input {
+    text-align: right;
+    width: 35%;
+}
+
+#all-proxy {
+    width: calc(100% - 55px);
+}
+
+#taskName {
+    height: 45px;
+    overflow-y: hidden;
+}
+
+#taskOptions > div:nth-child(n+2) {
+    margin-top: 10px;
+}
+
+#taskUris, #taskAddUri, #taskFiles {
+    display: none;
+    overflow-y: auto;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+td {
+    border: 1px outset #CCC;
+    padding: 5px;
+    word-break: break-word;
+    vertical-align: middle;
+}
+
+#taskUris {
+    max-height: 215px;
+}
+
+#taskUris td:active, #taskFiles td:nth-child(1):active {
+    filter: opacity(60%);
+}
+
+#taskAddUri {
+    padding: 1px;
+}
+
+#taskFiles {
+    height: 260px;
+}
+
+#taskFiles td:nth-child(1) {
+    width: 20px;
+    text-align: center;
+}
+
+#taskFiles td:nth-child(2) {
+    width: calc(100% - 140px);
+}
+
+#taskFiles td:nth-child(3) {
+    width: 70px;
+    text-align: center;
+}
+
+#taskFiles td:nth-child(4) {
+    width: 50px;
+    text-align: center;
+}

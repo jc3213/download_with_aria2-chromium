@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/components/common.css">
+        <link rel="stylesheet" href="/components/status.css">
+        <link rel="stylesheet" href="/modules/common.css">
+        <link rel="stylesheet" href="css.css">
+    </head>
+    <body class="container">
+        <div id="taskName"></div>
+        <div id="taskOptions">
+            <div class="double">
+                <div title="task_download_desc" i18n_title>
+                    <div class="title" i18n>task_download</div>
+                    <div>
+                        <span id="download" class="detail active">0 B/S</span>
+                        <input id="max-download-limit" aria2 size type="text">
+                        B/s
+                    </div>
+                </div>
+                <div title="task_upload_desc" i18n_title>
+                    <div class="title" i18n>task_upload</div>
+                    <div>
+                        <span id="upload" class="detail complete">0 B/s</span>
+                        <input id="max-upload-limit" aria2 size type="text">
+                        B/s
+                    </div>
+                </div>
+            </div>
+            <div title="task_proxy_desc" i18n_title>
+                <div class="title" i18n>task_proxy</div>
+                <div>
+                    <input id="all-proxy" aria2 type="text">
+                    <span id="loadProxy" class="button">📷</span>
+                </div>
+            </div>
+        </div>
+        <div id="taskUris"></div>
+        <div id="taskAddUri">
+            <input type="text">
+            <span class="button">➕</span>
+        </div>
+        <div id="taskFiles"></div>
+    </body>
+    <script src="/components/common.js"></script>
+    <script src="/components/i18n.js"></script>
+    <script src="js.js"></script>
+</html>
