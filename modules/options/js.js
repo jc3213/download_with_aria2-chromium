@@ -48,14 +48,14 @@ document.querySelector('#insight').addEventListener('click', (event) => {
 document.querySelector('#capture').addEventListener('change', captureFilters);
 captureFilters();
 
-document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
-
-document.querySelector('#sizeUnit').addEventListener('change', calcFileSize);
-
 function captureFilters() {
     document.querySelector('#captureFilters').style.display = localStorage['capture'] === '1' ? 'block' : 'none';
     document.querySelector('#captureIgnored').style.display = localStorage['capture'] !== '0' ? 'block' : 'none';
 }
+
+document.querySelector('#sizeEntry').addEventListener('change', calcFileSize);
+
+document.querySelector('#sizeUnit').addEventListener('change', calcFileSize);
 
 function calcFileSize() {
     var number = localStorage['sizeEntry'] | 0;
