@@ -19,7 +19,7 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     };
 });
 
-document.querySelectorAll('[option]').forEach(option => {
+document.querySelectorAll('[local]').forEach(option => {
     option.value = localStorage[option.id];
     option.addEventListener('change', (event) => {
         localStorage[option.id] = option.value;
