@@ -1,9 +1,10 @@
 document.querySelector('#export').addEventListener('click', (event) => {
-    var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
-    var saver = document.querySelector('#saver');
-    saver.href = URL.createObjectURL(blob);
-    saver.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
-    saver.click();
+    exportSettings((blob) => {
+        var saver = document.querySelector('#saver');
+        saver.href = URL.createObjectURL(blob);
+        saver.download = 'downwitharia2_options-' + new Date().toLocaleString('ja').replace(/[\/\s:]/g, '_') + '.json';
+        saver.click();
+    });
 });
 
 document.querySelector('#import').addEventListener('click', (event) => {
@@ -14,7 +15,7 @@ document.querySelector('#reader').addEventListener('change', (event) => {
     var reader = new FileReader();
     reader.readAsText(event.target.files[0]);
     reader.onload = () => {
-        restoreSettings(reader.result, false);
+        importSettings(reader.result, false);
         location.reload();
     };
 });
