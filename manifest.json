@@ -1,19 +1,19 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "3.0.0",
+    "version": "2.5600",
     "manifest_version": 2,
     "minimum_chrome_version": "66",
     "permissions": [ "contextMenus", "downloads", "tabs", "cookies", "notifications", "<all_urls>" ],
     "default_locale" : "en",
     "background": {
-        "scripts": [ "/libs/core/jsonrpc.js", "/libs/options/manager.js", "/components/main.js" ]
+        "scripts": [ "/components/common.js", "/components/main.js" ]
     },
     "browser_action": {
         "default_icon": {
             "24": "/icons/icon24.png"
         },
-        "default_popup": "/components/popup/index.html"
+        "default_popup": "/popup/index.html"
     },
     "icons": {
         "128": "/icons/icon128.png",

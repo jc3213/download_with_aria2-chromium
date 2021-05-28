@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/components/common.css">
+        <link rel="stylesheet" href="/components/status.css">
+        <link rel="stylesheet" href="/libs/modules.css">
+        <link rel="stylesheet" href="css.css">
+    </head>
+    <body>
+        <div class="frame">
+            <div id="menuTop" class="offside">
+                <span id="newTask_btn" module="newTaskWindow" window="/modules/newTask/index.html" class="button" i18n>popup_new_button</span>
+                <span id="purdge_btn" class="button" i18n>popup_purge_button</span>
+            </div>
+            <div id="queueTabs">
+                <span id="active_btn" class="active tab" i18n>popup_active_button</span>
+                <span id="numActive">0</span>
+                <span id="waiting_btn" class="waiting tab" i18n>popup_waiting_button</span>
+                <span id="numWaiting">0</span>
+                <span id="stopped_btn" class="removed tab" i18n>popup_stopped_button</span>
+                <span id="numStopped">0</span>
+            </div>
+            <div id="networkStatus" class="error" style="display: none;"></div>
+        </div>
+        <hr>
+        <div id="taskQueue">
+            <div id="activeQueue" tab="active_btn"></div>
+            <div id="waitingQueue" tab="waiting_btn"></div>
+            <div id="stoppedQueue" tab="stopped_btn"></div>
+        </div>
+        <hr>
+        <div class="frame">
+            <div id="menuBottom" class="offside">
+                <span id="options_btn" module="optionsWindow" window="/modules/options/index.html" class="button" i18n>popup_options_button</span>
+            </div>
+            <div id="networkBandwidth">
+                <span class="active" i18n>popup_download</span>
+                <span id="downloadSpeed">0 B/s</span>
+                <span class="complete" i18n>popup_upload</span>
+                <span id="uploadSpeed">0 B/s</span>
+            </div>
+        </div>
+    </body>
+    <script src="/components/common.js"></script>
+    <script src="/components/i18n.js"></script>
+    <script src="/libs/modules.js"></script>
+    <script src="js.js"></script>
+</html>
