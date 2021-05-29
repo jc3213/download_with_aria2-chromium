@@ -28,9 +28,9 @@ function printTaskManager() {
             document.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
             document.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
             document.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-            document.querySelector('#max-download-limit').disabled = completed;
-            document.querySelector('#max-upload-limit').disabled = !result.bittorrent || completed;
-            document.querySelector('#all-proxy').disabled = completed;
+            document.querySelector('#max-download-limit').disabled = result.status === 'complete';
+            document.querySelector('#max-upload-limit').disabled = result.status === 'complete' || !result.bittorrent;
+            document.querySelector('#all-proxy').disabled = result.status === 'complete';
         }
     );
 
@@ -79,9 +79,11 @@ document.querySelectorAll('[task]').forEach(aria2 => {
 document.querySelectorAll('[swap]').forEach(swap => {
     var input = document.getElementById(swap.getAttribute('swap'));
     swap.addEventListener('click', (event) => {
-        swap.style.display = 'none';
-        input.parentNode.style.display = 'block';
-        input.focus();
+        if (!input.disabled) {
+            swap.style.display = 'none';
+            input.parentNode.style.display = 'block';
+            input.focus();
+        }
     });
     input.addEventListener('keydown', (event) => {
         if (event.keyCode === 13) {
