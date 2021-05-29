@@ -10,8 +10,13 @@ chrome.contextMenus.create({
 chrome.runtime.onInstalled.addListener((details) => {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/components/options.json', true);
+    xhr.responseType = 'json';
     xhr.onload = () => {
-        restoreSettings(xhr.response);
+        Object.keys(xhr.response).forEach(key => {
+            if (!localStorage[key]) {
+                localStorage[key] = xhr.response[key];
+            }
+        });
     };
     xhr.send();
 });
