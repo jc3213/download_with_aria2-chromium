@@ -76,16 +76,17 @@ function printTaskInfo(result, queue) {
     if (!task) {
         task = appendTaskInfo(result);
     }
+    task.status = result.status;
     task.querySelector('#local').innerText = bytesToFileSize(result.completedLength);
     task.querySelector('#clock').innerHTML = numberToTimeFormat((result.totalLength - result.completedLength) / result.downloadSpeed);
     task.querySelector('#remote').innerText = bytesToFileSize(result.totalLength);
     task.querySelector('#connect').innerText = result.bittorrent ? result.numSeeders + ' (' + result.connections + ')' : result.connections;
     task.querySelector('#download').innerText = bytesToFileSize(result.downloadSpeed) + '/s';
     task.querySelector('#upload').innerText = bytesToFileSize(result.uploadSpeed) + '/s';
-    task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.querySelector('#fancybar').className = result.status + 'Box';
     task.querySelector('#ratio').innerText = task.querySelector('#ratio').style.width = ((result.completedLength / result.totalLength * 10000 | 0) / 100) + '%';
     task.querySelector('#ratio').className = result.status;
+    task.querySelector('#retry_btn').style.display = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
     queue.appendChild(task);
 }
 
@@ -94,11 +95,11 @@ function appendTaskInfo(result) {
     task.id = result.gid;
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#error').innerText = result.errorMessage || '';
-    task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, result.status));
+    task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
+    task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
     task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
-    task.querySelector('#retry_btn').style.display = ['error', 'removed'].includes(result.status) ? 'inline-block' : 'none';
-    task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, result.status));
+    task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
     return task;
 }
 
@@ -155,6 +156,7 @@ function pauseOrUnpauseTask(gid, status) {
     else {
         return;
     }
+console.log(gid, status);
     jsonRPCRequest({method, gid});
 }
 
