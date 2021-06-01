@@ -1,3 +1,7 @@
+if (location.search) {
+    document.querySelector('#manager').style.display = 'none';
+}
+
 document.querySelector('#export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
     var saver = document.querySelector('#saver');

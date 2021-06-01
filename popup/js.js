@@ -1,11 +1,7 @@
 document.querySelectorAll('[module]').forEach(module => {
     var id = module.getAttribute('module');
     var src = module.getAttribute('window');
-    if (id === 'optionsWindow') {
-        var onload = (event) => {
-            event.target.contentDocument.querySelector('#preferences').style.display = 'none';
-        };
-    }
+
     module.addEventListener('click', (event) => {
         if (event.target.classList.contains('checked')) {
             document.getElementById(id).remove();
