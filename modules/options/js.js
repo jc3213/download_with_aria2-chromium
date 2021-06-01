@@ -1,6 +1,4 @@
-if (location.search) {
-    document.querySelector('#manager').style.display = 'none';
-}
+document.querySelector('#manager').style.display = location.search === '?from=popup' ? 'none' : 'block';
 
 document.querySelector('#export').addEventListener('click', (event) => {
     var blob = new Blob([JSON.stringify(localStorage)], {type: 'application/json; charset=utf-8'});
