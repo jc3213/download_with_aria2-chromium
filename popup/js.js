@@ -1,6 +1,6 @@
 document.querySelectorAll('[module]').forEach(module => {
     var id = module.getAttribute('module');
-    var src = module.getAttribute('window');
+    var src = '/modules/' + id + '/index.html?from=popup';
 
     module.addEventListener('click', (event) => {
         if (event.target.classList.contains('checked')) {
@@ -139,9 +139,7 @@ function removeTaskFromQueue(gid, status) {
 }
 
 function openTaskMgrWindow(gid) {
-    openModuleWindow('taskMgrWindow', '/modules/taskMgr/index.html', (event) => {
-        event.target.contentWindow.postMessage(gid);
-    });
+    openModuleWindow('taskMgr', '/modules/taskMgr/index.html?gid=' + gid);
 }
 
 function removeTaskAndRetry(gid) {
