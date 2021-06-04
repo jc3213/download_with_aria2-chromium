@@ -1,5 +1,6 @@
-document.querySelectorAll('[tab]').forEach(tab => {
+document.querySelectorAll('[tab]').forEach((tab, index) => {
     var active = tab.getAttribute('tab');
+    tab.className = index === 0 ? 'checked' : '';
     tab.addEventListener('click', (event) => {
         if (!tab.classList.contains('checkd')) {
             document.querySelectorAll('[panel]').forEach(panel => {
@@ -15,4 +16,8 @@ document.querySelectorAll('[tab]').forEach(tab => {
             });
         }
     });
+});
+
+document.querySelectorAll('[panel]').forEach((panel, index) => {
+    panel.style.display = index === 0 ? 'block' : 'none';
 });
