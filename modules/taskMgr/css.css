@@ -23,9 +23,8 @@
     text-align: center;
 }
 
-.suffix, .swap .suffix {
+.swap .suffix {
     top: 3px;
-    right: 8px;
 }
 
 #name {
