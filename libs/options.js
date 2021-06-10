@@ -1,10 +1,10 @@
 function applyValueToOptions(option, data) {
     if (option.hasAttribute('calc')) {
         var calc = bytesToFileSize(data[option.id]);
-        option.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf('B') - 1, -1);
+        option.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1);
     }
     else {
-        option.value = data[option.id];
+        option.value = data[option.id] || '';
     }
 }
 
