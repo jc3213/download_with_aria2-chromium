@@ -18,10 +18,17 @@ label {
     position: relative;
 }
 
-label .suffix {
+label .suffix, label .suffix2 {
     position: absolute;
     top: 0px;
+}
+
+label .suffix {
     right: 5px;
+}
+
+label .suffix2 {
+    right: 25px;
 }
 
 .extend > input {
