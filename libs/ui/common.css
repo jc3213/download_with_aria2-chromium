@@ -14,10 +14,14 @@
     margin-top: 15px;
 }
 
-.suffix {
+label {
+    position: relative;
+}
+
+label .suffix {
     position: absolute;
-    right: 12px;
-    padding: 3px;
+    top: 0px;
+    right: 5px;
 }
 
 .extend > input {
