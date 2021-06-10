@@ -19,6 +19,9 @@ chrome.runtime.onInstalled.addListener((details) => {
         });
     };
     xhr.send();
+    //patch since R6300, will be removed from R6400
+    delete localStorage['sizeEntry'];
+    delete localStorage['sizeUnit'];
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
