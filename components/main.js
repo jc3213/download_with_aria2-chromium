@@ -64,8 +64,7 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
 
 function getHostnameFromUrl(url) {
     var host = url.split('/')[2];
-    var hostname = host.includes(':') ? host.slice(0, host.indexOf(':')) : host;
-    return hostname;
+    return host.includes(':') ? host.slice(0, host.indexOf(':')) : host;
 }
 
 function getFileExtension(filename) {
