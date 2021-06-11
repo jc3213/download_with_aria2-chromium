@@ -32,8 +32,8 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     var session = {url: item.finalUrl, filename: item.filename};
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
-        session.host = new URL(session.referer).hostname;
-        if (captureFilterWorker()) {
+        session.hostname = getHostnameFromUrl(session.referer);
+        if (captureFilterWorker(session.hostname, getFileExtension(session.filename), item.fileSize)) {
             chrome.downloads.cancel(item.id, () => {
                 chrome.downloads.erase({id: item.id}, () => {
                     downWithAria2(session);
@@ -41,26 +41,36 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
             });
         }
     });
+});
 
-    function captureFilterWorker() {
-        if (localStorage['ignored'].includes(session.host)) {
-            return false;
-        }
-        if (localStorage['capture'] === '2') {
-            return true;
-        }
-        if (localStorage['monitored'].includes(session.host)) {
-            return true;
-        }
-        if (localStorage['fileExt'].includes(item.filename.slice(item.filename.lastIndexOf('.') + 1).toLowerCase())) {
-            return true;
-        }
-        if (localStorage['fileSize'] > 0 && item.fileSize >= localStorage['fileSize']) {
-            return true;
-        }
+function captureFilterWorker(hostname, fileExt, fileSize) {
+    if (localStorage['ignored'].includes(hostname)) {
         return false;
     }
-});
+    if (localStorage['capture'] === '2') {
+        return true;
+    }
+    if (localStorage['monitored'].includes(hostname)) {
+        return true;
+    }
+    if (localStorage['fileExt'].includes(fileExt)) {
+        return true;
+    }
+    if (localStorage['fileSize'] > 0 && fileSize >= localStorage['fileSize']) {
+        return true;
+    }
+    return false;
+}
+
+function getHostnameFromUrl(url) {
+    var host = url.split('/')[2];
+    var hostname = host.includes(':') ? host.slice(0, host.indexOf(':')) : host;
+    return hostname;
+}
+
+function getFileExtension(filename) {
+    return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
+}
 
 function displayActiveTaskNumber() {
     jsonRPCRequest(
