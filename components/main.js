@@ -3,7 +3,7 @@ chrome.contextMenus.create({
     id: 'downwitharia2',
     contexts: ['link'],
     onclick: (info, tab) => {
-        downWithAria2({url: info.linkUrl, referer: tab.url, host: new URL(tab.url).hostname});
+        downWithAria2({url: info.linkUrl, referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
     }
 });
 
