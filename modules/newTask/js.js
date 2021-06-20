@@ -1,8 +1,8 @@
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
     var referer = document.querySelector('#referer').value;
     var options = {};
-    document.querySelectorAll('[option], [aria2]').forEach(task => {
-        options[task.id] = task.value;
+    document.querySelectorAll('[option], [aria2]').forEach(option => {
+        options[option.id] = option.value;
     });
     document.querySelector('#entries').value.split('\n').forEach(url => {
         try {
@@ -30,4 +30,4 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
     }, 1000);
 });
 
-chrome.storage.sync.get(null, printGlobalOptions);
+printGlobalOptions();

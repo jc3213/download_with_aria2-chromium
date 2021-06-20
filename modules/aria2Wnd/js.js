@@ -10,4 +10,4 @@ document.querySelectorAll('[aria2]').forEach(aria2 => {
     });
 });
 
-chrome.storage.sync.get(null, printGlobalOptions);
+printGlobalOptions();

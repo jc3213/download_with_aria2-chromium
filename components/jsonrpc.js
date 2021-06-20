@@ -1,38 +1,30 @@
-var storage;
-
-chrome.storage.sync.get(null, (result) => {
-    storage = result;
-});
-
-chrome.storage.onChanged.addListener((changes, namespace) => {
-    Object.keys(changes).forEach(key => {
-        storage[key] = changes[key].newValue;
-    });
-});
-
 function jsonRPCRequest(request, success, failure) {
-    var rpc = storage['jsonrpc'];
+    var rpc = localStorage['jsonrpc'];
     var json = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
-    fetch(rpc, {method: 'POST', body: JSON.stringify(json)})
-    .catch(error => {
-        if (typeof failure === 'function') {
-            failure('No Response', rpc);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', rpc, true);
+    xhr.onloadend = () => {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.response);
+            var result = response[0].result;
+            var error = response[0].error;
+            if (result && typeof success === 'function') {
+                success(...response.map(item => item.result));
+            }
+            if (error && typeof failure === 'function') {
+                failure(error.message);
+            }
         }
-    })
-    .then(response => response.json())
-    .then(json => {
-        var result = json[0].result;
-        var error = json[0].error;
-        if (result && typeof success === 'function') {
-            success(...json.map(item => item.result));
+        else {
+            if (typeof failure === 'function') {
+                failure('No Response', rpc);
+            }
         }
-        if (error && typeof failure === 'function') {
-            failure(error.message);
-        }
-    });
+    };
+    xhr.send(JSON.stringify(json));
 
     function createJSON(request) {
-        var params = ['token:' + storage['token']];
+        var params = ['token:' + localStorage['token']];
         if (request.gid) {
             params.push(request.gid);
         }
@@ -68,10 +60,10 @@ function downWithAria2(session, options = {}, bypass = false) {
     if (session.filename) {
         options['out'] = session.filename;
     }
-    if (!options['all-proxy'] && storage['proxied'].includes(session.hostname)) {
-        options['all-proxy'] = storage['allproxy'];
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
+        options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = ['User-Agent: ' + storage['useragent'], 'Connection: Keep-Alive'];
+    options['header'] = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
     if (!session.referer) {
         return sendRPCRequest();
     }
@@ -86,7 +78,7 @@ function downWithAria2(session, options = {}, bypass = false) {
         jsonRPCRequest(
             {method: 'aria2.addUri', url, options},
             (result) => {
-                showNotification('Aria2 Download' , url.join('\n'));
+                showNotification(chrome.i18n.getMessage('warn_download'), url.join('\n'));
             },
             (error, rpc) => {
                 showNotification(error, rpc || url.join('\n'));
