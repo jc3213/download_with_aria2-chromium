@@ -32,9 +32,6 @@
     "time_second": {
         "message": "s"
     },
-    "warn_download": {
-        "message": "Aria2 Download"
-    },
     "option_basic": {
         "message": "Basic"
     },

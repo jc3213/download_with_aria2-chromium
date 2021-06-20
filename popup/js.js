@@ -175,5 +175,5 @@ function pauseOrUnpauseTask(gid, status) {
     jsonRPCRequest({method, gid});
 }
 
-printTaskManager();
+chrome.storage.sync.get(null, printTaskManager);
 var keepContentAlive = setInterval(printTaskManager, 1000);

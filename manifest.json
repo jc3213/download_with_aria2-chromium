@@ -1,14 +1,14 @@
 {
     "name": "__MSG_extension_name__",
     "description": "__MSG_extension_description__",
-    "version": "2.6300",
-    "manifest_version": 2,
-    "permissions": [ "contextMenus", "downloads", "tabs", "cookies", "notifications", "<all_urls>" ],
+    "version": "2.9999",
+    "manifest_version": 3,
+    "permissions": [ "contextMenus", "downloads", "tabs", "cookies", "notifications", "storage" ],
     "default_locale" : "en",
     "background": {
-        "scripts": [ "/components/jsonrpc.js", "/components/main.js" ]
+        "service_worker": "background.js"
     },
-    "browser_action": {
+    "action": {
         "default_icon": {
             "24": "/icons/icon24.png"
         },

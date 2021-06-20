@@ -132,6 +132,8 @@ document.querySelector('#file').addEventListener('click', (event) => {
     }
 });
 
-printTaskOptions(gid);
-printTaskManager();
+chrome.storage.sync.get(null, () => {
+    printTaskOptions(gid);
+    printTaskManager(); 
+});
 var taskManager = setInterval(printTaskManager, 1000);
