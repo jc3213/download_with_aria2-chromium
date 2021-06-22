@@ -17,6 +17,12 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     });
 });
 
+chrome.runtime.onMessage.addListener((message, sender, response) => {
+    var {session, options} = message;
+    downWithAria2(session, options);
+    response();
+});
+
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
     if (localStorage['capture'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
@@ -37,12 +43,6 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
 });
 
 chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
-
-chrome.runtime.onMessage.addListener((message, sender, response) => {
-    var {session, options} = message;
-    downWithAria2(session, options);
-    response();
-});
 
 function downWithAria2(session, options = {}) {
     if (!session.url) {
