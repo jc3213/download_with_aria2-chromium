@@ -1,9 +1,12 @@
 chrome.contextMenus.create({
     title: chrome.i18n.getMessage('extension_name'),
     id: 'downwitharia2',
-    contexts: ['link'],
-    onclick: (info, tab) => {
-        downWithAria2({url: [info.linkUrl], referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
+    contexts: ['link']
+});
+
+chrome.contextMenus.onClicked.addListener(info => {
+    if (info.menuItemId === 'downwitharia2') {
+        downWithAria2({url: [info.linkUrl], referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
