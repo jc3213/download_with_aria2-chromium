@@ -8,13 +8,13 @@ chrome.contextMenus.create({
 });
 
 chrome.runtime.onInstalled.addListener(async (details) => {
-    var response = await fetch('/components/options.json');
-    var json = await response.json();
-    Object.keys(json).forEach(key => {
-        if (!localStorage[key]) {
+    if (details.reason === 'install') {
+        var response = await fetch('/components/options.json');
+        var json = await response.json();
+        Object.keys(json).forEach(key => {
             localStorage[key] = json[key];
-        }
-    });
+        });
+    }
 });
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
@@ -44,7 +44,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
 
 chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
-function downWithAria2(session, options = {}) {
+async function downWithAria2(session, options = {}) {
     if (!session.url) {
         return;
     }
@@ -54,28 +54,16 @@ function downWithAria2(session, options = {}) {
     if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
         options['all-proxy'] = localStorage['allproxy'];
     }
-    options['header'] = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
-    if (!session.referer) {
-        return sendRPCRequest();
-    }
-    chrome.cookies.getAll({url: session.referer}, (cookies) => {
-        var cookie = 'Cookie:';
-        cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
-        options['header'].push(cookie, 'Referer: ' + session.referer);
-        sendRPCRequest();
-    });
-
-    function sendRPCRequest() {
-        jsonRPCRequest(
-            {method: 'aria2.addUri', url: session.url, options},
-            (result) => {
-                showNotification(chrome.i18n.getMessage('warn_download'), url.join('\n'));
-            },
-            (error, jsonrpc) => {
-                showNotification(error, jsonrpc || url.join('\n'));
-            }
-        );
-    }
+    options['header'] = await getCookiesFromReferer(session.referer);
+    jsonRPCRequest(
+        {method: 'aria2.addUri', url: session.url, options},
+        (result) => {
+            showNotification(chrome.i18n.getMessage('warn_download'), session.url.join('\n'));
+        },
+        (error, jsonrpc) => {
+            showNotification(error, jsonrpc || url.join('\n'));
+        }
+    );
 }
 
 function captureFilterWorker(hostname, fileExt, fileSize) {
@@ -95,6 +83,24 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
         return true;
     }
     return false;
+}
+
+function getCookiesFromReferer(url, result = 'Cookie:') {
+    var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
+    return new Promise((resolve, reject) => {
+        if (url) {
+            chrome.cookies.getAll({url}, (cookies) => {
+                cookies.forEach(cookie => {
+                    result += ' ' + cookie.name + '=' + cookie.value + ';';
+                });
+                header.push(result, 'Referer: ' + url);
+                resolve(header);
+            });
+        }
+        else {
+            resolve(header);
+        }
+    });
 }
 
 function getHostnameFromUrl(url) {
