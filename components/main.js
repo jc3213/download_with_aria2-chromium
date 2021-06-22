@@ -3,7 +3,7 @@ chrome.contextMenus.create({
     id: 'downwitharia2',
     contexts: ['link'],
     onclick: (info, tab) => {
-        downWithAria2({url: info.linkUrl, referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
+        downWithAria2({url: [info.linkUrl], referer: tab.url, hostname: getHostnameFromUrl(tab.url)});
     }
 });
 
@@ -22,7 +22,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         return;
     }
 
-    var session = {url: item.finalUrl, filename: item.filename};
+    var session = {url: [item.finalUrl], filename: item.filename};
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
         session.hostname = getHostnameFromUrl(session.referer);
@@ -35,6 +35,48 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         }
     });
 });
+
+chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
+
+chrome.runtime.onMessage.addListener((message, sender, response) => {
+    var {session, options} = message;
+    downWithAria2(session, options);
+    response();
+});
+
+function downWithAria2(session, options = {}) {
+    if (!session.url) {
+        return;
+    }
+    if (session.filename) {
+        options['out'] = session.filename;
+    }
+    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
+        options['all-proxy'] = localStorage['allproxy'];
+    }
+    options['header'] = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
+    if (!session.referer) {
+        return sendRPCRequest();
+    }
+    chrome.cookies.getAll({url: session.referer}, (cookies) => {
+        var cookie = 'Cookie:';
+        cookies.forEach(item => cookie += ' ' + item.name + '=' + item.value + ';');
+        options['header'].push(cookie, 'Referer: ' + session.referer);
+        sendRPCRequest();
+    });
+
+    function sendRPCRequest() {
+        jsonRPCRequest(
+            {method: 'aria2.addUri', url: session.url, options},
+            (result) => {
+                showNotification(chrome.i18n.getMessage('warn_download'), url.join('\n'));
+            },
+            (error, jsonrpc) => {
+                showNotification(error, jsonrpc || url.join('\n'));
+            }
+        );
+    }
+}
 
 function captureFilterWorker(hostname, fileExt, fileSize) {
     if (localStorage['ignored'].includes(hostname)) {
@@ -76,6 +118,5 @@ function displayActiveTaskNumber() {
     );
 }
 
-chrome.browserAction.setBadgeBackgroundColor({color: '#3CC'});
 displayActiveTaskNumber();
 var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);
