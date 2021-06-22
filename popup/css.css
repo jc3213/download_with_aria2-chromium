@@ -1,12 +1,8 @@
-#tabs span:nth-child(2n), #bandwidth span:nth-child(2n) {
+[gain]:nth-child(2n) {
     margin-right: 10px;
 }
 
-#network {
-    padding: 3px;
-}
-
-#bandwidth span:nth-child(2n+1) {
+[info] {
     padding: 3px 5px;
 }
 
