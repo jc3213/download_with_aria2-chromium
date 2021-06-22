@@ -7,21 +7,14 @@ chrome.contextMenus.create({
     }
 });
 
-chrome.runtime.onInstalled.addListener((details) => {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/components/options.json', true);
-    xhr.responseType = 'json';
-    xhr.onload = () => {
-        Object.keys(xhr.response).forEach(key => {
-            if (!localStorage[key]) {
-                localStorage[key] = xhr.response[key];
-            }
-        });
-    };
-    xhr.send();
-    //patch since R6300, will be removed from R6400
-    delete localStorage['sizeEntry'];
-    delete localStorage['sizeUnit'];
+chrome.runtime.onInstalled.addListener(async (details) => {
+    var response = await fetch('/components/options.json');
+    var json = await response.json();
+    Object.keys(json).forEach(key => {
+        if (!localStorage[key]) {
+            localStorage[key] = json[key];
+        }
+    });
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
