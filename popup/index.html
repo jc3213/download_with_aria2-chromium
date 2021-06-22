@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="css.css">
     </head>
     <body>
-        <div id="caution" class="error" style="display: none;"></div>
         <div id="menus" class="frame">
             <div class="offside">
                 <span module="newTask" button i18n>popup_new_button</span>
@@ -16,13 +15,14 @@
             </div>
             <div>
                 <span tab="active" class="active" i18n>popup_active_button</span>
-                <span id="active" gain>0</span>
+                <span id="active" info>0</span>
                 <span tab="waiting" class="waiting" i18n>popup_waiting_button</span>
-                <span id="waiting" gain>0</span>
+                <span id="waiting" info>0</span>
                 <span tab="stopped" class="removed" i18n>popup_stopped_button</span>
-                <span id="stopped" gain>0</span>
+                <span id="stopped" info>0</span>
             </div>
         </div>
+        <div id="caution" class="error" style="display: none;"></div>
         <hr>
         <div class="queue">
             <div panel="active"></div>
@@ -66,10 +66,10 @@
                 <span module="options" button i18n>popup_options_button</span>
             </div>
             <div>
-                <span class="active" info i18n>popup_download</span>
-                <span id="download" gain>0 B/s</span>
-                <span class="complete" info i18n>popup_upload</span>
-                <span id="upload" gain>0 B/s</span>
+                <span class="active" highlight i18n>popup_download</span>
+                <span id="download" info>0 B/s</span>
+                <span class="complete" highlight i18n>popup_upload</span>
+                <span id="upload" info>0 B/s</span>
             </div>
         </div>
         <script src="/components/jsonrpc.js"></script>

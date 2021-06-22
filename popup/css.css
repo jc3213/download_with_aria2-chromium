@@ -1,9 +1,9 @@
-[gain]:nth-child(2n) {
-    margin-right: 10px;
+[highlight] {
+    padding: 3px 5px;
 }
 
-[info] {
-    padding: 3px 5px;
+[info]:nth-child(2n) {
+    margin-right: 10px;
 }
 
 .queue {
