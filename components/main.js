@@ -21,14 +21,9 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
-    if (message === 'global') {
-        response(aria2Stats);
-    }
-    else {
-        var {session, options} = message;
-        downWithAria2(session, options);
-        response();
-    }
+    var {session, options} = message;
+    downWithAria2(session, options);
+    response();
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
@@ -121,21 +116,14 @@ function getFileExtension(filename) {
     return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
 
-function aria2GlobalStats() {
-    jsonRPCRequest([
+function displayActiveTaskNumber() {
+    jsonRPCRequest(
         {method: 'aria2.getGlobalStat'},
-        {method: 'aria2.tellActive'},
-        {method: 'aria2.tellWaiting', index: [0, 9999]},
-        {method: 'aria2.tellStopped', index: [0, 9999]}
-    ], (global, active, waiting, stopped) => {
-        aria2Stats = {global, active, waiting, stopped};
-        chrome.runtime.sendMessage(aria2Stats);
-        chrome.browserAction.setBadgeText({text: global.numActive === '0' ? '' : global.numActive});
-    }, (error, jsonrpc) => {
-        aria2Stats = {error, jsonrpc}
-        chrome.runtime.sendMessage(aria2Stats);
-    });
+        (result) => {
+            chrome.browserAction.setBadgeText({text: result.numActive === '0' ? '' : result.numActive});
+        }
+    );
 }
 
-aria2GlobalStats();
-var activeTaskNumber = setInterval(aria2GlobalStats, 1000);
+displayActiveTaskNumber();
+var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);
