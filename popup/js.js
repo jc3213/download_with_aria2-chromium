@@ -42,13 +42,13 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     );
 });
 
-function printTaskManager() {
-    jsonRPCRequest([
-        {method: 'aria2.getGlobalStat'},
-        {method: 'aria2.tellActive'},
-        {method: 'aria2.tellWaiting', index: [0, 9999]},
-        {method: 'aria2.tellStopped', index: [0, 9999]}
-    ], (global, active, waiting, stopped) => {
+chrome.runtime.sendMessage('global', printTaskManager);
+
+chrome.runtime.onMessage.addListener(printTaskManager);
+
+function printTaskManager(aria2Stats) {
+    var {global, active, waiting, stopped, error, jsonrpc} = aria2Stats;
+    if (global) {
         document.querySelector('#active').innerText = global.numActive;
         document.querySelector('#waiting').innerText = global.numWaiting;
         document.querySelector('#stopped').innerText = global.numStopped;
@@ -59,11 +59,12 @@ function printTaskManager() {
         active.forEach((active, index) => printTaskDetails(active, index, document.querySelector('[panel="active"]')));
         waiting.forEach((waiting, index) => printTaskDetails(waiting, index, document.querySelector('[panel="waiting"]')));
         stopped.forEach((stopped, index) => printTaskDetails(stopped, index, document.querySelector('[panel="stopped"]')));
-    }, (error, jsonrpc) => {
+    }
+    if (error) {
         document.querySelector('#menus').style.display = 'none';
         document.querySelector('#caution').innerText = error;
         document.querySelector('#caution').style.display = 'block';
-    });
+    }
 }
 
 function printTaskDetails(result, index, queue) {
@@ -171,6 +172,3 @@ function pauseOrUnpauseTask(gid, status) {
     }
     jsonRPCRequest({method, gid});
 }
-
-printTaskManager();
-var keepContentAlive = setInterval(printTaskManager, 1000);

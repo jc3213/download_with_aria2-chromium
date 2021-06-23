@@ -6,7 +6,7 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener(info => {
     if (info.menuItemId === 'downwitharia2') {
-        downWithAria2({url: [info.linkUrl], referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
+        downWithAria2({url: info.linkUrl, referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
@@ -21,9 +21,14 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
-    var {session, options} = message;
-    downWithAria2(session, options);
-    response();
+    if (message === 'global') {
+        response(aria2Stats);
+    }
+    else {
+        var {session, options} = message;
+        downWithAria2(session, options);
+        response();
+    }
 });
 
 chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
@@ -31,7 +36,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
         return;
     }
 
-    var session = {url: [item.finalUrl], filename: item.filename};
+    var session = {url: item.finalUrl, filename: item.filename};
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
         session.hostname = getHostnameFromUrl(session.referer);
@@ -48,6 +53,7 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
 chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 async function downWithAria2(session, options = {}) {
+    var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
         options['out'] = session.filename;
     }
@@ -56,12 +62,12 @@ async function downWithAria2(session, options = {}) {
     }
     options['header'] = await getCookiesFromReferer(session.referer);
     jsonRPCRequest(
-        {method: 'aria2.addUri', url: session.url, options},
+        {method: 'aria2.addUri', url, options},
         (result) => {
-            showNotification(chrome.i18n.getMessage('warn_download'), session.url.join('\n'));
+            showNotification(chrome.i18n.getMessage('warn_download'), url.join('\n'));
         },
         (error, jsonrpc) => {
-            showNotification(error, jsonrpc || session.url.join('\n'));
+            showNotification(error, jsonrpc || url.join('\n'));
         }
     );
 }
@@ -115,14 +121,21 @@ function getFileExtension(filename) {
     return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
 
-function displayActiveTaskNumber() {
-    jsonRPCRequest(
+function aria2GlobalStats() {
+    jsonRPCRequest([
         {method: 'aria2.getGlobalStat'},
-        (result) => {
-            chrome.browserAction.setBadgeText({text: result.numActive === '0' ? '' : result.numActive});
-        }
-    );
+        {method: 'aria2.tellActive'},
+        {method: 'aria2.tellWaiting', index: [0, 9999]},
+        {method: 'aria2.tellStopped', index: [0, 9999]}
+    ], (global, active, waiting, stopped) => {
+        aria2Stats = {global, active, waiting, stopped};
+        chrome.runtime.sendMessage(aria2Stats);
+        chrome.browserAction.setBadgeText({text: global.numActive === '0' ? '' : global.numActive});
+    }, (error, jsonrpc) => {
+        aria2Stats = {error, jsonrpc}
+        chrome.runtime.sendMessage(aria2Stats);
+    });
 }
 
-displayActiveTaskNumber();
-var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);
+aria2GlobalStats();
+var activeTaskNumber = setInterval(aria2GlobalStats, 1000);
