@@ -26,24 +26,32 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
     response();
 });
 
-chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
     if (localStorage['capture'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
     }
 
     var session = {url: item.finalUrl, filename: item.filename};
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-        session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
-        session.hostname = getHostnameFromUrl(session.referer);
-        if (captureFilterWorker(session.hostname, getFileExtension(session.filename), item.fileSize)) {
-            chrome.downloads.cancel(item.id, () => {
-                chrome.downloads.erase({id: item.id}, () => {
-                    downWithAria2(session);
-                });
+    var tabs = await getCurrentActiveTabs();
+    session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
+    session.hostname = getHostnameFromUrl(session.referer);
+    if (captureFilterWorker(session.hostname, getFileExtension(session.filename), item.fileSize)) {
+        chrome.downloads.cancel(item.id, () => {
+            chrome.downloads.erase({id: item.id}, () => {
+                downWithAria2(session);
             });
-        }
-    });
+        });
+    }
 });
+
+//Wrapper untill manifest v3
+async function getCurrentActiveTabs() {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            resolve(tabs);
+        })
+    });
+}
 
 chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
@@ -86,8 +94,9 @@ function captureFilterWorker(hostname, fileExt, fileSize) {
     return false;
 }
 
-function getCookiesFromReferer(url, result = 'Cookie:') {
+async function getCookiesFromReferer(url, result = 'Cookie:') {
     var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
+    //Wrapper untill manifest v3
     return new Promise((resolve, reject) => {
         if (url) {
             chrome.cookies.getAll({url}, (cookies) => {
