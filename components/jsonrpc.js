@@ -1,8 +1,7 @@
 function jsonRPCRequest(request, success, failure) {
     var jsonrpc = localStorage['jsonrpc'];
     var requestJSON = Array.isArray(request) ? request.map(item => createJSON(item)) : [createJSON(request)];
-    fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)})
-    .then(async response => {
+    fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)}).then(async response => {
         var responseJSON = await response.json();
         var result = responseJSON[0].result;
         var error = responseJSON[0].error;
