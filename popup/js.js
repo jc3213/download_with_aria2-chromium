@@ -77,7 +77,6 @@ function printTaskDetails(result, index) {
         var queue = document.querySelector('[panel="' + type + '"]');
         queue.insertBefore(task, queue.childNodes[index]);
         task.status = result.status;
-        task.search = type + '&' + index;
     }
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#error').innerText = result.errorMessage || '';
@@ -145,8 +144,8 @@ function removeTaskFromQueue(gid, status) {
     jsonRPCRequest({method, gid}, clear);
 }
 
-async function openTaskMgrWindow(gid, search) {
-    var module = await openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
+function openTaskMgrWindow(gid) {
+    openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
 }
 
 function removeTaskAndRetry(gid) {
