@@ -20,7 +20,7 @@ function registerMessageChannel() {
     clearInterval(aria2RPC.message);
     aria2RPC.message = setInterval(() => {
         chrome.runtime.sendMessage(aria2RPC);
-    }, 2000);
+    }, localStorage['refresh']);
 }
 
 chrome.contextMenus.create({
@@ -44,6 +44,9 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         Object.keys(json).forEach(key => {
             localStorage[key] = json[key];
         });
+    }
+    if (details.reason === 'update' && details.previousVersion <= '2.6700') {
+        localStorage['refresh'] = 2000;
     }
 });
 

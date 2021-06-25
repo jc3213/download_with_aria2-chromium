@@ -32,6 +32,9 @@
     "time_second": {
         "message": "秒"
     },
+    "time_second_full": {
+        "message": "秒"
+    },
     "warn_download": {
         "message": "Aria2 开始下载"
     },
@@ -57,13 +60,19 @@
         "message": "JSONRPC 链接"
     },
     "option_jsonrpc_desc": {
-        "message": "设置 Aria2 JSONRPC 链接"
+        "message": "设置 JSON-RPC 界面的链接"
     },
     "option_token": {
         "message": "密钥"
     },
     "option_token_desc": {
-        "message": "设置 Aria2 \"token\" 密钥"
+        "message": "设置 JSON-RPC 的安全密钥"
+    },
+    "option_refresh": {
+        "message": "刷新间隔"
+    },
+    "option_refresh_desc": {
+        "message": "设置任务管理器刷新间隔"
     },
     "option_useragent": {
         "message": "用户代理"
