@@ -1,4 +1,26 @@
-var aria2RPC = {};
+var aria2RPC = {
+    register: () => {
+        aria2RPC.keepAlive = setInterval(() => {
+            jsonRPCRequest([
+                {method: 'aria2.getVersion'},
+                {method: 'aria2.getGlobalOption'},
+                {method: 'aria2.getGlobalStat'},
+                {method: 'aria2.tellActive'},
+                {method: 'aria2.tellWaiting', index: [0, 9999]},
+                {method: 'aria2.tellStopped', index: [0, 9999]}
+            ], (version, globalOption, globalStat, active, waiting, stopped) => {
+                aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
+                chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
+            }, (error) => {
+                aria2RPC = {...aria2RPC, error};
+            });
+            chrome.runtime.sendMessage(aria2RPC);
+        }, 1000);
+    },
+    unregister: () => {
+        clearInterval(aria2RPC.keepAlive);
+    }
+};
 
 chrome.contextMenus.create({
     title: chrome.i18n.getMessage('extension_name'),
@@ -131,22 +153,4 @@ function getFileExtension(filename) {
     return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
 
-function jsonRPCGlobalStat() {
-    jsonRPCRequest([
-        {method: 'aria2.getVersion'},
-        {method: 'aria2.getGlobalOption'},
-        {method: 'aria2.getGlobalStat'},
-        {method: 'aria2.tellActive'},
-        {method: 'aria2.tellWaiting', index: [0, 9999]},
-        {method: 'aria2.tellStopped', index: [0, 9999]}
-    ], (version, globalOption, globalStat, active, waiting, stopped) => {
-        aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
-        chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
-    }, (error) => {
-        aria2RPC = {...aria2RPC, error};
-    });
-    chrome.runtime.sendMessage(aria2RPC);
-}
-
-jsonRPCGlobalStat();
-aria2RPC.keepAlive = setInterval(jsonRPCGlobalStat, 1000);
+aria2RPC.register();
