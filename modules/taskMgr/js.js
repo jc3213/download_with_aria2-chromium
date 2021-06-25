@@ -103,7 +103,7 @@ document.querySelector('#allproxy').addEventListener('click', (event) => {
 
 document.querySelector('#uri').addEventListener('click', (event) => {
     if (event.ctrlKey) {
-        jsonRPCRequest({method: 'aria2.changeUri', gid: gid, remove: event.target.innerText});
+        jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
     }
     else {
         navigator.clipboard.writeText(event.target.innerText);
@@ -112,7 +112,7 @@ document.querySelector('#uri').addEventListener('click', (event) => {
 
 document.querySelector('#source > span').addEventListener('click', (event) => {
     jsonRPCRequest(
-        {method: 'aria2.changeUri', gid: gid, add: document.querySelector('#source > input').value},
+        {method: 'aria2.changeUri', gid, add: document.querySelector('#source > input').value},
         (result) => {
             document.querySelector('#source > input').value = '';
         }
