@@ -32,15 +32,15 @@ document.querySelectorAll('[local]').forEach(option => {
 });
 
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {
-    jsonRPCRequest(
-        {method: 'aria2.getVersion'},
-        (result) => {
-            openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?version=' + result.version);
-        },
-        (error, rpc) => {
-            showNotification(error, rpc);
+    chrome.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+        var {version, error} = aria2RPC;
+        if (version) {
+            openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?' + version.version);
         }
-    );
+        if (error) {
+            showNotification(error);
+        }
+    });
 });
 
 document.querySelector('#show_btn').addEventListener('click', (event) => {
