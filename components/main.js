@@ -6,8 +6,8 @@ var aria2RPC = {
                 {method: 'aria2.getGlobalOption'},
                 {method: 'aria2.getGlobalStat'},
                 {method: 'aria2.tellActive'},
-                {method: 'aria2.tellWaiting', index: [0, 9999]},
-                {method: 'aria2.tellStopped', index: [0, 9999]}
+                {method: 'aria2.tellWaiting', index: [0, 999]},
+                {method: 'aria2.tellStopped', index: [0, 999]}
             ], (version, globalOption, globalStat, active, waiting, stopped) => {
                 aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
                 chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
