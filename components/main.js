@@ -1,3 +1,5 @@
+var aria2RPC = {};
+
 chrome.contextMenus.create({
     title: chrome.i18n.getMessage('extension_name'),
     id: 'downwitharia2',
@@ -10,6 +12,8 @@ chrome.contextMenus.onClicked.addListener(info => {
     }
 });
 
+chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
+
 chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
         var response = await fetch('/components/options.json');
@@ -21,9 +25,13 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
-    var {session, options} = message;
-    downWithAria2(session, options);
-    response();
+    var {jsonrpc, session, options} = message;
+    if (jsonrpc) {
+        response(aria2RPC);
+    }
+    if (session && options) {
+        downWithAria2(session, options);
+    }
 });
 
 chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
@@ -52,8 +60,6 @@ async function getCurrentActiveTabs() {
         })
     });
 }
-
-chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 async function downWithAria2(session, options = {}) {
     var url = Array.isArray(session.url) ? session.url : [session.url];
@@ -125,14 +131,22 @@ function getFileExtension(filename) {
     return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
 
-function displayActiveTaskNumber() {
-    jsonRPCRequest(
+function jsonRPCGlobalStat() {
+    jsonRPCRequest([
+        {method: 'aria2.getVersion'},
+        {method: 'aria2.getGlobalOption'},
         {method: 'aria2.getGlobalStat'},
-        (result) => {
-            chrome.browserAction.setBadgeText({text: result.numActive === '0' ? '' : result.numActive});
-        }
-    );
+        {method: 'aria2.tellActive'},
+        {method: 'aria2.tellWaiting', index: [0, 9999]},
+        {method: 'aria2.tellStopped', index: [0, 9999]}
+    ], (version, globalOption, globalStat, active, waiting, stopped) => {
+        aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
+        chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
+    }, (error) => {
+        aria2RPC = {...aria2RPC, error};
+    });
+    chrome.runtime.sendMessage(aria2RPC);
 }
 
-displayActiveTaskNumber();
-var activeTaskNumber = setInterval(displayActiveTaskNumber, 1000);
+jsonRPCGlobalStat();
+aria2RPC.keepAlive = setInterval(jsonRPCGlobalStat, 1000);
