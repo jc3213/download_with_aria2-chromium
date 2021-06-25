@@ -31,4 +31,4 @@ function submitNewDownloadTask(session, options) {
     frameElement.remove();
 }
 
-printGlobalOptions();
+printGlobalOption();

@@ -10,4 +10,4 @@ document.querySelectorAll('[aria2]').forEach(aria2 => {
     });
 });
 
-printGlobalOptions();
+printGlobalOption();

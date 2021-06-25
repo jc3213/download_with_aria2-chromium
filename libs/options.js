@@ -8,7 +8,7 @@ function parseValueToOption(option, data) {
     }
 }
 
-function printGlobalOptions() {
+function printGlobalOption() {
     chrome.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
         document.querySelectorAll('[aria2]').forEach(aria2 => parseValueToOption(aria2, aria2RPC.globalOption));
     });
@@ -19,7 +19,7 @@ function changeGlobalOption(name, value, options = {}) {
     jsonRPCRequest({method: 'aria2.changeGlobalOption', options}, printGlobalOptions);
 }
 
-function printTaskOptions(gid) {
+function printTaskOption(gid) {
     jsonRPCRequest(
         {method: 'aria2.getOption', gid},
         (options) => {

@@ -1,6 +1,6 @@
 document.querySelectorAll('[module]').forEach(module => {
     var id = module.getAttribute('module');
-    var src = '/modules/' + id + '/index.html?from=popup';
+    var src = '/modules/' + id + '/index.html?popup';
 
     module.addEventListener('click', (event) => {
         if (event.target.classList.contains('checked')) {
@@ -37,6 +37,7 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     jsonRPCRequest(
         {method: 'aria2.purgeDownloadResult'},
         (result) => {
+            chrome.runtime.sendMessage({purge: true});
             document.querySelector('[panel="stopped"]').innerHTML = '';
         }
     );
@@ -55,9 +56,9 @@ function printTaskManager(aria2RPC) {
         document.querySelector('#upload').innerText = bytesToFileSize(globalStat.uploadSpeed) + '/s';
         document.querySelector('#menus').style.display = 'block';
         document.querySelector('#caution').style.display = 'none';
-        active.forEach((active, index) => printTaskDetails(active, index, 'active'));
-        waiting.forEach((waiting, index) => printTaskDetails(waiting, index, 'waiting'));
-        stopped.forEach((stopped, index) => printTaskDetails(stopped, index, 'stopped'));
+        active.forEach(printTaskDetails);
+        waiting.forEach(printTaskDetails);
+        stopped.forEach(printTaskDetails);
     }
     if (error) {
         document.querySelector('#menus').style.display = 'none';
@@ -69,13 +70,14 @@ function printTaskManager(aria2RPC) {
     }
 }
 
-function printTaskDetails(result, index, type) {
+function printTaskDetails(result, index) {
     var task = document.getElementById(result.gid) || appendTaskDetails(result);
     if (task.status !== result.status) {
+        var type = result.status === 'active' ? 'active' : ['waiting', 'paused'].includes(result.status) ? 'waiting' : 'stopped';
         var queue = document.querySelector('[panel="' + type + '"]');
         queue.insertBefore(task, queue.childNodes[index]);
         task.status = result.status;
-        task.search = type + '&' + index + '&' + result.gid;
+        task.search = type + '&' + index;
     }
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#error').innerText = result.errorMessage || '';
@@ -96,7 +98,7 @@ function appendTaskDetails(result) {
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
-    task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(task.search));
+    task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
     return task;
@@ -136,14 +138,15 @@ function removeTaskFromQueue(gid, status) {
     }
     if (['complete', 'error', 'paused', 'removed'].includes(status)) {
         var clear = (result) => {
+            chrome.runtime.sendMessage({purge: true});
             document.getElementById(gid).remove();
         };
     }
     jsonRPCRequest({method, gid}, clear);
 }
 
-function openTaskMgrWindow(type) {
-    openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + type);
+async function openTaskMgrWindow(gid, search) {
+    var module = await openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
 }
 
 function removeTaskAndRetry(gid) {

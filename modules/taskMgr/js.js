@@ -1,11 +1,11 @@
-var [type, index, gid] = location.search.slice(1).split('&');
+var gid = location.search.slice(1);
 var logic = 0;
 
 chrome.runtime.sendMessage({jsonrpc: true}, printTaskManager);
 chrome.runtime.onMessage.addListener(printTaskManager);
 
 function printTaskManager(aria2RPC) {
-    var result = aria2RPC[type][index];
+    var result = [...aria2RPC.active, ...aria2RPC.waiting, ...aria2RPC.stopped].find(task => task.gid === gid);
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
         printTaskDetails('bt');
@@ -130,3 +130,5 @@ document.querySelector('#file').addEventListener('click', (event) => {
         changeTaskOption(gid, 'select-file', checked.join());
     }
 });
+
+printTaskOption(gid);
