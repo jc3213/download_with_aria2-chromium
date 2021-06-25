@@ -13,16 +13,18 @@ var aria2RPC = {
         }, (error) => {
             aria2RPC = {...aria2RPC, error};
         });
-    }, 1000),
-    register: () => {
-        aria2RPC.message = setInterval(() => {
-            chrome.runtime.sendMessage(aria2RPC);
-        }, 2000);
-    },
-    unregister: () => {
-        clearInterval(aria2RPC.message);
-    }
+    }, 1000)
 };
+
+function registerMessageChannel() {
+    aria2RPC.message = setInterval(() => {
+        chrome.runtime.sendMessage(aria2RPC);
+    }, 2000);
+}
+
+function unregisterMessageChannel() {
+    clearInterval(aria2RPC.message);
+}
 
 chrome.contextMenus.create({
     title: chrome.i18n.getMessage('extension_name'),
@@ -158,4 +160,4 @@ function getFileExtension(filename) {
     return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
 
-aria2RPC.register();
+registerMessageChannel();
