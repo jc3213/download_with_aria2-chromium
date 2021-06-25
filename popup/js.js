@@ -42,38 +42,37 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     );
 });
 
-function printTaskManager() {
-    jsonRPCRequest([
-        {method: 'aria2.getGlobalStat'},
-        {method: 'aria2.tellActive'},
-        {method: 'aria2.tellWaiting', index: [0, 9999]},
-        {method: 'aria2.tellStopped', index: [0, 9999]}
-    ], (global, active, waiting, stopped) => {
-        document.querySelector('#active').innerText = global.numActive;
-        document.querySelector('#waiting').innerText = global.numWaiting;
-        document.querySelector('#stopped').innerText = global.numStopped;
-        document.querySelector('#download').innerText = bytesToFileSize(global.downloadSpeed) + '/s';
-        document.querySelector('#upload').innerText = bytesToFileSize(global.uploadSpeed) + '/s';
+chrome.runtime.sendMessage({jsonrpc: true}, printTaskManager);
+chrome.runtime.onMessage.addListener(printTaskManager);
+
+function printTaskManager(aria2RPC) {
+    var {globalStat, active, waiting, stopped, error} = aria2RPC;
+    if (globalStat) {
+        document.querySelector('#active').innerText = globalStat.numActive;
+        document.querySelector('#waiting').innerText = globalStat.numWaiting;
+        document.querySelector('#stopped').innerText = globalStat.numStopped;
+        document.querySelector('#download').innerText = bytesToFileSize(globalStat.downloadSpeed) + '/s';
+        document.querySelector('#upload').innerText = bytesToFileSize(globalStat.uploadSpeed) + '/s';
         document.querySelector('#menus').style.display = 'block';
         document.querySelector('#caution').style.display = 'none';
-        active.forEach((active, index) => printTaskDetails(active, index, document.querySelector('[panel="active"]')));
-        waiting.forEach((waiting, index) => printTaskDetails(waiting, index, document.querySelector('[panel="waiting"]')));
-        stopped.forEach((stopped, index) => printTaskDetails(stopped, index, document.querySelector('[panel="stopped"]')));
-    }, (error, jsonrpc) => {
+        active.forEach((active, index) => printTaskDetails(active, index, 'active'));
+        waiting.forEach((waiting, index) => printTaskDetails(waiting, index, 'waiting'));
+        stopped.forEach((stopped, index) => printTaskDetails(stopped, index, 'stopped'));
+    }
+    if (error) {
         document.querySelector('#menus').style.display = 'none';
         document.querySelector('#caution').innerText = error;
         document.querySelector('#caution').style.display = 'block';
-        document.querySelector('[panel="active"]').innerHTML = '';
-        document.querySelector('[panel="waiting"]').innerHTML = '';
-        document.querySelector('[panel="stopped"]').innerHTML = '';
-    });
+    }
 }
 
-function printTaskDetails(result, index, queue) {
+function printTaskDetails(result, index, type) {
     var task = document.getElementById(result.gid) || appendTaskDetails(result);
     if (task.status !== result.status) {
+        var queue = document.querySelector('[panel="' + type + '"]');
         queue.insertBefore(task, queue.childNodes[index]);
         task.status = result.status;
+        task.search = type + '&' + index + '&' + result.gid;
     }
     task.querySelector('#name').innerText = result.bittorrent && result.bittorrent.info ? result.bittorrent.info.name : result.files[0].path.slice(result.files[0].path.lastIndexOf('/') + 1) || result.files[0].uris[0].uri;
     task.querySelector('#error').innerText = result.errorMessage || '';
@@ -94,7 +93,7 @@ function appendTaskDetails(result) {
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
-    task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
+    task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(task.search));
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeTaskAndRetry(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
     return task;
@@ -140,8 +139,8 @@ function removeTaskFromQueue(gid, status) {
     jsonRPCRequest({method, gid}, clear);
 }
 
-function openTaskMgrWindow(gid) {
-    openModuleWindow('taskMgr', '/modules/taskMgr/index.html?gid=' + gid);
+function openTaskMgrWindow(type) {
+    openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + type);
 }
 
 function removeTaskAndRetry(gid) {
@@ -174,6 +173,3 @@ function pauseOrUnpauseTask(gid, status) {
     }
     jsonRPCRequest({method, gid});
 }
-
-printTaskManager();
-var keepContentAlive = setInterval(printTaskManager, 1000);
