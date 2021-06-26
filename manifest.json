@@ -15,8 +15,7 @@
     "default_locale" : "en",
     "background": {
         "scripts": [
-            "/components/jsonrpc.js",
-            "/components/main.js"
+            "background.js"
         ]
     },
     "browser_action": {
