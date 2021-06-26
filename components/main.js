@@ -1,5 +1,8 @@
-var aria2RPC = {
-    keepAlive: setInterval(() => {
+var aria2RPC = {};
+
+function registerJSONRPC() {
+    clearInterval(aria2RPC.keepAlive);
+    aria2RPC.keepAlive = setInterval(() => {
         jsonRPCRequest([
             {method: 'aria2.getVersion'},
             {method: 'aria2.getGlobalOption'},
@@ -13,14 +16,14 @@ var aria2RPC = {
         }, (error) => {
             aria2RPC = {...aria2RPC, error};
         });
-    }, 1000)
-};
+    }, 1000);
+}
 
 function registerMessageChannel() {
     clearInterval(aria2RPC.message);
     aria2RPC.message = setInterval(() => {
         chrome.runtime.sendMessage(aria2RPC);
-    }, localStorage['refresh']);
+    }, aria2RPC.option.jsonrpc['refresh']);
 }
 
 chrome.contextMenus.create({
@@ -35,18 +38,31 @@ chrome.contextMenus.onClicked.addListener(info => {
     }
 });
 
+chrome.storage.sync.get(null, (result) => {
+    aria2RPC.option = result;
+    registerJSONRPC();
+    registerMessageChannel();
+});
+
+chrome.storage.onChanged.addListener(changes => {
+    console.log(changes);
+});
+
 chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
-        var response = await fetch('/components/options.json');
+        var response = await fetch('/components/option.json');
         var json = await response.json();
-        Object.keys(json).forEach(key => {
-            localStorage[key] = json[key];
-        });
+        chrome.storage.sync.set(json);
     }
     if (details.reason === 'update' && details.previousVersion <= '2.6700') {
-        localStorage['refresh'] = 2000;
+        //localStorage['refresh'] = 2000;
+    }
+    if (details.reason === 'update') {
+        var response = await fetch('/components/option.json');
+        var json = await response.json();
+        chrome.storage.sync.set(json);
     }
 });
 
@@ -64,7 +80,7 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
 });
 
 chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
-    if (localStorage['capture'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
+    if (aria2RPC.option.capture['mode'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
     }
 
@@ -95,8 +111,8 @@ async function downWithAria2(session, options = {}) {
     if (session.filename) {
         options['out'] = session.filename;
     }
-    if (!options['all-proxy'] && localStorage['proxied'].includes(session.hostname)) {
-        options['all-proxy'] = localStorage['allproxy'];
+    if (!options['all-proxy'] && aria2RPC.option.proxy['resolve'].includes(session.hostname)) {
+        options['all-proxy'] = aria2RPC.option.proxy['uri'];
     }
     options['header'] = await getCookiesFromReferer(session.referer);
     jsonRPCRequest(
@@ -111,26 +127,26 @@ async function downWithAria2(session, options = {}) {
 }
 
 function captureFilterWorker(hostname, fileExt, fileSize) {
-    if (localStorage['ignored'].includes(hostname)) {
+    if (aria2RPC.option.capture['reject'].includes(hostname)) {
         return false;
     }
-    if (localStorage['capture'] === '2') {
+    if (aria2RPC.option.capture['mode'] === '2') {
         return true;
     }
-    if (localStorage['monitored'].includes(hostname)) {
+    if (aria2RPC.option.capture['resolve'].includes(hostname)) {
         return true;
     }
-    if (localStorage['fileExt'].includes(fileExt)) {
+    if (aria2RPC.option.capture['fileExt'].includes(fileExt)) {
         return true;
     }
-    if (localStorage['fileSize'] > 0 && fileSize >= localStorage['fileSize']) {
+    if (aria2RPC.option.capture['fileSize'] > 0 && fileSize >= aria2RPC.option.capture['fileSize']) {
         return true;
     }
     return false;
 }
 
 async function getCookiesFromReferer(url, result = 'Cookie:') {
-    var header = ['User-Agent: ' + localStorage['useragent'], 'Connection: keep-alive'];
+    var header = ['User-Agent: ' + aria2RPC.option['useragent'], 'Connection: keep-alive'];
     //Wrapper untill manifest v3
     return new Promise((resolve, reject) => {
         if (url) {
@@ -159,5 +175,3 @@ function getHostnameFromUrl(url) {
 function getFileExtension(filename) {
     return filename.slice(filename.lastIndexOf('.') + 1).toLowerCase();
 }
-
-registerMessageChannel();
