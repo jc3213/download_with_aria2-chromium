@@ -54,13 +54,7 @@ document.querySelector('#import').addEventListener('click', (event) => {
 
 document.querySelector('#aria2_btn').addEventListener('click', (event) => {
     chrome.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
-        var {version, error} = aria2RPC;
-        if (version) {
-            openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?' + version.version);
-        }
-        if (error) {
-            showNotification(error);
-        }
+        openModuleWindow('aria2Wnd', '/modules/aria2Wnd/index.html?' + aria2RPC.version.version);
     });
 });
 
