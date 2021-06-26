@@ -35,9 +35,6 @@
     "time_second_full": {
         "message": "秒"
     },
-    "warn_download": {
-        "message": "Aria2 开始下载"
-    },
     "option_basic": {
         "message": "基础"
     },
