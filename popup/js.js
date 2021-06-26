@@ -46,7 +46,8 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
 chrome.runtime.sendMessage({jsonrpc: true}, printTaskManager);
 chrome.runtime.onMessage.addListener(printTaskManager);
 
-function printTaskManager(aria2RPC) {
+function printTaskManager(response) {
+    aria2RPC = response;
     var {globalStat, active, waiting, stopped, error} = aria2RPC;
     if (globalStat) {
         document.querySelector('#active').innerText = globalStat.numActive;
