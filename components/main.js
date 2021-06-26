@@ -55,9 +55,8 @@ chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
         var response = await fetch('/components/option.json');
-        aria2RPC.option = await response.json();
-        chrome.storage.sync.set(aria2RPC.option);
-        registerMessageService();
+        var json = await response.json();
+        chrome.storage.sync.set(json);
     }
     if (details.reason === 'update' && details.previousVersion <= '2.6800') {
         chrome.storage.sync.set({
