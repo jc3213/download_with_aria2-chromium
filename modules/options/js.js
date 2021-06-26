@@ -11,7 +11,7 @@ chrome.storage.sync.get(null, result => {
         field.value = token ? value.slice(token.length) : multi ? value / multi : value;
         field.addEventListener('change', (event) => {
             tree[field.id] = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
-                token ? 'token:' + value : multi ? field.value * multi : field.value;
+                token ? 'token:' + field.value : multi ? field.value * multi : field.value;
             chrome.storage.sync.set(aria2Option);
         });
     });
