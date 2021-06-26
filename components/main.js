@@ -60,27 +60,26 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         registerMessageService();
     }
     if (details.reason === 'update' && details.previousVersion <= '2.6800') {
-        aria2RPC.option = {
+        chrome.storage.sync.set({
             jsonrpc: {
-                uri: localStorage['jsonrpc'],
-                token: localStorage['token'],
+                uri: localStorage['jsonrpc'] ?? 'http://localhost:6800/jsonrpc',
+                token: localStorage['token'] ?? '',
                 refresh: localStorage['refresh'] | 0
             },
-            useragent: localStorage['useragent'],
+            useragent: localStorage['useragent'] ?? navigator.userAgent,
             proxy: {
                 mode: '0',
-                uri: localStorage['allproxy'],
-                resolve: localStorage['proxied'].split([\s\n,])
+                uri: localStorage['allproxy'] ?? '',
+                resolve: (localStorage['proxied'] ?? '').split(/[\s\n,]/)
             },
             capture: {
-                mode: localStorage['capture'],
-                reject: localStorage['ignored'].split([\s\n,])
-                resolve: localStorage['monitored'].split([\s\n,]),
-                fileExt: localStorage['fileExt'].split([\s\n,]),
+                mode: localStorage['capture'] ?? '0',
+                reject: (localStorage['ignored'] ?? '').split(/[\s\n,]/),
+                resolve: (localStorage['monitored'] ?? '').split(/[\s\n,]/),
+                fileExt: (localStorage['fileExt'] ?? '').split(/[\s\n,]/),
                 fileSize: localStorage['fileSize'] | 0
             }
-        }
-        chrome.storage.sync.set(aria2RPC.option);
+        });
         localStorage.clear();
     }
 });
