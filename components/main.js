@@ -67,7 +67,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
             },
             useragent: localStorage['useragent'] ?? navigator.userAgent,
             proxy: {
-                mode: '0',
                 uri: localStorage['allproxy'] ?? '',
                 resolve: (localStorage['proxied'] ?? '').split(/[\s\n,]/)
             },
