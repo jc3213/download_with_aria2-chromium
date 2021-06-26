@@ -137,7 +137,7 @@ async function downWithAria2(session, options = {}) {
             showNotification(chrome.i18n.getMessage('warn_download'), url.join('\n'));
         },
         (error, jsonrpc) => {
-            showNotification(error, jsonrpc || url.join('\n'));
+            showNotification(error, jsonrpc ?? url.join('\n'));
         }
     );
 }
