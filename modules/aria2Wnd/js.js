@@ -6,7 +6,8 @@ document.querySelector('#back_btn').addEventListener('click', (event) => {
     frameElement.remove();
 });
 
-chrome.runtime.sendMessage({jsonrpc: true}, aria2RPC => {
+chrome.runtime.sendMessage({jsonrpc: true}, response => {
+    aria2RPC = response;
     document.querySelectorAll('[aria2]').forEach(aria2 => parseValueToOption(aria2, aria2RPC.globalOption));
 });
 
