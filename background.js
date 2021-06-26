@@ -78,7 +78,7 @@ chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
-        var response = await fetch('/components/option.json');
+        var response = await fetch('option.json');
         var json = await response.json();
         chrome.storage.sync.set(json);
     }
