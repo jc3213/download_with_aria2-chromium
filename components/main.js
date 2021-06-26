@@ -1,7 +1,8 @@
 var aria2RPC = {};
 
-function registerJSONRPC() {
+function registerMessageService() {
     clearInterval(aria2RPC.keepAlive);
+    clearInterval(aria2RPC.message);
     aria2RPC.keepAlive = setInterval(() => {
         jsonRPCRequest([
             {method: 'aria2.getVersion'},
@@ -15,12 +16,9 @@ function registerJSONRPC() {
             chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
         }, (error) => {
             aria2RPC = {...aria2RPC, error};
+            clearInterval(aria2RPC.keepAlive);
         });
     }, 1000);
-}
-
-function registerMessageChannel() {
-    clearInterval(aria2RPC.message);
     aria2RPC.message = setInterval(() => {
         chrome.runtime.sendMessage(aria2RPC);
     }, aria2RPC.option.jsonrpc['refresh']);
@@ -38,14 +36,18 @@ chrome.contextMenus.onClicked.addListener(info => {
     }
 });
 
-chrome.storage.sync.get(null, (result) => {
+chrome.storage.sync.get(null, result => {
     aria2RPC.option = result;
-    registerJSONRPC();
-    registerMessageChannel();
+    registerMessageService();
 });
 
 chrome.storage.onChanged.addListener(changes => {
-    console.log(changes);
+    Object.keys(changes).forEach(key => {
+        aria2RPC.option[key] = changes[key].newValue;
+        if (key === 'jsonrpc') {
+            registerMessageService();
+        }
+    });
 });
 
 chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
@@ -53,16 +55,33 @@ chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
         var response = await fetch('/components/option.json');
-        var json = await response.json();
-        chrome.storage.sync.set(json);
+        aria2RPC.option = await response.json();
+        chrome.storage.sync.set(aria2RPC.option);
+        registerMessageService();
     }
-    if (details.reason === 'update' && details.previousVersion <= '2.6700') {
-        //localStorage['refresh'] = 2000;
-    }
-    if (details.reason === 'update') {
-        var response = await fetch('/components/option.json');
-        var json = await response.json();
-        chrome.storage.sync.set(json);
+    if (details.reason === 'update' && details.previousVersion <= '2.6800') {
+        aria2RPC.option = {
+            jsonrpc: {
+                uri: localStorage['jsonrpc'],
+                token: localStorage['token'],
+                refresh: localStorage['refresh'] | 0
+            },
+            useragent: localStorage['useragent'],
+            proxy: {
+                mode: '0',
+                uri: localStorage['allproxy'],
+                resolve: localStorage['proxied'].split([\s\n,])
+            },
+            capture: {
+                mode: localStorage['capture'],
+                reject: localStorage['ignored'].split([\s\n,])
+                resolve: localStorage['monitored'].split([\s\n,]),
+                fileExt: localStorage['fileExt'].split([\s\n,]),
+                fileSize: localStorage['fileSize'] | 0
+            }
+        }
+        chrome.storage.sync.set(aria2RPC.option);
+        localStorage.clear();
     }
 });
 
