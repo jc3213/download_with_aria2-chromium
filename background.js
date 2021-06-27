@@ -88,7 +88,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         chrome.storage.sync.set({
             jsonrpc: {
                 uri: localStorage['jsonrpc'] ?? 'http://localhost:6800/jsonrpc',
-                token: 'token:' + (localStorage['token'] ?? ''),,
+                token: 'token:' + (localStorage['token'] ?? ''),
                 refresh: localStorage['refresh'] | 0
             },
             useragent: localStorage['useragent'] ?? navigator.userAgent,
@@ -141,14 +141,16 @@ chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
         return;
     }
 
-    var session = {url: item.finalUrl, filename: item.filename};
     var tabs = await getCurrentActiveTabs();
-    session.referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
-    session.hostname = getHostnameFromUrl(session.referer);
-    if (captureFilterWorker(session.hostname, getFileExtension(session.filename), item.fileSize)) {
+    var url = item.finalUrl;
+    var referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
+    var hostname = hostname = getHostnameFromUrl(referer);
+    var filename = item.filename;
+
+    if (captureFilterWorker(hostname, getFileExtension(filename), item.fileSize)) {
         chrome.downloads.cancel(item.id, () => {
             chrome.downloads.erase({id: item.id}, () => {
-                startDownload(session);
+                startDownload({url, referer, hostname, filename});
             });
         });
     }
