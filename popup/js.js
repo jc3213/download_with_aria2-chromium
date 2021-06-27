@@ -151,20 +151,15 @@ function openTaskMgrWindow(gid) {
 }
 
 function removeTaskAndRetry(gid) {
-    jsonRPCRequest([
-        {method: 'aria2.getFiles', gid},
-        {method: 'aria2.getOption', gid}
-    ], (files, options) => {
-        var url = [];
-        files[0].uris.forEach(uri => {
-            if (!url.includes(uri.uri)) {
-                url.push(uri.uri);
-            }
-        });
-        jsonRPCRequest({method: 'aria2.removeDownloadResult', gid}, () => {
-            document.getElementById(gid).remove();
-            jsonRPCRequest({method: 'aria2.addUri', url, options});
-        });
+    chrome.runtime.sendMessage({
+        restart: [
+            {id: '', jsonrpc: 2, method: 'aria2.getFiles', params: [aria2RPC.option.jsonrpc['token'], gid]},
+            {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], gid]},
+            {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.option.jsonrpc['token'], gid]}
+        ],
+        purge: true
+    }, response => {
+        document.getElementById(gid).remove();
     });
 }
 

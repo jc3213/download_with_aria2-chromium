@@ -56,7 +56,7 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.onClicked.addListener(info => {
     if (info.menuItemId === 'downwitharia2') {
-        downWithAria2({url: info.linkUrl, referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
+        startDownload({url: info.linkUrl, referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
 
@@ -107,15 +107,19 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
-    var {jsonrpc, download, request, purge} = message;
+    var {jsonrpc, download, request, restart, purge} = message;
     if (jsonrpc) {
         response(aria2RPC);
     }
     if (download) {
-        downWithAria2(...download);
+        startDownload(...download);
     }
     if (request) {
         aria2RPCRequest(request);
+        response();
+    }
+    if (restart) {
+        aria2RPCRequest(restart).then(restartDownload);
         response();
     }
     if (purge) {
@@ -135,7 +139,7 @@ chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
     if (captureFilterWorker(session.hostname, getFileExtension(session.filename), item.fileSize)) {
         chrome.downloads.cancel(item.id, () => {
             chrome.downloads.erase({id: item.id}, () => {
-                downWithAria2(session);
+                startDownload(session);
             });
         });
     }
@@ -150,7 +154,7 @@ async function getCurrentActiveTabs() {
     });
 }
 
-async function downWithAria2(session, options = {}) {
+async function startDownload(session, options = {}) {
     var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
         options['out'] = session.filename;
@@ -159,6 +163,16 @@ async function downWithAria2(session, options = {}) {
         options['all-proxy'] = aria2RPC.option.proxy['uri'];
     }
     options['header'] = await getCookiesFromReferer(session.referer);
+    downloadWithAria2(url, options);
+}
+
+function restartDownload(response) {
+    var [files, options] = response;
+    var url = files[0].uris.map(uri => uri.uri);
+    downloadWithAria2(url, options);
+};
+
+function downloadWithAria2(url, options) {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.option.jsonrpc['token'], url, options]})
         .then(response => showNotification(url.join('\n')))
         .catch(showNotification);
