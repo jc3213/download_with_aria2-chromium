@@ -147,7 +147,10 @@ function removeTaskFromQueue(gid, status) {
 }
 
 function openTaskMgrWindow(gid) {
-    openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
+    chrome.runtime.sendMessage({session: gid});
+    setTimeout(() => {
+        openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
+    }, 1000);
 }
 
 function removeTaskAndRetry(gid) {

@@ -32,10 +32,12 @@ function registerMessageService() {
             {id: '', jsonrpc: 2, method: 'aria2.getGlobalStat', params: [aria2RPC.option.jsonrpc['token']]},
             {id: '', jsonrpc: 2, method: 'aria2.tellActive', params: [aria2RPC.option.jsonrpc['token']]},
             {id: '', jsonrpc: 2, method: 'aria2.tellWaiting', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
-            {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.option.jsonrpc['token'], 0, 999]}
+            {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
+            aria2RPC.lastSession ? {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]} : {},
+            aria2RPC.lastSession ? {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]} : {}
         ]).then(response => {
-            var [version, globalOption, globalStat, active, waiting, stopped] = response;
-            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined};
+            var [version, globalOption, globalStat, active, waiting, stopped, result, option] = response;
+            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: undefined, lastSessionResult: {result, option}};
             chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
         }).catch(error => {
             aria2RPC = {...aria2RPC, error};
@@ -111,7 +113,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
-    var {jsonrpc, download, request, restart, purge} = message;
+    var {jsonrpc, download, request, session, restart, purge} = message;
     if (jsonrpc) {
         response(aria2RPC);
     }
@@ -125,6 +127,9 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
     if (restart) {
         aria2RPCRequest(restart).then(restartDownload);
         response();
+    }
+    if (session !== undefined) {
+        aria2RPC.lastSession = session;
     }
     if (purge) {
         aria2RPC.stopped = [];

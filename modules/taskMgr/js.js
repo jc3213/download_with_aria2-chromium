@@ -1,17 +1,16 @@
 var gid = location.search.slice(1);
-var options = {};
 var logic = 0;
 
 chrome.runtime.sendMessage({jsonrpc: true}, response => {
     printTaskManager(response);
-    printTaskOption(gid);
     feedEventHandler();
+    document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, aria2RPC.lastSessionResult.option));
 });
 chrome.runtime.onMessage.addListener(printTaskManager);
 
 function printTaskManager(response) {
     aria2RPC = response;
-    var result = [...aria2RPC.active, ...aria2RPC.waiting, ...aria2RPC.stopped].find(task => task.gid === gid);
+    var {result} = aria2RPC.lastSessionResult;
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {
         printTaskDetails('bt');
@@ -98,6 +97,7 @@ document.querySelectorAll('[swap]').forEach(swap => {
 });
 
 document.querySelector('#name').addEventListener('click', (event) => {
+    chrome.runtime.sendMessage({session: null});
     frameElement.remove();
 });
 
@@ -128,18 +128,9 @@ document.querySelector('#bt').addEventListener('click', (event) => {
                 checked.push(item.innerText);
             }
         });
-        changeTaskOption(gid, 'select-file', checked.join());
+        changeTaskOption('select-file', checked.join());
     }
 });
-
-function printTaskOption(gid) {
-    jsonRPCRequest(
-        {method: 'aria2.getOption', gid},
-        (options) => {
-            document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, options));
-        }
-    );
-}
 
 function changeTaskUris(changes) {
     var add = changes.add ? [changes.add] : [];
@@ -148,6 +139,6 @@ function changeTaskUris(changes) {
 }
 
 function changeTaskOption(name, value) {
-    options[name] = value;
-    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.option.jsonrpc['token'], gid, options]}});
+    aria2RPC.lastSession.option[name] = value;
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.option.jsonrpc['token'], gid, aria2RPC.lastSession.option]}});
 }
