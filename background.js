@@ -86,7 +86,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         chrome.storage.sync.set({
             jsonrpc: {
                 uri: localStorage['jsonrpc'] ?? 'http://localhost:6800/jsonrpc',
-                token: localStorage['token'] ?? '',
+                token: localStorage['token'] ?? 'token:',
                 refresh: localStorage['refresh'] | 0
             },
             useragent: localStorage['useragent'] ?? navigator.userAgent,
@@ -103,6 +103,10 @@ chrome.runtime.onInstalled.addListener(async (details) => {
             }
         });
         localStorage.clear();
+    }
+    if (details.reason === 'update' && details.previousVersion === '2.6900') {
+        aria2RPC.option.jsonrpc['token'] = 'token:' + aria2RPC.option.jsonrpc['token'];
+        chrome.storage.sync.set(aria2RPC.option);
     }
 });
 
