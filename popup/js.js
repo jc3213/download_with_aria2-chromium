@@ -147,14 +147,14 @@ function removeTaskFromQueue(gid, status) {
 }
 
 function openTaskMgrWindow(gid) {
-    if (taskManager) {
+    if (window.taskManager) {
         return;
     }
     chrome.runtime.sendMessage({session: gid});
     setTimeout(() => {
         openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
     }, 1000);
-    taskManager = gid;
+    window.taskManager = gid;
 }
 
 function removeTaskAndRetry(gid) {
@@ -182,5 +182,3 @@ function pauseOrUnpauseTask(gid, status) {
     }
     chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.option.jsonrpc['token'], gid]}});
 }
-
-var taskManager;
