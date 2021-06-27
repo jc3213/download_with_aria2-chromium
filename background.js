@@ -113,7 +113,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, response) => {
-    var {jsonrpc, download, request, session, restart, purge} = message;
+    var {jsonrpc, download, request, restart, session, purge} = message;
     if (jsonrpc) {
         response(aria2RPC);
     }

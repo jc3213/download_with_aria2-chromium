@@ -76,7 +76,7 @@ function appendFileToTable(file, table) {
 }
 
 document.addEventListener('change', (event) => {
-    changeTaskOption(gid, event.target.id, event.target.value);
+    changeTaskOption(event.target.id, event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
@@ -98,11 +98,12 @@ document.querySelectorAll('[swap]').forEach(swap => {
 
 document.querySelector('#name').addEventListener('click', (event) => {
     chrome.runtime.sendMessage({session: null});
+    parent.window.taskManager = null;
     frameElement.remove();
 });
 
 document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) => {
-    changeTaskOption(gid, 'all-proxy', aria2RPC.option.proxy['uri']);
+    changeTaskOption('all-proxy', aria2RPC.option.proxy['uri']);
 });
 
 document.querySelector('#http').addEventListener('click', (event) => {
@@ -139,6 +140,6 @@ function changeTaskUris(changes) {
 }
 
 function changeTaskOption(name, value) {
-    aria2RPC.lastSession.option[name] = value;
-    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.option.jsonrpc['token'], gid, aria2RPC.lastSession.option]}});
+    aria2RPC.lastSessionResult.option[name] = value;
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.option.jsonrpc['token'], gid, aria2RPC.lastSessionResult.option]}});
 }
