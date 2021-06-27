@@ -106,7 +106,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     }
 });
 
-chrome.runtime.onMessage.addListener((message, sender, response) => {
+chrome.runtime.onMessage.addListener(async (message, sender, response) => {
     var {jsonrpc, download, request, purge} = message;
     if (jsonrpc) {
         response(aria2RPC);
@@ -115,7 +115,8 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
         downWithAria2(...download);
     }
     if (request) {
-        aria2RPCRequest(request).then(response);
+        aria2RPCRequest(request);
+        response();
     }
     if (purge) {
         aria2RPC.stopped = [];
