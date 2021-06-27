@@ -88,7 +88,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         chrome.storage.sync.set({
             jsonrpc: {
                 uri: localStorage['jsonrpc'] ?? 'http://localhost:6800/jsonrpc',
-                token: localStorage['token'] ?? 'token:',
+                token: 'token:' + (localStorage['token'] ?? ''),,
                 refresh: localStorage['refresh'] | 0
             },
             useragent: localStorage['useragent'] ?? navigator.userAgent,
