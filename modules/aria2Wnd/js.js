@@ -1,5 +1,3 @@
-var options = {};
-
 document.querySelector('#version').innerText = location.search.slice(1);
 
 document.querySelector('#back_btn').addEventListener('click', (event) => {
@@ -12,6 +10,7 @@ chrome.runtime.sendMessage({jsonrpc: true}, response => {
 });
 
 document.addEventListener('change', (event) => {
+    var options = {};
     options[event.target.id] = event.target.value;
-    jsonRPCRequest({method: 'aria2.changeGlobalOption', options});
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeGlobalOption', params: [aria2RPC.option.jsonrpc['token'], options]}});
 });
