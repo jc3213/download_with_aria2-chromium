@@ -32,7 +32,7 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
 });
 
 function submitNewDownloadTask(session, options) {
-    chrome.runtime.sendMessage({session, options});
+    chrome.runtime.sendMessage({download: [session, options]});
     parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
     frameElement.remove();
 }
