@@ -107,6 +107,7 @@ document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) =
 
 document.querySelector('#http').addEventListener('click', (event) => {
     if (event.ctrlKey) {
+        changeTaskUris({remove: event.target.innerText});
         jsonRPCRequest({method: 'aria2.changeUri', gid, remove: event.target.innerText});
     }
     else {
@@ -115,12 +116,8 @@ document.querySelector('#http').addEventListener('click', (event) => {
 });
 
 document.querySelector('#source > span').addEventListener('click', (event) => {
-    jsonRPCRequest(
-        {method: 'aria2.changeUri', gid, add: document.querySelector('#source > input').value},
-        (result) => {
-            document.querySelector('#source > input').value = '';
-        }
-    );
+    changeTaskUris({add: document.querySelector('#source > input').value});
+    document.querySelector('#source > input').value = '';
 });
 
 document.querySelector('#bt').addEventListener('click', (event) => {
@@ -144,7 +141,13 @@ function printTaskOption(gid) {
     );
 }
 
-function changeTaskOption(gid, name, value) {
+function changeTaskUris(changes) {
+    var add = changes.add ? [changes.add] : [];
+    var remove = changes.remove ? [changes.remove] : [];
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [gid, 1, remove, add]}});
+}
+
+function changeTaskOption(name, value) {
     options[name] = value;
-    jsonRPCRequest({method: 'aria2.changeOption', gid, options});
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.option.jsonrpc['token'], gid, options]}});
 }
