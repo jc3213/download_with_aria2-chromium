@@ -136,7 +136,7 @@ function removeTaskFromQueue(gid, status) {
     else {
         return;
     }
-    var purse = ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false;
+    var purge = ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false;
     chrome.runtime.sendMessage({
         request: {id: '', jsonrpc: 2, method, params: [aria2RPC.option.jsonrpc['token'], gid]},
         purge
