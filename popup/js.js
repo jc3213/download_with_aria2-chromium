@@ -98,7 +98,7 @@ function appendTaskDetails(result) {
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.addEventListener('mouseenter', (event) => chrome.runtime.sendMessage({session: result.gid}));
     task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
-    task.querySelector('#invest_btn').addEventListener('click', (event) => openTaskMgrWindow(result.gid));
+    task.querySelector('#invest_btn').addEventListener('click', (event) => openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + result.gid));
     task.querySelector('#retry_btn').addEventListener('click', (event) => removeAndRestartTask(result.gid));
     task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
     return task;
@@ -136,21 +136,15 @@ function removeTaskFromQueue(gid, status) {
     else {
         return;
     }
+    var purse = ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false;
     chrome.runtime.sendMessage({
         request: {id: '', jsonrpc: 2, method, params: [aria2RPC.option.jsonrpc['token'], gid]},
-        purge: ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false
+        purge
     }, response => {
         if (purge) {
             document.getElementById(gid).remove();
         }
     });
-}
-
-function openTaskMgrWindow(gid) {
-    if (!window.taskManager) {
-        openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + gid);
-        window.taskManager = gid;
-    }
 }
 
 function removeAndRestartTask(gid) {
