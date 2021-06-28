@@ -1,7 +1,7 @@
 var aria2RPC = {};
 
 function aria2RPCRequest(request) {
-    var jsonrpc = aria2RPC.option.jsonrpc['uri'];
+    var jsonrpc = aria2RPC.options.jsonrpc['uri'];
     var requestJSON = Array.isArray(request) ? request : [request];
     return fetch(jsonrpc, {method: 'POST', body: JSON.stringify(requestJSON)}).then(response => {
         if (response.ok) {
@@ -11,8 +11,7 @@ function aria2RPCRequest(request) {
             throw(response.statusText);
         }
     }).then(responseJSON => {
-        var result = responseJSON[0].result;
-        var error = responseJSON[0].error;
+        var {result, error} = responseJSON[0];
         if (result) {
             return responseJSON.map(item => item.result);
         }
@@ -27,16 +26,16 @@ function registerMessageService() {
     clearInterval(aria2RPC.message);
     aria2RPC.keepAlive = setInterval(() => {
         aria2RPCRequest([
-            {id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.option.jsonrpc['token']]},
-            {id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.option.jsonrpc['token']]},
-            {id: '', jsonrpc: 2, method: 'aria2.getGlobalStat', params: [aria2RPC.option.jsonrpc['token']]},
-            {id: '', jsonrpc: 2, method: 'aria2.tellActive', params: [aria2RPC.option.jsonrpc['token']]},
-            {id: '', jsonrpc: 2, method: 'aria2.tellWaiting', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
-            {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.option.jsonrpc['token'], 0, 999]},
-            {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]},
-            {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.option.jsonrpc['token'], aria2RPC.lastSession]}
-        ]).then(([version, globalOption, globalStat, active, waiting, stopped, result, option]) => {
-            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, error: '', lastSessionResult: {result, option}};
+            {id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.options.jsonrpc['token']]},
+            {id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.options.jsonrpc['token']]},
+            {id: '', jsonrpc: 2, method: 'aria2.getGlobalStat', params: [aria2RPC.options.jsonrpc['token']]},
+            {id: '', jsonrpc: 2, method: 'aria2.tellActive', params: [aria2RPC.options.jsonrpc['token']]},
+            {id: '', jsonrpc: 2, method: 'aria2.tellWaiting', params: [aria2RPC.options.jsonrpc['token'], 0, 999]},
+            {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.options.jsonrpc['token'], 0, 999]},
+            {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.options.jsonrpc['token'], aria2RPC.lastSession]},
+            {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.options.jsonrpc['token'], aria2RPC.lastSession]}
+        ]).then(([version, globalOption, globalStat, active, waiting, stopped, sessionResult, sessionOption]) => {
+            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, sessionResult, sessionOption, error: undefined};
             chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
         }).catch(error => {
             aria2RPC = {...aria2RPC, error};
@@ -46,7 +45,7 @@ function registerMessageService() {
     }, 1000);
     aria2RPC.message = setInterval(() => {
         chrome.runtime.sendMessage(aria2RPC);
-    }, aria2RPC.option.jsonrpc['refresh']);
+    }, aria2RPC.options.jsonrpc['refresh']);
 }
 
 chrome.contextMenus.create({
@@ -62,13 +61,13 @@ chrome.contextMenus.onClicked.addListener(info => {
 });
 
 chrome.storage.sync.get(null, result => {
-    aria2RPC.option = result;
+    aria2RPC.options = result;
     registerMessageService();
 });
 
 chrome.storage.onChanged.addListener(changes => {
     Object.keys(changes).forEach(key => {
-        aria2RPC.option[key] = changes[key].newValue;
+        aria2RPC.options[key] = changes[key].newValue;
         if (key === 'jsonrpc') {
             registerMessageService();
         }
@@ -79,7 +78,7 @@ chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 chrome.runtime.onInstalled.addListener(async (details) => {
     if (details.reason === 'install') {
-        var response = await fetch('option.json');
+        var response = await fetch('options.json');
         var json = await response.json();
         chrome.storage.sync.set(json);
     }
@@ -106,8 +105,8 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         localStorage.clear();
     }
     if (details.reason === 'update' && details.previousVersion === '2.6900') {
-        aria2RPC.option.jsonrpc['token'] = 'token:' + aria2RPC.option.jsonrpc['token'];
-        chrome.storage.sync.set(aria2RPC.option);
+        aria2RPC.options.jsonrpc['token'] = 'token:' + aria2RPC.options.jsonrpc['token'];
+        chrome.storage.sync.set(aria2RPC.options);
     }
 });
 
@@ -136,7 +135,7 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
 });
 
 chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
-    if (aria2RPC.option.capture['mode'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
+    if (aria2RPC.options.capture['mode'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
     }
 
@@ -164,51 +163,50 @@ async function getCurrentActiveTabs() {
     });
 }
 
-async function startDownload(session, option = {}) {
-    var url = Array.isArray(session.url) ? session.url : [session.url];
-    if (session.filename) {
-        option['out'] = session.filename;
+async function startDownload({url, referer, hostname, filename}, option = {}) {
+    if (filename) {
+        option['out'] = filename;
     }
-    if (!option['all-proxy'] && aria2RPC.option.proxy['resolve'].includes(session.hostname)) {
-        option['all-proxy'] = aria2RPC.option.proxy['uri'];
+    if (!option['all-proxy'] && aria2RPC.options.proxy['resolve'].includes(hostname)) {
+        option['all-proxy'] = aria2RPC.options.proxy['uri'];
     }
-    option['header'] = await getCookiesFromReferer(session.referer);
-    downloadWithAria2(url, option);
+    option['header'] = await getCookiesFromReferer(referer);
+    downloadWithAria2(Array.isArray(url) ? url : [url], option);
 }
 
 function restartDownload() {
-    var {result, option} = aria2RPC.lastSessionResult;
-    var url = result.files[0].uris.map(uri => uri.uri);
-    downloadWithAria2(url, option);
+    var {sessionResult, sessionOption} = aria2RPC;
+    var url = sessionResult.files[0].uris.map(uri => uri.uri);
+    downloadWithAria2(url, sessionOption);
 };
 
 function downloadWithAria2(url, option) {
-    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.option.jsonrpc['token'], url, option]})
-        .then(response => showNotification(url.join('\n')))
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.options.jsonrpc['token'], url, option]})
+        .then(response => showNotification(url[0]))
         .catch(showNotification);
 }
 
 function captureFilterWorker(hostname, fileExt, fileSize) {
-    if (aria2RPC.option.capture['reject'].includes(hostname)) {
+    if (aria2RPC.options.capture['reject'].includes(hostname)) {
         return false;
     }
-    if (aria2RPC.option.capture['mode'] === '2') {
+    if (aria2RPC.options.capture['mode'] === '2') {
         return true;
     }
-    if (aria2RPC.option.capture['resolve'].includes(hostname)) {
+    if (aria2RPC.options.capture['resolve'].includes(hostname)) {
         return true;
     }
-    if (aria2RPC.option.capture['fileExt'].includes(fileExt)) {
+    if (aria2RPC.options.capture['fileExt'].includes(fileExt)) {
         return true;
     }
-    if (aria2RPC.option.capture['fileSize'] > 0 && fileSize >= aria2RPC.option.capture['fileSize']) {
+    if (aria2RPC.options.capture['fileSize'] > 0 && fileSize >= aria2RPC.options.capture['fileSize']) {
         return true;
     }
     return false;
 }
 
 async function getCookiesFromReferer(url, result = 'Cookie:') {
-    var header = ['User-Agent: ' + aria2RPC.option['useragent'], 'Connection: keep-alive'];
+    var header = ['User-Agent: ' + aria2RPC.options['useragent'], 'Connection: keep-alive'];
     //Wrapper untill manifest v3
     return new Promise((resolve, reject) => {
         if (url) {
@@ -239,7 +237,7 @@ function getFileExtension(filename) {
 function showNotification(message = '') {
     chrome.notifications.create({
         type: 'basic',
-        title: aria2RPC.option.jsonrpc['uri'],
+        title: aria2RPC.options.jsonrpc['uri'],
         iconUrl: '/icons/icon48.png',
         message: message
     }, id => {
