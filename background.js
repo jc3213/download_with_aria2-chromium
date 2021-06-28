@@ -177,10 +177,10 @@ async function startDownload(session, options = {}) {
     downloadWithAria2(url, options);
 }
 
-function restartDownload(response) {
-    var [files, options] = response;
-    var url = files[0].uris.map(uri => uri.uri);
-    downloadWithAria2(url, options);
+function restartDownload() {
+    var {result, option} = aria2RPC.lastSessionResult;
+    var url = result.files[0].uris.map(uri => uri.uri);
+    downloadWithAria2(url, option);
 };
 
 function downloadWithAria2(url, options) {
