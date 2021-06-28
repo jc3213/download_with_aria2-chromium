@@ -165,16 +165,16 @@ async function getCurrentActiveTabs() {
     });
 }
 
-async function startDownload(session, options = {}) {
+async function startDownload(session, option = {}) {
     var url = Array.isArray(session.url) ? session.url : [session.url];
     if (session.filename) {
-        options['out'] = session.filename;
+        option['out'] = session.filename;
     }
-    if (!options['all-proxy'] && aria2RPC.option.proxy['resolve'].includes(session.hostname)) {
-        options['all-proxy'] = aria2RPC.option.proxy['uri'];
+    if (!option['all-proxy'] && aria2RPC.option.proxy['resolve'].includes(session.hostname)) {
+        option['all-proxy'] = aria2RPC.option.proxy['uri'];
     }
-    options['header'] = await getCookiesFromReferer(session.referer);
-    downloadWithAria2(url, options);
+    option['header'] = await getCookiesFromReferer(session.referer);
+    downloadWithAria2(url, option);
 }
 
 function restartDownload() {
@@ -183,8 +183,8 @@ function restartDownload() {
     downloadWithAria2(url, option);
 };
 
-function downloadWithAria2(url, options) {
-    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.option.jsonrpc['token'], url, options]})
+function downloadWithAria2(url, option) {
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.option.jsonrpc['token'], url, option]})
         .then(response => showNotification(url.join('\n')))
         .catch(showNotification);
 }
