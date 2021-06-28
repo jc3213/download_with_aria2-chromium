@@ -167,7 +167,7 @@ async function startDownload({url, referer, hostname, filename}, options = {}) {
     if (filename) {
         options['out'] = filename;
     }
-    if (!option['all-proxy'] && aria2RPC.options.proxy['resolve'].includes(hostname)) {
+    if (!options['all-proxy'] && aria2RPC.options.proxy['resolve'].includes(hostname)) {
         options['all-proxy'] = aria2RPC.options.proxy['uri'];
     }
     options['header'] = await getCookiesFromReferer(referer);
