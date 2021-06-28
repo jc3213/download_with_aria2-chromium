@@ -34,8 +34,8 @@ function printTaskManager(response) {
 
 function printTaskDetails(type) {
     if (logic === 0) {
-        document.querySelectorAll('[http], [bt]').forEach(option => {
-            option.style.display = option.hasAttribute(type) ? 'block' : 'none';
+        document.querySelectorAll('[http], [bt]').forEach(field => {
+            field.style.display = field.hasAttribute(type) ? 'block' : 'none';
         });
         logic = 1;
     }
