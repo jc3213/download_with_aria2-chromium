@@ -109,8 +109,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     }
 });
 
-chrome.runtime.onMessage.addListener((message, sender, response) => {
-    var {jsonrpc, download, request, restart, session, purge} = message;
+chrome.runtime.onMessage.addListener(({jsonrpc, download, request, restart, session, purge}, sender, response) => {
     if (jsonrpc) {
         response(aria2RPC);
     }
@@ -131,7 +130,7 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
     if (purge) {
         aria2RPC.stopped = [];
     }
-});
+});;
 
 chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
     if (aria2RPC.options.capture['mode'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
@@ -144,7 +143,7 @@ chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
     var hostname = hostname = getHostnameFromUrl(referer);
     var filename = item.filename;
 
-    if (captureFilterWorker(hostname, getFileExtension(filename), item.fileSize)) {
+    if (captureDownload(hostname, getFileExtension(filename), item.fileSize)) {
         chrome.downloads.cancel(item.id, () => {
             chrome.downloads.erase({id: item.id}, () => {
                 startDownload({url, referer, hostname, filename});
@@ -160,6 +159,25 @@ async function getCurrentActiveTabs() {
             resolve(tabs);
         })
     });
+}
+
+function captureDownload(hostname, fileExt, fileSize) {
+    if (aria2RPC.options.capture['reject'].includes(hostname)) {
+        return false;
+    }
+    if (aria2RPC.options.capture['mode'] === '2') {
+        return true;
+    }
+    if (aria2RPC.options.capture['resolve'].includes(hostname)) {
+        return true;
+    }
+    if (aria2RPC.options.capture['fileExt'].includes(fileExt)) {
+        return true;
+    }
+    if (aria2RPC.options.capture['fileSize'] > 0 && fileSize >= aria2RPC.options.capture['fileSize']) {
+        return true;
+    }
+    return false;
 }
 
 async function startDownload({url, referer, hostname, filename}, options = {}) {
@@ -183,25 +201,6 @@ function downloadWithAria2(url, options) {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.options.jsonrpc['token'], url, options]})
         .then(response => showNotification(url[0]))
         .catch(showNotification);
-}
-
-function captureFilterWorker(hostname, fileExt, fileSize) {
-    if (aria2RPC.options.capture['reject'].includes(hostname)) {
-        return false;
-    }
-    if (aria2RPC.options.capture['mode'] === '2') {
-        return true;
-    }
-    if (aria2RPC.options.capture['resolve'].includes(hostname)) {
-        return true;
-    }
-    if (aria2RPC.options.capture['fileExt'].includes(fileExt)) {
-        return true;
-    }
-    if (aria2RPC.options.capture['fileSize'] > 0 && fileSize >= aria2RPC.options.capture['fileSize']) {
-        return true;
-    }
-    return false;
 }
 
 async function getCookiesFromReferer(url, result = 'Cookie:') {
