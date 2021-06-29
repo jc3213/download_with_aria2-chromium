@@ -10,10 +10,11 @@ chrome.runtime.sendMessage({jsonrpc: true}, response => {
     });
     feedEventHandler();
 });
-chrome.runtime.onMessage.addListener(printTaskManager);
 
-function printTaskManager(response) {
-    aria2RPC = response;
+chrome.runtime.connect().onMessage.addListener(printTaskManager);
+
+function printTaskManager(message) {
+    aria2RPC = message;
     var result = aria2RPC.sessionResult;
     var stopped = ['complete', 'error', 'removed'].includes(result.status);
     if (result.bittorrent) {

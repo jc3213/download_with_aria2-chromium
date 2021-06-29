@@ -22,7 +22,6 @@ function aria2RPCRequest(request) {
 
 function registerMessageService() {
     clearInterval(aria2RPC.connect);
-    clearInterval(aria2RPC.message);
     aria2RPC.connect = setInterval(() => {
         aria2RPCRequest([
             {id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.options.jsonrpc['token']]},
@@ -42,9 +41,6 @@ function registerMessageService() {
             clearInterval(aria2RPC.connect);
         });
     }, 1000);
-    aria2RPC.message = setInterval(() => {
-        chrome.runtime.sendMessage(aria2RPC);
-    }, aria2RPC.options.jsonrpc['refresh']);
 }
 
 chrome.contextMenus.create({
@@ -107,6 +103,16 @@ chrome.runtime.onInstalled.addListener(async (details) => {
         aria2RPC.options.jsonrpc['token'] = 'token:' + aria2RPC.options.jsonrpc['token'];
         chrome.storage.sync.set(aria2RPC.options);
     }
+});
+
+chrome.runtime.onConnect.addListener(port => {
+    port.postMessage(aria2RPC);
+    aria2RPC.message = setInterval(() => {
+        port.postMessage(aria2RPC);
+    }, aria2RPC.options.jsonrpc['refresh']);
+    port.onDisconnect.addListener(() => {
+        clearInterval(aria2RPC.message);
+    })
 });
 
 chrome.runtime.onMessage.addListener(({jsonrpc, download, request, restart, session, purge}, sender, response) => {
