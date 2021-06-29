@@ -130,7 +130,7 @@ chrome.runtime.onMessage.addListener(({jsonrpc, download, request, restart, sess
     if (purge) {
         aria2RPC.stopped = [];
     }
-});;
+});
 
 chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
     if (aria2RPC.options.capture['mode'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
