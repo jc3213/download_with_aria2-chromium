@@ -116,23 +116,21 @@ document.querySelector('#source > span').addEventListener('click', (event) => {
 
 document.querySelector('#bt').addEventListener('click', (event) => {
     if (event.target.className) {
-        var checked = [];
+        var checked = '';
         document.querySelectorAll('td:nth-child(1)').forEach(item => {
             if (item === event.target && item.className !== 'active' || item !== event.target && item.className === 'active') {
-                checked.push(item.innerText);
+                checked += ',' + item.innerText;
             }
         });
-        changeTaskOption('select-file', checked.join());
+        changeTaskOption('select-file', checked.slice(1));
     }
 });
 
-function changeTaskUri(changes) {
-    var add = changes.add ? [changes.add] : [];
-    var remove = changes.remove ? [changes.remove] : [];
-    chrome.runtime.sendMessage({request: {method: 'aria2.changeUri', params: [1, remove, add]}});
+function changeTaskUri({add, remove}) {
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [gid, 1, remove ? [remove] : [], add ? [add] : []]}});
 }
 
 function changeTaskOption(name, value) {
     aria2RPC.sessionOption[name] = value;
-    chrome.runtime.sendMessage({request: {method: 'aria2.changeOption', params: [gid, aria2RPC.sessionOption]}});
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.options.jsonrpc['token'], gid, aria2RPC.sessionOption]}});
 }

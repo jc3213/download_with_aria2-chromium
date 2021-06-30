@@ -1,8 +1,8 @@
 var aria2RPC = {};
-var aria2Client = {};
+var aria2Port = {};
 
 function aria2RPCRequest(request) {
-    var requestJSON = Array.isArray(request) ? request.map(createJSON) : [createJSON(request)];
+    var requestJSON = Array.isArray(request) ? request : [request];
     return fetch(aria2RPC.options.jsonrpc['uri'], {method: 'POST', body: JSON.stringify(requestJSON)}).then(response => {
         if (response.ok) {
             return response.json();
@@ -21,31 +21,38 @@ function aria2RPCRequest(request) {
     });
 }
 
-function createJSON({method, params}) {
-    return {id: '', jsonrpc: 2, method, params : params ? [aria2RPC.options.jsonrpc['token'], ...params] : [aria2RPC.options.jsonrpc['token']]};
+function aria2RPCConnect() {
+    aria2RPCRequest([
+        {id: '', jsonrpc: 2, method: 'aria2.getVersion', params: [aria2RPC.options.jsonrpc['token']]},
+        {id: '', jsonrpc: 2, method: 'aria2.getGlobalOption', params: [aria2RPC.options.jsonrpc['token']]},
+        {id: '', jsonrpc: 2, method: 'aria2.getGlobalStat', params: [aria2RPC.options.jsonrpc['token']]},
+        {id: '', jsonrpc: 2, method: 'aria2.tellActive', params: [aria2RPC.options.jsonrpc['token']]},
+        {id: '', jsonrpc: 2, method: 'aria2.tellWaiting', params: [aria2RPC.options.jsonrpc['token'], 0, 999]},
+        {id: '', jsonrpc: 2, method: 'aria2.tellStopped', params: [aria2RPC.options.jsonrpc['token'], 0, 999]},
+        {id: '', jsonrpc: 2, method: 'aria2.tellStatus', params: [aria2RPC.options.jsonrpc['token'], aria2RPC.lastSession]},
+        {id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.options.jsonrpc['token'], aria2RPC.lastSession]}
+    ]).then(([version, globalOption, globalStat, active, waiting, stopped, sessionResult, sessionOption]) => {
+        aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, sessionResult, sessionOption, error: undefined};
+        chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
+    }).catch(error => {
+        aria2RPC = {...aria2RPC, error};
+        showNotification(error);
+        clearInterval(aria2RPC.connect);
+    });
 }
 
 function registerMessageService() {
-    clearInterval(aria2Client.jsonrpc);
-    aria2Client.jsonrpc = setInterval(() => {
-        aria2RPCRequest([
-            {method: 'aria2.getVersion'},
-            {method: 'aria2.getGlobalOption'},
-            {method: 'aria2.getGlobalStat'},
-            {method: 'aria2.tellActive'},
-            {method: 'aria2.tellWaiting', params: [0, 999]},
-            {method: 'aria2.tellStopped', params: [0, 999]},
-            {method: 'aria2.tellStatus', params: [aria2RPC.lastSession]},
-            {method: 'aria2.getOption', params: [aria2RPC.lastSession]}
-        ]).then(([version, globalOption, globalStat, active, waiting, stopped, sessionResult, sessionOption]) => {
-            aria2RPC = {...aria2RPC, version, globalOption, globalStat, active, waiting, stopped, sessionResult, sessionOption, error: undefined};
-            chrome.browserAction.setBadgeText({text: globalStat.numActive === '0' ? '' : globalStat.numActive});
-        }).catch(error => {
-            aria2RPC = {...aria2RPC, error};
-            showNotification(error);
-            clearInterval(aria2Client.jsonrpc);
-        });
-    }, 1000);
+    clearInterval(aria2RPC.connect);
+    clearInterval(aria2RPC.manager);
+    aria2RPC.connect = setInterval(aria2RPCConnect, 1000);
+    aria2RPC.manager = setInterval(() => {
+        if (aria2Port['download-manager']) {
+            aria2Port['download-manager'].postMessage(aria2RPC);
+        }
+        if (aria2Port['task-manager']) {
+            aria2Port['task-manager'].postMessage(aria2RPC);
+        }        
+    }, aria2RPC.options.jsonrpc['refresh']);
 }
 
 chrome.contextMenus.create({
@@ -111,11 +118,9 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 });
 
 chrome.runtime.onConnect.addListener(port => {
-    aria2Client[port.name] = setInterval(() => {
-        port.postMessage(aria2RPC);
-    }, aria2RPC.options.jsonrpc['refresh']);
+    aria2Port[port.name] = port;
     port.onDisconnect.addListener((port) => {
-        clearInterval(aria2Client[port.name]);
+        delete aria2Port[port.name];
     });
 });
 
@@ -130,7 +135,7 @@ chrome.runtime.onMessage.addListener(({jsonrpc, session, purge, download, reques
         aria2RPC.active = [];
         aria2RPC.waiting = [];
         aria2RPC.stopped = [];
-        sendResponse(aria2RPC);
+        sendResponse({});
     }
     if (download) {
         startDownload(...download);
@@ -139,7 +144,7 @@ chrome.runtime.onMessage.addListener(({jsonrpc, session, purge, download, reques
         aria2RPCRequest(request).catch(error => console.log(error));
     }
     if (restart) {
-        restartDownload();
+        aria2RPCRequest(restart).then(restartDownload);
     }
 });
 
@@ -203,16 +208,13 @@ async function startDownload({url, referer, hostname, filename}, options = {}) {
 }
 
 function restartDownload() {
-    aria2RPCRequest({method: 'aria2.removeDownloadResult', params: [aria2RPC.lastSession]})
-        .then(result => {
-            var {sessionResult, sessionOption} = aria2RPC;
-            var url = sessionResult.files[0].uris.map(uri => uri.uri);
-            downloadWithAria2(url, sessionOption);
-        });
+    var {sessionResult, sessionOption} = aria2RPC;
+    var url = sessionResult.files[0].uris.map(uri => uri.uri);
+    downloadWithAria2(url, sessionOption);
 };
 
 function downloadWithAria2(url, options) {
-    aria2RPCRequest({method: 'aria2.addUri', params: [url, options]})
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.options.jsonrpc['token'], url, options]})
         .then(response => showNotification(url[0]))
         .catch(showNotification);
 }

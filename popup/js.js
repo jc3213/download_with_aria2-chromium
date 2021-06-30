@@ -34,7 +34,7 @@ document.querySelectorAll('[tab]').forEach(tab => {
 });
 
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
-    chrome.runtime.sendMessage({request: {method: 'aria2.purgeDownloadResult'}});
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.purgeDownloadResult', params: [aria2RPC.options.jsonrpc['token']]}});
     purgeTaskQueue();
 });
 
@@ -151,19 +151,19 @@ function purgeTaskQueue(gid) {
 function removeTaskFromQueue(gid, status) {
     var method = ['active', 'waiting', 'paused'].includes(status) ? 'aria2.forceRemove' :
         ['complete', 'error', 'removed'].includes(status) ? 'aria2.removeDownloadResult' : null;
-    chrome.runtime.sendMessage({request: {method, params: [gid]}});
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]}});
     if (['complete', 'error', 'paused', 'removed'].includes(status)) {
         purgeTaskQueue(gid);
     }
 }
 
 function removeAndRestartTask(gid) {
-    chrome.runtime.sendMessage({restart: gid});
+    chrome.runtime.sendMessage({restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.options.jsonrpc['token'], gid]}});
     purgeTaskQueue(gid);
 }
 
 function pauseOrUnpauseTask(gid, status) {
     var method = ['active', 'waiting'].includes(status) ? 'aria2.pause' :
         status === 'paused' ? 'aria2.unpause' : null;
-    chrome.runtime.sendMessage({request: {method, params: [gid]}});
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]}});
 }
