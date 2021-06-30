@@ -39,7 +39,9 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
 });
 
 document.querySelector('div.queue').addEventListener('click', (event) => {
-console.log(aria2RPC.lastSession, aria2RPC.sessionResult.gid);
+    if (!aria2RPC.sessionResult) {
+        return;
+    }
     if (aria2RPC.lastSession !== aria2RPC.sessionResult.gid) {
         return;
     }
