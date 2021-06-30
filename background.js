@@ -81,7 +81,7 @@ chrome.storage.onChanged.addListener(changes => {
 
 chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
-chrome.runtime.onInstalled.addListener(async (details) => {
+chrome.runtime.onInstalled.addListener(async details => {
     if (details.reason === 'install') {
         var response = await fetch('options.json');
         var json = await response.json();
@@ -146,7 +146,7 @@ chrome.runtime.onMessage.addListener(({jsonrpc, session, purge, download, reques
     }
 });
 
-chrome.downloads.onDeterminingFilename.addListener(async (item, suggest) => {
+chrome.downloads.onDeterminingFilename.addListener(async item => {
     if (aria2RPC.options.capture['mode'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
     }
