@@ -39,13 +39,7 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
 });
 
 document.querySelector('div.queue').addEventListener('click', (event) => {
-    if (!aria2RPC.sessionResult) {
-        return;
-    }
-    if (aria2RPC.lastSession !== aria2RPC.sessionResult.gid) {
-        return;
-    }
-    var {gid, status} = aria2RPC.sessionResult;
+    var {gid, status} = window.aria2Session;
     if (event.target.id === 'remove_btn') {
         removeTaskFromQueue(gid, status);
     }
@@ -115,7 +109,7 @@ function appendTaskDetails(result) {
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.addEventListener('mouseenter', (event) => {
-        aria2RPC.lastSession = result.gid;
+        window.aria2Session = {gid: result.gid, status: result.status};
         chrome.runtime.sendMessage({session: result.gid});
     });
     return task;
