@@ -34,12 +34,8 @@ document.querySelectorAll('[tab]').forEach(tab => {
 });
 
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
-    chrome.runtime.sendMessage({
-        request: {method: 'aria2.purgeDownloadResult'},
-        purge: true
-    }, response => {
-        document.querySelector('[panel="stopped"]').innerHTML = '';
-    });
+    chrome.runtime.sendMessage({request: {method: 'aria2.purgeDownloadResult'}});
+    purgeTaskQueue();
 });
 
 document.querySelector('div.queue').addEventListener('click', (event) => {
@@ -142,24 +138,23 @@ function calcEstimatedTime(task, number) {
     }
 }
 
+function purgeTaskQueue(gid) {
+    chrome.runtime.sendMessage({purge: true}, printTaskManager);
+    gid ? document.getElementById(gid).remove() : document.querySelector('[panel="stopped"]').innerHTML = '';
+}
+
 function removeTaskFromQueue(gid, status) {
     var method = ['active', 'waiting', 'paused'].includes(status) ? 'aria2.forceRemove' :
         ['complete', 'error', 'removed'].includes(status) ? 'aria2.removeDownloadResult' : null;
-    var purge = ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false;
-    if (purge) {
-        var callback = response => {
-            aria2RPC = response;
-            document.getElementById(gid).remove();
-        }
+    chrome.runtime.sendMessage({request: {method, params: [gid]}});
+    if (['complete', 'error', 'paused', 'removed'].includes(status)) {
+        purgeTaskQueue(gid);
     }
-    chrome.runtime.sendMessage({request: {method, params: [gid]}, purge}, callback);
 }
 
 function removeAndRestartTask(gid) {
-    chrome.runtime.sendMessage({request: {method: 'aria2.removeDownloadResult', params: [gid]}, purge: true, restart: true},
-    response => {
-        document.getElementById(gid).remove();
-    });
+    chrome.runtime.sendMessage({restart: gid});
+    purgeTaskQueue(gid);
 }
 
 function pauseOrUnpauseTask(gid, status) {

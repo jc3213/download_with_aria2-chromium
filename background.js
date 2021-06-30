@@ -123,13 +123,15 @@ chrome.runtime.onConnect.addListener(port => {
     })
 });
 
-chrome.runtime.onMessage.addListener(({jsonrpc, purge, session, download, request, restart}, sender, response) => {
+chrome.runtime.onMessage.addListener(({jsonrpc, download, session, purge, request, restart}, sender, sendResponse) => {
     if (jsonrpc) {
-        response(aria2RPC);
+        sendResponse(aria2RPC);
     }
     if (purge) {
+        aria2RPC.active = [];
+        aria2RPC.waiting = [];
         aria2RPC.stopped = [];
-        response(aria2RPC);
+        sendResponse(aria2RPC);
     }
     if (download) {
         startDownload(...download);
@@ -138,9 +140,7 @@ chrome.runtime.onMessage.addListener(({jsonrpc, purge, session, download, reques
         aria2RPC.lastSession = session;
     }
     if (request) {
-        aria2RPCRequest(request).then(result => {
-console.log(result);
-        }).catch(error => console.log(error));
+        aria2RPCRequest(request).catch(error => console.log(error));
     }
     if (restart) {
         restartDownload();
@@ -207,9 +207,12 @@ async function startDownload({url, referer, hostname, filename}, options = {}) {
 }
 
 function restartDownload() {
-    var {sessionResult, sessionOption} = aria2RPC;
-    var url = sessionResult.files[0].uris.map(uri => uri.uri);
-    downloadWithAria2(url, sessionOption);
+    aria2RPCRequest({method: 'aria2.removeDownloadResult', params: [aria2RPC.lastSession]})
+        .then(result => {
+            var {sessionResult, sessionOption} = aria2RPC;
+            var url = sessionResult.files[0].uris.map(uri => uri.uri);
+            downloadWithAria2(url, sessionOption);
+        });
 };
 
 function downloadWithAria2(url, options) {
