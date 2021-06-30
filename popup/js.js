@@ -108,8 +108,8 @@ function appendTaskDetails(result) {
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
     task.addEventListener('mouseenter', (event) => {
-        __gid = result.gid
-        __status = result.status;
+        __gid = task.id;
+        __status = task.status;
         chrome.runtime.sendMessage({session: result.gid});
     });
     return task;
@@ -146,7 +146,7 @@ function removeTaskFromQueue() {
     var method = ['active', 'waiting', 'paused'].includes(__status) ? 'aria2.forceRemove' :
         ['complete', 'error', 'removed'].includes(__status) ? 'aria2.removeDownloadResult' : null;
     chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], __gid]}});
-    if (['complete', 'error', 'paused', 'removed'].includes(status)) {
+    if (['complete', 'error', 'paused', 'removed'].includes(__status)) {
         purgeTaskQueue(__gid);
     }
 }
