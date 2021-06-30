@@ -123,9 +123,12 @@ chrome.runtime.onConnect.addListener(port => {
     })
 });
 
-chrome.runtime.onMessage.addListener(({jsonrpc, download, session, purge, request, restart}, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(({jsonrpc, session, purge, download, request, restart}, sender, sendResponse) => {
     if (jsonrpc) {
         sendResponse(aria2RPC);
+    }
+    if (session) {
+        aria2RPC.lastSession = session;
     }
     if (purge) {
         aria2RPC.active = [];
@@ -135,9 +138,6 @@ chrome.runtime.onMessage.addListener(({jsonrpc, download, session, purge, reques
     }
     if (download) {
         startDownload(...download);
-    }
-    if (session) {
-        aria2RPC.lastSession = session;
     }
     if (request) {
         aria2RPCRequest(request).catch(error => console.log(error));
