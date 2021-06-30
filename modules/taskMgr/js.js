@@ -127,7 +127,7 @@ document.querySelector('#bt').addEventListener('click', (event) => {
 });
 
 function changeTaskUri({add, remove}) {
-    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [gid, 1, remove ? [remove] : [], add ? [add] : []]}});
+    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [aria2RPC.options.jsonrpc['token'], gid, 1, remove ? [remove] : [], add ? [add] : []]}});
 }
 
 function changeTaskOption(name, value) {
