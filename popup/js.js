@@ -39,8 +39,11 @@ document.querySelector('#purdge_btn').addEventListener('click', (event) => {
 });
 
 document.querySelector('div.queue').addEventListener('click', (event) => {
-    var gid = aria2RPC.lastSession;
-    var status = aria2RPC.sessionResult ? aria2RPC.sessionResult.status : null;
+console.log(aria2RPC.lastSession, aria2RPC.sessionResult.gid);
+    if (aria2RPC.lastSession !== aria2RPC.sessionResult.gid) {
+        return;
+    }
+    var {gid, status} = aria2RPC.sessionResult;
     if (event.target.id === 'remove_btn') {
         removeTaskFromQueue(gid, status);
     }
@@ -56,7 +59,7 @@ document.querySelector('div.queue').addEventListener('click', (event) => {
 });
 
 chrome.runtime.sendMessage({jsonrpc: true}, printTaskManager);
-chrome.runtime.connect().onMessage.addListener(printTaskManager);
+chrome.runtime.connect({name: 'download-manager'}).onMessage.addListener(printTaskManager);
 
 function printTaskManager(message) {
     aria2RPC = message;
