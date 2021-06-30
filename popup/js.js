@@ -35,13 +35,31 @@ document.querySelectorAll('[tab]').forEach(tab => {
 
 document.querySelector('#purdge_btn').addEventListener('click', (event) => {
     chrome.runtime.sendMessage({
-        request: {id: '', jsonrpc: 2, method: 'aria2.purgeDownloadResult', params: [aria2RPC.options.jsonrpc['token']]},
+        request: {method: 'aria2.purgeDownloadResult'},
         purge: true
     }, response => {
         document.querySelector('[panel="stopped"]').innerHTML = '';
     });
 });
 
+document.querySelector('div.queue').addEventListener('click', (event) => {
+    var gid = aria2RPC.lastSession;
+    var status = aria2RPC.sessionResult ? aria2RPC.sessionResult.status : null;
+    if (event.target.id === 'remove_btn') {
+        removeTaskFromQueue(gid, status);
+    }
+    if (event.target.id === 'invest_btn') {
+        openModuleWindow('taskMgr', '/modules/taskMgr/index.html');
+    }
+    if (event.target.id === 'retry_btn') {
+        removeAndRestartTask(gid);
+    }
+    if (event.target.id === 'fancybar') {
+        pauseOrUnpauseTask(gid, status);
+    }
+});
+
+chrome.runtime.sendMessage({jsonrpc: true}, printTaskManager);
 chrome.runtime.connect().onMessage.addListener(printTaskManager);
 
 function printTaskManager(message) {
@@ -95,11 +113,10 @@ function appendTaskDetails(result) {
     var task = document.querySelector('#template').cloneNode(true);
     task.id = result.gid;
     task.querySelector('#upload').parentNode.style.display = result.bittorrent ? 'inline-block' : 'none';
-    task.addEventListener('mouseenter', (event) => chrome.runtime.sendMessage({session: result.gid}));
-    task.querySelector('#remove_btn').addEventListener('click', (event) => removeTaskFromQueue(result.gid, task.status));
-    task.querySelector('#invest_btn').addEventListener('click', (event) => openModuleWindow('taskMgr', '/modules/taskMgr/index.html?' + result.gid));
-    task.querySelector('#retry_btn').addEventListener('click', (event) => removeAndRestartTask(result.gid));
-    task.querySelector('#fancybar').addEventListener('click', (event) => pauseOrUnpauseTask(result.gid, task.status));
+    task.addEventListener('mouseenter', (event) => {
+        aria2RPC.lastSession = result.gid;
+        chrome.runtime.sendMessage({session: result.gid});
+    });
     return task;
 }
 
@@ -126,44 +143,27 @@ function calcEstimatedTime(task, number) {
 }
 
 function removeTaskFromQueue(gid, status) {
-    if (['active', 'waiting', 'paused'].includes(status)) {
-        var method = 'aria2.forceRemove';
-    }
-    else if (['complete', 'error', 'removed'].includes(status)) {
-        method = 'aria2.removeDownloadResult';
-    }
-    else {
-        return;
-    }
+    var method = ['active', 'waiting', 'paused'].includes(status) ? 'aria2.forceRemove' :
+        ['complete', 'error', 'removed'].includes(status) ? 'aria2.removeDownloadResult' : null;
     var purge = ['complete', 'error', 'paused', 'removed'].includes(status) ? true : false;
-    chrome.runtime.sendMessage({
-        request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]},
-        purge
-    }, response => {
-        if (purge) {
+    if (purge) {
+        var callback = response => {
+            aria2RPC = response;
             document.getElementById(gid).remove();
         }
-    });
+    }
+    chrome.runtime.sendMessage({request: {method, params: [gid]}, purge}, callback);
 }
 
 function removeAndRestartTask(gid) {
-    chrome.runtime.sendMessage({
-        restart: {id: '', jsonrpc: 2, method: 'aria2.removeDownloadResult', params: [aria2RPC.options.jsonrpc['token'], gid]},
-        purge: true
-    }, response => {
+    chrome.runtime.sendMessage({request: {method: 'aria2.removeDownloadResult', params: [gid]}, purge: true, restart: true},
+    response => {
         document.getElementById(gid).remove();
     });
 }
 
 function pauseOrUnpauseTask(gid, status) {
-    if (['active', 'waiting'].includes(status)) {
-        var method = 'aria2.pause';
-    }
-    else if (status === 'paused') {
-        method = 'aria2.unpause';
-    }
-    else {
-        return;
-    }
-    chrome.runtime.sendMessage({request: {id: '', jsonrpc: 2, method, params: [aria2RPC.options.jsonrpc['token'], gid]}});
+    var method = ['active', 'waiting'].includes(status) ? 'aria2.pause' :
+        status === 'paused' ? 'aria2.unpause' : null;
+    chrome.runtime.sendMessage({request: {method, params: [gid]}});
 }
