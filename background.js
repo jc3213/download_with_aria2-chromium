@@ -1,13 +1,11 @@
-importScripts('libs/js/jsonrpc.js');
-
 chrome.contextMenus.create({
-    title: 'Download With Aria2',
-    id: 'downwitharia2v3',
+    title: chrome.i18n.getMessage('extension_name'),
+    id: 'downwitharia2',
     contexts: ['link']
 });
 
 chrome.contextMenus.onClicked.addListener(info => {
-    if (info.menuItemId === 'downwitharia2v3') {
+    if (info.menuItemId === 'downwitharia2') {
         downloadWithAria2({url: info.linkUrl, referer: info.pageUrl, hostname: getHostnameFromUrl(info.pageUrl)});
     }
 });
@@ -20,14 +18,14 @@ chrome.runtime.onInstalled.addListener(async details => {
     }
 });
 
-chrome.action.setBadgeBackgroundColor({color: '#3cc'});
+chrome.browserAction.setBadgeBackgroundColor({color: '#3cc'});
 
 chrome.downloads.onDeterminingFilename.addListener(async item => {
     if (aria2RPC.capture['mode'] === '0' || item.finalUrl.startsWith('blob') || item.finalUrl.startsWith('data')) {
         return;
     }
 
-    var tabs = await chrome.tabs.query({active: true, currentWindow: true});
+    var tabs = await getCurrentActiveTabs();
     var url = item.finalUrl;
     var referer = item.referrer && item.referrer !== 'about:blank' ? item.referrer : tabs[0].url;
     var hostname = hostname = getHostnameFromUrl(referer);
@@ -42,10 +40,23 @@ chrome.downloads.onDeterminingFilename.addListener(async item => {
     }
 });
 
+chrome.runtime.onMessage.addListener(({session, options}) => {
+    downloadWithAria2(session, options);
+});
+
 aria2RPCLoader(() => {
     aria2RPCClient();
     aria2RPCKeepAlive();
 });
+
+//Wrapper untill manifest v3
+async function getCurrentActiveTabs() {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            resolve(tabs);
+        })
+    });
+}
 
 function captureDownload(hostname, fileExt, fileSize) {
     if (aria2RPC.capture['reject'].includes(hostname)) {
@@ -79,7 +90,7 @@ function getFileExtension(filename) {
 function aria2RPCClient() {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.getGlobalStat', params: [aria2RPC.jsonrpc['token']]},
     global => {
-        chrome.action.setBadgeText({text: global.numActive === '0' ? '' : global.numActive});
+        chrome.browserAction.setBadgeText({text: global.numActive === '0' ? '' : global.numActive});
     },
     error => {
         showNotification(error);

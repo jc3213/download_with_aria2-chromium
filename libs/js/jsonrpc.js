@@ -63,14 +63,21 @@ async function downloadWithAria2({url, referer, hostname, filename}, options = {
 
 async function getCookiesFromReferer(url, result = 'Cookie:') {
     var header = ['User-Agent: ' + aria2RPC['useragent'], 'Connection: keep-alive'];
-    if (url) {
-        var cookies = await chrome.cookies.getAll({url});
-        cookies.forEach(cookie => {
-            result += ' ' + cookie.name + '=' + cookie.value + ';';
-        });
-        header.push(result, 'Referer: ' + url);
-    }
-    return header;
+    //Wrapper untill manifest v3
+    return new Promise((resolve, reject) => {
+        if (url) {
+            chrome.cookies.getAll({url}, (cookies) => {
+                cookies.forEach(cookie => {
+                    result += ' ' + cookie.name + '=' + cookie.value + ';';
+                });
+                header.push(result, 'Referer: ' + url);
+                resolve(header);
+            });
+        }
+        else {
+            resolve(header);
+        }
+    });
 }
 
 function showNotification(message = '') {
