@@ -72,19 +72,19 @@ async function downloadWithAria2({url, referer, hostname, filename}, options = {
 }
 
 function captureDownload(hostname, fileExt, fileSize) {
-    if (localStorage['ignored'].includes(hostname)) {
+    if (aria2RPC.capture['reject'].includes(hostname)) {
         return false;
     }
-    if (localStorage['capture'] === '2') {
+    if (aria2RPC.capture['mode'] === '2') {
         return true;
     }
-    if (localStorage['monitored'].includes(hostname)) {
+    if (aria2RPC.capture['resolve'].includes(hostname)) {
         return true;
     }
-    if (localStorage['fileExt'].includes(fileExt)) {
+    if (aria2RPC.capture['fileExt'].includes(fileExt)) {
         return true;
     }
-    if (localStorage['fileSize'] > 0 && fileSize >= localStorage['fileSize']) {
+    if (aria2RPC.capture['fileSize'] > 0 && fileSize >= aria2RPC.capture['fileSize']) {
         return true;
     }
     return false;
