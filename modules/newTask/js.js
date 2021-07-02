@@ -1,9 +1,3 @@
-chrome.runtime.sendMessage({jsonrpc: true}, response => {
-    aria2RPC = response;
-    feedEventHandler();
-    document.querySelectorAll('[aria2]').forEach(aria2 => parseValueToOption(aria2, aria2RPC.globalOption));
-});
-
 document.querySelector('#submit_btn').addEventListener('click', (event) => {
     var referer = document.querySelector('#referer').value;
     var options = {};
@@ -34,5 +28,10 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
 });
 
 function submitNewDownload(session, options) {
-    chrome.runtime.sendMessage({download: [session, options]});
+    chrome.runtime.sendMessage({session, options});
 }
+
+aria2RPCLoader(() => {
+    printGlobalOption();
+    feedEventHandler();
+});
