@@ -71,7 +71,7 @@ async function downloadWithAria2({url, referer, hostname, filename}, options = {
     result => showNotification(url[0]), showNotification);
 }
 
-function captureFilterWorker(hostname, fileExt, fileSize) {
+function captureDownload(hostname, fileExt, fileSize) {
     if (localStorage['ignored'].includes(hostname)) {
         return false;
     }
