@@ -24,11 +24,12 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
         }
     });
     parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
-    frameElement.remove();
+    frameElement.style.display = 'none';
+    setTimeout(() => frameElement.remove(), 500);
 });
 
 function submitNewDownload(session, options) {
-    chrome.runtime.sendMessage({session, options});
+    downloadWithAria2(session, options);
 }
 
 aria2RPCLoader(() => {

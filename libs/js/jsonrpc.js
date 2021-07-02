@@ -1,7 +1,10 @@
+var keepAlive;
+var aria2RPCClient;
+
 function aria2RPCKeepAlive() {
-    if (window.aria2RPCClient) {
-        clearInterval(window.keepAlive);
-        window.keepAlive = setInterval(aria2RPCClient, aria2RPC.jsonrpc['refresh']);
+    if (aria2RPCClient) {
+        clearInterval(keepAlive);
+        keepAlive = setInterval(aria2RPCClient, aria2RPC.jsonrpc['refresh']);
     }
 }
 
@@ -43,6 +46,31 @@ function aria2RPCRequest(request, resolve, reject) {
             reject(error);
         }
     });
+}
+
+async function downloadWithAria2({url, referer, hostname, filename}, options = {}) {
+    var url = Array.isArray(url) ? url : [url];
+    if (filename) {
+        options['out'] = filename;
+    }
+    if (!options['all-proxy'] && aria2RPC.proxy['resolve'].includes(hostname)) {
+        options['all-proxy'] = aria2RPC.proxy['uri'];
+    }
+    options['header'] = await getCookiesFromReferer(referer);
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.addUri', params: [aria2RPC.jsonrpc['token'], url, options]},
+    result => showNotification(url[0]), showNotification);
+}
+
+async function getCookiesFromReferer(url, result = 'Cookie:') {
+    var header = ['User-Agent: ' + aria2RPC['useragent'], 'Connection: keep-alive'];
+    if (url) {
+        var cookies = await chrome.cookies.getAll({url});
+        cookies.forEach(cookie => {
+            result += ' ' + cookie.name + '=' + cookie.value + ';';
+        });
+        header.push(result, 'Referer: ' + url);
+    }
+    return header;
 }
 
 function showNotification(message = '') {
