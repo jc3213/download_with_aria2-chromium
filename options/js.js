@@ -50,7 +50,7 @@ document.querySelector('#aria2_btn').addEventListener('click', (event) => {
             field.value = calc ? calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1) : aria2Global[name] ?? '';
         });
     },
-    error => showNotifications(error));
+    error => showNotification(error));
 });
 
 document.querySelector('[module="global"]').addEventListener('change', (event) => {
@@ -63,14 +63,14 @@ aria2RPCLoader(() => {
     document.querySelectorAll('[local]').forEach(field => {
         var name = field.getAttribute('local');
         var root = field.getAttribute('root');
-        var tree = root ? aria2RPC[root] : aria2RPC;
-        var value = root ? tree[name] : tree[name];
+        root ? {[root]: {[name] : value}} = aria2RPC : {[name] : value} = aria2RPC;
         var token = field.getAttribute('token');
         var multi = field.getAttribute('multi');
         field.value = token ? value.slice(token.length) : multi ? value / multi : value;
         field.addEventListener('change', (event) => {
-            tree[name] = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
+            var value = Array.isArray(value) ? field.value.split(/[\s\n,]/) :
                 token ? 'token:' + field.value : multi ? field.value * multi : field.value;
+            root ? aria2RPC[root][name] = value : aria2RPC[name] = value;
             chrome.storage.sync.set(aria2RPC);
         });
     });
