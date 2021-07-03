@@ -1,3 +1,15 @@
+[panel], [card] {
+    overflow-y: auto;
+}
+
+[panel] {
+    height: 400px;
+}
+
+[card] {
+    height: 360px;
+}
+
 .container > *:nth-child(n+2) {
     margin-top: 15px;
 }

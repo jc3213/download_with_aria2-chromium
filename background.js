@@ -14,7 +14,7 @@ chrome.runtime.onInstalled.addListener(async details => {
     if (details.reason === 'install') {
         var response = await fetch('options.json');
         var json = await response.json();
-        chrome.storage.sync.set(json);
+        chrome.storage.local.set(json);
     }
 });
 

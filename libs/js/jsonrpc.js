@@ -9,7 +9,7 @@ function aria2RPCKeepAlive() {
 }
 
 function aria2RPCLoader(callback) {
-    chrome.storage.sync.get(null, result => {
+    chrome.storage.local.get(null, result => {
         aria2RPC = result;
         callback();
     });
