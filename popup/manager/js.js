@@ -63,7 +63,7 @@ document.querySelectorAll('[http], [bt]').forEach(field => {
 });
 
 document.querySelector('[card].container').addEventListener('change', (event) => {
-    changeTaskOption(gid, event.target.id, event.target.value);
+    changeTaskOption(event.target.id, event.target.value);
 });
 
 document.querySelectorAll('[swap]').forEach(swap => {
@@ -88,7 +88,7 @@ document.querySelector('#name[button]').addEventListener('click', (event) => {
 });
 
 document.querySelector('[feed="all-proxy"]').addEventListener('click', (event) => {
-    changeTaskOption(gid, 'all-proxy', aria2RPC.proxy['uri']);
+    changeTaskOption('all-proxy', aria2RPC.proxy['uri']);
 });
 
 document.querySelector('#uris').addEventListener('click', (event) => {
@@ -113,17 +113,46 @@ document.querySelector('#files').addEventListener('click', (event) => {
                 checked += ',' + file.innerText;
             }
         });
-        changeTaskOption(gid, 'select-file', checked.slice(1));
+        changeTaskOption('select-file', checked.slice(1));
     }
+});
+
+aria2RPCLoader(() => {
+    printTaskOption(gid);
+    aria2RPCClient();
+    aria2RPCKeepAlive();
+    document.querySelectorAll('[feed]').forEach(feed => {
+        var field = feed.getAttribute('feed');
+        var root = feed.getAttribute('root');
+        var tree = root ? aria2RPC[root] : aria2RPC;
+        feed.addEventListener('click', (event) => {
+            document.getElementById(field).value = tree[feed.id];
+        });
+    });
 });
 
 function changeTaskUri({add, remove}) {
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeUri', params: [aria2RPC.jsonrpc['token'], gid, 1, remove ? [remove] : [], add ? [add] : []]});
 }
 
-aria2RPCLoader(() => {
-    printTaskOption(gid);
-    feedEventHandler();
-    aria2RPCClient();
-    aria2RPCKeepAlive();
-});
+function printTaskOption() {
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.getOption', params: [aria2RPC.jsonrpc['token'], gid]},
+    options => {
+        document.querySelectorAll('[task]').forEach(task => parseValueToOption(task, options));
+    });
+}
+
+function changeTaskOption(name, value, options = {}) {
+    options[name] = value;
+    aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeOption', params: [aria2RPC.jsonrpc['token'], gid, options]});
+}
+
+function parseValueToOption(field, options) {
+    if (field.hasAttribute('calc')) {
+        var calc = bytesToFileSize(options[field.id]);
+        field.value = calc.slice(0, calc.indexOf(' ')) + calc.slice(calc.indexOf(' ') + 1, -1);
+    }
+    else {
+        field.value = options[field.id] ?? '';
+    }
+}
