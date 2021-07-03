@@ -54,7 +54,7 @@ document.querySelector('#aria2_btn').addEventListener('click', (event) => {
 });
 
 document.querySelector('[module="global"]').addEventListener('change', (event) => {
-    var name = field.getAttribute('aria2');
+    var name = event.target.getAttribute('aria2');
     aria2Global[name] = event.target.value;
     aria2RPCRequest({id: '', jsonrpc: 2, method: 'aria2.changeGlobalOption', params: [aria2RPC.jsonrpc['token'], aria2Global]});
 });
