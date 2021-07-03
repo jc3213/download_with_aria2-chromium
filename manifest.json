@@ -31,7 +31,7 @@
         "48": "icons/icon48.png"
     },
     "options_ui": {
-        "page": "modules/options/index.html",
+        "page": "options/index.html",
         "open_in_tab": false
     }
 }
