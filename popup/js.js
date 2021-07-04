@@ -2,19 +2,19 @@ document.querySelectorAll('[tab]').forEach(tab => {
     var active = tab.getAttribute('tab');
     tab.addEventListener('click', (event) => {
         document.querySelectorAll('[panel]').forEach(panel => {
-            var id = panel.getAttribute('panel');
-            if (tab.classList.contains('checked')) {
+            var name = panel.getAttribute('panel');
+            if (tab.className === 'checked') {
                 panel.style.display = 'block';
             }
-            else if (id === active) {
+            else if (name === active) {
                 panel.style.display = 'block';
             }
             else {
                 panel.style.display = 'none';
-                document.querySelector('[tab="' + id + '"]').classList.remove('checked');
+                document.querySelector('[tab="' + name + '"]').className === '';
             }
         });
-        tab.classList.toggle('checked');
+        tab.className = tab.className === 'checked' ? '' : 'checked';
     });
 });
 
@@ -22,13 +22,13 @@ document.querySelectorAll('[module]').forEach(module => {
     var id = module.getAttribute('module');
     var url = module.getAttribute('link') + '?popup';
     module.addEventListener('click', (event) => {
-        if (event.target.classList.contains('checked')) {
+        if (event.target.className === 'checked') {
             document.getElementById(id).remove();
         }
         else {
             openModuleWindow(id, url);
         }
-        module.classList.toggle('checked');
+        module.className = module.className === 'checked' ? '' : 'checked';
     });
 });
 

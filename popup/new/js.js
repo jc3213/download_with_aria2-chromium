@@ -24,7 +24,7 @@ document.querySelector('#submit_btn').addEventListener('click', (event) => {
             result.split('\n').forEach(url => submitNewDownload({url, referer}, options));
         }
     });
-    parent.document.querySelector('[module="' + frameElement.id + '"]').classList.remove('checked');
+    parent.document.querySelector('[module="' + frameElement.id + '"]').className === '';
     frameElement.style.display = 'none';
     setTimeout(() => frameElement.remove(), 500);
 });
