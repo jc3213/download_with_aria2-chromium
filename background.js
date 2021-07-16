@@ -40,10 +40,6 @@ chrome.downloads.onDeterminingFilename.addListener(async item => {
     }
 });
 
-chrome.runtime.onMessage.addListener(({session, options}) => {
-    downloadWithAria2(session, options);
-});
-
 aria2RPCLoader(() => {
     aria2RPCClient();
     aria2RPCKeepAlive();
