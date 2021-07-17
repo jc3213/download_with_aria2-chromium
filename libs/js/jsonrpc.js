@@ -50,7 +50,7 @@ function aria2RPCRequest(request, resolve, reject) {
 
 async function downloadWithAria2({url, referer, hostname, filename}, options = {}) {
     var url = Array.isArray(url) ? url : [url];
-    options['header'] = await getCookiesFromReferer(referer);
+    options['header'] = await getHeaderForAria2(url[0], referer);
     if (filename) {
         options['out'] = filename;
     }
@@ -61,22 +61,17 @@ async function downloadWithAria2({url, referer, hostname, filename}, options = {
     result => showNotification(url[0]), showNotification);
 }
 
-async function getCookiesFromReferer(url, result = 'Cookie:') {
-    var header = ['User-Agent: ' + aria2RPC['useragent'], 'Connection: keep-alive'];
+async function getHeaderForAria2(url, referer, result = 'Cookie:') {
+    var header = ['User-Agent: ' + aria2RPC['useragent'], 'Referer: ' + referer];
     //Wrapper untill manifest v3
     return new Promise((resolve, reject) => {
-        if (url) {
-            chrome.cookies.getAll({url}, (cookies) => {
-                cookies.forEach(cookie => {
-                    result += ' ' + cookie.name + '=' + cookie.value + ';';
-                });
-                header.push(result, 'Referer: ' + url);
-                resolve(header);
+        chrome.cookies.getAll({url}, (cookies) => {
+            cookies.forEach(cookie => {
+                result += ' ' + cookie.name + '=' + cookie.value + ';';
             });
-        }
-        else {
+            header.push(result);
             resolve(header);
-        }
+        });
     });
 }
 
